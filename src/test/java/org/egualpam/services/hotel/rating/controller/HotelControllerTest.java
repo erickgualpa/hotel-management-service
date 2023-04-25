@@ -27,11 +27,22 @@ class HotelControllerTest {
 
     @Test
     void queryIsAcceptedSuccessfully() throws Exception {
+        String request =
+                ""
+                        + "{\n"
+                        + "    \"location\": \"Barcelona\",\n"
+                        + "    \"checkIn\": \"2023-06-24\",\n"
+                        + "    \"priceRange\": {\n"
+                        + "        \"begin\": 100,\n"
+                        + "        \"end\": 200\n"
+                        + "    }\n"
+                        + "}";
+
         this.mockMvc
                 .perform(
                         post("/api/hotel/query")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content("{ }"))
+                                .content(request))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", is(0)));

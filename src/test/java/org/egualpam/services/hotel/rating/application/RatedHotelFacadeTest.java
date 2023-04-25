@@ -24,9 +24,10 @@ class RatedHotelFacadeTest {
         testee = new RatedHotelFacade(hotelRepository);
     }
 
+    // TODO: Complete test
     @Test
     void givenQuerySpecifyingLocation_hotelsMatchingLocationShouldBeReturned() {
-        HotelQuery query = new HotelQuery("DEFAULT_LOCATION");
+        HotelQuery query = new HotelQuery("DEFAULT_LOCATION", null, null, null);
         when(hotelRepository.findHotelsMatchingQuery(query)).thenReturn(List.of(new Hotel()));
 
         List<RatedHotel> result = testee.findHotelsMatchingQuery(query);
