@@ -7,6 +7,8 @@ public final class HotelQuery {
     private final String location;
     private final LocalDate checkIn;
     private final LocalDate checkOut;
+
+    // Making this an object with a tuple of (begin, end) in order to ease the dev
     private final PriceRange priceRange;
 
     public HotelQuery(

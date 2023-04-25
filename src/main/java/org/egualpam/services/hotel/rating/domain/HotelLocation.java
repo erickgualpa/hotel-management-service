@@ -8,4 +8,12 @@ public class HotelLocation {
         this.identifier = identifier;
         this.name = name;
     }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

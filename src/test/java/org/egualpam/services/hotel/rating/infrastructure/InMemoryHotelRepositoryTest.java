@@ -31,4 +31,18 @@ class InMemoryHotelRepositoryTest {
 
         assertThat(result).isNotEmpty();
     }
+
+    @Test
+    void givenHotelQuerySpecifyingNonMatchingPriceRange_noHotelsShouldBeReturned() {
+        HotelQuery query =
+                new HotelQuery(
+                        "Barcelona",
+                        LocalDate.parse("2023-06-24"),
+                        LocalDate.parse("2023-06-28"),
+                        new HotelQuery.PriceRange(50, 100));
+
+        List<Hotel> result = testee.findHotelsMatchingQuery(query);
+
+        assertThat(result).isEmpty();
+    }
 }

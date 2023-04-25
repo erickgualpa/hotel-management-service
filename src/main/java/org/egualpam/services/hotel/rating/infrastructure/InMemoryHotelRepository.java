@@ -1,7 +1,10 @@
 package org.egualpam.services.hotel.rating.infrastructure;
 
+import static java.util.Objects.isNull;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.egualpam.services.hotel.rating.application.HotelRepository;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.Hotel;
@@ -27,6 +30,13 @@ public final class InMemoryHotelRepository implements HotelRepository {
 
     @Override
     public List<Hotel> findHotelsMatchingQuery(HotelQuery query) {
-        return null;
+        return inMemoryHotels.stream()
+                .filter(
+                        hotel ->
+                                isNull(query.getLocation())
+                                        || hotel.getLocation()
+                                                .getName()
+                                                .equals(query.getLocation()))
+                .collect(Collectors.toList());
     }
 }

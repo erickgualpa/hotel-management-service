@@ -6,7 +6,10 @@ public final class Hotel {
     private String name;
     private String description;
     private HotelLocation location;
+
+    // Assuming this represents total price per night
     private Integer totalPrice;
+
     private String imageURL;
 
     public Hotel() {}
