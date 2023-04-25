@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating;
+package org.egualpam.services.hotel.rating.controller;
 
 import java.util.Collections;
 import java.util.List;
