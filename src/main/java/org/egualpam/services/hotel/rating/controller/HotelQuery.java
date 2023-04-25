@@ -33,7 +33,7 @@ public final class HotelQuery {
         return priceRange;
     }
 
-    private static class PriceRange {
+    public static class PriceRange {
 
         private final Integer begin;
         private final Integer end;
