@@ -37,6 +37,13 @@ public final class InMemoryHotelRepository implements HotelRepository {
                                         || hotel.getLocation()
                                                 .getName()
                                                 .equals(query.getLocation()))
+                .filter(
+                        hotel ->
+                                isNull(query.getPriceRange())
+                                        || (hotel.getTotalPrice()
+                                                        >= query.getPriceRange().getBegin()
+                                                && hotel.getTotalPrice()
+                                                        <= query.getPriceRange().getEnd()))
                 .collect(Collectors.toList());
     }
 }
