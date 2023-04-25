@@ -13,6 +13,6 @@ public class RatedHotelFacade implements HotelService {
     @Override
     public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query) {
         // TODO: Add unit testing and implement!
-        return new ArrayList<>();
+        return List.of();
     }
 }
