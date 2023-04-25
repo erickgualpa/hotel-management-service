@@ -1,17 +1,22 @@
 package org.egualpam.services.hotel.rating.controller;
 
-import java.util.Collections;
 import java.util.List;
+import org.egualpam.services.hotel.rating.domain.entity.RatedHotel;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/hotel")
-public class HotelController {
+@RequiredArgsConstructor
+public final class HotelController {
+
+    private final HotelService service;
 
     @PostMapping(value = "/query")
-    public List<Object> queryHotels() {
-        return Collections.emptyList();
+    public List<RatedHotel> queryHotels(@RequestBody HotelQuery query) {
+        return service.findHotelsMatchingQuery(query);
     }
 }
