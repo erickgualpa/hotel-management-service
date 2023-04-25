@@ -4,12 +4,14 @@ import java.time.LocalDate;
 
 public final class HotelQuery {
 
-    private final String location;
-    private final LocalDate checkIn;
-    private final LocalDate checkOut;
+    private String location;
+    private LocalDate checkIn;
+    private LocalDate checkOut;
 
     // Making this an object with a tuple of (begin, end) in order to ease the dev
-    private final PriceRange priceRange;
+    private PriceRange priceRange;
+
+    public HotelQuery() {}
 
     public HotelQuery(
             String location, LocalDate checkIn, LocalDate checkOut, PriceRange priceRange) {

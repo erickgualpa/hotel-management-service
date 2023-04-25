@@ -17,8 +17,15 @@ public final class RatedHotelFacade implements HotelService {
     @Override
     public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query) {
         return hotelRepository.findHotelsMatchingQuery(query).stream()
-                // TODO: Update this dummy mapping
-                .map(h -> new RatedHotel())
+                .map(
+                        h ->
+                                new RatedHotel(
+                                        h.getIdentifier(),
+                                        h.getName(),
+                                        h.getDescription(),
+                                        h.getLocation(),
+                                        h.getTotalPrice(),
+                                        h.getImageURL()))
                 .collect(Collectors.toList());
     }
 }
