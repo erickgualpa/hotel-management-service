@@ -1,7 +1,7 @@
 package org.egualpam.services.hotel.rating.controller;
 
 import java.util.List;
-import org.egualpam.services.hotel.rating.domain.entity.RatedHotel;
+import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

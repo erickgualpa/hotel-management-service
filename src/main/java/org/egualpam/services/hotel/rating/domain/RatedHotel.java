@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.domain.entity;
+package org.egualpam.services.hotel.rating.domain;
 
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonInclude;
