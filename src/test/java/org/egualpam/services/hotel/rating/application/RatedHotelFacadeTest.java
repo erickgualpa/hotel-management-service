@@ -16,18 +16,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class RatedHotelFacadeTest {
 
-    @Mock private HotelRepository repository;
+    @Mock private HotelRepository hotelRepository;
     private RatedHotelFacade testee;
 
     @BeforeEach
     void setup() {
-        testee = new RatedHotelFacade();
+        testee = new RatedHotelFacade(hotelRepository);
     }
 
     @Test
     void givenQuerySpecifyingLocation_hotelsMatchingLocationShouldBeReturned() {
         HotelQuery query = new HotelQuery("DEFAULT_LOCATION");
-        when(repository.findHotelsMatchingQuery(query)).thenReturn(List.of(new Hotel()));
+        when(hotelRepository.findHotelsMatchingQuery(query)).thenReturn(List.of(new Hotel()));
 
         List<RatedHotel> result = testee.findHotelsMatchingQuery(query);
 
