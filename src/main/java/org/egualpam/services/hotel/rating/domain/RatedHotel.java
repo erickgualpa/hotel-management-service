@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.domain;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
@@ -13,6 +14,7 @@ public class RatedHotel {
     private HotelLocation location;
     private Integer totalPrice;
     private String imageURL;
+    private List<HotelReview> reviews;
 
     public RatedHotel() {}
 
