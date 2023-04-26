@@ -1,10 +1,10 @@
 package org.egualpam.services.hotel.rating.infrastructure.entity;
 
-public class HotelLocation {
+public class Location {
     private final String identifier;
     private final String name;
 
-    public HotelLocation(String identifier, String name) {
+    public Location(String identifier, String name) {
         this.identifier = identifier;
         this.name = name;
     }

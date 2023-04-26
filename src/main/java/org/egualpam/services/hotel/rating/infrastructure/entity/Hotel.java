@@ -5,7 +5,7 @@ public class Hotel {
     private String identifier;
     private String name;
     private String description;
-    private HotelLocation location;
+    private Location location;
 
     // Assuming this represents total price per night
     private Integer totalPrice;
@@ -18,7 +18,7 @@ public class Hotel {
             String identifier,
             String name,
             String description,
-            HotelLocation location,
+            Location location,
             Integer totalPrice,
             String imageURL) {
         this.identifier = identifier;
@@ -41,7 +41,7 @@ public class Hotel {
         return description;
     }
 
-    public HotelLocation getLocation() {
+    public Location getLocation() {
         return location;
     }
 

@@ -9,7 +9,7 @@ import org.egualpam.services.hotel.rating.application.HotelRepository;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.egualpam.services.hotel.rating.infrastructure.entity.Hotel;
-import org.egualpam.services.hotel.rating.infrastructure.entity.HotelLocation;
+import org.egualpam.services.hotel.rating.infrastructure.entity.Location;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,7 +24,7 @@ public final class InMemoryHotelRepository implements HotelRepository {
                         "AMZ_HOTEL",
                         "Amazing hotel",
                         "Eloquent description",
-                        new HotelLocation("BCN", "Barcelona"),
+                        new Location("BCN", "Barcelona"),
                         200,
                         "amz-hotel-image.com"));
 
@@ -33,7 +33,7 @@ public final class InMemoryHotelRepository implements HotelRepository {
                         "AMZ_ROME_HOTEL",
                         "Amazing Rome hotel",
                         "Eloquent description",
-                        new HotelLocation("ROM", "Rome"),
+                        new Location("ROM", "Rome"),
                         400,
                         "amz-rome-hotel-image.com"));
 
@@ -42,7 +42,7 @@ public final class InMemoryHotelRepository implements HotelRepository {
                         "AMZ_BERLIN_HOTEL",
                         "Amazing Berlin hotel",
                         "Eloquent description",
-                        new HotelLocation("BER", "Berlin"),
+                        new Location("BER", "Berlin"),
                         75,
                         "amz-berlin-hotel-image.com"));
 
@@ -51,7 +51,7 @@ public final class InMemoryHotelRepository implements HotelRepository {
                         "NON_AMZ_HOTEL",
                         "Non Amazing hotel",
                         "Eloquent description",
-                        new HotelLocation("BCN", "Barcelona"),
+                        new Location("BCN", "Barcelona"),
                         20,
                         "non-amz-hotel-image.com"));
 
@@ -60,7 +60,7 @@ public final class InMemoryHotelRepository implements HotelRepository {
                         "MEDIUM_AMZ_HOTEL",
                         "Medium Amazing hotel",
                         "Eloquent description",
-                        new HotelLocation("BCN", "Barcelona"),
+                        new Location("BCN", "Barcelona"),
                         90,
                         "medium-amz-hotel-image.com"));
     }
