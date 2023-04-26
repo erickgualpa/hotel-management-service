@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.controller.HotelService;
 import org.egualpam.services.hotel.rating.domain.HotelReview;
+import org.egualpam.services.hotel.rating.domain.HotelReviewRepository;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public final class RatedHotelFacade implements HotelService {
 
-    private final HotelRepository hotelRepository;
+    private final RatedHotelRepository hotelRepository;
     private final HotelReviewRepository reviewRepository;
 
     @Override

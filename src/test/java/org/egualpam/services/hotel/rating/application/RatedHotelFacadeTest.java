@@ -8,6 +8,7 @@ import java.util.List;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.HotelLocation;
 import org.egualpam.services.hotel.rating.domain.HotelReview;
+import org.egualpam.services.hotel.rating.domain.HotelReviewRepository;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ class RatedHotelFacadeTest {
             "EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER";
     private static final String EXPECTED_BEST_HOTEL_IDENTIFIER = "EXPECTED_BEST_HOTEL_IDENTIFIER";
 
-    @Mock private HotelRepository hotelRepository;
+    @Mock private RatedHotelRepository hotelRepository;
     @Mock private HotelReviewRepository reviewRepository;
 
     private RatedHotelFacade testee;

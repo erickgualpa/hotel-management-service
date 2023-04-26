@@ -1,7 +1,6 @@
-package org.egualpam.services.hotel.rating.application;
+package org.egualpam.services.hotel.rating.domain;
 
 import java.util.List;
-import org.egualpam.services.hotel.rating.domain.HotelReview;
 
 public interface HotelReviewRepository {
     List<HotelReview> findReviewsMatchingHotelIdentifier(String hotelIdentifier);

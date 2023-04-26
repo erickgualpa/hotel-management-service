@@ -4,6 +4,6 @@ import java.util.List;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 
-public interface HotelRepository {
+public interface RatedHotelRepository {
     List<RatedHotel> findHotelsMatchingQuery(HotelQuery query);
 }

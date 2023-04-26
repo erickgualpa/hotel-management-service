@@ -3,8 +3,8 @@ package org.egualpam.services.hotel.rating.infrastructure;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.egualpam.services.hotel.rating.application.HotelReviewRepository;
 import org.egualpam.services.hotel.rating.domain.HotelReview;
+import org.egualpam.services.hotel.rating.domain.HotelReviewRepository;
 import org.egualpam.services.hotel.rating.infrastructure.entity.Review;
 import org.springframework.stereotype.Component;
 

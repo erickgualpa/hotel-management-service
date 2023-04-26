@@ -5,7 +5,7 @@ import static java.util.Objects.isNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.egualpam.services.hotel.rating.application.HotelRepository;
+import org.egualpam.services.hotel.rating.application.RatedHotelRepository;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.egualpam.services.hotel.rating.infrastructure.entity.Hotel;
@@ -13,7 +13,7 @@ import org.egualpam.services.hotel.rating.infrastructure.entity.Location;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class InMemoryHotelRepository implements HotelRepository {
+public final class InMemoryHotelRepository implements RatedHotelRepository {
 
     private static final List<Hotel> inMemoryHotels;
 
