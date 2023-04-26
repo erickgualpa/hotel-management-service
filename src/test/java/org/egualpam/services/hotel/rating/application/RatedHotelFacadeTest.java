@@ -9,7 +9,6 @@ import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.HotelLocation;
 import org.egualpam.services.hotel.rating.domain.HotelReview;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
-import org.egualpam.services.hotel.rating.domain.Review;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,8 +67,7 @@ class RatedHotelFacadeTest {
     @Test
     void givenAnyQuery_hotelsMatchingQueryShouldBePopulatedWithReviewsAndReturned() {
         RatedHotel defaultHotel = buildHotelStub(EXPECTED_HOTEL_IDENTIFIER);
-
-        Review defaultReview = buildReviewStub(EXPECTED_REVIEW_RATING, EXPECTED_HOTEL_IDENTIFIER);
+        HotelReview defaultReview = buildReviewStub(EXPECTED_REVIEW_RATING);
 
         when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(List.of(defaultHotel));
@@ -90,23 +88,17 @@ class RatedHotelFacadeTest {
     @Test
     void givenAnyQuery_hotelsMatchingQueryShouldBeReturnedOrderedByRatingAverage() {
         RatedHotel expectedWorstHotel = buildHotelStub(EXPECTED_WORST_HOTEL_IDENTIFIER);
-        List<Review> expectedWorstHotelReviews =
-                List.of(
-                        buildReviewStub(1, EXPECTED_WORST_HOTEL_IDENTIFIER),
-                        buildReviewStub(2, EXPECTED_WORST_HOTEL_IDENTIFIER));
+        List<HotelReview> expectedWorstHotelReviews =
+                List.of(buildReviewStub(1), buildReviewStub(2));
 
         RatedHotel expectedIntermediateHotel =
                 buildHotelStub(EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER);
-        List<Review> expectedIntermediateHotelReviews =
-                List.of(
-                        buildReviewStub(2, EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER),
-                        buildReviewStub(4, EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER));
+        List<HotelReview> expectedIntermediateHotelReviews =
+                List.of(buildReviewStub(2), buildReviewStub(4));
 
         RatedHotel expectedBestHotel = buildHotelStub(EXPECTED_BEST_HOTEL_IDENTIFIER);
-        List<Review> expectedBestHotelReviews =
-                List.of(
-                        buildReviewStub(4, EXPECTED_BEST_HOTEL_IDENTIFIER),
-                        buildReviewStub(5, EXPECTED_BEST_HOTEL_IDENTIFIER));
+        List<HotelReview> expectedBestHotelReviews =
+                List.of(buildReviewStub(4), buildReviewStub(5));
 
         when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(
@@ -138,8 +130,7 @@ class RatedHotelFacadeTest {
                 EXPECTED_IMAGE_URL);
     }
 
-    private Review buildReviewStub(int rating, String hotelIdentifier) {
-        return new Review(
-                EXPECTED_REVIEW_IDENTIFIER, rating, EXPECTED_REVIEW_COMMENT, hotelIdentifier);
+    private HotelReview buildReviewStub(int rating) {
+        return new HotelReview(EXPECTED_REVIEW_IDENTIFIER, rating, EXPECTED_REVIEW_COMMENT);
     }
 }

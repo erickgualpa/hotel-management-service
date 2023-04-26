@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.egualpam.services.hotel.rating.application.ReviewRepository;
-import org.egualpam.services.hotel.rating.domain.Review;
+import org.egualpam.services.hotel.rating.domain.HotelReview;
+import org.egualpam.services.hotel.rating.infrastructure.entity.Review;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -34,9 +35,14 @@ public class InMemoryReviewRepository implements ReviewRepository {
     }
 
     @Override
-    public List<Review> findReviewsMatchingHotelIdentifier(String hotelIdentifier) {
+    public List<HotelReview> findReviewsMatchingHotelIdentifier(String hotelIdentifier) {
         return inMemoryReviews.stream()
                 .filter(r -> r.getHotelIdentifier().equals(hotelIdentifier))
+                .map(this::mapToHotelReview)
                 .collect(Collectors.toList());
+    }
+
+    private HotelReview mapToHotelReview(Review r) {
+        return new HotelReview(r.getIdentifier(), r.getRating(), r.getComment());
     }
 }

@@ -27,12 +27,8 @@ public final class RatedHotelFacade implements HotelService {
 
     private RatedHotel createRatedHotel(RatedHotel hotel) {
         List<HotelReview> hotelReviews =
-                reviewRepository.findReviewsMatchingHotelIdentifier(hotel.getIdentifier()).stream()
-                        .map(r -> new HotelReview(r.getIdentifier(), r.getRating(), r.getComment()))
-                        .collect(Collectors.toList());
-
+                reviewRepository.findReviewsMatchingHotelIdentifier(hotel.getIdentifier());
         hotel.populateReviews(hotelReviews);
-
         return hotel;
     }
 }
