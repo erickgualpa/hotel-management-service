@@ -2,6 +2,7 @@ package org.egualpam.services.hotel.rating.controller;
 
 import java.time.LocalDate;
 
+// TODO: Restrict use of this class as is placed in controller module but is used among all component
 public final class HotelQuery {
 
     private String location;
