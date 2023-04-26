@@ -3,6 +3,7 @@ package org.egualpam.services.hotel.rating.domain;
 import lombok.Getter;
 
 @Getter
+// TODO: Rename this to avoid confusion
 public final class HotelReview {
 
     private String identifier;
