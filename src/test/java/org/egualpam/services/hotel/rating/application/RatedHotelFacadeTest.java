@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
-import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.egualpam.services.hotel.rating.domain.HotelLocation;
 import org.egualpam.services.hotel.rating.domain.HotelReview;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
@@ -49,7 +48,7 @@ class RatedHotelFacadeTest {
 
     @Test
     void givenAnyQuery_hotelsMatchingQueryShouldBeReturned() {
-        Hotel defaultHotel = buildHotelStub(EXPECTED_HOTEL_IDENTIFIER);
+        RatedHotel defaultHotel = buildHotelStub(EXPECTED_HOTEL_IDENTIFIER);
 
         when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(List.of(defaultHotel));
@@ -68,7 +67,7 @@ class RatedHotelFacadeTest {
 
     @Test
     void givenAnyQuery_hotelsMatchingQueryShouldBePopulatedWithReviewsAndReturned() {
-        Hotel defaultHotel = buildHotelStub(EXPECTED_HOTEL_IDENTIFIER);
+        RatedHotel defaultHotel = buildHotelStub(EXPECTED_HOTEL_IDENTIFIER);
 
         Review defaultReview = buildReviewStub(EXPECTED_REVIEW_RATING, EXPECTED_HOTEL_IDENTIFIER);
 
@@ -90,19 +89,20 @@ class RatedHotelFacadeTest {
 
     @Test
     void givenAnyQuery_hotelsMatchingQueryShouldBeReturnedOrderedByRatingAverage() {
-        Hotel expectedWorstHotel = buildHotelStub(EXPECTED_WORST_HOTEL_IDENTIFIER);
+        RatedHotel expectedWorstHotel = buildHotelStub(EXPECTED_WORST_HOTEL_IDENTIFIER);
         List<Review> expectedWorstHotelReviews =
                 List.of(
                         buildReviewStub(1, EXPECTED_WORST_HOTEL_IDENTIFIER),
                         buildReviewStub(2, EXPECTED_WORST_HOTEL_IDENTIFIER));
 
-        Hotel expectedIntermediateHotel = buildHotelStub(EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER);
+        RatedHotel expectedIntermediateHotel =
+                buildHotelStub(EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER);
         List<Review> expectedIntermediateHotelReviews =
                 List.of(
                         buildReviewStub(2, EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER),
                         buildReviewStub(4, EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER));
 
-        Hotel expectedBestHotel = buildHotelStub(EXPECTED_BEST_HOTEL_IDENTIFIER);
+        RatedHotel expectedBestHotel = buildHotelStub(EXPECTED_BEST_HOTEL_IDENTIFIER);
         List<Review> expectedBestHotelReviews =
                 List.of(
                         buildReviewStub(4, EXPECTED_BEST_HOTEL_IDENTIFIER),
@@ -128,8 +128,8 @@ class RatedHotelFacadeTest {
         assertThat(result.get(2).getIdentifier()).isEqualTo(EXPECTED_WORST_HOTEL_IDENTIFIER);
     }
 
-    private Hotel buildHotelStub(String identifier) {
-        return new Hotel(
+    private RatedHotel buildHotelStub(String identifier) {
+        return new RatedHotel(
                 identifier,
                 EXPECTED_NAME,
                 EXPECTED_DESCRIPTION,

@@ -1,6 +1,6 @@
-package org.egualpam.services.hotel.rating.domain;
+package org.egualpam.services.hotel.rating.infrastructure.entity;
 
-public final class Hotel {
+public class Hotel {
 
     private String identifier;
     private String name;

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.controller.HotelService;
-import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.egualpam.services.hotel.rating.domain.HotelReview;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.springframework.stereotype.Component;
@@ -26,23 +25,14 @@ public final class RatedHotelFacade implements HotelService {
                 .collect(Collectors.toList());
     }
 
-    private RatedHotel createRatedHotel(Hotel hotel) {
-        RatedHotel ratedHotel =
-                new RatedHotel(
-                        hotel.getIdentifier(),
-                        hotel.getName(),
-                        hotel.getDescription(),
-                        hotel.getLocation(),
-                        hotel.getTotalPrice(),
-                        hotel.getImageURL());
-
+    private RatedHotel createRatedHotel(RatedHotel hotel) {
         List<HotelReview> hotelReviews =
                 reviewRepository.findReviewsMatchingHotelIdentifier(hotel.getIdentifier()).stream()
                         .map(r -> new HotelReview(r.getIdentifier(), r.getRating(), r.getComment()))
                         .collect(Collectors.toList());
 
-        ratedHotel.populateReviews(hotelReviews);
+        hotel.populateReviews(hotelReviews);
 
-        return ratedHotel;
+        return hotel;
     }
 }

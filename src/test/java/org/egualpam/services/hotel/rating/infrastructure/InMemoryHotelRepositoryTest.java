@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
 import java.util.List;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
-import org.egualpam.services.hotel.rating.domain.Hotel;
+import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ class InMemoryHotelRepositoryTest {
                         LocalDate.parse("2023-06-28"),
                         new HotelQuery.PriceRange(100, 200));
 
-        List<Hotel> result = testee.findHotelsMatchingQuery(query);
+        List<RatedHotel> result = testee.findHotelsMatchingQuery(query);
 
         assertThat(result).isNotEmpty();
     }
@@ -43,7 +43,7 @@ class InMemoryHotelRepositoryTest {
                         LocalDate.parse("2023-06-28"),
                         new HotelQuery.PriceRange(50, 100));
 
-        List<Hotel> result = testee.findHotelsMatchingQuery(query);
+        List<RatedHotel> result = testee.findHotelsMatchingQuery(query);
 
         assertThat(result).isEmpty();
     }

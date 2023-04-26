@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.egualpam.services.hotel.rating.application.HotelRepository;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
-import org.egualpam.services.hotel.rating.domain.Hotel;
-import org.egualpam.services.hotel.rating.domain.HotelLocation;
+import org.egualpam.services.hotel.rating.domain.RatedHotel;
+import org.egualpam.services.hotel.rating.infrastructure.entity.Hotel;
+import org.egualpam.services.hotel.rating.infrastructure.entity.HotelLocation;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -65,7 +66,7 @@ public final class InMemoryHotelRepository implements HotelRepository {
     }
 
     @Override
-    public List<Hotel> findHotelsMatchingQuery(HotelQuery query) {
+    public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query) {
         return inMemoryHotels.stream()
                 .filter(
                         hotel ->
@@ -80,6 +81,18 @@ public final class InMemoryHotelRepository implements HotelRepository {
                                                         >= query.getPriceRange().getBegin()
                                                 && hotel.getTotalPrice()
                                                         <= query.getPriceRange().getEnd()))
+                .map(this::mapToRatedHotel)
                 .collect(Collectors.toList());
+    }
+
+    private RatedHotel mapToRatedHotel(Hotel hotel) {
+        return new RatedHotel(
+                hotel.getIdentifier(),
+                hotel.getName(),
+                hotel.getDescription(),
+                new org.egualpam.services.hotel.rating.domain.HotelLocation(
+                        hotel.getLocation().getIdentifier(), hotel.getLocation().getName()),
+                hotel.getTotalPrice(),
+                hotel.getImageURL());
     }
 }
