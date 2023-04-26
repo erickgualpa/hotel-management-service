@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 public final class RatedHotelFacade implements HotelService {
 
     private final HotelRepository hotelRepository;
-    private final ReviewRepository reviewRepository;
+    private final HotelReviewRepository reviewRepository;
 
     @Override
     public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query) {

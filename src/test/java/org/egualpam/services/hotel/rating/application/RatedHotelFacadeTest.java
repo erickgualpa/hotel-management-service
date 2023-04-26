@@ -36,7 +36,7 @@ class RatedHotelFacadeTest {
     private static final String EXPECTED_BEST_HOTEL_IDENTIFIER = "EXPECTED_BEST_HOTEL_IDENTIFIER";
 
     @Mock private HotelRepository hotelRepository;
-    @Mock private ReviewRepository reviewRepository;
+    @Mock private HotelReviewRepository reviewRepository;
 
     private RatedHotelFacade testee;
 
