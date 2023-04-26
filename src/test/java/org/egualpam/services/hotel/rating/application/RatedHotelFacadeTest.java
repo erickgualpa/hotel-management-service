@@ -8,8 +8,8 @@ import java.util.List;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.egualpam.services.hotel.rating.domain.HotelLocation;
-import org.egualpam.services.hotel.rating.domain.HotelReview;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
+import org.egualpam.services.hotel.rating.domain.Review;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,7 +78,7 @@ class RatedHotelFacadeTest {
         when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(List.of(defaultHotel));
         when(reviewRepository.findReviewsMatchingHotelIdentifier(EXPECTED_HOTEL_IDENTIFIER))
-                .thenReturn(List.of(new HotelReview()));
+                .thenReturn(List.of(new Review()));
 
         List<RatedHotel> result = testee.findHotelsMatchingQuery(new HotelQuery());
 

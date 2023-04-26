@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.controller.HotelService;
 import org.egualpam.services.hotel.rating.domain.Hotel;
-import org.egualpam.services.hotel.rating.domain.HotelReview;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
+import org.egualpam.services.hotel.rating.domain.Review;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
@@ -34,10 +34,11 @@ public final class RatedHotelFacade implements HotelService {
                         hotel.getTotalPrice(),
                         hotel.getImageURL());
 
-        List<HotelReview> hotelReviews =
+        List<Review> hotelReviews =
                 reviewRepository.findReviewsMatchingHotelIdentifier(hotel.getIdentifier());
 
-        ratedHotel.populateReviews(hotelReviews);
+        // TODO: populateReviews()
+        /*ratedHotel.populateReviews(hotelReviews);*/
 
         return ratedHotel;
     }
