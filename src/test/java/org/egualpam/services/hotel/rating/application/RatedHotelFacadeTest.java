@@ -97,7 +97,7 @@ class RatedHotelFacadeTest {
         RatedHotel actualHotel = result.get(0);
         assertThat(actualHotel.getReviews()).hasSize(1);
         HotelReview actualReview = actualHotel.getReviews().get(0);
-        assertThat(actualReview.getIdentifier()).isEqualTo(EXPECTED_HOTEL_IDENTIFIER);
+        assertThat(actualReview.getIdentifier()).isEqualTo(EXPECTED_REVIEW_IDENTIFIER);
         assertThat(actualReview.getRating()).isEqualTo(EXPECTED_REVIEW_RATING);
         assertThat(actualReview.getComment()).isEqualTo(EXPECTED_REVIEW_COMMENT);
     }
