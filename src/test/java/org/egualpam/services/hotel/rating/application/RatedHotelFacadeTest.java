@@ -8,6 +8,7 @@ import java.util.List;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.egualpam.services.hotel.rating.domain.HotelLocation;
+import org.egualpam.services.hotel.rating.domain.HotelReview;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.egualpam.services.hotel.rating.domain.Review;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,9 @@ class RatedHotelFacadeTest {
     private static final String EXPECTED_IMAGE_URL = "amz-hotel-image.com";
 
     private static final Integer EXPECTED_TOTAL_PRICE = 200;
+    public static final String EXPECTED_REVIEW_IDENTIFIER = "AMZ_REVIEW";
+    public static final int EXPECTED_REVIEW_RATING = 5;
+    public static final String EXPECTED_REVIEW_COMMENT = "Eloquent comment";
 
     @Mock private HotelRepository hotelRepository;
     @Mock private ReviewRepository reviewRepository;
@@ -75,15 +79,26 @@ class RatedHotelFacadeTest {
                         EXPECTED_TOTAL_PRICE,
                         EXPECTED_IMAGE_URL);
 
+        Review defaultReview =
+                new Review(
+                        EXPECTED_REVIEW_IDENTIFIER,
+                        EXPECTED_REVIEW_RATING,
+                        EXPECTED_REVIEW_COMMENT,
+                        EXPECTED_HOTEL_IDENTIFIER);
+
         when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(List.of(defaultHotel));
         when(reviewRepository.findReviewsMatchingHotelIdentifier(EXPECTED_HOTEL_IDENTIFIER))
-                .thenReturn(List.of(new Review()));
+                .thenReturn(List.of(defaultReview));
 
         List<RatedHotel> result = testee.findHotelsMatchingQuery(new HotelQuery());
 
         assertThat(result).hasSize(1);
         RatedHotel actualHotel = result.get(0);
         assertThat(actualHotel.getReviews()).hasSize(1);
+        HotelReview actualReview = actualHotel.getReviews().get(0);
+        assertThat(actualReview.getIdentifier()).isEqualTo(EXPECTED_HOTEL_IDENTIFIER);
+        assertThat(actualReview.getRating()).isEqualTo(EXPECTED_REVIEW_RATING);
+        assertThat(actualReview.getComment()).isEqualTo(EXPECTED_REVIEW_COMMENT);
     }
 }
