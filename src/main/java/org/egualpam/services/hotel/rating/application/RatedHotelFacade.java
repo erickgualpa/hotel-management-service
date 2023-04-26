@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.application;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.egualpam.services.hotel.rating.controller.HotelQuery;
@@ -21,6 +22,7 @@ public final class RatedHotelFacade implements HotelService {
     public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query) {
         return hotelRepository.findHotelsMatchingQuery(query).stream()
                 .map(this::createRatedHotel)
+                .sorted(Comparator.comparingDouble(RatedHotel::getRatingAverage).reversed())
                 .collect(Collectors.toList());
     }
 
