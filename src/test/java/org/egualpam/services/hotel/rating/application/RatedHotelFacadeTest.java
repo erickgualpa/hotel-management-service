@@ -28,13 +28,14 @@ class RatedHotelFacadeTest {
     private static final String EXPECTED_IMAGE_URL = "amz-hotel-image.com";
 
     private static final Integer EXPECTED_TOTAL_PRICE = 200;
-    public static final String EXPECTED_REVIEW_IDENTIFIER = "AMZ_REVIEW";
-    public static final int EXPECTED_REVIEW_RATING = 5;
-    public static final String EXPECTED_REVIEW_COMMENT = "Eloquent comment";
-    public static final String EXPECTED_WORST_HOTEL_IDENTIFIER = "EXPECTED_WORST_HOTEL_IDENTIFIER";
-    public static final String EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER =
+    private static final String EXPECTED_REVIEW_IDENTIFIER = "AMZ_REVIEW";
+    private static final int EXPECTED_REVIEW_RATING = 5;
+    private static final String EXPECTED_REVIEW_COMMENT = "Eloquent comment";
+
+    private static final String EXPECTED_WORST_HOTEL_IDENTIFIER = "EXPECTED_WORST_HOTEL_IDENTIFIER";
+    private static final String EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER =
             "EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER";
-    public static final String EXPECTED_BEST_HOTEL_IDENTIFIER = "EXPECTED_BEST_HOTEL_IDENTIFIER";
+    private static final String EXPECTED_BEST_HOTEL_IDENTIFIER = "EXPECTED_BEST_HOTEL_IDENTIFIER";
 
     @Mock private HotelRepository hotelRepository;
     @Mock private ReviewRepository reviewRepository;
