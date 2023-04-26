@@ -26,6 +26,42 @@ public final class InMemoryHotelRepository implements HotelRepository {
                         new HotelLocation("BCN", "Barcelona"),
                         200,
                         "amz-hotel-image.com"));
+
+        inMemoryHotels.add(
+                new Hotel(
+                        "AMZ_ROME_HOTEL",
+                        "Amazing Rome hotel",
+                        "Eloquent description",
+                        new HotelLocation("ROM", "Rome"),
+                        400,
+                        "amz-rome-hotel-image.com"));
+
+        inMemoryHotels.add(
+                new Hotel(
+                        "AMZ_BERLIN_HOTEL",
+                        "Amazing Berlin hotel",
+                        "Eloquent description",
+                        new HotelLocation("BER", "Berlin"),
+                        75,
+                        "amz-berlin-hotel-image.com"));
+
+        inMemoryHotels.add(
+                new Hotel(
+                        "NON_AMZ_HOTEL",
+                        "Non Amazing hotel",
+                        "Eloquent description",
+                        new HotelLocation("BCN", "Barcelona"),
+                        20,
+                        "non-amz-hotel-image.com"));
+
+        inMemoryHotels.add(
+                new Hotel(
+                        "MEDIUM_AMZ_HOTEL",
+                        "Medium Amazing hotel",
+                        "Eloquent description",
+                        new HotelLocation("BCN", "Barcelona"),
+                        90,
+                        "medium-amz-hotel-image.com"));
     }
 
     @Override
