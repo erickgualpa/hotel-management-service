@@ -2,7 +2,6 @@ package org.egualpam.services.hotel.rating.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -78,13 +77,13 @@ class RatedHotelFacadeTest {
 
         when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(List.of(defaultHotel));
-        when(reviewRepository.findReviewsMatchingHotelIdentifier(anyString()))
+        when(reviewRepository.findReviewsMatchingHotelIdentifier(EXPECTED_HOTEL_IDENTIFIER))
                 .thenReturn(List.of(new HotelReview()));
 
         List<RatedHotel> result = testee.findHotelsMatchingQuery(new HotelQuery());
 
         assertThat(result).hasSize(1);
         RatedHotel actualHotel = result.get(0);
-        assertThat(actualHotel.getReviews()).isNotEmpty();
+        assertThat(actualHotel.getReviews()).hasSize(1);
     }
 }

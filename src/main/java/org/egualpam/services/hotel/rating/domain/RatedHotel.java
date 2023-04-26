@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -14,7 +15,7 @@ public class RatedHotel {
     private HotelLocation location;
     private Integer totalPrice;
     private String imageURL;
-    private List<HotelReview> reviews;
+    private final List<HotelReview> reviews = new ArrayList<>();
 
     public RatedHotel() {}
 
@@ -31,5 +32,9 @@ public class RatedHotel {
         this.location = location;
         this.totalPrice = totalPrice;
         this.imageURL = imageURL;
+    }
+
+    public void populateReviews(List<HotelReview> reviews) {
+        this.reviews.addAll(reviews);
     }
 }
