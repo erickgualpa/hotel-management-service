@@ -8,6 +8,7 @@ import org.egualpam.services.hotel.rating.controller.HotelService;
 import org.egualpam.services.hotel.rating.domain.HotelReview;
 import org.egualpam.services.hotel.rating.domain.HotelReviewRepository;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
+import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
 import org.springframework.stereotype.Component;
 import lombok.RequiredArgsConstructor;
 
