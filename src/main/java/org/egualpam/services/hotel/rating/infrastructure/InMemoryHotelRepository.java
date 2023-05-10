@@ -5,7 +5,7 @@ import static java.util.Objects.isNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.egualpam.services.hotel.rating.controller.HotelQuery;
+import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
 import org.egualpam.services.hotel.rating.infrastructure.entity.Hotel;

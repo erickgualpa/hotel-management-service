@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
-import org.egualpam.services.hotel.rating.controller.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.HotelLocation;
 import org.egualpam.services.hotel.rating.domain.HotelReview;
 import org.egualpam.services.hotel.rating.domain.HotelReviewRepository;
@@ -37,6 +36,8 @@ class RatedHotelFacadeTest {
             "EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER";
     private static final String EXPECTED_BEST_HOTEL_IDENTIFIER = "EXPECTED_BEST_HOTEL_IDENTIFIER";
 
+    private static final HotelQuery DEFAULT_QUERY = HotelQuery.create().build();
+
     @Mock private RatedHotelRepository hotelRepository;
     @Mock private HotelReviewRepository reviewRepository;
 
@@ -54,7 +55,7 @@ class RatedHotelFacadeTest {
         when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(List.of(defaultHotel));
 
-        List<RatedHotel> result = testee.findHotelsMatchingQuery(new HotelQuery());
+        List<RatedHotel> result = testee.findHotelsMatchingQuery(DEFAULT_QUERY);
 
         assertThat(result).hasSize(1);
         RatedHotel actualHotel = result.get(0);
@@ -76,7 +77,7 @@ class RatedHotelFacadeTest {
         when(reviewRepository.findReviewsMatchingHotelIdentifier(EXPECTED_HOTEL_IDENTIFIER))
                 .thenReturn(List.of(defaultReview));
 
-        List<RatedHotel> result = testee.findHotelsMatchingQuery(new HotelQuery());
+        List<RatedHotel> result = testee.findHotelsMatchingQuery(DEFAULT_QUERY);
 
         assertThat(result).hasSize(1);
         RatedHotel actualHotel = result.get(0);
@@ -114,7 +115,7 @@ class RatedHotelFacadeTest {
         when(reviewRepository.findReviewsMatchingHotelIdentifier(EXPECTED_BEST_HOTEL_IDENTIFIER))
                 .thenReturn(expectedBestHotelReviews);
 
-        List<RatedHotel> result = testee.findHotelsMatchingQuery(new HotelQuery());
+        List<RatedHotel> result = testee.findHotelsMatchingQuery(DEFAULT_QUERY);
 
         assertThat(result).hasSize(3);
         assertThat(result.get(0).getIdentifier()).isEqualTo(EXPECTED_BEST_HOTEL_IDENTIFIER);

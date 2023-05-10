@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.List;
+import org.egualpam.services.hotel.rating.application.HotelQuery;
+import org.egualpam.services.hotel.rating.application.HotelService;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
