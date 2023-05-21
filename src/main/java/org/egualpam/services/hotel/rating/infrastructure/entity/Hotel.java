@@ -2,17 +2,15 @@ package org.egualpam.services.hotel.rating.infrastructure.entity;
 
 public class Hotel {
 
-    private String identifier;
-    private String name;
-    private String description;
-    private Location location;
+    private final String identifier;
+    private final String name;
+    private final String description;
+    private final Location location;
 
     // Assuming this represents total price per night
-    private Integer totalPrice;
+    private final Integer totalPrice;
 
-    private String imageURL;
-
-    public Hotel() {}
+    private final String imageURL;
 
     public Hotel(
             String identifier,

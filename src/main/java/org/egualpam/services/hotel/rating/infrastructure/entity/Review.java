@@ -2,12 +2,10 @@ package org.egualpam.services.hotel.rating.infrastructure.entity;
 
 public class Review {
 
-    private String identifier;
-    private Integer rating;
-    private String comment;
-    private String hotelIdentifier;
-
-    public Review() {}
+    private final String identifier;
+    private final Integer rating;
+    private final String comment;
+    private final String hotelIdentifier;
 
     public Review(String identifier, Integer rating, String comment, String hotelIdentifier) {
         this.identifier = identifier;
