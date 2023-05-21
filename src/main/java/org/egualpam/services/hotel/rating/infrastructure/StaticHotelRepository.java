@@ -6,14 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.domain.RatedHotel;
-import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
 import org.egualpam.services.hotel.rating.infrastructure.entity.Hotel;
 import org.egualpam.services.hotel.rating.infrastructure.entity.Location;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class InMemoryHotelRepository implements RatedHotelRepository {
+public final class StaticHotelRepository {
 
     private static final List<Hotel> inMemoryHotels;
 
@@ -65,8 +63,7 @@ public final class InMemoryHotelRepository implements RatedHotelRepository {
                         "medium-amz-hotel-image.com"));
     }
 
-    @Override
-    public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query) {
+    public List<Hotel> findHotelsMatchingQuery(HotelQuery query) {
         return inMemoryHotels.stream()
                 .filter(
                         hotel ->
@@ -81,18 +78,6 @@ public final class InMemoryHotelRepository implements RatedHotelRepository {
                                                         >= query.getPriceRange().getBegin()
                                                 && hotel.getTotalPrice()
                                                         <= query.getPriceRange().getEnd()))
-                .map(this::mapToRatedHotel)
                 .collect(Collectors.toList());
-    }
-
-    private RatedHotel mapToRatedHotel(Hotel hotel) {
-        return new RatedHotel(
-                hotel.getIdentifier(),
-                hotel.getName(),
-                hotel.getDescription(),
-                new org.egualpam.services.hotel.rating.domain.HotelLocation(
-                        hotel.getLocation().getIdentifier(), hotel.getLocation().getName()),
-                hotel.getTotalPrice(),
-                hotel.getImageURL());
     }
 }

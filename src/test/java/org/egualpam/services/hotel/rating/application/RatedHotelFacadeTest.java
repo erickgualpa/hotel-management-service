@@ -5,21 +5,21 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
-import org.egualpam.services.hotel.rating.domain.HotelLocation;
-import org.egualpam.services.hotel.rating.domain.HotelReview;
-import org.egualpam.services.hotel.rating.domain.HotelReviewRepository;
+import org.egualpam.services.hotel.rating.domain.Location;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
+import org.egualpam.services.hotel.rating.domain.Review;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+// TODO: Clean up this test class
 @ExtendWith(MockitoExtension.class)
 class RatedHotelFacadeTest {
 
-    private static final HotelLocation EXPECTED_LOCATION = new HotelLocation("BCN", "Barcelona");
+    private static final Location EXPECTED_LOCATION = new Location("BCN", "Barcelona");
 
     private static final String EXPECTED_HOTEL_IDENTIFIER = "AMZ_HOTEL";
     private static final String EXPECTED_NAME = "Amazing hotel";
@@ -38,21 +38,20 @@ class RatedHotelFacadeTest {
 
     private static final HotelQuery DEFAULT_QUERY = HotelQuery.create().build();
 
-    @Mock private RatedHotelRepository hotelRepository;
-    @Mock private HotelReviewRepository reviewRepository;
+    @Mock private RatedHotelRepository ratedHotelRepository;
 
     private RatedHotelFacade testee;
 
     @BeforeEach
     void setup() {
-        testee = new RatedHotelFacade(hotelRepository, reviewRepository);
+        testee = new RatedHotelFacade(ratedHotelRepository);
     }
 
     @Test
     void givenAnyQuery_hotelsMatchingQueryShouldBeReturned() {
         RatedHotel defaultHotel = buildHotelStub(EXPECTED_HOTEL_IDENTIFIER);
 
-        when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
+        when(ratedHotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(List.of(defaultHotel));
 
         List<RatedHotel> result = testee.findHotelsMatchingQuery(DEFAULT_QUERY);
@@ -70,19 +69,20 @@ class RatedHotelFacadeTest {
     @Test
     void givenAnyQuery_hotelsMatchingQueryShouldBePopulatedWithReviewsAndReturned() {
         RatedHotel defaultHotel = buildHotelStub(EXPECTED_HOTEL_IDENTIFIER);
-        HotelReview defaultReview = buildReviewStub(EXPECTED_REVIEW_RATING);
+        Review defaultReview = buildReviewStub(EXPECTED_REVIEW_RATING);
 
-        when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
+        // TODO: Review if it is correct allowing this here
+        defaultHotel.populateReviews(List.of(defaultReview));
+
+        when(ratedHotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(List.of(defaultHotel));
-        when(reviewRepository.findReviewsMatchingHotelIdentifier(EXPECTED_HOTEL_IDENTIFIER))
-                .thenReturn(List.of(defaultReview));
 
         List<RatedHotel> result = testee.findHotelsMatchingQuery(DEFAULT_QUERY);
 
         assertThat(result).hasSize(1);
         RatedHotel actualHotel = result.get(0);
         assertThat(actualHotel.getReviews()).hasSize(1);
-        HotelReview actualReview = actualHotel.getReviews().get(0);
+        Review actualReview = actualHotel.getReviews().get(0);
         assertThat(actualReview.getIdentifier()).isEqualTo(EXPECTED_REVIEW_IDENTIFIER);
         assertThat(actualReview.getRating()).isEqualTo(EXPECTED_REVIEW_RATING);
         assertThat(actualReview.getComment()).isEqualTo(EXPECTED_REVIEW_COMMENT);
@@ -91,29 +91,27 @@ class RatedHotelFacadeTest {
     @Test
     void givenAnyQuery_hotelsMatchingQueryShouldBeReturnedOrderedByRatingAverage() {
         RatedHotel expectedWorstHotel = buildHotelStub(EXPECTED_WORST_HOTEL_IDENTIFIER);
-        List<HotelReview> expectedWorstHotelReviews =
+        List<Review> expectedWorstHotelReviews =
                 List.of(buildReviewStub(1), buildReviewStub(2));
+        // TODO: Review if it is correct allowing this here
+        expectedWorstHotel.populateReviews(expectedWorstHotelReviews);
 
         RatedHotel expectedIntermediateHotel =
                 buildHotelStub(EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER);
-        List<HotelReview> expectedIntermediateHotelReviews =
+        List<Review> expectedIntermediateHotelReviews =
                 List.of(buildReviewStub(2), buildReviewStub(4));
+        // TODO: Review if it is correct allowing this here
+        expectedIntermediateHotel.populateReviews(expectedIntermediateHotelReviews);
 
         RatedHotel expectedBestHotel = buildHotelStub(EXPECTED_BEST_HOTEL_IDENTIFIER);
-        List<HotelReview> expectedBestHotelReviews =
+        List<Review> expectedBestHotelReviews =
                 List.of(buildReviewStub(4), buildReviewStub(5));
+        // TODO: Review if it is correct allowing this here
+        expectedBestHotel.populateReviews(expectedBestHotelReviews);
 
-        when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
+        when(ratedHotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(
                         List.of(expectedIntermediateHotel, expectedWorstHotel, expectedBestHotel));
-
-        when(reviewRepository.findReviewsMatchingHotelIdentifier(EXPECTED_WORST_HOTEL_IDENTIFIER))
-                .thenReturn(expectedWorstHotelReviews);
-        when(reviewRepository.findReviewsMatchingHotelIdentifier(
-                        EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER))
-                .thenReturn(expectedIntermediateHotelReviews);
-        when(reviewRepository.findReviewsMatchingHotelIdentifier(EXPECTED_BEST_HOTEL_IDENTIFIER))
-                .thenReturn(expectedBestHotelReviews);
 
         List<RatedHotel> result = testee.findHotelsMatchingQuery(DEFAULT_QUERY);
 
@@ -133,7 +131,7 @@ class RatedHotelFacadeTest {
                 EXPECTED_IMAGE_URL);
     }
 
-    private HotelReview buildReviewStub(int rating) {
-        return new HotelReview(EXPECTED_REVIEW_IDENTIFIER, rating, EXPECTED_REVIEW_COMMENT);
+    private Review buildReviewStub(int rating) {
+        return new Review(EXPECTED_REVIEW_IDENTIFIER, rating, EXPECTED_REVIEW_COMMENT);
     }
 }

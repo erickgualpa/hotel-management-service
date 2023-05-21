@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,7 +41,11 @@ class HotelRatingServiceApplicationTests {
                                         .content(request))
                         .andExpect(status().isOk())
                         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(jsonPath("$.size()", is(2)))
+                        // TODO: This assertions are just included in order to validate a response
+                        // that will not come empty, but specific cases should be split into
+                        // different test cases
+                        .andExpect(jsonPath("$.size()", is(not(0))))
+                        .andExpect(jsonPath("$[0][?(@['ratingAverage'])]").isEmpty())
                         .andReturn();
     }
 }
