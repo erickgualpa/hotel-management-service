@@ -33,7 +33,7 @@ public class StaticRatedHotelRepository implements RatedHotelRepository {
                                                 h.getTotalPrice(),
                                                 h.getImageURL()))
                         .collect(Collectors.toList());
-        hotels.forEach(h -> h.populateReviews(findReviewsMatchingHotel(h)));
+        hotels.forEach(h -> h.addReviews(findReviewsMatchingHotel(h)));
         return hotels;
     }
 

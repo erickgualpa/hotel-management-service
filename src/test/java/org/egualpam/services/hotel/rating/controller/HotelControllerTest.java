@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.application.HotelService;
+import org.egualpam.services.hotel.rating.domain.Location;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,17 @@ class HotelControllerTest {
 
     @Test
     void hotelsMatchingQueryAreReturnedSuccessfully() throws Exception {
-        when(hotelService.findHotelsMatchingQuery(any(HotelQuery.class)))
-                .thenReturn(List.of(new RatedHotel()));
+        when(hotelService.findByQueryAndSortedByRatingAverage(any(HotelQuery.class)))
+                .thenReturn(
+                        List.of(
+                                new RatedHotel(
+                                        "some-hotel-identifier",
+                                        "some-hotel-name",
+                                        "some-hotel-description",
+                                        new Location(
+                                                "some-location-identifier", "some-location-name"),
+                                        250,
+                                        "some-hotel-image-url")));
 
         this.mockMvc
                 .perform(

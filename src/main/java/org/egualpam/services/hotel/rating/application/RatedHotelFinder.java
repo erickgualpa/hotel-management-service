@@ -10,14 +10,14 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public final class RatedHotelFacade implements HotelService {
+public final class RatedHotelFinder implements HotelService {
 
     private final RatedHotelRepository repository;
 
     @Override
-    public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query) {
+    public List<RatedHotel> findByQueryAndSortedByRatingAverage(HotelQuery query) {
         return repository.findHotelsMatchingQuery(query).stream()
-                .sorted(Comparator.comparingDouble(RatedHotel::getRatingAverage).reversed())
+                .sorted(Comparator.comparingDouble(RatedHotel::calculateRatingAverage).reversed())
                 .collect(Collectors.toList());
     }
 }

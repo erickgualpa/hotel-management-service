@@ -29,6 +29,6 @@ public final class HotelController {
                         .withPriceRange(query.getMinPrice(), query.getMaxPrice())
                         .build();
 
-        return service.findHotelsMatchingQuery(hotelQuery);
+        return service.findByQueryAndSortedByRatingAverage(hotelQuery);
     }
 }
