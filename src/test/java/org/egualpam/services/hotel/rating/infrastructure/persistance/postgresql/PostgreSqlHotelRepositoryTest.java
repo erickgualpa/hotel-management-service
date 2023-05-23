@@ -3,7 +3,9 @@ package org.egualpam.services.hotel.rating.infrastructure.persistance.postgresql
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
+import javax.persistence.EntityManager;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hotel;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -11,14 +13,24 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 class PostgreSqlHotelRepositoryTest {
 
-    @Autowired private PostgreSqlHotelRepository hotelRepository;
+    @Autowired private EntityManager entityManager;
+    @Autowired private PostgreSqlHotelRepository testee;
 
-    // TODO: Check query 'location' and 'price-change' filtering
+    @BeforeEach
+    void setup() {
+        Hotel hotel = new Hotel();
+        hotel.setId(1L);
+        hotel.setName("Amazing hotel");
+        hotel.setDescription("This is an amazing hotel");
+        hotel.setLocation("Barcelona");
+        hotel.setTotalPrice(200);
+        hotel.setImageURL("amz-hotel-url.com");
+        testee.save(hotel);
+    }
 
     @Test
     void givenQueryWithLocationFilter_matchingHotelsShouldBeReturned() {
-        // TODO: Validate response is returned
-        List<Hotel> result = hotelRepository.findAllByLocation("Barcelona");
+        List<Hotel> result = testee.findAllByLocation("Barcelona");
         assertNotNull(result);
     }
 }
