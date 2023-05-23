@@ -1,6 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance.postgresql;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -18,6 +18,18 @@ class PostgreSqlHotelRepositoryTest {
 
     @BeforeEach
     void setup() {
+        assertThat(testee.count()).isZero();
+    }
+
+    @Test
+    void givenQueryWithLocationFilter_matchingHotelsShouldBeReturned() {
+        Hotel hotel = buildHotel();
+        testee.save(hotel);
+        List<Hotel> result = testee.findAllByLocation("Barcelona");
+        assertThat(result).isNotEmpty();
+    }
+
+    private Hotel buildHotel() {
         Hotel hotel = new Hotel();
         hotel.setId(1L);
         hotel.setName("Amazing hotel");
@@ -25,12 +37,6 @@ class PostgreSqlHotelRepositoryTest {
         hotel.setLocation("Barcelona");
         hotel.setTotalPrice(200);
         hotel.setImageURL("amz-hotel-url.com");
-        testee.save(hotel);
-    }
-
-    @Test
-    void givenQueryWithLocationFilter_matchingHotelsShouldBeReturned() {
-        List<Hotel> result = testee.findAllByLocation("Barcelona");
-        assertNotNull(result);
+        return hotel;
     }
 }
