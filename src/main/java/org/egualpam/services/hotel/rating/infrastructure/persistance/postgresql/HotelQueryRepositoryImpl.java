@@ -27,6 +27,12 @@ public class HotelQueryRepositoryImpl implements HotelQueryRepository {
         return query.getResultList();
     }
 
+    @Override
+    public void registerHotel(Hotel hotel) {
+        entityManager.persist(hotel);
+        entityManager.flush();
+    }
+
     private CriteriaQuery<Hotel> buildCriteriaQuery(HotelQuery hotelQuery) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Hotel> criteriaQuery = criteriaBuilder.createQuery(Hotel.class);

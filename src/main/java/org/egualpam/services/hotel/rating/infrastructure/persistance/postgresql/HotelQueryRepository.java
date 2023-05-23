@@ -6,5 +6,7 @@ import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hote
 
 public interface HotelQueryRepository {
 
-    List<Hotel> findHotelsMatchingQuery(HotelQuery query);
+    List<Hotel> findHotelsMatchingQuery(HotelQuery hotelQuery);
+
+    void registerHotel(Hotel hotel);
 }
