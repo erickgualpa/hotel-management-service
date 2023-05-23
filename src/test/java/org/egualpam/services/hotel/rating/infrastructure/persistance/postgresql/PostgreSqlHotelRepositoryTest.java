@@ -29,6 +29,14 @@ class PostgreSqlHotelRepositoryTest {
         assertThat(result).isNotEmpty();
     }
 
+    @Test
+    void givenQueryWithPriceRangeFilter_matchingHotelsShouldBeReturned() {
+        Hotel hotel = buildHotel();
+        testee.save(hotel);
+        List<Hotel> result = testee.findByPriceRange(100, 300);
+        assertThat(result).isNotEmpty();
+    }
+
     private Hotel buildHotel() {
         Hotel hotel = new Hotel();
         hotel.setId(1L);
