@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure;
+package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
 import static java.util.Objects.isNull;
 
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.infrastructure.entity.Hotel;
-import org.egualpam.services.hotel.rating.infrastructure.entity.Location;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hotel;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Location;
 import org.springframework.stereotype.Component;
 
 @Component

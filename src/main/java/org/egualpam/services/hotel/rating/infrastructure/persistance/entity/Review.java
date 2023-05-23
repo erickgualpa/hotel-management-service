@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.entity;
+package org.egualpam.services.hotel.rating.infrastructure.persistance.entity;
 
 public class Review {
 

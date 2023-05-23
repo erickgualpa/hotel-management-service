@@ -1,9 +1,9 @@
-package org.egualpam.services.hotel.rating.infrastructure;
+package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import org.egualpam.services.hotel.rating.infrastructure.entity.Review;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Review;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

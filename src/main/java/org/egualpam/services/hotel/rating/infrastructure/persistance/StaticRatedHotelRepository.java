@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure;
+package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
 import java.util.List;
 import java.util.stream.Collectors;

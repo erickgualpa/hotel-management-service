@@ -1,10 +1,10 @@
-package org.egualpam.services.hotel.rating.infrastructure;
+package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.infrastructure.entity.Hotel;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hotel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
