@@ -44,7 +44,13 @@ public class Hotel {
         this.description = description;
     }
 
+    public String getLocation() {
+        return location;
+    }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public Integer getTotalPrice() {
         return totalPrice;
