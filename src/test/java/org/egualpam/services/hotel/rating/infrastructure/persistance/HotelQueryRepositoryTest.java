@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.postgresql;
+package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.postgresql;
+package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
 import java.util.List;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
