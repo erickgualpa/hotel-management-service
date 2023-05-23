@@ -1,53 +1,64 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "hotels")
 public class Hotel {
 
-    private final String identifier;
-    private final String name;
-    private final String description;
-    private final Location location;
+    @Id private Long id;
+    private String name;
+    private String description;
+    private String location;
 
-    // Assuming this represents total price per night
-    private final Integer totalPrice;
+    @Column(name = "total_price")
+    private Integer totalPrice;
 
-    private final String imageURL;
+    @Column(name = "image_url")
+    private String imageURL;
 
-    public Hotel(
-            String identifier,
-            String name,
-            String description,
-            Location location,
-            Integer totalPrice,
-            String imageURL) {
-        this.identifier = identifier;
-        this.name = name;
-        this.description = description;
-        this.location = location;
-        this.totalPrice = totalPrice;
-        this.imageURL = imageURL;
+    public Long getId() {
+        return id;
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public Location getLocation() {
-        return location;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
+
 
     public Integer getTotalPrice() {
         return totalPrice;
     }
 
+    public void setTotalPrice(Integer totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public String getImageURL() {
         return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 }

@@ -1,32 +1,48 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "reviews")
 public class Review {
 
-    private final String identifier;
-    private final Integer rating;
-    private final String comment;
-    private final String hotelIdentifier;
+    @Id private Long id;
+    private Integer rating;
+    private String comment;
+    @ManyToOne private Hotel hotel;
 
-    public Review(String identifier, Integer rating, String comment, String hotelIdentifier) {
-        this.identifier = identifier;
-        this.rating = rating;
-        this.comment = comment;
-        this.hotelIdentifier = hotelIdentifier;
+    public Long getId() {
+        return id;
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Integer getRating() {
         return rating;
     }
 
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
     public String getComment() {
         return comment;
     }
 
-    public String getHotelIdentifier() {
-        return hotelIdentifier;
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 }
