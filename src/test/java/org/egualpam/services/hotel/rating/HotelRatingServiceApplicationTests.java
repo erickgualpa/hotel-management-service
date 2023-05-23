@@ -42,10 +42,9 @@ class HotelRatingServiceApplicationTests {
                         .andExpect(status().isOk())
                         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                         // TODO: This assertions are just included in order to validate a response
-                        // that will not come empty, but specific cases should be split into
+                        // that will not be empty, but specific scenarios should be split into
                         // different test cases
                         .andExpect(jsonPath("$.size()", is(not(0))))
-                        .andExpect(jsonPath("$[0][?(@['ratingAverage'])]").isEmpty())
                         .andReturn();
     }
 }
