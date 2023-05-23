@@ -3,7 +3,7 @@ package org.egualpam.services.hotel.rating.infrastructure.persistance.postgresql
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import javax.persistence.EntityManager;
+import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hotel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @DataJpaTest
 class PostgreSqlHotelRepositoryTest {
 
-    @Autowired private EntityManager entityManager;
     @Autowired private PostgreSqlHotelRepository testee;
 
     @BeforeEach
@@ -23,7 +22,7 @@ class PostgreSqlHotelRepositoryTest {
 
     @Test
     void givenQueryWithLocationFilter_matchingHotelsShouldBeReturned() {
-        Hotel hotel = buildHotel();
+        Hotel hotel = buildHotelWithIdentifier(1L);
         testee.save(hotel);
         List<Hotel> result = testee.findAllByLocation("Barcelona");
         assertThat(result).isNotEmpty();
@@ -31,15 +30,31 @@ class PostgreSqlHotelRepositoryTest {
 
     @Test
     void givenQueryWithPriceRangeFilter_matchingHotelsShouldBeReturned() {
-        Hotel hotel = buildHotel();
+        Hotel hotel = buildHotelWithIdentifier(1L);
         testee.save(hotel);
         List<Hotel> result = testee.findByPriceRange(100, 300);
         assertThat(result).isNotEmpty();
     }
 
-    private Hotel buildHotel() {
+    @Test
+    void givenQueryWithMultipleFilters_matchingHotelsShouldBeReturned() {
+        Hotel hotel = buildHotelWithIdentifier(1L);
+        testee.save(hotel);
+
+        Hotel expensivehotel = buildHotelWithIdentifier(2L);
+        expensivehotel.setTotalPrice(100000);
+        testee.save(expensivehotel);
+
+        HotelQuery query =
+                HotelQuery.create().withLocation("Barcelona").withPriceRange(100, 500).build();
+        List<Hotel> result = testee.findHotelsMatchingQuery(query);
+
+        assertThat(result).hasSize(1);
+    }
+
+    private Hotel buildHotelWithIdentifier(Long identifier) {
         Hotel hotel = new Hotel();
-        hotel.setId(1L);
+        hotel.setId(identifier);
         hotel.setName("Amazing hotel");
         hotel.setDescription("This is an amazing hotel");
         hotel.setLocation("Barcelona");

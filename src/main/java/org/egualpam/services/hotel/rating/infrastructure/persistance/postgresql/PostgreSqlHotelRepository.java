@@ -5,7 +5,7 @@ import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hote
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface PostgreSqlHotelRepository extends JpaRepository<Hotel, Long> {
+public interface PostgreSqlHotelRepository extends JpaRepository<Hotel, Long>, HotelQueryRepository {
 
     List<Hotel> findAllByLocation(String location);
 
