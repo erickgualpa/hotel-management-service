@@ -8,12 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-@DataJpaTest(
-        properties = {
-            "spring.jpa.hibernate.ddl-auto=create-drop",
-            "spring.datasource.driver-class-name=com.p6spy.engine.spy.P6SpyDriver", // P6Spy
-            "spring.datasource.url=jdbc:p6spy:h2:mem:testing;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false" // P6Spy
-        })
+@DataJpaTest
 class PostgreSqlHotelRepositoryTest {
 
     @Autowired private PostgreSqlHotelRepository hotelRepository;
