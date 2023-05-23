@@ -14,12 +14,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StaticRatedHotelRepository implements RatedHotelRepository {
 
-    private final StaticHotelRepository hotelRepository;
-    private final StaticReviewRepository reviewRepository;
+    // TODO: Uncomment once amended
+    /*private final StaticHotelRepository hotelRepository;
+    private final StaticReviewRepository reviewRepository;*/
 
     @Override
     public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query) {
-        List<RatedHotel> hotels =
+        /*List<RatedHotel> hotels =
                 hotelRepository.findHotelsMatchingQuery(query).stream()
                         .map(
                                 h ->
@@ -34,12 +35,13 @@ public class StaticRatedHotelRepository implements RatedHotelRepository {
                                                 h.getImageURL()))
                         .collect(Collectors.toList());
         hotels.forEach(h -> h.addReviews(findReviewsMatchingHotel(h)));
-        return hotels;
+        return hotels;*/
+        return null;
     }
 
-    private List<Review> findReviewsMatchingHotel(RatedHotel h) {
+    /*private List<Review> findReviewsMatchingHotel(RatedHotel h) {
         return reviewRepository.findReviewsMatchingHotelIdentifier(h.getIdentifier()).stream()
                 .map(r -> new Review(r.getIdentifier(), r.getRating(), r.getComment()))
                 .collect(Collectors.toList());
-    }
+    }*/
 }
