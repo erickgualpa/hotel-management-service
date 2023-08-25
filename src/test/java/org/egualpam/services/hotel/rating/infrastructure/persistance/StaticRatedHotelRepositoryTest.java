@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.staticstorage;
+package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

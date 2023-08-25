@@ -1,14 +1,5 @@
-package org.egualpam.services.hotel.rating.controller;
+package org.egualpam.services.hotel.rating.infrastructure.controller;
 
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.List;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.application.HotelService;
 import org.egualpam.services.hotel.rating.domain.Location;
@@ -20,10 +11,21 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @WebMvcTest
 class HotelControllerTest {
 
-    @MockBean private HotelService hotelService;
+    @MockBean
+    private HotelService hotelService;
 
     @Autowired
     private MockMvc mockMvc;

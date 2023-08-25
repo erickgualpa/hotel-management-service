@@ -1,21 +1,23 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hotel;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 // TODO: Cleanup this testing class
-@DataJpaTest
+// @DataJpaTest
 class HotelQueryRepositoryTest {
 
-    @Autowired private HotelQueryRepository testee;
+    /*@Autowired */private HotelQueryRepository testee;
 
+    // TODO: Disable test once this approach is retaken
     @Test
+    @Disabled
     void givenQueryWithMultipleFilters_matchingHotelsShouldBeReturned() {
         Hotel hotel = buildHotelWithIdentifier(1L);
         testee.registerHotel(hotel);

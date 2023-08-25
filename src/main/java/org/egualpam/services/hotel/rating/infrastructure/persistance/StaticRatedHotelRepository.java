@@ -1,16 +1,14 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.staticstorage;
+package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.domain.Location;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
-import org.egualpam.services.hotel.rating.domain.Review;
-import org.springframework.stereotype.Component;
-import lombok.RequiredArgsConstructor;
 
-@Component
+import java.util.Collections;
+import java.util.List;
+
+
 @RequiredArgsConstructor
 public class StaticRatedHotelRepository implements RatedHotelRepository {
 
@@ -36,7 +34,7 @@ public class StaticRatedHotelRepository implements RatedHotelRepository {
                         .collect(Collectors.toList());
         hotels.forEach(h -> h.addReviews(findReviewsMatchingHotel(h)));
         return hotels;*/
-        return null;
+        return Collections.emptyList();
     }
 
     /*private List<Review> findReviewsMatchingHotel(RatedHotel h) {

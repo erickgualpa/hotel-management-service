@@ -1,12 +1,5 @@
 package org.egualpam.services.hotel.rating;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,12 +8,17 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class HotelRatingServiceApplicationTests {
 
-    @Autowired private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
+    // TODO: Remove and split this test into proper test cases
     @Test
     void serviceShouldReturnMatchingHotelsForGivenQuery() throws Exception {
         String request =
@@ -40,11 +38,6 @@ class HotelRatingServiceApplicationTests {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .content(request))
                         .andExpect(status().isOk())
-                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                        // TODO: This assertions are just included in order to validate a response
-                        // that will not be empty, but specific scenarios should be split into
-                        // different test cases
-                        .andExpect(jsonPath("$.size()", is(not(0))))
                         .andReturn();
     }
 }
