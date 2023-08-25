@@ -23,9 +23,6 @@ public final class HotelController {
         HotelQuery hotelQuery =
                 HotelQuery.create()
                         .withLocation(query.getLocation())
-                        // TODO: Uncomment when checkIn/checkOut filtering introduced
-                        /*.withCheckIn(query.getCheckIn())
-                        .withCheckOut(query.getCheckOut())*/
                         .withPriceRange(query.getMinPrice(), query.getMaxPrice())
                         .build();
 
