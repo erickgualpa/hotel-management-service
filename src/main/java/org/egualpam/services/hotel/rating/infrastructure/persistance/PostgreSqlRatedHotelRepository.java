@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class PostgreSqlRatedHotelRepository implements RatedHotelRepository {
+
     @Override
     public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query) {
         // TODO: Implement!
