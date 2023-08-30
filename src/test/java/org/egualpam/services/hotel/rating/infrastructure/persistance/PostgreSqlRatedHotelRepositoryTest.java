@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -21,7 +23,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("integration-test")
-@ContextConfiguration(initializers = {PostgreSqlRatedHotelRepositoryTest.PostgreSqlInitializer.class})
+@ContextConfiguration(
+        initializers = {PostgreSqlRatedHotelRepositoryTest.PostgreSqlInitializer.class},
+        classes = PostgreSqlRatedHotelRepositoryTest.PostgreSqlRatedHotelRepositoryTestConfiguration.class
+)
 public class PostgreSqlRatedHotelRepositoryTest {
 
     // TODO: Consider if this is the proper test subject for this suite
@@ -40,6 +45,16 @@ public class PostgreSqlRatedHotelRepositoryTest {
                     "spring.datasource.password=" + postgreSQLContainer.getPassword(),
                     "spring.datasource.driver-class-name=" + postgreSQLContainer.getDriverClassName()
             ).applyTo(applicationContext.getEnvironment());
+        }
+    }
+
+    // TODO: Remove this configuration if after integrating the actual DB among this service, it is redundant
+    @Configuration
+    static class PostgreSqlRatedHotelRepositoryTestConfiguration {
+
+        @Bean
+        public RatedHotelRepository ratedHotelRepository() {
+            return new PostgreSqlRatedHotelRepository();
         }
     }
 
