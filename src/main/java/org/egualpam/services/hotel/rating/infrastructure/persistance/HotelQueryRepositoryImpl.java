@@ -1,20 +1,21 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.egualpam.services.hotel.rating.application.HotelQuery;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hotel;
+
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hotel;
-import org.springframework.stereotype.Repository;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-@Repository
+// TODO: Amend this annotation once actual DB is integrated among this service
+/*@Repository*/
 @RequiredArgsConstructor
 public class HotelQueryRepositoryImpl implements HotelQueryRepository {
 
