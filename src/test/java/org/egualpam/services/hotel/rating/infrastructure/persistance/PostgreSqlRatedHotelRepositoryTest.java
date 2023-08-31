@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
@@ -23,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("integration-test")
+@EnableAutoConfiguration
 @ContextConfiguration(
         initializers = {PostgreSqlRatedHotelRepositoryTest.PostgreSqlInitializer.class},
         classes = PostgreSqlRatedHotelRepositoryTest.PostgreSqlRatedHotelRepositoryTestConfiguration.class
@@ -33,7 +35,8 @@ public class PostgreSqlRatedHotelRepositoryTest {
     @Autowired
     private RatedHotelRepository testee;
 
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15-alpine");
+    public static PostgreSQLContainer<?> postgreSQLContainer =
+            new PostgreSQLContainer<>("postgres:15-alpine");
 
     static class PostgreSqlInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
