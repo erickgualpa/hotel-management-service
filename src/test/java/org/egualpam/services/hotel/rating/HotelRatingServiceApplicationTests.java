@@ -4,43 +4,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.context.ApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+// TODO: Remove this annotation once database configuration is amended
 @EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)
 class HotelRatingServiceApplicationTests {
 
     @Autowired
-    private MockMvc mockMvc;
+    private ApplicationContext applicationContext;
 
-    // TODO: Remove and split this test into proper test cases
     @Test
-    void serviceShouldReturnMatchingHotelsForGivenQuery() throws Exception {
-        String request =
-                "{\n"
-                        + "    \"location\": \"Barcelona\",\n"
-                        + "    \"checkIn\": \"2023-06-24\",\n"
-                        + "    \"checkOut\": \"2023-06-28\",\n"
-                        + "    \"priceRange\": {\n"
-                        + "        \"begin\": 0,\n"
-                        + "        \"end\": 100\n"
-                        + "    }\n"
-                        + "}";
-
-        MvcResult result =
-                mockMvc.perform(
-                                post("/api/hotel/query")
-                                        .contentType(MediaType.APPLICATION_JSON)
-                                        .content(request))
-                        .andExpect(status().isOk())
-                        .andReturn();
+    void applicationContextLoads() {
+        assertNotNull(applicationContext);
     }
 }

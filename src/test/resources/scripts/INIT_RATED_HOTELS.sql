@@ -1,3 +1,4 @@
+-- TODO: Review if this initialization is still needed or not
 INSERT INTO hotels (id, name, description, location, total_price, image_url)
 VALUES (1, "Amazing hotel", "This is an amazing hotel", "Barcelona", 200, "amz-img-url.com");
 
