@@ -18,7 +18,7 @@ class HotelQueryRepositoryTest extends AbstractIntegrationTest {
     private static final int NON_MATCHING_HOTEL_PRICE_VALUE = 1000000;
 
     @Autowired
-    private HotelQueryRepository testee;
+    private HotelQueryRepositoryImpl testee;
 
     @Test
     void givenQueryWithLocationFilter_matchingHotelsShouldBeReturned() {

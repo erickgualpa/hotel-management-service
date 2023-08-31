@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class HotelQueryRepositoryImpl implements HotelQueryRepository {
+public class HotelQueryRepositoryImpl {
 
     private final EntityManager entityManager;
 
@@ -21,7 +21,6 @@ public class HotelQueryRepositoryImpl implements HotelQueryRepository {
         this.entityManager = entityManager;
     }
 
-    @Override
     public List<Hotel> findHotelsMatchingQuery(HotelQuery hotelQuery) {
         CriteriaQuery<Hotel> criteriaQuery = buildCriteriaQuery(hotelQuery);
         TypedQuery<Hotel> query = entityManager.createQuery(criteriaQuery);

@@ -1,7 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.configuration;
 
 import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.HotelQueryRepository;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.HotelQueryRepositoryImpl;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.PostgreSqlRatedHotelRepository;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +17,7 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public HotelQueryRepository hotelQueryRepository(EntityManager entityManager) {
+    public HotelQueryRepositoryImpl hotelQueryRepository(EntityManager entityManager) {
         return new HotelQueryRepositoryImpl(entityManager);
     }
 }
