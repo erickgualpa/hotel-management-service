@@ -1,59 +1,21 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
-import org.egualpam.services.hotel.rating.HotelRatingServiceApplication;
+import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.containers.PostgreSQLContainer;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(classes = HotelRatingServiceApplication.class)
-@ActiveProfiles("integration-test")
-@ContextConfiguration(initializers = PostgreSqlRatedHotelRepositoryTest.PostgreSqlInitializer.class)
-public class PostgreSqlRatedHotelRepositoryTest {
+public class PostgreSqlRatedHotelRepositoryTest extends AbstractIntegrationTest {
 
     @Autowired
     private RatedHotelRepository testee;
-
-    public static PostgreSQLContainer<?> postgreSQLContainer =
-            new PostgreSQLContainer<>("postgres:15-alpine");
-
-    static class PostgreSqlInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(ConfigurableApplicationContext applicationContext) {
-            TestPropertyValues.of(
-                    "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
-                    "spring.datasource.username= " + postgreSQLContainer.getUsername(),
-                    "spring.datasource.password=" + postgreSQLContainer.getPassword(),
-                    "spring.datasource.driver-class-name=" + postgreSQLContainer.getDriverClassName()
-            ).applyTo(applicationContext.getEnvironment());
-        }
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        postgreSQLContainer.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgreSQLContainer.stop();
-    }
 
     @Test
     void givenAnyQuery_matchingRatedHotelsShouldBeReturned() {
