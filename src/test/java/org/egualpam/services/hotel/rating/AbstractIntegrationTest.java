@@ -18,7 +18,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 public abstract class AbstractIntegrationTest {
 
     private static final PostgreSQLContainer<?> postgreSQLContainer =
-            new PostgreSQLContainer<>("postgres:15-alpine");
+            new PostgreSQLContainer<>("postgres:latest");
 
     static class PostgreSqlInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
