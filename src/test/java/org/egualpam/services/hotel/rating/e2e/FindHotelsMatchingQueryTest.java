@@ -25,8 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("integration-test")
-@ContextConfiguration(initializers = ReturnHotelsMatchingQueryTest.PostgreSqlInitializer.class)
-public class ReturnHotelsMatchingQueryTest {
+@ContextConfiguration(initializers = FindHotelsMatchingQueryTest.PostgreSqlInitializer.class)
+public class FindHotelsMatchingQueryTest {
 
     @Autowired
     private MockMvc mockMvc;
