@@ -31,9 +31,7 @@ public class FakeRatedHotelRepository implements RatedHotelRepository {
                                 "some-review-identifier",
                                 3,
                                 "some-review-comment"
-                        )
-                )
-        );
+                        )));
 
         return List.of(fakeRatedHotel);
     }
