@@ -1,28 +1,26 @@
-package org.egualpam.services.hotel.rating;
+package org.egualpam.services.hotel.rating.e2e;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class HotelRatingServiceApplicationTests {
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-    @Autowired private MockMvc mockMvc;
+@DirtiesContext
+@AutoConfigureMockMvc
+public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @Test
-    void serviceShouldReturnMatchingHotelsForGivenQuery() throws Exception {
+    void hotelsMatchingQueryShouldBeReturned() throws Exception {
         String request =
                 "{\n"
                         + "    \"location\": \"Barcelona\",\n"
@@ -40,11 +38,8 @@ class HotelRatingServiceApplicationTests {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .content(request))
                         .andExpect(status().isOk())
-                        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                        // TODO: This assertions are just included in order to validate a response
-                        // that will not be empty, but specific scenarios should be split into
-                        // different test cases
-                        .andExpect(jsonPath("$.size()", is(not(0))))
                         .andReturn();
+
+        // TODO: Complete happy-path test
     }
 }

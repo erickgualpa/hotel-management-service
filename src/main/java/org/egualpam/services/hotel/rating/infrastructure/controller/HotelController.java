@@ -1,6 +1,6 @@
-package org.egualpam.services.hotel.rating.controller;
+package org.egualpam.services.hotel.rating.infrastructure.controller;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.application.HotelService;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/hotel")

@@ -1,0 +1,8 @@
+services:
+  hotel-rating-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: hotel-rating-user
+      POSTGRES_PASSWORD: hotel-rating-password
+    ports:
+      - 5432:5432
