@@ -13,18 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class HotelQueryRepositoryImpl {
+public class HotelCriteriaQueryBuilder {
 
     private final EntityManager entityManager;
 
-    public HotelQueryRepositoryImpl(EntityManager entityManager) {
+    public HotelCriteriaQueryBuilder(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    public List<Hotel> findHotelsMatchingQuery(HotelQuery hotelQuery) {
+    public TypedQuery<Hotel> buildFrom(HotelQuery hotelQuery) {
         CriteriaQuery<Hotel> criteriaQuery = buildCriteriaQuery(hotelQuery);
-        TypedQuery<Hotel> query = entityManager.createQuery(criteriaQuery);
-        return query.getResultList();
+        return entityManager.createQuery(criteriaQuery);
     }
 
     private CriteriaQuery<Hotel> buildCriteriaQuery(HotelQuery hotelQuery) {
