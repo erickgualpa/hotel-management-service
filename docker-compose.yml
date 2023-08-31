@@ -1,0 +1,8 @@
+services:
+  hotel-rating-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: hotel-rating-user
+      POSTGRES_PASSWORD: hotel-rating-password
+    ports:
+      - 5432:5432
