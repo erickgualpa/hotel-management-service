@@ -19,7 +19,6 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    // TODO: Update and split this test into proper test cases
     @Test
     void hotelsMatchingQueryShouldBeReturned() throws Exception {
         String request =
@@ -40,5 +39,7 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                                         .content(request))
                         .andExpect(status().isOk())
                         .andReturn();
+
+        // TODO: Complete happy-path test
     }
 }
