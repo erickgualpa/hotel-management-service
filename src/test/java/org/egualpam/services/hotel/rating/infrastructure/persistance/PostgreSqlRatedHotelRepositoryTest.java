@@ -18,9 +18,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @ActiveProfiles("integration-test")
@@ -56,8 +58,8 @@ public class PostgreSqlRatedHotelRepositoryTest {
     static class PostgreSqlRatedHotelRepositoryTestConfiguration {
 
         @Bean
-        public RatedHotelRepository ratedHotelRepository() {
-            return new PostgreSqlRatedHotelRepository();
+        public RatedHotelRepository ratedHotelRepository(EntityManager entityManager) {
+            return new PostgreSqlRatedHotelRepository(entityManager);
         }
     }
 
@@ -71,10 +73,30 @@ public class PostgreSqlRatedHotelRepositoryTest {
         postgreSQLContainer.stop();
     }
 
-    // TODO: Complete this test case
     @Test
     void givenAnyQuery_matchingRatedHotelsShouldBeReturned() {
+
+        // TODO: Complete this test case (Query filtering is not implemented yet!)
+
         List<RatedHotel> result = testee.findHotelsMatchingQuery(HotelQuery.create().build());
-        assertThat(result).hasSize(1);
+
+        assertThat(result).hasSize(1)
+                .allSatisfy(
+                        actualHotel ->
+                        {
+                            assertThat(actualHotel.getIdentifier()).isEqualTo("1");
+                            assertThat(actualHotel.getName()).isEqualTo("Amazing hotel");
+                            assertThat(actualHotel.getDescription()).isEqualTo("Eloquent description");
+                            assertThat(actualHotel.getTotalPrice()).isEqualTo(150);
+                            assertThat(actualHotel.getImageURL()).isEqualTo("amazing-hotel-image.com");
+
+                            assertThat(actualHotel.getLocation()).satisfies(
+                                    actualHotelLocation -> {
+                                        assertNotNull(actualHotelLocation.getIdentifier());
+                                        assertThat(actualHotelLocation.getName()).isEqualTo("Barcelona");
+                                    });
+                        }
+
+                );
     }
 }
