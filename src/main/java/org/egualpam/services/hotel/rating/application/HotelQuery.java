@@ -2,14 +2,13 @@ package org.egualpam.services.hotel.rating.application;
 
 import java.time.LocalDate;
 
+// TODO: Check which fields on this query make sense to keep
 public final class HotelQuery {
 
     private String location;
     private LocalDate checkIn;
     private LocalDate checkOut;
     private PriceRange priceRange;
-
-    private HotelQuery() {}
 
     public String getLocation() {
         return location;

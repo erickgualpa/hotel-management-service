@@ -1,6 +1,5 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
-import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel;
 
@@ -14,24 +13,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-// TODO: Amend this annotation once actual DB is integrated among this service
-/*@Repository*/
-@RequiredArgsConstructor
 public class HotelQueryRepositoryImpl implements HotelQueryRepository {
 
     private final EntityManager entityManager;
+
+    public HotelQueryRepositoryImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Override
     public List<Hotel> findHotelsMatchingQuery(HotelQuery hotelQuery) {
         CriteriaQuery<Hotel> criteriaQuery = buildCriteriaQuery(hotelQuery);
         TypedQuery<Hotel> query = entityManager.createQuery(criteriaQuery);
         return query.getResultList();
-    }
-
-    @Override
-    public void registerHotel(Hotel hotel) {
-        entityManager.persist(hotel);
-        entityManager.flush();
     }
 
     private CriteriaQuery<Hotel> buildCriteriaQuery(HotelQuery hotelQuery) {

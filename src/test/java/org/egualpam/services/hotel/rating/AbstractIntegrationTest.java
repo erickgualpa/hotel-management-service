@@ -22,6 +22,9 @@ public abstract class AbstractIntegrationTest {
 
     static class PostgreSqlInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
+        /* TODO: This seems to be out-of-sync with the 'postgreSQLContainer' start/stop
+         *           - until this is addressed, all the integration test will be tagged with @DirtiesContext annotation
+         * */
         @Override
         public void initialize(ConfigurableApplicationContext applicationContext) {
             TestPropertyValues.of(

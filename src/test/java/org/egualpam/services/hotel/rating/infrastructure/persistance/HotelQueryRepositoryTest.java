@@ -1,46 +1,70 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
+import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// TODO: Cleanup this testing class
-// @DataJpaTest
-class HotelQueryRepositoryTest {
+@DirtiesContext
+class HotelQueryRepositoryTest extends AbstractIntegrationTest {
 
-    /*@Autowired */private HotelQueryRepository testee;
+    private static final int NON_MATCHING_HOTEL_PRICE_VALUE = 1000000;
 
-    // TODO: Disable test once this approach is retaken
+    @Autowired
+    private HotelQueryRepository testee;
+
     @Test
-    @Disabled
-    void givenQueryWithMultipleFilters_matchingHotelsShouldBeReturned() {
-        Hotel hotel = buildHotelWithIdentifier(1L);
-        testee.registerHotel(hotel);
-
-        Hotel expensivehotel = buildHotelWithIdentifier(2L);
-        expensivehotel.setTotalPrice(100000);
-        testee.registerHotel(expensivehotel);
-
+    void givenQueryWithLocationFilter_matchingHotelsShouldBeReturned() {
         HotelQuery hotelQuery =
-                HotelQuery.create().withLocation("Barcelona").withPriceRange(100, 500).build();
+                HotelQuery.create()
+                        .withLocation("Barcelona")
+                        .build();
+
         List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
 
         assertThat(result).hasSize(1);
     }
 
-    private Hotel buildHotelWithIdentifier(Long identifier) {
-        Hotel hotel = new Hotel();
-        hotel.setId(identifier);
-        hotel.setName("Amazing hotel");
-        hotel.setDescription("This is an amazing hotel");
-        hotel.setLocation("Barcelona");
-        hotel.setTotalPrice(200);
-        hotel.setImageURL("amz-hotel-url.com");
-        return hotel;
+    @Test
+    void givenQueryWithNonMatchingLocationFilter_noHotelsShouldBeReturned() {
+        HotelQuery hotelQuery =
+                HotelQuery.create()
+                        .withLocation(UUID.randomUUID().toString())
+                        .build();
+
+        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void givenQueryWithPriceRangeFilter_matchingHotelsShouldBeReturned() {
+        HotelQuery hotelQuery =
+                HotelQuery.create()
+                        .withPriceRange(0, 500)
+                        .build();
+
+        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+
+        assertThat(result).hasSize(1);
+    }
+
+    @Test
+    void givenQueryWithNonMatchingPriceRangeFilter_noHotelsShouldBeReturned() {
+        HotelQuery hotelQuery =
+                HotelQuery.create()
+                        .withPriceRange(NON_MATCHING_HOTEL_PRICE_VALUE, NON_MATCHING_HOTEL_PRICE_VALUE)
+                        .build();
+
+        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+
+        assertThat(result).isEmpty();
     }
 }

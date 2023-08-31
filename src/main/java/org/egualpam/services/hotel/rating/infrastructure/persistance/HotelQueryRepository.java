@@ -9,6 +9,4 @@ import java.util.List;
 public interface HotelQueryRepository {
 
     List<Hotel> findHotelsMatchingQuery(HotelQuery hotelQuery);
-
-    void registerHotel(Hotel hotel);
 }
