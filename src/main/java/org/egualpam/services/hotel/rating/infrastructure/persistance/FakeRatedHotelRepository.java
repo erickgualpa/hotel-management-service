@@ -9,7 +9,6 @@ import org.egualpam.services.hotel.rating.domain.Review;
 
 import java.util.List;
 
-
 @RequiredArgsConstructor
 public class FakeRatedHotelRepository implements RatedHotelRepository {
 
