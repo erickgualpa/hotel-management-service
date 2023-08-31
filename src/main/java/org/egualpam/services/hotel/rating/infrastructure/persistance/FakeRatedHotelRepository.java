@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @RequiredArgsConstructor
-public class StaticRatedHotelRepository implements RatedHotelRepository {
+public class FakeRatedHotelRepository implements RatedHotelRepository {
 
     @Override
     public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query) {

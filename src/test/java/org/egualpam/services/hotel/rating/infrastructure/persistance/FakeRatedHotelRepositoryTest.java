@@ -9,13 +9,13 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class StaticRatedHotelRepositoryTest {
+class FakeRatedHotelRepositoryTest {
 
-    private StaticRatedHotelRepository testee;
+    private FakeRatedHotelRepository testee;
 
     @BeforeEach
     void setup() {
-        testee = new StaticRatedHotelRepository();
+        testee = new FakeRatedHotelRepository();
     }
 
     @Test
