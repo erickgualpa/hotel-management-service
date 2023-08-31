@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.entity;
+package org.egualpam.services.hotel.rating.infrastructure.persistance.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +9,8 @@ import javax.persistence.Table;
 @Table(name = "hotels")
 public class Hotel {
 
-    @Id private Long id;
+    @Id
+    private Long id;
     private String name;
     private String description;
     private String location;

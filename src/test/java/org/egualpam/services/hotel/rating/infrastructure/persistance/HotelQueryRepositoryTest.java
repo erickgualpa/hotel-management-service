@@ -1,7 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hotel;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

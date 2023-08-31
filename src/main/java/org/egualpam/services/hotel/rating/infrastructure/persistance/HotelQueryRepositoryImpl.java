@@ -2,7 +2,7 @@ package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.entity.Hotel;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;

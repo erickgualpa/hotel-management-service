@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.entity;
+package org.egualpam.services.hotel.rating.infrastructure.persistance.dto;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,10 +9,12 @@ import javax.persistence.Table;
 @Table(name = "reviews")
 public class Review {
 
-    @Id private Long id;
+    @Id
+    private Long id;
     private Integer rating;
     private String comment;
-    @ManyToOne private Hotel hotel;
+    @ManyToOne
+    private Hotel hotel;
 
     public Long getId() {
         return id;
