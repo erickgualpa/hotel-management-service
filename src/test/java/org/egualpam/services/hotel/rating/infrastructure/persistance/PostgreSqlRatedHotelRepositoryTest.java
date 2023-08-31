@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,15 +17,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @DirtiesContext
 public class PostgreSqlRatedHotelRepositoryTest extends AbstractIntegrationTest {
 
+    private static final int NON_MATCHING_HOTEL_PRICE_VALUE = 10000000;
+
     @Autowired
     private RatedHotelRepository testee;
 
     @Test
-    void givenAnyQuery_matchingRatedHotelsShouldBeReturned() {
+    void givenQueryWithNoFilters_allResultsShouldBeReturned() {
 
-        // TODO: Complete this test case (Query filtering is not implemented yet!)
+        HotelQuery hotelQuery = HotelQuery.create().build();
 
-        List<RatedHotel> result = testee.findHotelsMatchingQuery(HotelQuery.create().build());
+        List<RatedHotel> result = testee.findHotelsMatchingQuery(hotelQuery);
 
         assertThat(result).hasSize(1)
                 .allSatisfy(
@@ -44,5 +47,57 @@ public class PostgreSqlRatedHotelRepositoryTest extends AbstractIntegrationTest 
                         }
 
                 );
+    }
+
+    @Test
+    void givenQueryWithLocationFilter_matchingHotelsShouldBeReturned() {
+
+        HotelQuery hotelQuery =
+                HotelQuery.create()
+                        .withLocation("Barcelona")
+                        .build();
+
+        List<RatedHotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+
+        assertThat(result).hasSize(1);
+    }
+
+    @Test
+    void givenQueryWithNonMatchingLocationFilter_noHotelsShouldBeReturned() {
+
+        HotelQuery hotelQuery =
+                HotelQuery.create()
+                        .withLocation(UUID.randomUUID().toString())
+                        .build();
+
+        List<RatedHotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void givenQueryWithPriceRangeFilter_matchingHotelsShouldBeReturned() {
+
+        HotelQuery hotelQuery =
+                HotelQuery.create()
+                        .withPriceRange(0, 500)
+                        .build();
+
+        List<RatedHotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+
+        assertThat(result).hasSize(1);
+    }
+
+    @Test
+    void givenQueryWithNonMatchingPriceRangeFilter_noHotelsShouldBeReturned() {
+
+        HotelQuery hotelQuery =
+                HotelQuery.create()
+                        .withPriceRange(NON_MATCHING_HOTEL_PRICE_VALUE, NON_MATCHING_HOTEL_PRICE_VALUE)
+                        .build();
+
+        List<RatedHotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+
+        assertThat(result).isEmpty();
     }
 }

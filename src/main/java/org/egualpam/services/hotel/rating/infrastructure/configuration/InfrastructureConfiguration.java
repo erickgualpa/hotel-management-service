@@ -12,12 +12,13 @@ import javax.persistence.EntityManager;
 public class InfrastructureConfiguration {
 
     @Bean
-    public RatedHotelRepository ratedHotelRepository(EntityManager entityManager) {
-        return new PostgreSqlRatedHotelRepository(entityManager);
-    }
-
-    @Bean
     public HotelQueryRepositoryImpl hotelQueryRepository(EntityManager entityManager) {
         return new HotelQueryRepositoryImpl(entityManager);
     }
+
+    @Bean
+    public RatedHotelRepository ratedHotelRepository(HotelQueryRepositoryImpl hotelQueryRepository) {
+        return new PostgreSqlRatedHotelRepository(hotelQueryRepository);
+    }
+
 }
