@@ -17,7 +17,7 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
-    // TODO: Remove and split this test into proper test cases
+    // TODO: Update and split this test into proper test cases
     @Test
     void hotelsMatchingQueryShouldBeReturned() throws Exception {
         String request =
