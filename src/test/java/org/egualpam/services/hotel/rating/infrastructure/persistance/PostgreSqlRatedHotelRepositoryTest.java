@@ -22,6 +22,10 @@ public class PostgreSqlRatedHotelRepositoryTest extends AbstractIntegrationTest 
     @Autowired
     private RatedHotelRepository testee;
 
+    /* TODO: The data present in database should be controlled by each test
+     *           - Currently single record shared by all tests
+     * */
+
     @Test
     void givenQueryWithNoFilters_allResultsShouldBeReturned() {
 
