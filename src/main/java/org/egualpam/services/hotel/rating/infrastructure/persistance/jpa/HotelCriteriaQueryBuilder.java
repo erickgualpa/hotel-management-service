@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 
 import org.egualpam.services.hotel.rating.application.HotelQuery;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.dto.HotelDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -19,20 +20,20 @@ public class HotelCriteriaQueryBuilder {
         this.entityManager = entityManager;
     }
 
-    public List<org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel> findHotelsBy(HotelQuery hotelQuery) {
-        CriteriaQuery<org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel> criteriaQuery = buildCriteriaQuery(hotelQuery);
+    public List<HotelDto> findHotelsBy(HotelQuery hotelQuery) {
+        CriteriaQuery<HotelDto> criteriaQuery = buildCriteriaQuery(hotelQuery);
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
-    private CriteriaQuery<org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel> buildCriteriaQuery(HotelQuery hotelQuery) {
+    private CriteriaQuery<HotelDto> buildCriteriaQuery(HotelQuery hotelQuery) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel> criteriaQuery = criteriaBuilder.createQuery(org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel.class);
+        CriteriaQuery<HotelDto> criteriaQuery = criteriaBuilder.createQuery(HotelDto.class);
 
         Root<Hotel> rootEntity = criteriaQuery.from(Hotel.class);
 
         criteriaQuery.select(
                 criteriaBuilder.construct(
-                        org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel.class,
+                        HotelDto.class,
                         rootEntity.get("id"),
                         rootEntity.get("name"),
                         rootEntity.get("description"),
