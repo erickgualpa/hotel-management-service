@@ -3,7 +3,6 @@ package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -20,16 +19,29 @@ public class HotelCriteriaQueryBuilder {
         this.entityManager = entityManager;
     }
 
-    public TypedQuery<Hotel> buildFrom(HotelQuery hotelQuery) {
-        CriteriaQuery<Hotel> criteriaQuery = buildCriteriaQuery(hotelQuery);
-        return entityManager.createQuery(criteriaQuery);
+    public List<org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel> findHotelsBy(HotelQuery hotelQuery) {
+        CriteriaQuery<org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel> criteriaQuery = buildCriteriaQuery(hotelQuery);
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
-    private CriteriaQuery<Hotel> buildCriteriaQuery(HotelQuery hotelQuery) {
+    private CriteriaQuery<org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel> buildCriteriaQuery(HotelQuery hotelQuery) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Hotel> criteriaQuery = criteriaBuilder.createQuery(Hotel.class);
+        CriteriaQuery<org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel> criteriaQuery = criteriaBuilder.createQuery(org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel.class);
 
         Root<Hotel> rootEntity = criteriaQuery.from(Hotel.class);
+
+        criteriaQuery.select(
+                criteriaBuilder.construct(
+                        org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel.class,
+                        rootEntity.get("id"),
+                        rootEntity.get("name"),
+                        rootEntity.get("description"),
+                        rootEntity.get("location"),
+                        rootEntity.get("totalPrice"),
+                        rootEntity.get("imageURL")
+                )
+        );
+
         List<Predicate> filters = new ArrayList<>();
         addLocationFilter(
                 filters,

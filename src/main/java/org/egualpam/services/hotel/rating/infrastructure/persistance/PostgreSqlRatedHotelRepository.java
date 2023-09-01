@@ -4,7 +4,7 @@ import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.Location;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Hotel;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.HotelCriteriaQueryBuilder;
 
 import javax.persistence.EntityManager;
@@ -23,7 +23,7 @@ public class PostgreSqlRatedHotelRepository implements RatedHotelRepository {
     @Override
     public List<RatedHotel> findHotelsMatchingQuery(HotelQuery hotelQuery) {
 
-        List<Hotel> hotels = hotelCriteriaQueryBuilder.buildFrom(hotelQuery).getResultList();
+        List<Hotel> hotels = hotelCriteriaQueryBuilder.findHotelsBy(hotelQuery);
 
         return hotels.stream()
                 .map(this::mapToEntity)
@@ -32,13 +32,13 @@ public class PostgreSqlRatedHotelRepository implements RatedHotelRepository {
 
     private RatedHotel mapToEntity(Hotel hotel) {
         return new RatedHotel(
-                hotel.getId().toString(),
-                hotel.getName(),
-                hotel.getDescription(),
+                hotel.id().toString(),
+                hotel.name(),
+                hotel.description(),
                 // TODO: Decide what how 'Location' will be managed (Entity or Value)
-                new Location(UUID.randomUUID().toString(), hotel.getLocation()),
-                hotel.getTotalPrice(),
-                hotel.getImageURL()
+                new Location(UUID.randomUUID().toString(), hotel.location()),
+                hotel.totalPrice(),
+                hotel.imageURL()
         );
     }
 }
