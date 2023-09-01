@@ -1,7 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.configuration;
 
 import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.PostgreSqlJpaHotelRepository;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.PostgreSqlJpaHotelRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

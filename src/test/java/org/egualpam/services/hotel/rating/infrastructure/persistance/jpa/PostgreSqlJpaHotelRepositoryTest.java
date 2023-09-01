@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance;
+package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.application.HotelQuery;

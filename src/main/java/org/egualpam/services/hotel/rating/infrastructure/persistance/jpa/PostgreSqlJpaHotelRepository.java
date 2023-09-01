@@ -1,10 +1,10 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance;
+package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.Location;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.HotelCriteriaQueryBuilder;
+import org.egualpam.services.hotel.rating.infrastructure.persistance.HotelDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
