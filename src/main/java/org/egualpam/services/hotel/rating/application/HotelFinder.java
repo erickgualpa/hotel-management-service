@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public final class RatedHotelFinder implements HotelService {
+public final class HotelFinder implements HotelService {
 
     private final HotelRepository repository;
 

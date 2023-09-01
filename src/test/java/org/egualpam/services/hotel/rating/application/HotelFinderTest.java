@@ -28,11 +28,11 @@ class HotelFinderTest {
     @Mock
     private HotelRepository hotelRepository;
 
-    private RatedHotelFinder testee;
+    private HotelFinder testee;
 
     @BeforeEach
     void setup() {
-        testee = new RatedHotelFinder(hotelRepository);
+        testee = new HotelFinder(hotelRepository);
     }
 
     @Test
