@@ -2,8 +2,8 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.application.HotelService;
+import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.egualpam.services.hotel.rating.domain.Location;
-import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -58,7 +58,7 @@ class HotelControllerTest {
         when(hotelService.findByQueryAndSortedByRatingAverage(any(HotelQuery.class)))
                 .thenReturn(
                         List.of(
-                                new RatedHotel(
+                                new Hotel(
                                         "some-hotel-identifier",
                                         "some-hotel-name",
                                         "some-hotel-description",

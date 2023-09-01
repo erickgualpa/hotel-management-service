@@ -1,8 +1,9 @@
 package org.egualpam.services.hotel.rating.application;
 
+import org.egualpam.services.hotel.rating.domain.Hotel;
+
 import java.util.List;
-import org.egualpam.services.hotel.rating.domain.RatedHotel;
 
 public interface HotelService {
-    List<RatedHotel> findByQueryAndSortedByRatingAverage(HotelQuery query);
+    List<Hotel> findByQueryAndSortedByRatingAverage(HotelQuery query);
 }

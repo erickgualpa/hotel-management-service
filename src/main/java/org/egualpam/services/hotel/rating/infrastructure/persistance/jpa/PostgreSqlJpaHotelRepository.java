@@ -1,7 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.domain.RatedHotel;
+import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.HotelDto;
 
@@ -21,7 +21,7 @@ public class PostgreSqlJpaHotelRepository extends RatedHotelRepository {
     }
 
     @Override
-    public List<RatedHotel> findHotelsMatchingQuery(HotelQuery hotelQuery) {
+    public List<Hotel> findHotelsMatchingQuery(HotelQuery hotelQuery) {
 
         CriteriaQuery<HotelDto> criteriaQuery = hotelCriteriaQueryBuilder.buildFrom(hotelQuery);
 
