@@ -1,9 +1,8 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import org.egualpam.services.hotel.rating.application.FindHotelsByRatingAverage;
+import org.egualpam.services.hotel.rating.application.HotelDto;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.domain.Hotel;
-import org.egualpam.services.hotel.rating.domain.Location;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -58,14 +57,13 @@ class HotelControllerTest {
         when(findHotelsByRatingAverage.execute(any(HotelQuery.class)))
                 .thenReturn(
                         List.of(
-                                new Hotel(
+                                new HotelDto(
                                         "some-hotel-identifier",
                                         "some-hotel-name",
                                         "some-hotel-description",
-                                        new Location(
-                                                "some-location-identifier", "some-location-name"),
+                                        "some-location-name",
                                         250,
-                                        "some-hotel-image-url")));
+                                        "some-hotel-image-ur l")));
 
         this.mockMvc
                 .perform(

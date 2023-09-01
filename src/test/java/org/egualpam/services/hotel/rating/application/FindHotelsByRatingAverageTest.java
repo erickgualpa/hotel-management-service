@@ -56,12 +56,12 @@ class FindHotelsByRatingAverageTest {
                 .thenReturn(
                         List.of(expectedIntermediateHotel, expectedWorstHotel, expectedBestHotel));
 
-        List<Hotel> result = testee.execute(DEFAULT_QUERY);
+        List<HotelDto> result = testee.execute(DEFAULT_QUERY);
 
         assertThat(result).hasSize(3);
-        assertThat(result.get(0).getIdentifier()).isEqualTo(EXPECTED_BEST_HOTEL_IDENTIFIER);
-        assertThat(result.get(1).getIdentifier()).isEqualTo(EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER);
-        assertThat(result.get(2).getIdentifier()).isEqualTo(EXPECTED_WORST_HOTEL_IDENTIFIER);
+        assertThat(result.get(0).identifier()).isEqualTo(EXPECTED_BEST_HOTEL_IDENTIFIER);
+        assertThat(result.get(1).identifier()).isEqualTo(EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER);
+        assertThat(result.get(2).identifier()).isEqualTo(EXPECTED_WORST_HOTEL_IDENTIFIER);
     }
 
     private Hotel buildHotelStubWithIdentifierAndReviews(

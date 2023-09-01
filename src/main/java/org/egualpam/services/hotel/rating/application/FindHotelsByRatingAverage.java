@@ -15,9 +15,18 @@ public class FindHotelsByRatingAverage {
         this.hotelRepository = hotelRepository;
     }
 
-    public List<Hotel> execute(HotelQuery query) {
+    public List<HotelDto> execute(HotelQuery query) {
         return hotelRepository.findHotelsMatchingQuery(query).stream()
                 .sorted(Comparator.comparingDouble(Hotel::calculateRatingAverage).reversed())
+                .map(
+                        hotel ->
+                                new HotelDto(
+                                        hotel.getIdentifier(),
+                                        hotel.getName(),
+                                        hotel.getDescription(),
+                                        hotel.getLocation().getName(),
+                                        hotel.getTotalPrice(),
+                                        hotel.getImageURL()))
                 .collect(Collectors.toList());
     }
 }

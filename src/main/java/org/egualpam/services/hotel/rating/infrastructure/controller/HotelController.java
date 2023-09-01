@@ -2,8 +2,8 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.FindHotelsByRatingAverage;
+import org.egualpam.services.hotel.rating.application.HotelDto;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public final class HotelController {
     private final FindHotelsByRatingAverage findHotelsByRatingAverage;
 
     @PostMapping(value = "/query")
-    public List<Hotel> queryHotels(@RequestBody Query query) {
+    public List<HotelDto> queryHotels(@RequestBody Query query) {
 
         HotelQuery hotelQuery =
                 HotelQuery.create()
