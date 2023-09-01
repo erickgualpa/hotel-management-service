@@ -7,29 +7,35 @@ import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.HotelCriteriaQueryBuilder;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class PostgreSqlJpaHotelRepository implements RatedHotelRepository {
 
+    private final EntityManager entityManager;
     private final HotelCriteriaQueryBuilder hotelCriteriaQueryBuilder;
 
     public PostgreSqlJpaHotelRepository(EntityManager entityManager) {
-        hotelCriteriaQueryBuilder = new HotelCriteriaQueryBuilder(entityManager);
+        this.entityManager = entityManager;
+        this.hotelCriteriaQueryBuilder = new HotelCriteriaQueryBuilder(entityManager);
     }
 
     @Override
     public List<RatedHotel> findHotelsMatchingQuery(HotelQuery hotelQuery) {
 
-        List<HotelDto> hotels = hotelCriteriaQueryBuilder.findHotelsBy(hotelQuery);
+        CriteriaQuery<HotelDto> criteriaQuery = hotelCriteriaQueryBuilder.buildFrom(hotelQuery);
 
-        return hotels.stream()
+        return entityManager.createQuery(criteriaQuery)
+                .getResultList()
+                .stream()
                 .map(this::mapToEntity)
                 .collect(Collectors.toList());
     }
 
     private RatedHotel mapToEntity(HotelDto hotelDto) {
+
         return new RatedHotel(
                 hotelDto.id().toString(),
                 hotelDto.name(),

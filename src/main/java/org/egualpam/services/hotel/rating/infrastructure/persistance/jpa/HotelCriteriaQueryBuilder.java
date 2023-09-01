@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-// TODO: Rename this class
 public class HotelCriteriaQueryBuilder {
 
     private final EntityManager entityManager;
@@ -21,12 +20,8 @@ public class HotelCriteriaQueryBuilder {
         this.entityManager = entityManager;
     }
 
-    public List<HotelDto> findHotelsBy(HotelQuery hotelQuery) {
-        CriteriaQuery<HotelDto> criteriaQuery = buildCriteriaQuery(hotelQuery);
-        return entityManager.createQuery(criteriaQuery).getResultList();
-    }
+    public CriteriaQuery<HotelDto> buildFrom(HotelQuery hotelQuery) {
 
-    private CriteriaQuery<HotelDto> buildCriteriaQuery(HotelQuery hotelQuery) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<HotelDto> criteriaQuery = criteriaBuilder.createQuery(HotelDto.class);
 
@@ -45,6 +40,7 @@ public class HotelCriteriaQueryBuilder {
         );
 
         List<Predicate> filters = new ArrayList<>();
+
         addLocationFilter(
                 filters,
                 hotelQuery.getLocation(),
@@ -57,6 +53,7 @@ public class HotelCriteriaQueryBuilder {
                 rootEntity);
 
         criteriaQuery.where(filters.toArray(new Predicate[0]));
+
         return criteriaQuery;
     }
 
@@ -65,8 +62,10 @@ public class HotelCriteriaQueryBuilder {
             String targetLocation,
             CriteriaBuilder criteriaBuilder,
             Root<Hotel> rootEntity) {
-        Optional.ofNullable(targetLocation).ifPresent(
-                tl -> filters.add(criteriaBuilder.equal(rootEntity.get("location"), tl)));
+
+        Optional.ofNullable(targetLocation)
+                .ifPresent(
+                        tl -> filters.add(criteriaBuilder.equal(rootEntity.get("location"), tl)));
     }
 
     private void addPriceRangeFilter(
@@ -74,15 +73,17 @@ public class HotelCriteriaQueryBuilder {
             HotelQuery.PriceRange targetPriceRange,
             CriteriaBuilder criteriaBuilder,
             Root<Hotel> hotel) {
-        Optional.ofNullable(targetPriceRange).ifPresent(
-                pr -> {
-                    Predicate minPriceFilter =
-                            criteriaBuilder.greaterThan(hotel.get("totalPrice"), pr.getBegin());
-                    Predicate maxPriceFilter =
-                            criteriaBuilder.lessThan(hotel.get("totalPrice"), pr.getEnd());
 
-                    filters.add(minPriceFilter);
-                    filters.add(maxPriceFilter);
-                });
+        Optional.ofNullable(targetPriceRange)
+                .ifPresent(
+                        pr -> {
+                            Predicate minPriceFilter =
+                                    criteriaBuilder.greaterThan(hotel.get("totalPrice"), pr.getBegin());
+                            Predicate maxPriceFilter =
+                                    criteriaBuilder.lessThan(hotel.get("totalPrice"), pr.getEnd());
+
+                            filters.add(minPriceFilter);
+                            filters.add(maxPriceFilter);
+                        });
     }
 }
