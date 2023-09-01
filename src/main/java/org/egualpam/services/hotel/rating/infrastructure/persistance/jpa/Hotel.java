@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.dto;
+package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
