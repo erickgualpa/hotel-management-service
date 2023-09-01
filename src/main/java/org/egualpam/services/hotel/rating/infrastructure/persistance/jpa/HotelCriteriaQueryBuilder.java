@@ -47,12 +47,12 @@ public class HotelCriteriaQueryBuilder {
         List<Predicate> filters = new ArrayList<>();
         addLocationFilter(
                 filters,
-                Optional.ofNullable(hotelQuery.getLocation()),
+                hotelQuery.getLocation(),
                 criteriaBuilder,
                 rootEntity);
         addPriceRangeFilter(
                 filters,
-                Optional.ofNullable(hotelQuery.getPriceRange()),
+                hotelQuery.getPriceRange(),
                 criteriaBuilder,
                 rootEntity);
 
@@ -62,19 +62,19 @@ public class HotelCriteriaQueryBuilder {
 
     private void addLocationFilter(
             List<Predicate> filters,
-            Optional<String> targetLocation,
+            String targetLocation,
             CriteriaBuilder criteriaBuilder,
             Root<Hotel> rootEntity) {
-        targetLocation.ifPresent(
+        Optional.ofNullable(targetLocation).ifPresent(
                 tl -> filters.add(criteriaBuilder.equal(rootEntity.get("location"), tl)));
     }
 
     private void addPriceRangeFilter(
             List<Predicate> filters,
-            Optional<HotelQuery.PriceRange> targetPriceRange,
+            HotelQuery.PriceRange targetPriceRange,
             CriteriaBuilder criteriaBuilder,
             Root<Hotel> hotel) {
-        targetPriceRange.ifPresent(
+        Optional.ofNullable(targetPriceRange).ifPresent(
                 pr -> {
                     Predicate minPriceFilter =
                             criteriaBuilder.greaterThan(hotel.get("totalPrice"), pr.getBegin());
