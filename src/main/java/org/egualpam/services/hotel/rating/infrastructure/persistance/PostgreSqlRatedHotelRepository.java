@@ -4,7 +4,6 @@ import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.Location;
 import org.egualpam.services.hotel.rating.domain.RatedHotel;
 import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.dto.HotelDto;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.HotelCriteriaQueryBuilder;
 
 import javax.persistence.EntityManager;
