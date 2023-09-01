@@ -1,14 +1,15 @@
 package org.egualpam.services.hotel.rating.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 @Getter
 @RequiredArgsConstructor
-public class RatedHotel {
+public class Hotel {
 
     private final String identifier;
     private final String name;

@@ -2,8 +2,8 @@ package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.domain.RatedHotel;
-import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
+import org.egualpam.services.hotel.rating.domain.Hotel;
+import org.egualpam.services.hotel.rating.domain.HotelRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -20,7 +20,7 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
     private static final int NON_MATCHING_HOTEL_PRICE_VALUE = 10000000;
 
     @Autowired
-    private RatedHotelRepository testee;
+    private HotelRepository testee;
 
     /* TODO: The data present in database should be controlled by each test
      *           - Currently single record shared by all tests
@@ -31,7 +31,7 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
 
         HotelQuery hotelQuery = HotelQuery.create().build();
 
-        List<RatedHotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
 
         assertThat(result).hasSize(1)
                 .allSatisfy(
@@ -61,7 +61,7 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
                         .withLocation("Barcelona")
                         .build();
 
-        List<RatedHotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
 
         assertThat(result).hasSize(1);
     }
@@ -74,7 +74,7 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
                         .withLocation(UUID.randomUUID().toString())
                         .build();
 
-        List<RatedHotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
 
         assertThat(result).isEmpty();
     }
@@ -87,7 +87,7 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
                         .withPriceRange(0, 500)
                         .build();
 
-        List<RatedHotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
 
         assertThat(result).hasSize(1);
     }
@@ -100,7 +100,7 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
                         .withPriceRange(NON_MATCHING_HOTEL_PRICE_VALUE, NON_MATCHING_HOTEL_PRICE_VALUE)
                         .build();
 
-        List<RatedHotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
 
         assertThat(result).isEmpty();
     }

@@ -5,11 +5,11 @@ import org.egualpam.services.hotel.rating.application.HotelQuery;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class RatedHotelRepository {
+public abstract class HotelRepository {
 
-    abstract public List<RatedHotel> findHotelsMatchingQuery(HotelQuery query);
+    abstract public List<Hotel> findHotelsMatchingQuery(HotelQuery query);
 
-    protected RatedHotel buildEntity(
+    protected Hotel buildEntity(
             String identifier,
             String name,
             String description,
@@ -17,7 +17,7 @@ public abstract class RatedHotelRepository {
             Integer totalPrice,
             String imageURL
     ) {
-        return new RatedHotel(
+        return new Hotel(
                 identifier,
                 name,
                 description,
