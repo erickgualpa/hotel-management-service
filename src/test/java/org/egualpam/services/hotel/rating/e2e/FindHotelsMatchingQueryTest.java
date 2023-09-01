@@ -21,16 +21,17 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
 
     @Test
     void hotelsMatchingQueryShouldBeReturned() throws Exception {
-        String request =
-                "{\n"
-                        + "    \"location\": \"Barcelona\",\n"
-                        + "    \"checkIn\": \"2023-06-24\",\n"
-                        + "    \"checkOut\": \"2023-06-28\",\n"
-                        + "    \"priceRange\": {\n"
-                        + "        \"begin\": 0,\n"
-                        + "        \"end\": 100\n"
-                        + "    }\n"
-                        + "}";
+        String request = """
+                    {
+                        "location": "Barcelona",
+                        "checkIn": "2023-06-24",
+                        "checkOut": "2023-06-28",
+                        "priceRange": {
+                            "begin": 0,
+                            "end": 100
+                        }
+                    }
+                """;
 
         MvcResult result =
                 mockMvc.perform(

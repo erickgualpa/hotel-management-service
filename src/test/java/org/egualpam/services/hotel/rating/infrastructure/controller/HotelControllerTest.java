@@ -32,16 +32,16 @@ class HotelControllerTest {
 
     @Test
     void queryIsAcceptedSuccessfully() throws Exception {
-        String request =
-                ""
-                        + "{\n"
-                        + "    \"location\": \"Barcelona\",\n"
-                        + "    \"checkIn\": \"2023-06-24\",\n"
-                        + "    \"priceRange\": {\n"
-                        + "        \"begin\": 100,\n"
-                        + "        \"end\": 200\n"
-                        + "    }\n"
-                        + "}";
+        String request = """
+                    {
+                        "location": "Barcelona",
+                        "checkIn": "2023-06-24",
+                        "priceRange": {
+                            "begin": 100,
+                            "end": 200
+                        }
+                    }
+                """;
 
         this.mockMvc
                 .perform(
