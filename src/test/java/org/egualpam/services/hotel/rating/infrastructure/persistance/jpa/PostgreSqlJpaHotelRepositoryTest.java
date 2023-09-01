@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance;
+package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DirtiesContext
-public class PostgreSqlRatedHotelRepositoryTest extends AbstractIntegrationTest {
+public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
 
     private static final int NON_MATCHING_HOTEL_PRICE_VALUE = 10000000;
 
