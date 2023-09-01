@@ -1,8 +1,8 @@
 package org.egualpam.services.hotel.rating.application;
 
 import org.egualpam.services.hotel.rating.domain.Hotel;
+import org.egualpam.services.hotel.rating.domain.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.Location;
-import org.egualpam.services.hotel.rating.domain.RatedHotelRepository;
 import org.egualpam.services.hotel.rating.domain.Review;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,13 +26,13 @@ class HotelFinderTest {
     private static final HotelQuery DEFAULT_QUERY = HotelQuery.create().build();
 
     @Mock
-    private RatedHotelRepository ratedHotelRepository;
+    private HotelRepository hotelRepository;
 
     private RatedHotelFinder testee;
 
     @BeforeEach
     void setup() {
-        testee = new RatedHotelFinder(ratedHotelRepository);
+        testee = new RatedHotelFinder(hotelRepository);
     }
 
     @Test
@@ -52,7 +52,7 @@ class HotelFinderTest {
                         EXPECTED_BEST_HOTEL_IDENTIFIER,
                         List.of(buildReviewStub(4), buildReviewStub(5)));
 
-        when(ratedHotelRepository.findHotelsMatchingQuery(DEFAULT_QUERY))
+        when(hotelRepository.findHotelsMatchingQuery(DEFAULT_QUERY))
                 .thenReturn(
                         List.of(expectedIntermediateHotel, expectedWorstHotel, expectedBestHotel));
 

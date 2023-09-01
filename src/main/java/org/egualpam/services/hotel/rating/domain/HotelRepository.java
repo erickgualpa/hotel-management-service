@@ -5,7 +5,7 @@ import org.egualpam.services.hotel.rating.application.HotelQuery;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class RatedHotelRepository {
+public abstract class HotelRepository {
 
     abstract public List<Hotel> findHotelsMatchingQuery(HotelQuery query);
 
