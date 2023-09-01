@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class HotelFinderTest {
+class FindHotelsByRatingAverageTest {
 
     private static final String EXPECTED_BEST_HOTEL_IDENTIFIER = "EXPECTED_BEST_HOTEL_IDENTIFIER";
     private static final String EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER =
@@ -28,11 +28,11 @@ class HotelFinderTest {
     @Mock
     private HotelRepository hotelRepository;
 
-    private HotelFinder testee;
+    private FindHotelsByRatingAverage testee;
 
     @BeforeEach
     void setup() {
-        testee = new HotelFinder(hotelRepository);
+        testee = new FindHotelsByRatingAverage(hotelRepository);
     }
 
     @Test
@@ -56,7 +56,7 @@ class HotelFinderTest {
                 .thenReturn(
                         List.of(expectedIntermediateHotel, expectedWorstHotel, expectedBestHotel));
 
-        List<Hotel> result = testee.findByQueryAndSortedByRatingAverage(DEFAULT_QUERY);
+        List<Hotel> result = testee.execute(DEFAULT_QUERY);
 
         assertThat(result).hasSize(3);
         assertThat(result.get(0).getIdentifier()).isEqualTo(EXPECTED_BEST_HOTEL_IDENTIFIER);

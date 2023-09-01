@@ -1,7 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
+import org.egualpam.services.hotel.rating.application.FindHotelsByRatingAverage;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.application.HotelService;
 import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.egualpam.services.hotel.rating.domain.Location;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class HotelControllerTest {
 
     @MockBean
-    private HotelService hotelService;
+    private FindHotelsByRatingAverage findHotelsByRatingAverage;
 
     @Autowired
     private MockMvc mockMvc;
@@ -55,7 +55,7 @@ class HotelControllerTest {
 
     @Test
     void hotelsMatchingQueryAreReturnedSuccessfully() throws Exception {
-        when(hotelService.findByQueryAndSortedByRatingAverage(any(HotelQuery.class)))
+        when(findHotelsByRatingAverage.execute(any(HotelQuery.class)))
                 .thenReturn(
                         List.of(
                                 new Hotel(
