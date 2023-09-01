@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 public class InfrastructureConfiguration {
 
     @Bean
-    public HotelRepository ratedHotelRepository(EntityManager entityManager) {
+    public HotelRepository hotelRepository(EntityManager entityManager) {
         return new PostgreSqlJpaHotelRepository(entityManager);
     }
 
