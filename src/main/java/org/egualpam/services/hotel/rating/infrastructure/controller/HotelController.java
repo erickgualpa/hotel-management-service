@@ -1,9 +1,9 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.egualpam.services.hotel.rating.application.FindHotelsByRatingAverage;
+import org.egualpam.services.hotel.rating.application.HotelDto;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.application.HotelService;
-import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +16,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public final class HotelController {
 
-    private final HotelService service;
+    private final FindHotelsByRatingAverage findHotelsByRatingAverage;
 
     @PostMapping(value = "/query")
-    public List<Hotel> queryHotels(@RequestBody Query query) {
+    public List<HotelDto> queryHotels(@RequestBody Query query) {
 
         HotelQuery hotelQuery =
                 HotelQuery.create()
@@ -27,6 +27,6 @@ public final class HotelController {
                         .withPriceRange(query.getMinPrice(), query.getMaxPrice())
                         .build();
 
-        return service.findByQueryAndSortedByRatingAverage(hotelQuery);
+        return findHotelsByRatingAverage.execute(hotelQuery);
     }
 }
