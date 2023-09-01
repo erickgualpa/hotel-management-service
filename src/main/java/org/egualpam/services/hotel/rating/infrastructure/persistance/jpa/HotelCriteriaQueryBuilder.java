@@ -1,7 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.dto.Hotel;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
