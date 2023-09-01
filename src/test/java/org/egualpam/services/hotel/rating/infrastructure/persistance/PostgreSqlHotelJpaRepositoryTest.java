@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DirtiesContext
-public class PostgreSqlRatedHotelRepositoryTest extends AbstractIntegrationTest {
+public class PostgreSqlHotelJpaRepositoryTest extends AbstractIntegrationTest {
 
     private static final int NON_MATCHING_HOTEL_PRICE_VALUE = 10000000;
 

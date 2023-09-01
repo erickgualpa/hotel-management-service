@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class PostgreSqlRatedHotelRepository implements RatedHotelRepository {
+public class PostgreSqlHotelJpaRepository implements RatedHotelRepository {
 
     private final HotelCriteriaQueryBuilder hotelCriteriaQueryBuilder;
 
-    public PostgreSqlRatedHotelRepository(EntityManager entityManager) {
+    public PostgreSqlHotelJpaRepository(EntityManager entityManager) {
         hotelCriteriaQueryBuilder = new HotelCriteriaQueryBuilder(entityManager);
     }
 
