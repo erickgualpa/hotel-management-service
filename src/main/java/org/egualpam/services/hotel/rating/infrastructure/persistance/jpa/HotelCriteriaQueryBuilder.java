@@ -14,76 +14,63 @@ import java.util.Optional;
 
 public class HotelCriteriaQueryBuilder {
 
-    private final EntityManager entityManager;
+    private final CriteriaBuilder criteriaBuilder;
 
     public HotelCriteriaQueryBuilder(EntityManager entityManager) {
-        this.entityManager = entityManager;
+        this.criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
     public CriteriaQuery<HotelDto> buildFrom(HotelQuery hotelQuery) {
-
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<HotelDto> criteriaQuery = criteriaBuilder.createQuery(HotelDto.class);
 
-        Root<Hotel> rootEntity = criteriaQuery.from(Hotel.class);
+        Root<Hotel> rootHotelEntity = criteriaQuery.from(Hotel.class);
 
         criteriaQuery.select(
                 criteriaBuilder.construct(
                         HotelDto.class,
-                        rootEntity.get("id"),
-                        rootEntity.get("name"),
-                        rootEntity.get("description"),
-                        rootEntity.get("location"),
-                        rootEntity.get("totalPrice"),
-                        rootEntity.get("imageURL")
-                )
-        );
+                        rootHotelEntity.get("id"),
+                        rootHotelEntity.get("name"),
+                        rootHotelEntity.get("description"),
+                        rootHotelEntity.get("location"),
+                        rootHotelEntity.get("totalPrice"),
+                        rootHotelEntity.get("imageURL")));
 
-        List<Predicate> filters = new ArrayList<>();
-
-        addLocationFilter(
-                filters,
-                hotelQuery.getLocation(),
-                criteriaBuilder,
-                rootEntity);
-        addPriceRangeFilter(
-                filters,
-                hotelQuery.getPriceRange(),
-                criteriaBuilder,
-                rootEntity);
-
-        criteriaQuery.where(filters.toArray(new Predicate[0]));
+        criteriaQuery.where(buildFilters(hotelQuery, rootHotelEntity));
 
         return criteriaQuery;
     }
 
-    private void addLocationFilter(
-            List<Predicate> filters,
-            String targetLocation,
-            CriteriaBuilder criteriaBuilder,
-            Root<Hotel> rootEntity) {
+    private Predicate[] buildFilters(HotelQuery hotelQuery, Root<Hotel> rootEntity) {
+        List<Predicate> filters = new ArrayList<>();
 
-        Optional.ofNullable(targetLocation)
+        Optional.ofNullable(hotelQuery.getLocation())
                 .ifPresent(
-                        tl -> filters.add(criteriaBuilder.equal(rootEntity.get("location"), tl)));
-    }
+                        location -> filters.add(locationFilter(rootEntity, location)));
 
-    private void addPriceRangeFilter(
-            List<Predicate> filters,
-            HotelQuery.PriceRange targetPriceRange,
-            CriteriaBuilder criteriaBuilder,
-            Root<Hotel> hotel) {
+        HotelQuery.PriceRange targetPriceRange = hotelQuery.getPriceRange();
 
         Optional.ofNullable(targetPriceRange)
+                .map(HotelQuery.PriceRange::getBegin)
                 .ifPresent(
-                        pr -> {
-                            Predicate minPriceFilter =
-                                    criteriaBuilder.greaterThan(hotel.get("totalPrice"), pr.getBegin());
-                            Predicate maxPriceFilter =
-                                    criteriaBuilder.lessThan(hotel.get("totalPrice"), pr.getEnd());
+                        minPrice -> filters.add(minPriceFilter(rootEntity, minPrice)));
 
-                            filters.add(minPriceFilter);
-                            filters.add(maxPriceFilter);
-                        });
+        Optional.ofNullable(targetPriceRange)
+                .map(HotelQuery.PriceRange::getEnd)
+                .ifPresent(
+                        maxPrice -> filters.add(maxPriceFilter(rootEntity, maxPrice)));
+
+        return filters.toArray(new Predicate[0]);
+    }
+
+    private Predicate locationFilter(Root<Hotel> rootEntity, String location) {
+        return criteriaBuilder.equal(rootEntity.get("location"), location);
+    }
+
+    private Predicate minPriceFilter(Root<Hotel> hotel, Integer minPrice) {
+        return criteriaBuilder.greaterThan(hotel.get("totalPrice"), minPrice);
+    }
+
+    private Predicate maxPriceFilter(Root<Hotel> hotel, Integer maxPrice) {
+        return criteriaBuilder.lessThan(hotel.get("totalPrice"), maxPrice);
     }
 }
