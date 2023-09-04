@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Hotel {
+public final class Hotel {
 
     private final String identifier;
     private final String name;
