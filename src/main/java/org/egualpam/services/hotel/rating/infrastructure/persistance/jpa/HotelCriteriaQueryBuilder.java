@@ -67,10 +67,10 @@ public class HotelCriteriaQueryBuilder {
     }
 
     private Predicate minPriceFilter(Root<Hotel> hotel, Integer minPrice) {
-        return criteriaBuilder.greaterThan(hotel.get("totalPrice"), minPrice);
+        return criteriaBuilder.greaterThanOrEqualTo(hotel.get("totalPrice"), minPrice);
     }
 
     private Predicate maxPriceFilter(Root<Hotel> hotel, Integer maxPrice) {
-        return criteriaBuilder.lessThan(hotel.get("totalPrice"), maxPrice);
+        return criteriaBuilder.lessThanOrEqualTo(hotel.get("totalPrice"), maxPrice);
     }
 }
