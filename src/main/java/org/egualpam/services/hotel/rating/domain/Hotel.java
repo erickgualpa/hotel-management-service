@@ -1,14 +1,9 @@
 package org.egualpam.services.hotel.rating.domain;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Getter
-@RequiredArgsConstructor
 public class Hotel {
 
     private final String identifier;
@@ -17,6 +12,21 @@ public class Hotel {
     private final Location location;
     private final Integer totalPrice;
     private final String imageURL;
+
+    public Hotel(
+            String identifier,
+            String name,
+            String description,
+            Location location,
+            Integer totalPrice,
+            String imageURL) {
+        this.identifier = identifier;
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.totalPrice = totalPrice;
+        this.imageURL = imageURL;
+    }
 
     private final List<Review> reviews = new ArrayList<>();
 
@@ -30,5 +40,29 @@ public class Hotel {
                 .filter(Objects::nonNull)
                 .average()
                 .orElse(0.0);
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public Integer getTotalPrice() {
+        return totalPrice;
+    }
+
+    public String getImageURL() {
+        return imageURL;
     }
 }
