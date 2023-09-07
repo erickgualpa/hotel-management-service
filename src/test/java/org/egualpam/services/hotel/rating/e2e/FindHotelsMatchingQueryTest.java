@@ -77,6 +77,8 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
             VALUES (75, 'Amazing hotel', 'Eloquent description', 'Barcelona', 150, 'amazing-hotel-image.com');
             INSERT INTO reviews(id, rating, comment, hotel_id)
             VALUES (1, 5, 'This is an amazing hotel!', 75);
+            INSERT INTO reviews(id, rating, comment, hotel_id)
+            VALUES (2, 3, 'This is an average level hotel!', 75);
             """)
     void hotelsWithReviewsMatchingQueryShouldBeReturned() throws Exception {
 
@@ -109,6 +111,10 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                                         {
                                             "rating": 5,
                                             "comment": "This is an amazing hotel!"
+                                        },
+                                        {
+                                            "rating": 3,
+                                            "comment": "This is an average level hotel!"
                                         }
                                       ]
                                     }
