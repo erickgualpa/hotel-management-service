@@ -65,4 +65,8 @@ public final class Hotel {
     public String getImageURL() {
         return imageURL;
     }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
 }

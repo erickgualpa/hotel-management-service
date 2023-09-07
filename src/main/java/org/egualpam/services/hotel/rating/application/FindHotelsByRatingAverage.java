@@ -26,7 +26,12 @@ public class FindHotelsByRatingAverage {
                                         hotel.getDescription(),
                                         hotel.getLocation().getName(),
                                         hotel.getTotalPrice(),
-                                        hotel.getImageURL()))
+                                        hotel.getImageURL(),
+                                        hotel.getReviews().stream()
+                                                .map(review ->
+                                                        new ReviewDto(review.getRating(), review.getComment()))
+                                                .collect(Collectors.toList())
+                                ))
                 .collect(Collectors.toList());
     }
 }
