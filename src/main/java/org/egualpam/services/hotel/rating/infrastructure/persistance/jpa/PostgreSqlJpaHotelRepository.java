@@ -31,7 +31,7 @@ public class PostgreSqlJpaHotelRepository extends HotelRepository {
                 .stream()
                 .map(
                         hotelDto ->
-                                buildEntity(
+                                mapIntoEntity(
                                         hotelDto.id().toString(),
                                         hotelDto.name(),
                                         hotelDto.description(),
@@ -40,7 +40,7 @@ public class PostgreSqlJpaHotelRepository extends HotelRepository {
                                         hotelDto.imageURL(),
                                         findReviewsByHotelId(hotelDto.id()).stream()
                                                 .map(review ->
-                                                        buildReviewEntity(
+                                                        mapIntoReviewEntity(
                                                                 review.identifier(),
                                                                 review.rating(),
                                                                 review.comment()))
