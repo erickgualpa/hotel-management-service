@@ -2,6 +2,7 @@ package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -13,7 +14,9 @@ public class Review {
     private Long id;
     private Integer rating;
     private String comment;
+
     @ManyToOne
+    @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
     public Long getId() {
