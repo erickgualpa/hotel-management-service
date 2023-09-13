@@ -8,7 +8,7 @@ public abstract class HotelRepository {
 
     abstract public List<Hotel> findHotelsMatchingQuery(HotelQuery query);
 
-    protected Hotel mapIntoEntity(
+    protected final Hotel mapIntoEntity(
             String identifier,
             String name,
             String description,
@@ -31,7 +31,7 @@ public abstract class HotelRepository {
         return hotel;
     }
 
-    protected Review mapIntoReviewEntity(String identifier, Integer rating, String comment) {
+    protected final Review mapIntoReviewEntity(String identifier, Integer rating, String comment) {
         return new Review(identifier, rating, comment);
     }
 }
