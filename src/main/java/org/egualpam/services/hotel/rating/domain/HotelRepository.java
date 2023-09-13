@@ -3,7 +3,6 @@ package org.egualpam.services.hotel.rating.domain;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 
 import java.util.List;
-import java.util.UUID;
 
 public abstract class HotelRepository {
 
@@ -13,7 +12,7 @@ public abstract class HotelRepository {
             String identifier,
             String name,
             String description,
-            String locationName,
+            String location,
             Integer totalPrice,
             String imageURL,
             List<Review> reviews
@@ -22,8 +21,7 @@ public abstract class HotelRepository {
                 identifier,
                 name,
                 description,
-                // TODO: Decide what how 'Location' will be managed (Entity or Value)
-                new Location(UUID.randomUUID().toString(), locationName),
+                location,
                 totalPrice,
                 imageURL
         );

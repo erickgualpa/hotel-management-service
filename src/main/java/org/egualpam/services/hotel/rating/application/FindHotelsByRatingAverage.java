@@ -24,7 +24,7 @@ public class FindHotelsByRatingAverage {
                                         hotel.getIdentifier(),
                                         hotel.getName(),
                                         hotel.getDescription(),
-                                        hotel.getLocation().getName(),
+                                        hotel.getLocation(),
                                         hotel.getTotalPrice(),
                                         hotel.getImageURL(),
                                         hotel.getReviews().stream()
