@@ -2,7 +2,6 @@ package org.egualpam.services.hotel.rating.application;
 
 import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.egualpam.services.hotel.rating.domain.HotelRepository;
-import org.egualpam.services.hotel.rating.domain.Location;
 import org.egualpam.services.hotel.rating.domain.Review;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,7 +77,7 @@ class FindHotelsByRatingAverageTest {
                         identifier,
                         "Amazing hotel",
                         "Eloquent description",
-                        new Location("BCN", "Barcelona"),
+                        "Barcelona",
                         200,
                         "amz-hotel-image.com");
         hotel.addReviews(reviews);

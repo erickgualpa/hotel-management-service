@@ -9,7 +9,7 @@ public final class Hotel {
     private final String identifier;
     private final String name;
     private final String description;
-    private final Location location;
+    private final String location;
     private final Integer totalPrice;
     private final String imageURL;
 
@@ -17,7 +17,7 @@ public final class Hotel {
             String identifier,
             String name,
             String description,
-            Location location,
+            String location,
             Integer totalPrice,
             String imageURL) {
         this.identifier = identifier;
@@ -54,7 +54,7 @@ public final class Hotel {
         return description;
     }
 
-    public Location getLocation() {
+    public String getLocation() {
         return location;
     }
 
