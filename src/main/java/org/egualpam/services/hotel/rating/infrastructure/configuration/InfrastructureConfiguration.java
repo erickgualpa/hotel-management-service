@@ -14,5 +14,4 @@ public class InfrastructureConfiguration {
     public HotelRepository hotelRepository(EntityManager entityManager) {
         return new PostgreSqlJpaHotelRepository(entityManager);
     }
-
 }
