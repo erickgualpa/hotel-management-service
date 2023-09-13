@@ -65,6 +65,10 @@ class FindHotelsByRatingAverageTest {
                         EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER,
                         EXPECTED_WORST_HOTEL_IDENTIFIER
                 );
+
+        assertThat(result)
+                .allSatisfy(
+                        hotelDto -> assertThat(hotelDto.reviews()).isNotEmpty());
     }
 
     private Hotel buildHotelStubWithIdentifierAndReviews(

@@ -9,15 +9,16 @@ public abstract class HotelRepository {
 
     abstract public List<Hotel> findHotelsMatchingQuery(HotelQuery query);
 
-    protected Hotel buildEntity(
+    protected Hotel mapIntoEntity(
             String identifier,
             String name,
             String description,
             String locationName,
             Integer totalPrice,
-            String imageURL
+            String imageURL,
+            List<Review> reviews
     ) {
-        return new Hotel(
+        Hotel hotel = new Hotel(
                 identifier,
                 name,
                 description,
@@ -26,5 +27,13 @@ public abstract class HotelRepository {
                 totalPrice,
                 imageURL
         );
+
+        hotel.addReviews(reviews);
+
+        return hotel;
+    }
+
+    protected Review mapIntoReviewEntity(String identifier, Integer rating, String comment) {
+        return new Review(identifier, rating, comment);
     }
 }

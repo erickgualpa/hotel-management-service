@@ -10,6 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -63,7 +64,8 @@ class HotelControllerTest {
                                         "some-hotel-description",
                                         "some-location-name",
                                         250,
-                                        "some-hotel-image-ur l")));
+                                        "some-hotel-image-url",
+                                        Collections.emptyList())));
 
         this.mockMvc
                 .perform(
