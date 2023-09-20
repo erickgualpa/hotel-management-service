@@ -50,12 +50,12 @@ public class HotelCriteriaQueryBuilder {
         HotelQuery.PriceRange targetPriceRange = hotelQuery.getPriceRange();
 
         Optional.ofNullable(targetPriceRange)
-                .map(HotelQuery.PriceRange::getBegin)
+                .map(HotelQuery.PriceRange::begin)
                 .ifPresent(
                         minPrice -> filters.add(minPriceFilter(rootEntity, minPrice)));
 
         Optional.ofNullable(targetPriceRange)
-                .map(HotelQuery.PriceRange::getEnd)
+                .map(HotelQuery.PriceRange::end)
                 .ifPresent(
                         maxPrice -> filters.add(maxPriceFilter(rootEntity, maxPrice)));
 

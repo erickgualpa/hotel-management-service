@@ -1,48 +1,19 @@
 package org.egualpam.services.hotel.rating.application;
 
-import java.time.LocalDate;
-
-// TODO: Check which fields on this query make sense to keep
 public final class HotelQuery {
 
     private String location;
-    private LocalDate checkIn;
-    private LocalDate checkOut;
     private PriceRange priceRange;
 
     public String getLocation() {
         return location;
     }
 
-    public LocalDate getCheckIn() {
-        return checkIn;
-    }
-
-    public LocalDate getCheckOut() {
-        return checkOut;
-    }
-
     public PriceRange getPriceRange() {
         return priceRange;
     }
 
-    public static class PriceRange {
-
-        private final Integer begin;
-        private final Integer end;
-
-        public PriceRange(Integer begin, Integer end) {
-            this.begin = begin;
-            this.end = end;
-        }
-
-        public Integer getBegin() {
-            return begin;
-        }
-
-        public Integer getEnd() {
-            return end;
-        }
+    public record PriceRange(Integer begin, Integer end) {
     }
 
     public static Builder create() {
@@ -59,16 +30,6 @@ public final class HotelQuery {
 
         public Builder withLocation(String location) {
             query.location = location;
-            return this;
-        }
-
-        public Builder withCheckIn(LocalDate checkIn) {
-            query.checkIn = checkIn;
-            return this;
-        }
-
-        public Builder withCheckOut(LocalDate checkOut) {
-            query.checkOut = checkOut;
             return this;
         }
 
