@@ -51,7 +51,7 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                 """;
 
         mockMvc.perform(
-                        post("/api/hotel/query")
+                        post("/v1/hotels/query")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isOk())
@@ -93,7 +93,7 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                 """;
 
         mockMvc.perform(
-                        post("/api/hotel/query")
+                        post("/v1/hotels/query")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isOk())
@@ -132,7 +132,7 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                 """.formatted(UUID.randomUUID().toString());
 
         mockMvc.perform(
-                        post("/api/hotel/query")
+                        post("/v1/hotels/query")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isOk())

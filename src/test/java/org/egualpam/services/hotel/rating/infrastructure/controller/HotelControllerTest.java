@@ -45,7 +45,7 @@ class HotelControllerTest {
 
         this.mockMvc
                 .perform(
-                        post("/api/hotel/query")
+                        post("/v1/hotels/query")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().is(200))
@@ -69,7 +69,7 @@ class HotelControllerTest {
 
         this.mockMvc
                 .perform(
-                        post("/api/hotel/query")
+                        post("/v1/hotels/query")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{ }"))
                 .andExpect(status().is(200))

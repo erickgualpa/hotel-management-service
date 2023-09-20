@@ -30,6 +30,6 @@ curl -X POST -H "Content-Type: application/json" -d '
         "end": 2000
     }
 }' \
-  localhost:8080/api/hotel/query
+  localhost:8080/v1/hotels/query
 
 ```
