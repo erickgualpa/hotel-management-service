@@ -14,10 +14,9 @@ public abstract class HotelRepository {
             String description,
             String location,
             Integer totalPrice,
-            String imageURL,
-            List<Review> reviews
+            String imageURL
     ) {
-        Hotel hotel = new Hotel(
+        return new Hotel(
                 identifier,
                 name,
                 description,
@@ -25,13 +24,5 @@ public abstract class HotelRepository {
                 totalPrice,
                 imageURL
         );
-
-        hotel.addReviews(reviews);
-
-        return hotel;
-    }
-
-    protected final Review mapIntoReviewEntity(String identifier, Integer rating, String comment) {
-        return new Review(identifier, rating, comment);
     }
 }
