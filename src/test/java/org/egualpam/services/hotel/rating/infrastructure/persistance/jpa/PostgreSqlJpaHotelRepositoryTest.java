@@ -116,6 +116,7 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
                 );
     }
 
+    // TODO: Check if this test makes sense to keep it here after setting up the 'ReviewRepository'
     @Test
     @Sql(statements = """
             INSERT INTO hotels(id, name, description, location, total_price, image_url)
