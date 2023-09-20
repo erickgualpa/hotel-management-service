@@ -4,7 +4,6 @@ import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.egualpam.services.hotel.rating.domain.HotelRepository;
 import org.egualpam.services.hotel.rating.infrastructure.persistance.HotelDto;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.ReviewDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
@@ -37,35 +36,8 @@ public class PostgreSqlJpaHotelRepository extends HotelRepository {
                                         hotelDto.description(),
                                         hotelDto.location(),
                                         hotelDto.totalPrice(),
-                                        hotelDto.imageURL(),
-                                        findReviewsByHotelId(hotelDto.id()).stream()
-                                                .map(review ->
-                                                        mapIntoReviewEntity(
-                                                                review.identifier(),
-                                                                review.rating(),
-                                                                review.comment()))
-                                                .collect(Collectors.toList()))
+                                        hotelDto.imageURL())
                 )
-                .collect(Collectors.toList());
-    }
-
-    private List<ReviewDto> findReviewsByHotelId(Long hotelId) {
-        List<Review> reviews =
-                entityManager.createNativeQuery("""
-                                        SELECT r.id, r.rating, r.comment, r.hotel_id
-                                        FROM reviews r
-                                        WHERE r.hotel_id = :hotel_id
-                                        """,
-                                Review.class)
-                        .setParameter("hotel_id", hotelId)
-                        .getResultList();
-
-        return reviews.stream()
-                .map(review ->
-                        new ReviewDto(
-                                review.getId().toString(),
-                                review.getRating(),
-                                review.getComment()))
                 .collect(Collectors.toList());
     }
 }

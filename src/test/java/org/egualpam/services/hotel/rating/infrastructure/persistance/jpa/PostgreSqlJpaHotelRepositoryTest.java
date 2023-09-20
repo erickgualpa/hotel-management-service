@@ -115,36 +115,4 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
                         hotelIdentifier -> assertThat(hotelIdentifier).isEqualTo(expectedHotelIdentifier)
                 );
     }
-
-    // TODO: Check if this test makes sense to keep it here after setting up the 'ReviewRepository'
-    @Test
-    @Sql(statements = """
-            INSERT INTO hotels(id, name, description, location, total_price, image_url)
-            VALUES (91, 'Amazing hotel', 'Eloquent description', 'Berlin', 150, 'amazing-hotel-image.com');
-            INSERT INTO reviews(id, rating, comment, hotel_id)
-            VALUES (1, 5, 'This is an amazing hotel!', 91);
-            """)
-    void reviewsFromHotelMatchingQueryShouldBePopulated() {
-
-        HotelQuery hotelQuery =
-                HotelQuery.create()
-                        .withLocation("Berlin")
-                        .build();
-
-        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
-
-        assertThat(result)
-                .hasSize(1)
-                .allSatisfy(
-                        hotel ->
-                                assertThat(hotel.getReviews())
-                                        .allSatisfy(
-                                                review -> {
-                                                    assertThat(review.getIdentifier()).isEqualTo("1");
-                                                    assertThat(review.getRating()).isEqualTo(5);
-                                                    assertThat(review.getComment())
-                                                            .isEqualTo("This is an amazing hotel!");
-                                                }
-                                        ));
-    }
 }
