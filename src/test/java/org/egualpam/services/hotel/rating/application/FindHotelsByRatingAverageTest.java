@@ -11,19 +11,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FindHotelsByRatingAverageTest {
-
-    private static final String EXPECTED_BEST_HOTEL_IDENTIFIER = "EXPECTED_BEST_HOTEL_IDENTIFIER";
-    private static final String EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER =
-            "EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER";
-    private static final String EXPECTED_WORST_HOTEL_IDENTIFIER = "EXPECTED_WORST_HOTEL_IDENTIFIER";
-
-    private static final HotelQuery DEFAULT_QUERY = HotelQuery.create().build();
 
     @Mock
     private HotelRepository hotelRepository;
@@ -39,35 +34,47 @@ class FindHotelsByRatingAverageTest {
     }
 
     @Test
-    void givenAnyQuery_hotelsMatchingQueryShouldBeReturnedSortedByRatingAverage() {
-        Hotel expectedWorstHotel = buildHotelStubWithIdentifierAndReviews(EXPECTED_WORST_HOTEL_IDENTIFIER);
+    void hotelsMatchingQueryShouldBeReturnedSortedByRatingAverage() {
 
-        Hotel expectedIntermediateHotel =
-                buildHotelStubWithIdentifierAndReviews(EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER);
+        HotelQuery hotelQuery = HotelQuery.create().build();
 
-        Hotel expectedBestHotel = buildHotelStubWithIdentifierAndReviews(EXPECTED_BEST_HOTEL_IDENTIFIER);
+        String intermediateHotelIdentifier = UUID.randomUUID().toString();
+        String worstHotelIdentifier = UUID.randomUUID().toString();
+        String bestHotelIdentifier = UUID.randomUUID().toString();
 
-        when(hotelRepository.findHotelsMatchingQuery(DEFAULT_QUERY))
+        when(hotelRepository.findHotelsMatchingQuery(hotelQuery))
                 .thenReturn(
-                        List.of(expectedIntermediateHotel, expectedWorstHotel, expectedBestHotel));
+                        List.of(
+                                buildHotelStubWithIdentifier(intermediateHotelIdentifier),
+                                buildHotelStubWithIdentifier(worstHotelIdentifier),
+                                buildHotelStubWithIdentifier(bestHotelIdentifier)));
 
-        when(reviewRepository.findByHotelIdentifier(EXPECTED_WORST_HOTEL_IDENTIFIER))
-                .thenReturn(List.of(buildReviewStub(1), buildReviewStub(2)));
+        when(reviewRepository.findByHotelIdentifier(worstHotelIdentifier))
+                .thenReturn(
+                        List.of(
+                                buildReviewStubWithRating(1),
+                                buildReviewStubWithRating(2)));
 
-        when(reviewRepository.findByHotelIdentifier(EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER))
-                .thenReturn(List.of(buildReviewStub(2), buildReviewStub(4)));
+        when(reviewRepository.findByHotelIdentifier(intermediateHotelIdentifier))
+                .thenReturn(
+                        List.of(
+                                buildReviewStubWithRating(3),
+                                buildReviewStubWithRating(3)));
 
-        when(reviewRepository.findByHotelIdentifier(EXPECTED_BEST_HOTEL_IDENTIFIER))
-                .thenReturn(List.of(buildReviewStub(4), buildReviewStub(5)));
+        when(reviewRepository.findByHotelIdentifier(bestHotelIdentifier))
+                .thenReturn(
+                        List.of(
+                                buildReviewStubWithRating(4),
+                                buildReviewStubWithRating(5)));
 
-        List<HotelDto> result = testee.execute(DEFAULT_QUERY);
+        List<HotelDto> result = testee.execute(hotelQuery);
 
         assertThat(result).hasSize(3)
                 .extracting("identifier")
                 .containsExactly(
-                        EXPECTED_BEST_HOTEL_IDENTIFIER,
-                        EXPECTED_INTERMEDIATE_HOTEL_IDENTIFIER,
-                        EXPECTED_WORST_HOTEL_IDENTIFIER
+                        bestHotelIdentifier,
+                        intermediateHotelIdentifier,
+                        worstHotelIdentifier
                 );
 
         assertThat(result)
@@ -75,18 +82,17 @@ class FindHotelsByRatingAverageTest {
                         hotelDto -> assertThat(hotelDto.reviews()).isNotEmpty());
     }
 
-    private Hotel buildHotelStubWithIdentifierAndReviews(
-            String identifier) {
+    private Hotel buildHotelStubWithIdentifier(String identifier) {
         return new Hotel(
                 identifier,
-                "Amazing hotel",
-                "Eloquent description",
-                "Barcelona",
-                200,
-                "amz-hotel-image.com");
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(),
+                new Random().nextInt(1000),
+                UUID.randomUUID().toString());
     }
 
-    private Review buildReviewStub(int rating) {
-        return new Review("AMZ_REVIEW", rating, "Eloquent comment");
+    private Review buildReviewStubWithRating(int rating) {
+        return new Review(UUID.randomUUID().toString(), rating, UUID.randomUUID().toString());
     }
 }
