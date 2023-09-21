@@ -1,5 +1,7 @@
 # 🏨 Hotel Rating Service 🏨
 
+![CI/CD status](https://github.com/erickgualpa/hotel-rating-service/actions/workflows/maven.yml/badge.svg)
+
 Using wrapped maven included in this repository, you can:
 
 🔨 Compile
