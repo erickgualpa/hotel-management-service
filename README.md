@@ -2,7 +2,7 @@
 
 ### How to run hotel-rating-service:
 
-Using wrapped maven included in this repository, with following commands:
+Using wrapped maven included in this repository, you can:
 
 - Compile:
   <br>
@@ -15,6 +15,7 @@ Using wrapped maven included in this repository, with following commands:
   <br>
 
 ```shell script
+docker compose up -d
 ./mvnw clean spring-boot:run
 ```
 
