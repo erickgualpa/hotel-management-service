@@ -36,51 +36,13 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
     @Test
     @Sql(statements = """
             INSERT INTO hotels(id, name, description, location, total_price, image_url)
-            VALUES ('1', 'Amazing hotel', 'Eloquent description', 'Barcelona', 150, 'amazing-hotel-image.com');
-            """)
-    void hotelsMatchingQueryShouldBeReturned() throws Exception {
-
-        String request = """
-                    {
-                        "location": "Barcelona",
-                        "priceRange": {
-                            "begin": 0,
-                            "end": 150
-                        }
-                    }
-                """;
-
-        mockMvc.perform(
-                        post("/v1/hotels/query")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(request))
-                .andExpect(status().isOk())
-                .andExpect(content().json(
-                        """
-                                [
-                                    {
-                                      "identifier": "1",
-                                      "name": "Amazing hotel",
-                                      "description": "Eloquent description",
-                                      "location": "Barcelona",
-                                      "totalPrice": 150,
-                                      "imageURL": "amazing-hotel-image.com"
-                                    }
-                                ]
-                                """
-                ));
-    }
-
-    @Test
-    @Sql(statements = """
-            INSERT INTO hotels(id, name, description, location, total_price, image_url)
             VALUES (75, 'Amazing hotel', 'Eloquent description', 'Barcelona', 150, 'amazing-hotel-image.com');
             INSERT INTO reviews(id, rating, comment, hotel_id)
             VALUES (1, 5, 'This is an amazing hotel!', 75);
             INSERT INTO reviews(id, rating, comment, hotel_id)
             VALUES (2, 3, 'This is an average level hotel!', 75);
             """)
-    void hotelsWithReviewsMatchingQueryShouldBeReturned() throws Exception {
+    void hotelsMatchingQueryShouldBeReturned() throws Exception {
 
         String request = """
                     {
