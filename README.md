@@ -1,17 +1,15 @@
-# Hotel Review Search and Sorting
-
-### How to run hotel-rating-service:
+# 🏨 Hotel Rating Service 🏨
 
 Using wrapped maven included in this repository, you can:
 
-- Compile:
+🔨 Compile
   <br>
 
 ```shell script
 ./mvnw clean package
 ```
 
-- Run service:
+🚀 Run service
   <br>
 
 ```shell script
@@ -19,7 +17,7 @@ docker compose up -d
 ./mvnw clean spring-boot:run
 ```
 
-- Example query request:
+🔹 Example query request
   <br>
 
 ```shell script
