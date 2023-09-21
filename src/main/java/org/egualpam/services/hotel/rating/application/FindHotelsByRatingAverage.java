@@ -21,28 +21,32 @@ public class FindHotelsByRatingAverage {
     public List<HotelDto> execute(HotelQuery query) {
         List<Hotel> hotels = hotelRepository.findHotelsMatchingQuery(query);
 
-        hotels.forEach(
-                h -> h.addReviews(
-                        reviewRepository.findByHotelIdentifier(h.getIdentifier())
-                )
-        );
+        hotels.forEach(this::decorateReviews);
 
         return hotels.stream()
                 .sorted(Comparator.comparingDouble(Hotel::calculateRatingAverage).reversed())
-                .map(
-                        hotel ->
-                                new HotelDto(
-                                        hotel.getIdentifier(),
-                                        hotel.getName(),
-                                        hotel.getDescription(),
-                                        hotel.getLocation(),
-                                        hotel.getTotalPrice(),
-                                        hotel.getImageURL(),
-                                        hotel.getReviews().stream()
-                                                .map(review ->
-                                                        new ReviewDto(review.getRating(), review.getComment()))
-                                                .collect(Collectors.toList())
-                                ))
+                .map(this::mapIntoHotelDto)
                 .collect(Collectors.toList());
+    }
+
+    private void decorateReviews(Hotel hotel) {
+        hotel.addReviews(reviewRepository.findByHotelIdentifier(hotel.getIdentifier()));
+    }
+
+    private HotelDto mapIntoHotelDto(Hotel hotel) {
+        return new HotelDto(
+                hotel.getIdentifier(),
+                hotel.getName(),
+                hotel.getDescription(),
+                hotel.getLocation(),
+                hotel.getTotalPrice(),
+                hotel.getImageURL(),
+                hotel.getReviews().stream()
+                        .map(review ->
+                                new ReviewDto(
+                                        review.getRating(),
+                                        review.getComment()))
+                        .collect(Collectors.toList())
+        );
     }
 }
