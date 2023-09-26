@@ -29,24 +29,8 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
 
         UUID hotelIdentifier = UUID.randomUUID();
 
-        String hotelQuery = """
-                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
-                VALUES (:hotelIdentifier, 'Amazing hotel', 'Eloquent description', 'Berlin', 150, 'amazing-hotel-image.com');
-                """;
-
-        String reviewQuery = """
-                INSERT INTO reviews(id, rating, comment, hotel_id)
-                VALUES (1, 5, 'This is an amazing hotel!', :hotelIdentifier);
-                """;
-
-        MapSqlParameterSource hotelQueryParameters = new MapSqlParameterSource();
-        hotelQueryParameters.addValue("hotelIdentifier", hotelIdentifier);
-
-        MapSqlParameterSource reviewQueryParameters = new MapSqlParameterSource();
-        reviewQueryParameters.addValue("hotelIdentifier", hotelIdentifier);
-
-        namedParameterJdbcTemplate.update(hotelQuery, hotelQueryParameters);
-        namedParameterJdbcTemplate.update(reviewQuery, reviewQueryParameters);
+        insertHotelWithIdentifier(hotelIdentifier);
+        insertReviewWithHotelIdentifier(hotelIdentifier);
 
         List<Review> result = testee.findByHotelIdentifier(hotelIdentifier.toString());
 
@@ -60,5 +44,30 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
                                     .isEqualTo("This is an amazing hotel!");
                         }
                 );
+    }
+
+    private void insertHotelWithIdentifier(UUID hotelIdentifier) {
+        String query = """
+                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
+                VALUES
+                    (:hotelIdentifier, 'Amazing hotel', 'Eloquent description', 'Barcelona', 150, 'amazing-hotel-image.com')
+                """;
+
+        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+        queryParameters.addValue("hotelIdentifier", hotelIdentifier);
+
+        namedParameterJdbcTemplate.update(query, queryParameters);
+    }
+
+    private void insertReviewWithHotelIdentifier(UUID hotelIdentifier) {
+        String query = """
+                INSERT INTO reviews(rating, comment, hotel_id)
+                VALUES (5, 'This is an amazing hotel!', :hotelIdentifier);
+                """;
+
+        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+        queryParameters.addValue("hotelIdentifier", hotelIdentifier);
+
+        namedParameterJdbcTemplate.update(query, queryParameters);
     }
 }
