@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -25,6 +26,9 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
     private MockMvc mockMvc;
 
     @AfterEach
@@ -34,15 +38,23 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Sql(statements = """
-            INSERT INTO hotels(id, name, description, location, total_price, image_url)
-            VALUES (75, 'Amazing hotel', 'Eloquent description', 'Barcelona', 150, 'amazing-hotel-image.com');
-            INSERT INTO reviews(id, rating, comment, hotel_id)
-            VALUES (1, 5, 'This is an amazing hotel!', 75);
-            INSERT INTO reviews(id, rating, comment, hotel_id)
-            VALUES (2, 3, 'This is an average level hotel!', 75);
-            """)
     void hotelsMatchingQueryShouldBeReturned() throws Exception {
+
+        UUID hotelIdentifier = UUID.randomUUID();
+
+        insertHotelWithIdentifierAndLocationAndTotalPrice(hotelIdentifier, "Barcelona", 150);
+
+        insertReviewWithRatingAndCommentAndHotelIdentifier(
+                5,
+                "This is an amazing hotel!",
+                hotelIdentifier
+        );
+
+        insertReviewWithRatingAndCommentAndHotelIdentifier(
+                3,
+                "This is an average level hotel!",
+                hotelIdentifier
+        );
 
         String request = """
                     {
@@ -63,7 +75,7 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                         """
                                 [
                                     {
-                                      "identifier": "75",
+                                      "identifier": "%s",
                                       "name": "Amazing hotel",
                                       "description": "Eloquent description",
                                       "location": "Barcelona",
@@ -81,7 +93,7 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                                       ]
                                     }
                                 ]
-                                """
+                                """.formatted(hotelIdentifier.toString())
                 ));
     }
 
@@ -104,5 +116,36 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                                 ]
                                 """
                 ));
+    }
+
+    private void insertHotelWithIdentifierAndLocationAndTotalPrice(
+            UUID hotelIdentifier, String hotelLocation, Integer totalPrice) {
+        String query = """
+                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
+                VALUES
+                    (:globalIdentifier, 'Amazing hotel', 'Eloquent description', :hotelLocation, :totalPrice, 'amazing-hotel-image.com')
+                """;
+
+        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+        queryParameters.addValue("globalIdentifier", hotelIdentifier);
+        queryParameters.addValue("hotelLocation", hotelLocation);
+        queryParameters.addValue("totalPrice", totalPrice);
+
+        namedParameterJdbcTemplate.update(query, queryParameters);
+    }
+
+    private void insertReviewWithRatingAndCommentAndHotelIdentifier(
+            Integer rating, String comment, UUID hotelIdentifier) {
+        String query = """
+                INSERT INTO reviews(rating, comment, hotel_id)
+                VALUES (:rating, :comment, :hotelIdentifier);
+                """;
+
+        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+        queryParameters.addValue("rating", rating);
+        queryParameters.addValue("hotelIdentifier", hotelIdentifier);
+        queryParameters.addValue("comment", comment);
+
+        namedParameterJdbcTemplate.update(query, queryParameters);
     }
 }
