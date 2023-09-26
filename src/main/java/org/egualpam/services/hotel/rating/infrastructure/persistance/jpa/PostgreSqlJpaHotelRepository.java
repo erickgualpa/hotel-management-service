@@ -32,7 +32,7 @@ public class PostgreSqlJpaHotelRepository extends HotelRepository {
                         hotelDto ->
                                 mapIntoEntity(
                                         // TODO: Identifier mapped should not be the db identifier but the entity one
-                                        hotelDto.id().toString(),
+                                        hotelDto.globalIdentifier(),
                                         hotelDto.name(),
                                         hotelDto.description(),
                                         hotelDto.location(),

@@ -1,7 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
 public record HotelDto(
-        Long id,
+        String globalIdentifier,
         String name,
         String description,
         String location,

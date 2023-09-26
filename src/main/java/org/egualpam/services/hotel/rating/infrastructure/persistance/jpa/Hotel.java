@@ -11,6 +11,8 @@ public class Hotel {
 
     @Id
     private Long id;
+    @Column(name = "global_identifier")
+    private String globalIdentifier;
     private String name;
     private String description;
     private String location;
@@ -27,6 +29,14 @@ public class Hotel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getGlobalIdentifier() {
+        return globalIdentifier;
+    }
+
+    public void setGlobalIdentifier(String identifier) {
+        this.globalIdentifier = identifier;
     }
 
     public String getName() {
