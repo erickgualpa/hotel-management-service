@@ -5,84 +5,52 @@ import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.Hotel;
 import org.egualpam.services.hotel.rating.domain.HotelRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DirtiesContext
 public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private HotelRepository testee;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public static Stream<Arguments> matchingPriceRangeHotelQueries() {
-        return Stream.of(
-                Arguments.of(
-                        HotelQuery.create()
-                                .withPriceRange(100, 100)
-                                .build(),
-                        "2"),
-                Arguments.of(
-                        HotelQuery.create()
-                                .withPriceRange(101, 150)
-                                .build(),
-                        "1"),
-                Arguments.of(
-                        HotelQuery.create()
-                                .withPriceRange(150, 150)
-                                .build(),
-                        "1")
-        );
-    }
+    @Autowired
+    private HotelRepository testee;
 
     @AfterEach
     void tearDown() {
-        jdbcTemplate.execute("DELETE FROM reviews;");
         jdbcTemplate.execute("DELETE FROM hotels;");
     }
 
     @Test
-    // TODO: Randomize the UUID identifiers used among this queries
-    @Sql(statements = """
-            INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
-            VALUES
-                ('8d5bea52-8541-421e-80d6-32d4cef1350f', 'Amazing hotel', 'Eloquent description', 'Barcelona', 1000, 'amazing-hotel-image.com'),
-                ('879f9e2c-0e0a-4748-a0ee-d10a980187b1', 'Another hotel', 'Eloquent description', 'Berlin', 400, 'amazing-hotel-image.com'),
-                ('abf3bfe6-93b9-4416-b1a8-2945f1e46b1e', 'And another hotel', 'Eloquent description', 'Quito', 750, 'amazing-hotel-image.com');
-            """)
     void givenEmptyQuery_allHotelsShouldBeReturned() {
-
-        HotelQuery hotelQuery =
-                HotelQuery.create()
-                        .build();
-
-        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
-
-        assertThat(result).hasSize(3);
+        jdbcTemplate.update("""
+                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
+                VALUES
+                    (gen_random_uuid(), 'Amazing hotel', 'Eloquent description', 'Barcelona', 1000, 'amazing-hotel-image.com')                
+                """
+        );
+        List<Hotel> result = testee.findHotelsMatchingQuery(HotelQuery.create().build());
+        assertThat(result).hasSize(1);
     }
 
     @Test
-    @Sql(statements = """
-            INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
-            VALUES
-                ('ad6dba95-5533-4271-b080-952ef8b4c58a', 'Amazing hotel', 'Eloquent description', 'Sydney', 800, 'amazing-hotel-image.com'),
-                ('c3819f94-4c42-4ba0-8fff-e4fd9f2048ee', 'Another amazing hotel', 'Eloquent description', 'Amsterdam', 100, 'amazing-hotel-image.com');
-            """)
     void givenQueryWithLocationFilter_matchingHotelsShouldBeReturned() {
+
+        UUID hotelIdentifier = UUID.randomUUID();
+
+        insertHotelWithIdentifierAndLocation(hotelIdentifier, UUID.randomUUID().toString());
+        insertHotelWithIdentifierAndLocation(hotelIdentifier, "Sydney");
 
         HotelQuery hotelQuery =
                 HotelQuery.create()
@@ -94,29 +62,57 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
         assertThat(result).hasSize(1)
                 .extracting("identifier")
                 .allSatisfy(
-                        hotelIdentifier -> assertThat(hotelIdentifier).isEqualTo("ad6dba95-5533-4271-b080-952ef8b4c58a")
+                        actualIdentifier -> assertThat(actualIdentifier).isEqualTo(hotelIdentifier.toString())
                 );
     }
 
-    @ParameterizedTest
-    // TODO: Fix this test
-    @Disabled
-    @MethodSource("matchingPriceRangeHotelQueries")
-    @Sql(statements = """
-            INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
-            VALUES
-                ('94737d0a-8644-44ca-ac75-d23f3fcf4616', 'Amazing hotel', 'Eloquent description', 'Barcelona', 150, 'amazing-hotel-image.com'),
-                ('5af507f4-13c5-486e-95a3-a8c0e7fed62c', 'Another amazing hotel', 'Eloquent description', 'Amsterdam', 100, 'amazing-hotel-image.com');
-            """)
-    void givenQueryWithPriceRangeFilter_matchingHotelsShouldBeReturned(
-            HotelQuery hotelQuery, String expectedHotelIdentifier) {
+    @Test
+    void givenQueryWithPriceRangeFilter_matchingHotelsShouldBeReturned() {
 
-        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+        insertHotelWithIdentifierAndTotalPrice(UUID.randomUUID(), 50);
+        insertHotelWithIdentifierAndTotalPrice(UUID.randomUUID(), 100);
+        insertHotelWithIdentifierAndTotalPrice(UUID.randomUUID(), 125);
+        insertHotelWithIdentifierAndTotalPrice(UUID.randomUUID(), 150);
+        insertHotelWithIdentifierAndTotalPrice(UUID.randomUUID(), 500);
 
-        assertThat(result).hasSize(1)
-                .extracting("identifier")
-                .allSatisfy(
-                        hotelIdentifier -> assertThat(hotelIdentifier).isEqualTo(expectedHotelIdentifier)
-                );
+        List<Hotel> result = testee.findHotelsMatchingQuery(HotelQuery.create()
+                .withPriceRange(100, 150)
+                .build());
+
+        assertThat(result).hasSize(3);
+    }
+
+    private void insertHotelWithIdentifierAndLocation(UUID hotelIdentifier, String hotelLocation) {
+        String query = """
+                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
+                VALUES
+                    (:globalIdentifier, 'Amazing hotel', 'Eloquent description', :location, 800, 'amazing-hotel-image.com')             
+                """;
+
+        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+        queryParameters.addValue("globalIdentifier", hotelIdentifier);
+        queryParameters.addValue("location", hotelLocation);
+
+        namedParameterJdbcTemplate.update(
+                query,
+                queryParameters
+        );
+    }
+
+    private void insertHotelWithIdentifierAndTotalPrice(UUID hotelIdentifier, Integer totalPrice) {
+        String query = """
+                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
+                VALUES
+                    (:globalIdentifier, 'Amazing hotel', 'Eloquent description', 'Barcelona', :totalPrice, 'amazing-hotel-image.com')             
+                """;
+
+        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+        queryParameters.addValue("globalIdentifier", hotelIdentifier);
+        queryParameters.addValue("totalPrice", totalPrice);
+
+        namedParameterJdbcTemplate.update(
+                query,
+                queryParameters
+        );
     }
 }
