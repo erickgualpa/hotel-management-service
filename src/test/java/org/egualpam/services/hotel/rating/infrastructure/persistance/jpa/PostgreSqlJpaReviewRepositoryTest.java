@@ -5,10 +5,12 @@ import org.egualpam.services.hotel.rating.domain.Review;
 import org.egualpam.services.hotel.rating.domain.ReviewRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,18 +18,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
 
     @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
     private ReviewRepository testee;
 
+    // TODO: Clean up this test
     @Test
-    @Sql(statements = """
-            INSERT INTO hotels(id, name, description, location, total_price, image_url)
-            VALUES (91, 'Amazing hotel', 'Eloquent description', 'Berlin', 150, 'amazing-hotel-image.com');
-            INSERT INTO reviews(id, rating, comment, hotel_id)
-            VALUES (1, 5, 'This is an amazing hotel!', 91);
-            """)
     void givenHotelIdentifier_allMatchingReviewShouldBeReturned() {
 
-        List<Review> result = testee.findByHotelIdentifier("91");
+        UUID hotelIdentifier = UUID.randomUUID();
+
+        String hotelQuery = """
+                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
+                VALUES (:hotelIdentifier, 'Amazing hotel', 'Eloquent description', 'Berlin', 150, 'amazing-hotel-image.com');
+                """;
+
+        String reviewQuery = """
+                INSERT INTO reviews(id, rating, comment, hotel_id)
+                VALUES (1, 5, 'This is an amazing hotel!', :hotelIdentifier);
+                """;
+
+        MapSqlParameterSource hotelQueryParameters = new MapSqlParameterSource();
+        hotelQueryParameters.addValue("hotelIdentifier", hotelIdentifier);
+
+        MapSqlParameterSource reviewQueryParameters = new MapSqlParameterSource();
+        reviewQueryParameters.addValue("hotelIdentifier", hotelIdentifier);
+
+        namedParameterJdbcTemplate.update(hotelQuery, hotelQueryParameters);
+        namedParameterJdbcTemplate.update(reviewQuery, reviewQueryParameters);
+
+        List<Review> result = testee.findByHotelIdentifier(hotelIdentifier.toString());
 
         assertThat(result)
                 .hasSize(1)

@@ -6,6 +6,7 @@ import org.egualpam.services.hotel.rating.domain.ReviewRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class PostgreSqlJpaReviewRepository extends ReviewRepository {
@@ -26,8 +27,7 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
                                         WHERE r.hotel_id = :hotel_id
                                         """,
                                 org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review.class)
-                        // TODO: Receive 'hotelIdentifier' as Integer if it makes more sense
-                        .setParameter("hotel_id", Integer.parseInt(hotelIdentifier));
+                        .setParameter("hotel_id", UUID.fromString(hotelIdentifier));
 
         // TODO: Find a cleaner way to do this
         List<org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review> results =
