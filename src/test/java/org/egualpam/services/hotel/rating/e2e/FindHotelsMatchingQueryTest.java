@@ -3,12 +3,10 @@ package org.egualpam.services.hotel.rating.e2e;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.egualpam.services.hotel.rating.helpers.ReviewTestRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,9 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
     private HotelTestRepository hotelTestRepository;
 
     @Autowired
@@ -33,12 +28,6 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @AfterEach
-    void tearDown() {
-        jdbcTemplate.execute("DELETE FROM reviews;");
-        jdbcTemplate.execute("DELETE FROM hotels;");
-    }
 
     @Test
     void hotelsMatchingQueryShouldBeReturned() throws Exception {
