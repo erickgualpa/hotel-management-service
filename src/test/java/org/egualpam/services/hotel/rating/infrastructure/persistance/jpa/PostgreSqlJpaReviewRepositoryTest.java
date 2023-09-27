@@ -3,7 +3,6 @@ package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.domain.Review;
 import org.egualpam.services.hotel.rating.domain.ReviewRepository;
-import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
@@ -22,9 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
 
     @Autowired
-    private HotelTestRepository hotelTestRepository;
-
-    @Autowired
     private TestEntityManager testEntityManager;
 
     @Autowired
@@ -36,11 +32,16 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
         UUID hotelIdentifier = UUID.randomUUID();
         UUID reviewIdentifier = UUID.randomUUID();
 
-        hotelTestRepository.insertHotelWithIdentifier(hotelIdentifier);
+        Hotel hotel = new Hotel();
+        hotel.setId(hotelIdentifier);
+        hotel.setName("Some random hotel");
+        hotel.setLocation("Some random location");
+        hotel.setTotalPrice(100);
+
+        testEntityManager.persistAndFlush(hotel);
 
         org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review review =
                 new org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review();
-
         review.setId(reviewIdentifier);
         review.setRating(4);
         review.setComment("This is a nice hotel!");
