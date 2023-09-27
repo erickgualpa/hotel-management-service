@@ -37,7 +37,6 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
         return results.stream()
                 .map(review ->
                         mapIntoEntity(
-                                // TODO: Identifier mapped should not be the db identifier but the entity one
                                 review.getId().toString(),
                                 review.getRating(),
                                 review.getComment()))
