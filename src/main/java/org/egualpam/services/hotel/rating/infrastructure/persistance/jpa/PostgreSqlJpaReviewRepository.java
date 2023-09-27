@@ -29,12 +29,10 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
                                 org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review.class)
                         .setParameter("hotel_id", UUID.fromString(hotelIdentifier));
 
-        // TODO: Find a cleaner way to do this
-        List<org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review> results =
-                (List<org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review>)
-                        query.getResultList();
+        List<org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review> reviews =
+                query.getResultList();
 
-        return results.stream()
+        return reviews.stream()
                 .map(review ->
                         mapIntoEntity(
                                 review.getId().toString(),
