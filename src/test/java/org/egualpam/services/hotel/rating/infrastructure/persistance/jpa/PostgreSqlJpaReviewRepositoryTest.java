@@ -4,10 +4,9 @@ import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.domain.Review;
 import org.egualpam.services.hotel.rating.domain.ReviewRepository;
 import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
+import org.egualpam.services.hotel.rating.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
@@ -19,10 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
 
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private HotelTestRepository hotelTestRepository;
 
     @Autowired
-    private HotelTestRepository hotelTestRepository;
+    private ReviewTestRepository reviewTestRepository;
 
     @Autowired
     private ReviewRepository testee;
@@ -33,7 +32,7 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
         UUID hotelIdentifier = UUID.randomUUID();
 
         hotelTestRepository.insertHotelWithIdentifier(hotelIdentifier);
-        insertReviewWithHotelIdentifier(hotelIdentifier);
+        reviewTestRepository.insertReviewWithHotelIdentifier(hotelIdentifier);
 
         List<Review> result = testee.findByHotelIdentifier(hotelIdentifier.toString());
 
@@ -47,17 +46,5 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
                                     .isEqualTo("This is an amazing hotel!");
                         }
                 );
-    }
-
-    private void insertReviewWithHotelIdentifier(UUID hotelIdentifier) {
-        String query = """
-                INSERT INTO reviews(rating, comment, hotel_id)
-                VALUES (5, 'This is an amazing hotel!', :hotelIdentifier);
-                """;
-
-        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
-        queryParameters.addValue("hotelIdentifier", hotelIdentifier);
-
-        namedParameterJdbcTemplate.update(query, queryParameters);
     }
 }

@@ -2,14 +2,13 @@ package org.egualpam.services.hotel.rating.e2e;
 
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
+import org.egualpam.services.hotel.rating.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,10 +26,10 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private HotelTestRepository hotelTestRepository;
 
     @Autowired
-    private HotelTestRepository hotelTestRepository;
+    private ReviewTestRepository reviewTestRepository;
 
     @Autowired
     private MockMvc mockMvc;
@@ -52,13 +51,13 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                         "Barcelona",
                         150);
 
-        insertReviewWithRatingAndCommentAndHotelIdentifier(
+        reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
                 5,
                 "This is an amazing hotel!",
                 hotelIdentifier
         );
 
-        insertReviewWithRatingAndCommentAndHotelIdentifier(
+        reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
                 3,
                 "This is an average level hotel!",
                 hotelIdentifier
@@ -124,20 +123,5 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                                 ]
                                 """
                 ));
-    }
-
-    private void insertReviewWithRatingAndCommentAndHotelIdentifier(
-            Integer rating, String comment, UUID hotelIdentifier) {
-        String query = """
-                INSERT INTO reviews(rating, comment, hotel_id)
-                VALUES (:rating, :comment, :hotelIdentifier);
-                """;
-
-        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
-        queryParameters.addValue("rating", rating);
-        queryParameters.addValue("hotelIdentifier", hotelIdentifier);
-        queryParameters.addValue("comment", comment);
-
-        namedParameterJdbcTemplate.update(query, queryParameters);
     }
 }
