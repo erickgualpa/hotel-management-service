@@ -3,6 +3,7 @@ package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.domain.Review;
 import org.egualpam.services.hotel.rating.domain.ReviewRepository;
+import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -21,15 +22,17 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
+    private HotelTestRepository hotelTestRepository;
+
+    @Autowired
     private ReviewRepository testee;
 
-    // TODO: Clean up this test
     @Test
     void givenHotelIdentifier_allMatchingReviewShouldBeReturned() {
 
         UUID hotelIdentifier = UUID.randomUUID();
 
-        insertHotelWithIdentifier(hotelIdentifier);
+        hotelTestRepository.insertHotelWithIdentifier(hotelIdentifier);
         insertReviewWithHotelIdentifier(hotelIdentifier);
 
         List<Review> result = testee.findByHotelIdentifier(hotelIdentifier.toString());
@@ -44,19 +47,6 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
                                     .isEqualTo("This is an amazing hotel!");
                         }
                 );
-    }
-
-    private void insertHotelWithIdentifier(UUID hotelIdentifier) {
-        String query = """
-                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
-                VALUES
-                    (:hotelIdentifier, 'Amazing hotel', 'Eloquent description', 'Barcelona', 150, 'amazing-hotel-image.com')
-                """;
-
-        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
-        queryParameters.addValue("hotelIdentifier", hotelIdentifier);
-
-        namedParameterJdbcTemplate.update(query, queryParameters);
     }
 
     private void insertReviewWithHotelIdentifier(UUID hotelIdentifier) {
