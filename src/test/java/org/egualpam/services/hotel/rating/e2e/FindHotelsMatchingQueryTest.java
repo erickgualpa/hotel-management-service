@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating.e2e;
 
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
+import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
+    private HotelTestRepository hotelTestRepository;
+
+    @Autowired
     private MockMvc mockMvc;
 
     @AfterEach
@@ -42,7 +46,11 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
 
         UUID hotelIdentifier = UUID.randomUUID();
 
-        insertHotelWithIdentifierAndLocationAndTotalPrice(hotelIdentifier, "Barcelona", 150);
+        hotelTestRepository
+                .insertHotelWithIdentifierAndLocationAndTotalPrice(
+                        hotelIdentifier,
+                        "Barcelona",
+                        150);
 
         insertReviewWithRatingAndCommentAndHotelIdentifier(
                 5,
@@ -116,22 +124,6 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                                 ]
                                 """
                 ));
-    }
-
-    private void insertHotelWithIdentifierAndLocationAndTotalPrice(
-            UUID hotelIdentifier, String hotelLocation, Integer totalPrice) {
-        String query = """
-                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
-                VALUES
-                    (:globalIdentifier, 'Amazing hotel', 'Eloquent description', :hotelLocation, :totalPrice, 'amazing-hotel-image.com')
-                """;
-
-        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
-        queryParameters.addValue("globalIdentifier", hotelIdentifier);
-        queryParameters.addValue("hotelLocation", hotelLocation);
-        queryParameters.addValue("totalPrice", totalPrice);
-
-        namedParameterJdbcTemplate.update(query, queryParameters);
     }
 
     private void insertReviewWithRatingAndCommentAndHotelIdentifier(
