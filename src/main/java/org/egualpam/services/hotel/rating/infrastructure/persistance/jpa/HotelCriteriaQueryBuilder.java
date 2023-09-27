@@ -28,7 +28,7 @@ public class HotelCriteriaQueryBuilder {
         criteriaQuery.select(
                 criteriaBuilder.construct(
                         HotelDto.class,
-                        rootHotelEntity.get("globalIdentifier"),
+                        rootHotelEntity.get("id"),
                         rootHotelEntity.get("name"),
                         rootHotelEntity.get("description"),
                         rootHotelEntity.get("location"),

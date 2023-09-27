@@ -15,7 +15,7 @@ public final class HotelTestRepository {
 
     public void insertHotelWithIdentifier(UUID hotelIdentifier) {
         String query = """
-                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
+                INSERT INTO hotels(id, name, description, location, total_price, image_url)
                 VALUES
                     (:hotelIdentifier, 'Amazing hotel', 'Eloquent description', 'Barcelona', 150, 'amazing-hotel-image.com')
                 """;
@@ -28,13 +28,13 @@ public final class HotelTestRepository {
 
     public void insertHotelWithIdentifierAndLocation(UUID hotelIdentifier, String hotelLocation) {
         String query = """
-                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
+                INSERT INTO hotels(id, name, description, location, total_price, image_url)
                 VALUES
-                    (:globalIdentifier, 'Amazing hotel', 'Eloquent description', :location, 800, 'amazing-hotel-image.com')             
+                    (:hotelIdentifier, 'Amazing hotel', 'Eloquent description', :location, 800, 'amazing-hotel-image.com')             
                 """;
 
         MapSqlParameterSource queryParameters = new MapSqlParameterSource();
-        queryParameters.addValue("globalIdentifier", hotelIdentifier);
+        queryParameters.addValue("hotelIdentifier", hotelIdentifier);
         queryParameters.addValue("location", hotelLocation);
 
         namedParameterJdbcTemplate.update(
@@ -45,13 +45,13 @@ public final class HotelTestRepository {
 
     public void insertHotelWithIdentifierAndTotalPrice(UUID hotelIdentifier, Integer totalPrice) {
         String query = """
-                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
+                INSERT INTO hotels(id, name, description, location, total_price, image_url)
                 VALUES
-                    (:globalIdentifier, 'Amazing hotel', 'Eloquent description', 'Barcelona', :totalPrice, 'amazing-hotel-image.com')             
+                    (:hotelIdentifier, 'Amazing hotel', 'Eloquent description', 'Barcelona', :totalPrice, 'amazing-hotel-image.com')             
                 """;
 
         MapSqlParameterSource queryParameters = new MapSqlParameterSource();
-        queryParameters.addValue("globalIdentifier", hotelIdentifier);
+        queryParameters.addValue("hotelIdentifier", hotelIdentifier);
         queryParameters.addValue("totalPrice", totalPrice);
 
         namedParameterJdbcTemplate.update(
@@ -63,13 +63,13 @@ public final class HotelTestRepository {
     public void insertHotelWithIdentifierAndLocationAndTotalPrice(
             UUID hotelIdentifier, String hotelLocation, Integer totalPrice) {
         String query = """
-                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
+                INSERT INTO hotels(id, name, description, location, total_price, image_url)
                 VALUES
-                    (:globalIdentifier, 'Amazing hotel', 'Eloquent description', :hotelLocation, :totalPrice, 'amazing-hotel-image.com')
+                    (:hotelIdentifier, 'Amazing hotel', 'Eloquent description', :hotelLocation, :totalPrice, 'amazing-hotel-image.com')
                 """;
 
         MapSqlParameterSource queryParameters = new MapSqlParameterSource();
-        queryParameters.addValue("globalIdentifier", hotelIdentifier);
+        queryParameters.addValue("hotelIdentifier", hotelIdentifier);
         queryParameters.addValue("hotelLocation", hotelLocation);
         queryParameters.addValue("totalPrice", totalPrice);
 

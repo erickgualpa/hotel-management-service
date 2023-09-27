@@ -33,7 +33,7 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
 
         UUID hotelIdentifier = UUID.randomUUID();
 
-        hotelTestRepository.insertHotelWithIdentifierAndLocation(hotelIdentifier, UUID.randomUUID().toString());
+        hotelTestRepository.insertHotelWithIdentifierAndLocation(UUID.randomUUID(), UUID.randomUUID().toString());
         hotelTestRepository.insertHotelWithIdentifierAndLocation(hotelIdentifier, "Sydney");
 
         HotelQuery hotelQuery =

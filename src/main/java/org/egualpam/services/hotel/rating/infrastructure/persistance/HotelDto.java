@@ -1,7 +1,9 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance;
 
+import java.util.UUID;
+
 public record HotelDto(
-        String globalIdentifier,
+        UUID id,
         String name,
         String description,
         String location,
