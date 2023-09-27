@@ -33,12 +33,7 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     void givenEmptyQuery_allHotelsShouldBeReturned() {
-        jdbcTemplate.update("""
-                INSERT INTO hotels(global_identifier, name, description, location, total_price, image_url)
-                VALUES
-                    (gen_random_uuid(), 'Amazing hotel', 'Eloquent description', 'Barcelona', 1000, 'amazing-hotel-image.com')                
-                """
-        );
+        hotelTestRepository.insertHotelWithIdentifier(UUID.randomUUID());
         List<Hotel> result = testee.findHotelsMatchingQuery(HotelQuery.create().build());
         assertThat(result).hasSize(1);
     }
