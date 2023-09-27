@@ -1,14 +1,13 @@
 package org.egualpam.services.hotel.rating.e2e;
 
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
-import org.junit.jupiter.api.AfterEach;
+import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
+import org.egualpam.services.hotel.rating.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -22,27 +21,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private HotelTestRepository hotelTestRepository;
+
+    @Autowired
+    private ReviewTestRepository reviewTestRepository;
 
     @Autowired
     private MockMvc mockMvc;
 
-    @AfterEach
-    void tearDown() {
-        jdbcTemplate.execute("DELETE FROM reviews;");
-        jdbcTemplate.execute("DELETE FROM hotels;");
-    }
-
     @Test
-    @Sql(statements = """
-            INSERT INTO hotels(id, name, description, location, total_price, image_url)
-            VALUES (75, 'Amazing hotel', 'Eloquent description', 'Barcelona', 150, 'amazing-hotel-image.com');
-            INSERT INTO reviews(id, rating, comment, hotel_id)
-            VALUES (1, 5, 'This is an amazing hotel!', 75);
-            INSERT INTO reviews(id, rating, comment, hotel_id)
-            VALUES (2, 3, 'This is an average level hotel!', 75);
-            """)
     void hotelsMatchingQueryShouldBeReturned() throws Exception {
+
+        UUID hotelIdentifier = UUID.randomUUID();
+
+        hotelTestRepository
+                .insertHotelWithIdentifierAndLocationAndTotalPrice(
+                        hotelIdentifier,
+                        "Barcelona",
+                        150);
+
+        reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
+                5,
+                "This is an amazing hotel!",
+                hotelIdentifier
+        );
+
+        reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
+                3,
+                "This is an average level hotel!",
+                hotelIdentifier
+        );
 
         String request = """
                     {
@@ -63,7 +71,7 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                         """
                                 [
                                     {
-                                      "identifier": "75",
+                                      "identifier": "%s",
                                       "name": "Amazing hotel",
                                       "description": "Eloquent description",
                                       "location": "Barcelona",
@@ -81,7 +89,7 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                                       ]
                                     }
                                 ]
-                                """
+                                """.formatted(hotelIdentifier.toString())
                 ));
     }
 

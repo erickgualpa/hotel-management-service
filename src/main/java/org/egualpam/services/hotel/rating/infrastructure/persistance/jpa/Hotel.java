@@ -4,13 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Table(name = "hotels")
 public class Hotel {
 
     @Id
-    private Long id;
+    private UUID id;
     private String name;
     private String description;
     private String location;
@@ -21,11 +22,11 @@ public class Hotel {
     @Column(name = "image_url")
     private String imageURL;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
