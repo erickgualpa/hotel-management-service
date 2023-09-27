@@ -34,8 +34,8 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
 
         Hotel hotel = new Hotel();
         hotel.setId(hotelIdentifier);
-        hotel.setName("Some random hotel");
-        hotel.setLocation("Some random location");
+        hotel.setName("Some fake hotel name");
+        hotel.setLocation("Some fake location name");
         hotel.setTotalPrice(100);
 
         testEntityManager.persistAndFlush(hotel);
