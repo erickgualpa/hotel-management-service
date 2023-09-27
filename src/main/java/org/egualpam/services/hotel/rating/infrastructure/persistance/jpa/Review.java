@@ -10,16 +10,16 @@ import java.util.UUID;
 public class Review {
 
     @Id
-    private Long id;
+    private UUID id;
     private Integer rating;
     private String comment;
     private UUID hotel_id;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -37,5 +37,13 @@ public class Review {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public UUID getHotel_id() {
+        return hotel_id;
+    }
+
+    public void setHotel_id(UUID hotel_id) {
+        this.hotel_id = hotel_id;
     }
 }

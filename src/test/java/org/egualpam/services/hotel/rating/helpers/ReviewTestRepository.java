@@ -13,18 +13,6 @@ public class ReviewTestRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public void insertReviewWithHotelIdentifier(UUID hotelIdentifier) {
-        String query = """
-                INSERT INTO reviews(rating, comment, hotel_id)
-                VALUES (5, 'This is an amazing hotel!', :hotelIdentifier);
-                """;
-
-        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
-        queryParameters.addValue("hotelIdentifier", hotelIdentifier);
-
-        namedParameterJdbcTemplate.update(query, queryParameters);
-    }
-
     public void insertReviewWithRatingAndCommentAndHotelIdentifier(
             Integer rating, String comment, UUID hotelIdentifier) {
         String query = """

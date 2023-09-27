@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DirtiesContext
 public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
@@ -32,7 +33,11 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
         UUID hotelIdentifier = UUID.randomUUID();
 
         hotelTestRepository.insertHotelWithIdentifier(hotelIdentifier);
-        reviewTestRepository.insertReviewWithHotelIdentifier(hotelIdentifier);
+        reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
+                5,
+                "This is an amazing hotel!",
+                hotelIdentifier
+        );
 
         List<Review> result = testee.findByHotelIdentifier(hotelIdentifier.toString());
 
@@ -40,7 +45,7 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
                 .hasSize(1)
                 .allSatisfy(
                         review -> {
-                            assertThat(review.getIdentifier()).isEqualTo("1");
+                            assertNotNull(review.getIdentifier());
                             assertThat(review.getRating()).isEqualTo(5);
                             assertThat(review.getComment())
                                     .isEqualTo("This is an amazing hotel!");
