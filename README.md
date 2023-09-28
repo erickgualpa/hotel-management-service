@@ -12,6 +12,11 @@ Using wrapped maven included in this repository, you can:
 docker compose up -d
 ```
 
+💤 Stop service containers
+```shell script
+docker compose down
+```
+
 🔹 Example query request
   <br>
 
