@@ -6,7 +6,6 @@ Using wrapped maven included in this repository, you can:
 
 🚀 Compile and Run service as container! 🐳
   <br>
-❗Remove any existing `hotel-rating-service` image before
 ```shell script
 ./mvnw clean package
 docker compose up -d
@@ -15,6 +14,7 @@ docker compose up -d
 💤 Stop service containers
 ```shell script
 docker compose down
+docker rmi hotel-rating-service:latest
 ```
 
 🔹 Example query request
