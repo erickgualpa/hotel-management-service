@@ -4,19 +4,12 @@
 
 Using wrapped maven included in this repository, you can:
 
-🔨 Compile
+🚀 Compile and Run service as container! 🐳
   <br>
-
+❗Remove any existing `hotel-rating-service` image before
 ```shell script
 ./mvnw clean package
-```
-
-🚀 Run service
-  <br>
-
-```shell script
 docker compose up -d
-./mvnw clean spring-boot:run
 ```
 
 🔹 Example query request
