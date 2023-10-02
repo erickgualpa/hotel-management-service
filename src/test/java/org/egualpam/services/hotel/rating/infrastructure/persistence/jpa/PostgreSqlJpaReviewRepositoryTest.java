@@ -1,5 +1,6 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
+package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
+import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.domain.Review;
 import org.egualpam.services.hotel.rating.domain.ReviewRepository;
@@ -9,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEnti
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,8 +40,8 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
 
         testEntityManager.persistAndFlush(hotel);
 
-        org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review review =
-                new org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review();
+        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review review =
+                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review();
         review.setId(reviewIdentifier);
         review.setRating(4);
         review.setComment("This is a nice hotel!");

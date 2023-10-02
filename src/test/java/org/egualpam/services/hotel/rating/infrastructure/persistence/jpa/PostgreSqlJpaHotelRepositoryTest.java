@@ -1,5 +1,6 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
+package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
+import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.Hotel;
@@ -10,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEnti
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.DirtiesContext;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -31,8 +31,8 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
     @Test
     void givenEmptyQuery_allHotelsShouldBeReturned() {
 
-        org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Hotel hotel =
-                new org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Hotel();
+        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
+                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
         hotel.setId(UUID.randomUUID());
         hotel.setName("Some random hotel");
         hotel.setLocation("Some random location");
@@ -51,8 +51,8 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
         UUID hotelIdentifier = UUID.randomUUID();
         String hotelLocation = UUID.randomUUID().toString();
 
-        org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Hotel hotel =
-                new org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Hotel();
+        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
+                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
         hotel.setId(hotelIdentifier);
         hotel.setName("Some fake hotel name");
         hotel.setLocation(hotelLocation);
@@ -80,8 +80,8 @@ public class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
         UUID hotelIdentifier = UUID.randomUUID();
         int hotelTotalPrice = new Random().nextInt(100, 150);
 
-        org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Hotel hotel =
-                new org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Hotel();
+        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
+                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
         hotel.setId(hotelIdentifier);
         hotel.setName("Some fake hotel name");
         hotel.setLocation("Some fake location name");
