@@ -12,7 +12,7 @@ Using wrapped maven included in this repository, you can:
 docker compose up -d
 ```
 
-💤 Stop service containers
+💤 Clear service containers
 
 ```shell script
 docker compose down
