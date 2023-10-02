@@ -1,8 +1,25 @@
 services:
-  hotel-rating-db:
+  postgres:
     image: postgres:latest
     environment:
       POSTGRES_USER: hotel-rating-user
       POSTGRES_PASSWORD: hotel-rating-password
     ports:
       - 5432:5432
+    networks:
+      - hotel-rating-service-network
+  spring-boot-app:
+    build:
+      dockerfile: Dockerfile
+    image: hotel-rating-service:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+    networks:
+      - hotel-rating-service-network
+networks:
+  hotel-rating-service-network:
+    driver: bridge
+
+

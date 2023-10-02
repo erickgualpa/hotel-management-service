@@ -4,19 +4,19 @@
 
 Using wrapped maven included in this repository, you can:
 
-🔨 Compile
+🚀 Compile and Run service as container! 🐳
 <br>
 
 ```shell script
 ./mvnw clean package
+docker compose up -d
 ```
 
-🚀 Run service
-<br>
+💤 Clear service containers
 
 ```shell script
-docker compose up -d
-./mvnw clean spring-boot:run
+docker compose down
+docker rmi hotel-rating-service:latest
 ```
 
 🔹 Example query request
@@ -32,5 +32,4 @@ curl -X POST -H "Content-Type: application/json" -d '
     }
 }' \
   localhost:8080/v1/hotels/query
-
 ```
