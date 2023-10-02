@@ -35,6 +35,19 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.2.0</version>
+            <exclusions>
+                <!-- TODO: Remove exclusion once vulnerability has been addressed -->
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -64,6 +77,7 @@
             <scope>test</scope>
         </dependency>
         <!--  End of Testing dependencies  -->
+
     </dependencies>
 
     <build>

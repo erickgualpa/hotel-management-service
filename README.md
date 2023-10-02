@@ -19,17 +19,6 @@ docker compose down
 docker rmi hotel-rating-service:latest
 ```
 
-🔹 Example query request
+🔹 Use of this service is specified through [SpringDoc OpenAPI Swagger UI](http://localhost:8080/swagger-ui/index.html).
+Check it and try to find the best available hotel in Mars! 👽
 <br>
-
-```shell script
-curl -X POST -H "Content-Type: application/json" -d '
-{
-    "location": "Mars",
-    "priceRange": {
-        "begin": 50000,
-        "end": 150000
-    }
-}' \
-  localhost:8080/v1/hotels/query
-```
