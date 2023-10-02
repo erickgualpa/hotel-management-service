@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/hotels")
@@ -24,9 +25,17 @@ public final class HotelController {
 
         HotelQuery hotelQuery =
                 HotelQuery.create()
-                        .withLocation(query.getLocation())
-                        .withPriceRange(query.getMinPrice(), query.getMaxPrice())
+                        .withLocation(query.location())
+                        .withPriceRange(
+                                Optional.ofNullable(query.priceRange())
+                                        .map(PriceRange::begin)
+                                        .orElse(null),
+                                Optional.ofNullable(query.priceRange())
+                                        .map(PriceRange::end)
+                                        .orElse(null)
+                        )
                         .build();
+
 
         List<HotelDto> hotels = findHotelsByRatingAverage.execute(hotelQuery);
 
