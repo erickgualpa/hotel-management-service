@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance;
+package org.egualpam.services.hotel.rating.infrastructure.persistence;
 
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
+package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -6,7 +6,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.egualpam.services.hotel.rating.application.HotelQuery;
-import org.egualpam.services.hotel.rating.infrastructure.persistance.HotelDto;
+import org.egualpam.services.hotel.rating.infrastructure.persistence.HotelDto;
 
 import java.util.ArrayList;
 import java.util.List;

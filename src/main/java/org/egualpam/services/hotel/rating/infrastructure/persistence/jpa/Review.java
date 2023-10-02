@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
+package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

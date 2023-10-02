@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
+package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
@@ -40,8 +40,8 @@ public class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
 
         testEntityManager.persistAndFlush(hotel);
 
-        org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review review =
-                new org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review();
+        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review review =
+                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review();
         review.setId(reviewIdentifier);
         review.setRating(4);
         review.setComment("This is a nice hotel!");

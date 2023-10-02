@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
+package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -26,10 +26,10 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
                                         FROM reviews r
                                         WHERE r.hotel_id = :hotel_id
                                         """,
-                                org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review.class)
+                                org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review.class)
                         .setParameter("hotel_id", UUID.fromString(hotelIdentifier));
 
-        List<org.egualpam.services.hotel.rating.infrastructure.persistance.jpa.Review> reviews =
+        List<org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review> reviews =
                 query.getResultList();
 
         return reviews.stream()
