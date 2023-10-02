@@ -1,10 +1,10 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistance.jpa;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.egualpam.services.hotel.rating.domain.Review;
 import org.egualpam.services.hotel.rating.domain.ReviewRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
