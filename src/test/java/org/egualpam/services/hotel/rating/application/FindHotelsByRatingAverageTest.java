@@ -11,9 +11,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 
+import static java.lang.Integer.parseInt;
+import static java.util.UUID.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -38,9 +40,9 @@ class FindHotelsByRatingAverageTest {
 
         HotelQuery hotelQuery = HotelQuery.create().build();
 
-        String intermediateHotelIdentifier = UUID.randomUUID().toString();
-        String worstHotelIdentifier = UUID.randomUUID().toString();
-        String bestHotelIdentifier = UUID.randomUUID().toString();
+        String intermediateHotelIdentifier = randomUUID().toString();
+        String worstHotelIdentifier = randomUUID().toString();
+        String bestHotelIdentifier = randomUUID().toString();
 
         when(hotelRepository.findHotelsMatchingQuery(hotelQuery))
                 .thenReturn(
@@ -85,14 +87,14 @@ class FindHotelsByRatingAverageTest {
     private Hotel buildHotelStubWithIdentifier(String identifier) {
         return new Hotel(
                 identifier,
-                UUID.randomUUID().toString(),
-                UUID.randomUUID().toString(),
-                UUID.randomUUID().toString(),
-                new Random().nextInt(1000),
-                UUID.randomUUID().toString());
+                randomAlphabetic(5),
+                randomAlphabetic(10),
+                randomAlphabetic(5),
+                parseInt(randomNumeric(3)),
+                randomUUID().toString());
     }
 
     private Review buildReviewStubWithRating(int rating) {
-        return new Review(UUID.randomUUID().toString(), rating, UUID.randomUUID().toString());
+        return new Review(randomUUID().toString(), rating, randomAlphabetic(10));
     }
 }
