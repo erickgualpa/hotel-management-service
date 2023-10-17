@@ -9,14 +9,14 @@ Using wrapped maven included in this repository, you can:
 
 ```shell script
 ./mvnw clean package
+docker compose build --no-cache
 docker compose up -d
 ```
 
 💤 Clear service containers
 
 ```shell script
-docker compose down
-docker rmi hotel-rating-service:latest
+docker compose down --rmi local
 ```
 
 🔹 Use of this service is specified through [SpringDoc OpenAPI Swagger UI](http://localhost:8080/swagger-ui/index.html).
