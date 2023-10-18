@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class HotelRepository {
 
-    abstract public List<Hotel> findHotelsMatchingQuery(HotelQuery query);
+    public abstract List<Hotel> findHotelsMatchingQuery(HotelQuery query);
 
     protected final Hotel mapIntoEntity(
             String identifier,

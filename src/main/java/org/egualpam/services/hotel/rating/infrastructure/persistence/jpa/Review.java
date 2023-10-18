@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -14,7 +15,8 @@ public class Review {
     private UUID id;
     private Integer rating;
     private String comment;
-    private UUID hotel_id;
+    @Column(name = "hotel_id")
+    private UUID hotelId;
 
     public UUID getId() {
         return id;
@@ -40,11 +42,11 @@ public class Review {
         this.comment = comment;
     }
 
-    public UUID getHotel_id() {
-        return hotel_id;
+    public UUID getHotelId() {
+        return hotelId;
     }
 
-    public void setHotel_id(UUID hotel_id) {
-        this.hotel_id = hotel_id;
+    public void setHotelId(UUID hotelId) {
+        this.hotelId = hotelId;
     }
 }

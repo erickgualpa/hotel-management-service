@@ -6,7 +6,6 @@ import org.egualpam.services.hotel.rating.domain.ReviewRepository;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FindHotelsByRatingAverage {
 
@@ -26,7 +25,7 @@ public class FindHotelsByRatingAverage {
         return hotels.stream()
                 .sorted(Comparator.comparingDouble(Hotel::calculateRatingAverage).reversed())
                 .map(this::mapIntoHotelDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private void decorateReviews(Hotel hotel) {
@@ -45,8 +44,9 @@ public class FindHotelsByRatingAverage {
                         .map(review ->
                                 new ReviewDto(
                                         review.getRating(),
-                                        review.getComment()))
-                        .collect(Collectors.toList())
+                                        review.getComment()
+                                )
+                        ).toList()
         );
     }
 }

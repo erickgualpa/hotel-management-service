@@ -14,6 +14,13 @@ import java.util.Optional;
 
 public class HotelCriteriaQueryBuilder {
 
+    private static final String ID = "id";
+    private static final String NAME = "name";
+    private static final String DESCRIPTION = "description";
+    private static final String LOCATION = "location";
+    private static final String TOTAL_PRICE = "totalPrice";
+    private static final String IMAGE_URL = "imageURL";
+
     private final CriteriaBuilder criteriaBuilder;
 
     public HotelCriteriaQueryBuilder(EntityManager entityManager) {
@@ -28,12 +35,12 @@ public class HotelCriteriaQueryBuilder {
         criteriaQuery.select(
                 criteriaBuilder.construct(
                         HotelDto.class,
-                        rootHotelEntity.get("id"),
-                        rootHotelEntity.get("name"),
-                        rootHotelEntity.get("description"),
-                        rootHotelEntity.get("location"),
-                        rootHotelEntity.get("totalPrice"),
-                        rootHotelEntity.get("imageURL")));
+                        rootHotelEntity.get(ID),
+                        rootHotelEntity.get(NAME),
+                        rootHotelEntity.get(DESCRIPTION),
+                        rootHotelEntity.get(LOCATION),
+                        rootHotelEntity.get(TOTAL_PRICE),
+                        rootHotelEntity.get(IMAGE_URL)));
 
         criteriaQuery.where(buildFilters(hotelQuery, rootHotelEntity));
 
@@ -63,14 +70,14 @@ public class HotelCriteriaQueryBuilder {
     }
 
     private Predicate locationFilter(Root<Hotel> rootEntity, String location) {
-        return criteriaBuilder.equal(rootEntity.get("location"), location);
+        return criteriaBuilder.equal(rootEntity.get(LOCATION), location);
     }
 
     private Predicate minPriceFilter(Root<Hotel> hotel, Integer minPrice) {
-        return criteriaBuilder.greaterThanOrEqualTo(hotel.get("totalPrice"), minPrice);
+        return criteriaBuilder.greaterThanOrEqualTo(hotel.get(TOTAL_PRICE), minPrice);
     }
 
     private Predicate maxPriceFilter(Root<Hotel> hotel, Integer maxPrice) {
-        return criteriaBuilder.lessThanOrEqualTo(hotel.get("totalPrice"), maxPrice);
+        return criteriaBuilder.lessThanOrEqualTo(hotel.get(TOTAL_PRICE), maxPrice);
     }
 }
