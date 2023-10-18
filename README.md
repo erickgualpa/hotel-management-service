@@ -4,7 +4,7 @@
 
 Using wrapped maven included in this repository, you can:
 
-🚀 Compile and Run service as container! 🐳
+🚀 Build and deploy service as container! 🐳
 <br>
 
 ```shell script
