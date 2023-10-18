@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@WebMvcTest(HotelController.class)
 class HotelControllerTest {
 
     @MockBean
@@ -42,14 +42,16 @@ class HotelControllerTest {
                         "location": "%s",
                         "checkIn": "%s",
                         "priceRange": {
-                            "begin": 100,
-                            "end": 200
+                            "begin": %d,
+                            "end": %d
                         }
                     }
                 """.formatted
                 (
                         randomAlphabetic(5),
-                        now().toString()
+                        now().toString(),
+                        100,
+                        150
                 );
 
         this.mockMvc
