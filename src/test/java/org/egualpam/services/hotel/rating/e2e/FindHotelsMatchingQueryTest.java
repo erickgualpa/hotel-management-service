@@ -12,13 +12,16 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static java.util.UUID.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DirtiesContext
 @AutoConfigureMockMvc
-public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
+class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
 
     @Autowired
     private HotelTestRepository hotelTestRepository;
@@ -32,35 +35,41 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
     @Test
     void hotelsMatchingQueryShouldBeReturned() throws Exception {
 
-        UUID hotelIdentifier = UUID.randomUUID();
+        UUID hotelIdentifier = randomUUID();
+        String hotelLocation = randomAlphabetic(5);
+        String comment = randomAlphabetic(10);
+
+        int minPrice = 50;
+        int maxPrice = 150;
+        int totalPrice = nextInt(minPrice, maxPrice);
+        int rating = nextInt(1, 5);
 
         hotelTestRepository
                 .insertHotelWithIdentifierAndLocationAndTotalPrice(
                         hotelIdentifier,
-                        "Barcelona",
-                        150);
+                        hotelLocation,
+                        totalPrice);
 
         reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
-                5,
-                "This is an amazing hotel!",
-                hotelIdentifier
-        );
-
-        reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
-                3,
-                "This is an average level hotel!",
+                rating,
+                comment,
                 hotelIdentifier
         );
 
         String request = """
                     {
-                        "location": "Barcelona",
+                        "location": "%s",
                         "priceRange": {
-                            "begin": 0,
-                            "end": 150
+                            "begin": %d,
+                            "end": %d
                         }
                     }
-                """;
+                """.formatted
+                (
+                        hotelLocation,
+                        minPrice,
+                        maxPrice
+                );
 
         mockMvc.perform(
                         post("/v1/hotels/query")
@@ -74,32 +83,51 @@ public class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                                       "identifier": "%s",
                                       "name": "Amazing hotel",
                                       "description": "Eloquent description",
-                                      "location": "Barcelona",
-                                      "totalPrice": 150,
+                                      "location": "%s",
+                                      "totalPrice": %d,
                                       "imageURL": "amazing-hotel-image.com",
                                       "reviews": [
                                         {
-                                            "rating": 5,
-                                            "comment": "This is an amazing hotel!"
-                                        },
-                                        {
-                                            "rating": 3,
-                                            "comment": "This is an average level hotel!"
+                                            "rating": %d,
+                                            "comment": "%s"
                                         }
                                       ]
                                     }
                                 ]
-                                """.formatted(hotelIdentifier.toString())
+                                """.formatted
+                                (
+                                        hotelIdentifier.toString(),
+                                        hotelLocation,
+                                        totalPrice,
+                                        rating,
+                                        comment
+                                )
                 ));
     }
 
     @Test
     void emptyListShouldBeReturned_whenNoHotelsMatchQuery() throws Exception {
+
+        String hotelLocation = randomAlphabetic(5);
+
+        int minPrice = 50;
+        int maxPrice = 150;
+        int totalPrice = nextInt(minPrice, maxPrice);
+
         String request = """
                     {
                         "location": "%s"
                     }
-                """.formatted(UUID.randomUUID().toString());
+                """.formatted
+                (
+                        randomAlphabetic(5)
+                );
+
+        hotelTestRepository
+                .insertHotelWithIdentifierAndLocationAndTotalPrice(
+                        randomUUID(),
+                        hotelLocation,
+                        totalPrice);
 
         mockMvc.perform(
                         post("/v1/hotels/query")
