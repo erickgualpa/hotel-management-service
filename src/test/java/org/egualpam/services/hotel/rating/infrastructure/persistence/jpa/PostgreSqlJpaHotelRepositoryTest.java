@@ -38,7 +38,7 @@ class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
         hotel.setId(randomUUID());
         hotel.setName(randomAlphabetic(5));
         hotel.setLocation(randomAlphabetic(5));
-        hotel.setTotalPrice(100);
+        hotel.setTotalPrice(nextInt(50, 1000));
 
         testEntityManager.persistAndFlush(hotel);
 
@@ -70,9 +70,9 @@ class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
         List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
 
         assertThat(result).hasSize(1)
-                .extracting("identifier")
                 .allSatisfy(
-                        actualIdentifier -> assertThat(actualIdentifier).isEqualTo(hotelIdentifier.toString())
+                        actualHotel ->
+                                assertThat(actualHotel.getIdentifier()).isEqualTo(hotelIdentifier.toString())
                 );
     }
 
@@ -80,7 +80,10 @@ class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
     void givenQueryWithPriceRangeFilter_matchingHotelsShouldBeReturned() {
 
         UUID hotelIdentifier = randomUUID();
-        int hotelTotalPrice = 125;
+
+        int minPrice = 50;
+        int maxPrice = 500;
+        int hotelTotalPrice = nextInt(minPrice, maxPrice);
 
         org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
                 new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
@@ -92,13 +95,13 @@ class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
         testEntityManager.persistAndFlush(hotel);
 
         List<Hotel> result = testee.findHotelsMatchingQuery(HotelQuery.create()
-                .withPriceRange(100, 150)
+                .withPriceRange(minPrice, maxPrice)
                 .build());
 
         assertThat(result).hasSize(1)
-                .extracting("identifier")
                 .allSatisfy(
-                        actualIdentifier -> assertThat(actualIdentifier).isEqualTo(hotelIdentifier.toString())
+                        actualHotel ->
+                                assertThat(actualHotel.getIdentifier()).isEqualTo(hotelIdentifier.toString())
                 );
     }
 }
