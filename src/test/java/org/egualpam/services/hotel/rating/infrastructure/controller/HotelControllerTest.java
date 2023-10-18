@@ -13,6 +13,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 import java.util.List;
 
+import static java.time.LocalTime.now;
+import static java.util.UUID.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -21,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@WebMvcTest(HotelController.class)
 class HotelControllerTest {
 
     @MockBean
@@ -34,14 +39,20 @@ class HotelControllerTest {
     void queryIsAcceptedSuccessfully() throws Exception {
         String request = """
                     {
-                        "location": "Barcelona",
-                        "checkIn": "2023-06-24",
+                        "location": "%s",
+                        "checkIn": "%s",
                         "priceRange": {
-                            "begin": 100,
-                            "end": 200
+                            "begin": %d,
+                            "end": %d
                         }
                     }
-                """;
+                """.formatted
+                (
+                        randomAlphabetic(5),
+                        now().toString(),
+                        100,
+                        150
+                );
 
         this.mockMvc
                 .perform(
@@ -59,12 +70,12 @@ class HotelControllerTest {
                 .thenReturn(
                         List.of(
                                 new HotelDto(
-                                        "some-hotel-identifier",
-                                        "some-hotel-name",
-                                        "some-hotel-description",
-                                        "some-location-name",
-                                        250,
-                                        "some-hotel-image-url",
+                                        randomUUID().toString(),
+                                        randomAlphabetic(5),
+                                        randomAlphabetic(10),
+                                        randomAlphabetic(5),
+                                        nextInt(50, 1000),
+                                        "www." + randomAlphanumeric(5) + ".com",
                                         Collections.emptyList())));
 
         this.mockMvc
