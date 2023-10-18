@@ -50,7 +50,7 @@ class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
         review.setId(reviewIdentifier);
         review.setRating(rating);
         review.setComment(comment);
-        review.setHotel_id(hotelIdentifier);
+        review.setHotelId(hotelIdentifier);
 
         testEntityManager.persistAndFlush(review);
 

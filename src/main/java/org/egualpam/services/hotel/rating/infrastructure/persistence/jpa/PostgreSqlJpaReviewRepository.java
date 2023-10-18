@@ -7,7 +7,6 @@ import org.egualpam.services.hotel.rating.domain.ReviewRepository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class PostgreSqlJpaReviewRepository extends ReviewRepository {
 
@@ -37,7 +36,8 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
                         mapIntoEntity(
                                 review.getId().toString(),
                                 review.getRating(),
-                                review.getComment()))
-                .collect(Collectors.toList());
+                                review.getComment()
+                        )
+                ).toList();
     }
 }

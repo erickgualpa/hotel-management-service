@@ -8,7 +8,6 @@ import org.egualpam.services.hotel.rating.domain.HotelRepository;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.HotelDto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PostgreSqlJpaHotelRepository extends HotelRepository {
 
@@ -36,8 +35,8 @@ public class PostgreSqlJpaHotelRepository extends HotelRepository {
                                         hotelDto.description(),
                                         hotelDto.location(),
                                         hotelDto.totalPrice(),
-                                        hotelDto.imageURL())
-                )
-                .collect(Collectors.toList());
+                                        hotelDto.imageURL()
+                                )
+                ).toList();
     }
 }
