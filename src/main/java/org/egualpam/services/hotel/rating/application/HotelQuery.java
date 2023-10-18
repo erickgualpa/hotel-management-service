@@ -1,5 +1,7 @@
 package org.egualpam.services.hotel.rating.application;
 
+import static java.util.Objects.nonNull;
+
 public final class HotelQuery {
 
     private String location;
@@ -33,8 +35,13 @@ public final class HotelQuery {
             return this;
         }
 
-        public Builder withPriceRange(Integer min, Integer max) {
-            query.priceRange = new PriceRange(min, max);
+        public Builder withPriceRange(Integer begin, Integer end) {
+            if ((nonNull(begin) && nonNull(end))
+                    && end < begin) {
+                query.priceRange = new PriceRange(end, begin);
+            } else {
+                query.priceRange = new PriceRange(begin, end);
+            }
             return this;
         }
 

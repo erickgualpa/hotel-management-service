@@ -59,7 +59,7 @@ class HotelControllerTest {
                         post("/v1/hotels/query")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(request))
-                .andExpect(status().is(200))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", is(0)));
     }
@@ -83,7 +83,7 @@ class HotelControllerTest {
                         post("/v1/hotels/query")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{ }"))
-                .andExpect(status().is(200))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", is(1)));
     }
