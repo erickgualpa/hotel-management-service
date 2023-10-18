@@ -1,0 +1,20 @@
+package org.egualpam.services.hotel.rating.application;
+
+import org.egualpam.services.hotel.rating.domain.ReviewRepository;
+
+import java.util.List;
+
+public class FindReviews {
+
+    private final ReviewRepository reviewRepository;
+
+    public FindReviews(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
+    }
+
+    public List<ReviewDto> findByHotelIdentifier(String hotelIdentifier) {
+        return reviewRepository.findByHotelIdentifier(hotelIdentifier).stream()
+                .map(review -> new ReviewDto(review.getRating(), review.getComment()))
+                .toList();
+    }
+}
