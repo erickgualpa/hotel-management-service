@@ -12,10 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
+import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -90,7 +89,7 @@ class FindHotelsByRatingAverageTest {
                 randomAlphabetic(5),
                 randomAlphabetic(10),
                 randomAlphabetic(5),
-                parseInt(randomNumeric(3)),
+                nextInt(50, 1000),
                 randomUUID().toString());
     }
 

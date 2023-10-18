@@ -14,10 +14,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.util.List;
 import java.util.UUID;
 
-import static java.lang.Integer.parseInt;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
+import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DirtiesContext
@@ -59,7 +58,7 @@ class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
         hotel.setId(hotelIdentifier);
         hotel.setName(randomAlphabetic(5));
         hotel.setLocation(hotelLocation);
-        hotel.setTotalPrice(parseInt(randomNumeric(3)));
+        hotel.setTotalPrice(nextInt(50, 1000));
 
         testEntityManager.persistAndFlush(hotel);
 
