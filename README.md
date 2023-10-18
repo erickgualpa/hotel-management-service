@@ -8,9 +8,7 @@ Using wrapped maven included in this repository, you can:
 <br>
 
 ```shell script
-./mvnw clean package
-docker compose build --no-cache
-docker compose up -d
+./build_and_deploy.sh
 ```
 
 💤 Clear service containers
