@@ -1,8 +1,5 @@
-package org.egualpam.services.hotel.rating.application;
+package org.egualpam.services.hotel.rating.application.hotels;
 
-import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
-import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
-import org.egualpam.services.hotel.rating.application.hotels.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;

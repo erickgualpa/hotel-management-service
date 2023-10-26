@@ -1,7 +1,5 @@
-package org.egualpam.services.hotel.rating.application;
+package org.egualpam.services.hotel.rating.application.reviews;
 
-import org.egualpam.services.hotel.rating.application.reviews.FindReviews;
-import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
