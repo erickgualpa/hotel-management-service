@@ -7,6 +7,8 @@ import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -17,7 +19,9 @@ import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,6 +32,9 @@ class FindHotelsByRatingAverageTest {
 
     @Mock
     private ReviewRepository reviewRepository;
+
+    @Captor
+    private ArgumentCaptor<HotelQuery> hotelQueryCaptor;
 
     private FindHotelsByRatingAverage testee;
 
@@ -68,6 +75,14 @@ class FindHotelsByRatingAverageTest {
                                 buildReviewStubWithRating(5)));
 
         List<HotelDto> result = testee.execute(Map.of());
+
+        verify(hotelRepository).findHotelsMatchingQuery(hotelQueryCaptor.capture());
+        assertThat(hotelQueryCaptor.getValue())
+                .satisfies(hq -> {
+                            assertNull(hq.getLocation());
+                            assertNull(hq.getPriceRange());
+                        }
+                );
 
         assertThat(result).hasSize(3)
                 .extracting("identifier")

@@ -40,7 +40,7 @@ public class FindHotelsByRatingAverage {
                         Optional.ofNullable(hotelFilters.get("priceRangeBegin"))
                                 .map(Integer::parseInt)
                                 .orElse(null),
-                        Optional.ofNullable(hotelFilters.get("priceRangeBegin"))
+                        Optional.ofNullable(hotelFilters.get("priceRangeEnd"))
                                 .map(Integer::parseInt)
                                 .orElse(null)
                 ).build();
