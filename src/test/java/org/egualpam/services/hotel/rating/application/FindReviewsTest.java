@@ -1,7 +1,7 @@
 package org.egualpam.services.hotel.rating.application;
 
-import org.egualpam.services.hotel.rating.domain.Review;
-import org.egualpam.services.hotel.rating.domain.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.reviews.Review;
+import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

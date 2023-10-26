@@ -1,6 +1,6 @@
 package org.egualpam.services.hotel.rating.application;
 
-import org.egualpam.services.hotel.rating.domain.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 
 import java.util.List;
 

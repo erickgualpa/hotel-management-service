@@ -2,8 +2,8 @@ package org.egualpam.services.hotel.rating.infrastructure.configuration;
 
 import org.egualpam.services.hotel.rating.application.FindHotelsByRatingAverage;
 import org.egualpam.services.hotel.rating.application.FindReviews;
-import org.egualpam.services.hotel.rating.domain.HotelRepository;
-import org.egualpam.services.hotel.rating.domain.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
+import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

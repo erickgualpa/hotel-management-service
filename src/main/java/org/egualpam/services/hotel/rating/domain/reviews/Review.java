@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.domain;
+package org.egualpam.services.hotel.rating.domain.reviews;
 
 public final class Review {
 
