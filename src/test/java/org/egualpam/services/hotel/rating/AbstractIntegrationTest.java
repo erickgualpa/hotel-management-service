@@ -1,8 +1,6 @@
 package org.egualpam.services.hotel.rating;
 
 import org.egualpam.services.hotel.rating.infrastructure.HotelRatingServiceApplication;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
@@ -25,11 +23,12 @@ public abstract class AbstractIntegrationTest {
     private static final PostgreSQLContainer<?> postgreSQLContainer =
             new PostgreSQLContainer<>("postgres:latest");
 
+    static {
+        postgreSQLContainer.start();
+    }
+
     static class PostgreSqlInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
-        /* TODO: This seems to be out-of-sync with the 'postgreSQLContainer' start/stop
-         *           - until this is addressed, all the integration test will be tagged with @DirtiesContext annotation
-         * */
         @Override
         public void initialize(ConfigurableApplicationContext applicationContext) {
             TestPropertyValues.of(
@@ -39,15 +38,5 @@ public abstract class AbstractIntegrationTest {
                     "spring.datasource.driver-class-name=" + postgreSQLContainer.getDriverClassName()
             ).applyTo(applicationContext.getEnvironment());
         }
-    }
-
-    @BeforeAll
-    static void beforeAll() {
-        postgreSQLContainer.start();
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgreSQLContainer.stop();
     }
 }
