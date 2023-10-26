@@ -42,7 +42,6 @@ public final class HotelController {
                         Optional.ofNullable(query.priceRange())
                                 .map(PriceRange::end)
                                 .orElse(null)
-                )
-                .build();
+                ).build();
     }
 }
