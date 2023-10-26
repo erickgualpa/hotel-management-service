@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.application.hotels;
+package org.egualpam.services.hotel.rating.domain.hotels;
 
 import java.util.Optional;
 

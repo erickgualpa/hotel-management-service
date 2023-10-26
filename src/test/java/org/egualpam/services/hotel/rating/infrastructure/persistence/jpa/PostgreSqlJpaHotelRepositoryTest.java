@@ -2,8 +2,8 @@ package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
-import org.egualpam.services.hotel.rating.application.hotels.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
