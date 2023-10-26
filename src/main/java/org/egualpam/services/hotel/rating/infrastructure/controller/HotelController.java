@@ -1,9 +1,9 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotel.rating.application.FindHotelsByRatingAverage;
-import org.egualpam.services.hotel.rating.application.HotelDto;
-import org.egualpam.services.hotel.rating.application.HotelQuery;
+import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
+import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
+import org.egualpam.services.hotel.rating.application.hotels.HotelQuery;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

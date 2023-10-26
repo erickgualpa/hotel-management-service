@@ -2,8 +2,8 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotel.rating.application.FindReviews;
-import org.egualpam.services.hotel.rating.application.ReviewDto;
+import org.egualpam.services.hotel.rating.application.reviews.FindReviews;
+import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

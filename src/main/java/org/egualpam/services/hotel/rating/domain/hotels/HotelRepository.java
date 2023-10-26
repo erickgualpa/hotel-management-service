@@ -1,6 +1,6 @@
-package org.egualpam.services.hotel.rating.domain;
+package org.egualpam.services.hotel.rating.domain.hotels;
 
-import org.egualpam.services.hotel.rating.application.HotelQuery;
+import org.egualpam.services.hotel.rating.application.hotels.HotelQuery;
 
 import java.util.List;
 

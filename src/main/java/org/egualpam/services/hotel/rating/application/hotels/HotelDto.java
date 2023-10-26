@@ -1,4 +1,6 @@
-package org.egualpam.services.hotel.rating.application;
+package org.egualpam.services.hotel.rating.application.hotels;
+
+import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
-import org.egualpam.services.hotel.rating.domain.Review;
-import org.egualpam.services.hotel.rating.domain.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.reviews.Review;
+import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;

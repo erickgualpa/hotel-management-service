@@ -1,8 +1,8 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
-import org.egualpam.services.hotel.rating.application.FindHotelsByRatingAverage;
-import org.egualpam.services.hotel.rating.application.HotelDto;
-import org.egualpam.services.hotel.rating.application.HotelQuery;
+import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
+import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
+import org.egualpam.services.hotel.rating.application.hotels.HotelQuery;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
