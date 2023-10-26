@@ -15,6 +15,9 @@ import java.util.Map;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.LOCATION;
+import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.PRICE_RANGE_BEGIN;
+import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.PRICE_RANGE_END;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.Mockito.verify;
@@ -70,9 +73,9 @@ class HotelControllerTest {
 
         assertThat(filtersCaptor.getValue())
                 .satisfies(filters -> {
-                            assertThat(filters).containsEntry("location", location);
-                            assertThat(filters).containsEntry("priceRangeBegin", priceRangeBegin.toString());
-                            assertThat(filters).containsEntry("priceRangeEnd", priceRangeEnd.toString());
+                            assertThat(filters).containsEntry(LOCATION.getValue(), location);
+                            assertThat(filters).containsEntry(PRICE_RANGE_BEGIN.getValue(), priceRangeBegin.toString());
+                            assertThat(filters).containsEntry(PRICE_RANGE_END.getValue(), priceRangeEnd.toString());
                         }
                 );
     }
