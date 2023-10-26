@@ -23,18 +23,13 @@ public final class HotelController {
 
     @PostMapping(value = "/query")
     public ResponseEntity<List<HotelDto>> queryHotels(@RequestBody Query query) {
-
-        HotelQuery hotelQuery;
-
         try {
-            hotelQuery = buildHotelQuery(query);
+            HotelQuery hotelQuery = buildHotelQuery(query);
+            List<HotelDto> hotels = findHotelsByRatingAverage.execute(hotelQuery);
+            return ResponseEntity.ok(hotels);
         } catch (InvalidPriceRange e) {
             return ResponseEntity.badRequest().build();
         }
-
-        List<HotelDto> hotels = findHotelsByRatingAverage.execute(hotelQuery);
-
-        return ResponseEntity.ok(hotels);
     }
 
     private HotelQuery buildHotelQuery(Query query) {
