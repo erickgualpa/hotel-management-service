@@ -66,7 +66,7 @@ class HotelControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", is(0)));
 
-        verify(findHotelsByRatingAverage).executeV2(filtersCaptor.capture());
+        verify(findHotelsByRatingAverage).execute(filtersCaptor.capture());
 
         assertThat(filtersCaptor.getValue())
                 .satisfies(filters -> {
@@ -92,7 +92,7 @@ class HotelControllerTest {
                         50
                 );
 
-        when(findHotelsByRatingAverage.executeV2(anyMap())).thenThrow(InvalidPriceRange.class);
+        when(findHotelsByRatingAverage.execute(anyMap())).thenThrow(InvalidPriceRange.class);
 
         this.mockMvc
                 .perform(

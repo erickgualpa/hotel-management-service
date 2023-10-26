@@ -26,10 +26,9 @@ public final class HotelController {
     @PostMapping(value = "/query")
     public ResponseEntity<List<HotelDto>> queryHotels(@RequestBody Query query) {
         try {
-            List<HotelDto> hotels =
-                    findHotelsByRatingAverage.executeV2(
-                            buildHotelFilters(query)
-                    );
+            List<HotelDto> hotels = findHotelsByRatingAverage.execute(
+                    buildHotelFilters(query)
+            );
             return ResponseEntity.ok(hotels);
         } catch (InvalidPriceRange e) {
             return ResponseEntity.badRequest().build();

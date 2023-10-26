@@ -8,6 +8,7 @@ import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class FindHotelsByRatingAverage {
 
@@ -19,8 +20,10 @@ public class FindHotelsByRatingAverage {
         this.reviewRepository = reviewRepository;
     }
 
-    public List<HotelDto> execute(HotelQuery query) {
-        List<Hotel> hotels = hotelRepository.findHotelsMatchingQuery(query);
+    public List<HotelDto> execute(Map<String, String> hotelFilters) {
+        List<Hotel> hotels = hotelRepository.findHotelsMatchingQuery(
+                buildHotelQuery(hotelFilters)
+        );
 
         hotels.forEach(this::decorateReviews);
 
@@ -30,22 +33,17 @@ public class FindHotelsByRatingAverage {
                 .toList();
     }
 
-    public List<HotelDto> executeV2(Map<String, String> hotelFilters) {
-        HotelQuery query = HotelQuery.create()
+    private HotelQuery buildHotelQuery(Map<String, String> hotelFilters) {
+        return HotelQuery.create()
                 .withLocation(hotelFilters.get("location"))
                 .withPriceRange(
-                        Integer.parseInt(hotelFilters.get("priceRangeBegin")),
-                        Integer.parseInt(hotelFilters.get("priceRangeEnd"))
+                        Optional.ofNullable(hotelFilters.get("priceRangeBegin"))
+                                .map(Integer::parseInt)
+                                .orElse(null),
+                        Optional.ofNullable(hotelFilters.get("priceRangeBegin"))
+                                .map(Integer::parseInt)
+                                .orElse(null)
                 ).build();
-
-        List<Hotel> hotels = hotelRepository.findHotelsMatchingQuery(query);
-
-        hotels.forEach(this::decorateReviews);
-
-        return hotels.stream()
-                .sorted(Comparator.comparingDouble(Hotel::calculateRatingAverage).reversed())
-                .map(this::mapIntoHotelDto)
-                .toList();
     }
 
     private void decorateReviews(Hotel hotel) {

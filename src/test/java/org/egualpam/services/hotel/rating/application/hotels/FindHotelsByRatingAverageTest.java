@@ -11,11 +11,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,13 +38,11 @@ class FindHotelsByRatingAverageTest {
 
     @Test
     void hotelsMatchingQueryShouldBeReturnedSortedByRatingAverage() {
-        HotelQuery hotelQuery = HotelQuery.create().build();
-
         String intermediateHotelIdentifier = randomUUID().toString();
         String worstHotelIdentifier = randomUUID().toString();
         String bestHotelIdentifier = randomUUID().toString();
 
-        when(hotelRepository.findHotelsMatchingQuery(hotelQuery))
+        when(hotelRepository.findHotelsMatchingQuery(any(HotelQuery.class)))
                 .thenReturn(
                         List.of(
                                 buildHotelStubWithIdentifier(intermediateHotelIdentifier),
@@ -67,7 +67,7 @@ class FindHotelsByRatingAverageTest {
                                 buildReviewStubWithRating(4),
                                 buildReviewStubWithRating(5)));
 
-        List<HotelDto> result = testee.execute(hotelQuery);
+        List<HotelDto> result = testee.execute(Map.of());
 
         assertThat(result).hasSize(3)
                 .extracting("identifier")
