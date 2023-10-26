@@ -28,7 +28,7 @@ public final class HotelController {
         try {
             List<HotelDto> hotels =
                     findHotelsByRatingAverage.executeV2(
-                            buildQueryFilters(query)
+                            buildHotelFilters(query)
                     );
             return ResponseEntity.ok(hotels);
         } catch (InvalidPriceRange e) {
@@ -36,7 +36,7 @@ public final class HotelController {
         }
     }
 
-    private Map<String, String> buildQueryFilters(Query query) {
+    private Map<String, String> buildHotelFilters(Query query) {
         Map<String, String> queryFilters = new HashMap<>();
 
         Optional.ofNullable(query.location())

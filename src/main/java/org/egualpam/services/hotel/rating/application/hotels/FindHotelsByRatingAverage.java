@@ -30,12 +30,12 @@ public class FindHotelsByRatingAverage {
                 .toList();
     }
 
-    public List<HotelDto> executeV2(Map<String, String> queryFilters) {
+    public List<HotelDto> executeV2(Map<String, String> hotelFilters) {
         HotelQuery query = HotelQuery.create()
-                .withLocation(queryFilters.get("location"))
+                .withLocation(hotelFilters.get("location"))
                 .withPriceRange(
-                        Integer.parseInt(queryFilters.get("minPrice")),
-                        Integer.parseInt(queryFilters.get("maxPrice"))
+                        Integer.parseInt(hotelFilters.get("priceRangeBegin")),
+                        Integer.parseInt(hotelFilters.get("priceRangeEnd"))
                 ).build();
 
         List<Hotel> hotels = hotelRepository.findHotelsMatchingQuery(query);
