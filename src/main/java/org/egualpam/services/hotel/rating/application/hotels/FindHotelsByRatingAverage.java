@@ -7,6 +7,7 @@ import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class FindHotelsByRatingAverage {
 
@@ -19,6 +20,24 @@ public class FindHotelsByRatingAverage {
     }
 
     public List<HotelDto> execute(HotelQuery query) {
+        List<Hotel> hotels = hotelRepository.findHotelsMatchingQuery(query);
+
+        hotels.forEach(this::decorateReviews);
+
+        return hotels.stream()
+                .sorted(Comparator.comparingDouble(Hotel::calculateRatingAverage).reversed())
+                .map(this::mapIntoHotelDto)
+                .toList();
+    }
+
+    public List<HotelDto> executeV2(Map<String, String> queryFilters) {
+        HotelQuery query = HotelQuery.create()
+                .withLocation(queryFilters.get("location"))
+                .withPriceRange(
+                        Integer.parseInt(queryFilters.get("minPrice")),
+                        Integer.parseInt(queryFilters.get("maxPrice"))
+                ).build();
+
         List<Hotel> hotels = hotelRepository.findHotelsMatchingQuery(query);
 
         hotels.forEach(this::decorateReviews);
