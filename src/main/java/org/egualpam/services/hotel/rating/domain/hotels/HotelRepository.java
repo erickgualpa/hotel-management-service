@@ -1,7 +1,5 @@
 package org.egualpam.services.hotel.rating.domain.hotels;
 
-import org.egualpam.services.hotel.rating.application.hotels.HotelQuery;
-
 import java.util.List;
 
 public abstract class HotelRepository {

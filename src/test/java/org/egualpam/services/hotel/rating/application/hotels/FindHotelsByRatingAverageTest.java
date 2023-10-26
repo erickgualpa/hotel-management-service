@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating.application.hotels;
 
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;

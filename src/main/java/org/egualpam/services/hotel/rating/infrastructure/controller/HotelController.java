@@ -3,7 +3,7 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
 import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
-import org.egualpam.services.hotel.rating.application.hotels.InvalidPriceRange;
+import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

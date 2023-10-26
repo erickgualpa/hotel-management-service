@@ -1,7 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
-import org.egualpam.services.hotel.rating.application.hotels.InvalidPriceRange;
+import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
