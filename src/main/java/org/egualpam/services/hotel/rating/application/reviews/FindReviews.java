@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.application;
+package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 

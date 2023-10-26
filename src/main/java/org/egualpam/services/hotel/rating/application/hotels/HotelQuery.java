@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.application;
+package org.egualpam.services.hotel.rating.application.hotels;
 
 import static java.util.Objects.nonNull;
 
