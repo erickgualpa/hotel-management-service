@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.LOCATION;
+import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.PRICE_RANGE_BEGIN;
+import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.PRICE_RANGE_END;
+
 public class FindHotelsByRatingAverage {
 
     private final HotelRepository hotelRepository;
@@ -35,13 +39,15 @@ public class FindHotelsByRatingAverage {
 
     private HotelQuery buildHotelQuery(Map<String, String> hotelFilters) {
         return HotelQuery.create()
-                .withLocation(hotelFilters.get("location"))
+                .withLocation(hotelFilters.get(LOCATION.getValue()))
                 .withPriceRange(
-                        Optional.ofNullable(hotelFilters.get("priceRangeBegin"))
-                                .map(Integer::parseInt)
+                        Optional.ofNullable(
+                                        hotelFilters.get(PRICE_RANGE_BEGIN.getValue())
+                                ).map(Integer::parseInt)
                                 .orElse(null),
-                        Optional.ofNullable(hotelFilters.get("priceRangeEnd"))
-                                .map(Integer::parseInt)
+                        Optional.ofNullable(
+                                        hotelFilters.get(PRICE_RANGE_END.getValue())
+                                ).map(Integer::parseInt)
                                 .orElse(null)
                 ).build();
     }

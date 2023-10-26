@@ -16,6 +16,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.LOCATION;
+import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.PRICE_RANGE_BEGIN;
+import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.PRICE_RANGE_END;
+
 @RestController
 @RequestMapping("/v1/hotels")
 @RequiredArgsConstructor
@@ -36,27 +40,27 @@ public final class HotelController {
     }
 
     private Map<String, String> buildHotelFilters(Query query) {
-        Map<String, String> queryFilters = new HashMap<>();
+        Map<String, String> hotelFilters = new HashMap<>();
 
         Optional.ofNullable(query.location())
                 .ifPresent(
-                        l -> queryFilters.put("location", l)
+                        l -> hotelFilters.put(LOCATION.getValue(), l)
                 );
 
         Optional.ofNullable(query.priceRange())
                 .map(PriceRange::begin)
                 .map(Object::toString)
                 .ifPresent(
-                        prb -> queryFilters.put("priceRangeBegin", prb)
+                        prb -> hotelFilters.put(PRICE_RANGE_BEGIN.getValue(), prb)
                 );
 
         Optional.ofNullable(query.priceRange())
                 .map(PriceRange::end)
                 .map(Objects::toString)
                 .ifPresent(
-                        pre -> queryFilters.put("priceRangeEnd", pre)
+                        pre -> hotelFilters.put(PRICE_RANGE_END.getValue(), pre)
                 );
 
-        return queryFilters;
+        return hotelFilters;
     }
 }
