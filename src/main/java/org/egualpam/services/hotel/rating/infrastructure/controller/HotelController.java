@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
 import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
 import org.egualpam.services.hotel.rating.application.hotels.HotelQuery;
+import org.egualpam.services.hotel.rating.application.hotels.InvalidPriceRange;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,23 +23,25 @@ public final class HotelController {
 
     @PostMapping(value = "/query")
     public ResponseEntity<List<HotelDto>> queryHotels(@RequestBody Query query) {
+        try {
+            HotelQuery hotelQuery = buildHotelQuery(query);
+            List<HotelDto> hotels = findHotelsByRatingAverage.execute(hotelQuery);
+            return ResponseEntity.ok(hotels);
+        } catch (InvalidPriceRange e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
-        HotelQuery hotelQuery =
-                HotelQuery.create()
-                        .withLocation(query.location())
-                        .withPriceRange(
-                                Optional.ofNullable(query.priceRange())
-                                        .map(PriceRange::begin)
-                                        .orElse(null),
-                                Optional.ofNullable(query.priceRange())
-                                        .map(PriceRange::end)
-                                        .orElse(null)
-                        )
-                        .build();
-
-
-        List<HotelDto> hotels = findHotelsByRatingAverage.execute(hotelQuery);
-
-        return ResponseEntity.ok(hotels);
+    private HotelQuery buildHotelQuery(Query query) {
+        return HotelQuery.create()
+                .withLocation(query.location())
+                .withPriceRange(
+                        Optional.ofNullable(query.priceRange())
+                                .map(PriceRange::begin)
+                                .orElse(null),
+                        Optional.ofNullable(query.priceRange())
+                                .map(PriceRange::end)
+                                .orElse(null)
+                ).build();
     }
 }

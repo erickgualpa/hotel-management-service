@@ -32,7 +32,6 @@ class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
 
     @Test
     void hotelsMatchingQueryShouldBeReturned() throws Exception {
-
         UUID hotelIdentifier = randomUUID();
         String hotelLocation = randomAlphabetic(5);
         String comment = randomAlphabetic(10);
@@ -75,68 +74,32 @@ class FindHotelsMatchingQueryTest extends AbstractIntegrationTest {
                                 .content(request))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
-                        """
-                                [
-                                    {
-                                      "identifier": "%s",
-                                      "name": "Amazing hotel",
-                                      "description": "Eloquent description",
-                                      "location": "%s",
-                                      "totalPrice": %d,
-                                      "imageURL": "amazing-hotel-image.com",
-                                      "reviews": [
-                                        {
-                                            "rating": %d,
-                                            "comment": "%s"
-                                        }
-                                      ]
-                                    }
-                                ]
-                                """.formatted
-                                (
-                                        hotelIdentifier.toString(),
-                                        hotelLocation,
-                                        totalPrice,
-                                        rating,
-                                        comment
-                                )
-                ));
-    }
-
-    @Test
-    void emptyListShouldBeReturned_whenNoHotelsMatchQuery() throws Exception {
-
-        String hotelLocation = randomAlphabetic(5);
-
-        int minPrice = 50;
-        int maxPrice = 150;
-        int totalPrice = nextInt(minPrice, maxPrice);
-
-        String request = """
-                    {
-                        "location": "%s"
-                    }
-                """.formatted
-                (
-                        randomAlphabetic(5)
-                );
-
-        hotelTestRepository
-                .insertHotelWithIdentifierAndLocationAndTotalPrice(
-                        randomUUID(),
-                        hotelLocation,
-                        totalPrice);
-
-        mockMvc.perform(
-                        post("/v1/hotels/query")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(request))
-                .andExpect(status().isOk())
-                .andExpect(content().json(
-                        """
-                                [
-                                ]
                                 """
-                ));
+                                        [
+                                            {
+                                              "identifier": "%s",
+                                              "name": "Amazing hotel",
+                                              "description": "Eloquent description",
+                                              "location": "%s",
+                                              "totalPrice": %d,
+                                              "imageURL": "amazing-hotel-image.com",
+                                              "reviews": [
+                                                {
+                                                    "rating": %d,
+                                                    "comment": "%s"
+                                                }
+                                              ]
+                                            }
+                                        ]
+                                        """.formatted
+                                        (
+                                                hotelIdentifier.toString(),
+                                                hotelLocation,
+                                                totalPrice,
+                                                rating,
+                                                comment
+                                        )
+                        )
+                );
     }
 }

@@ -16,7 +16,6 @@ import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,30 +35,7 @@ class FindHotelsByRatingAverageTest {
     }
 
     @Test
-    void hotelQueryIsProperlyBuilt() {
-        String location = randomAlphabetic(5);
-        HotelQuery result = HotelQuery.create()
-                .withLocation(location)
-                .withPriceRange(nextInt(50, 1000), nextInt(50, 100))
-                .build();
-
-        assertThat(result.getLocation()).isEqualTo(location);
-        assertThat(result.getPriceRange())
-                .isNotNull()
-                .satisfies(
-                        actualPriceRange -> {
-                            Integer actualMinPrice = actualPriceRange.begin();
-                            Integer actualMaxPrice = actualPriceRange.end();
-                            assertNotNull(actualMinPrice);
-                            assertNotNull(actualMaxPrice);
-                            assertThat(actualMaxPrice).isGreaterThanOrEqualTo(actualMinPrice);
-                        }
-                );
-    }
-
-    @Test
     void hotelsMatchingQueryShouldBeReturnedSortedByRatingAverage() {
-
         HotelQuery hotelQuery = HotelQuery.create().build();
 
         String intermediateHotelIdentifier = randomUUID().toString();

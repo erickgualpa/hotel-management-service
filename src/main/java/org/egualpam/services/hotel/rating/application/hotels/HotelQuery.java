@@ -1,5 +1,7 @@
 package org.egualpam.services.hotel.rating.application.hotels;
 
+import java.util.Optional;
+
 import static java.util.Objects.nonNull;
 
 public final class HotelQuery {
@@ -36,17 +38,23 @@ public final class HotelQuery {
         }
 
         public Builder withPriceRange(Integer begin, Integer end) {
-            if ((nonNull(begin) && nonNull(end))
-                    && end < begin) {
-                query.priceRange = new PriceRange(end, begin);
-            } else {
+            if (nonNull(begin) && nonNull(end)) {
                 query.priceRange = new PriceRange(begin, end);
             }
             return this;
         }
 
         public HotelQuery build() {
+            if (priceRangeFilterIsNotValid()) {
+                throw new InvalidPriceRange();
+            }
             return query;
+        }
+
+        private boolean priceRangeFilterIsNotValid() {
+            return Optional.ofNullable(query.getPriceRange())
+                    .filter(pr -> pr.begin() > pr.end())
+                    .isPresent();
         }
     }
 }
