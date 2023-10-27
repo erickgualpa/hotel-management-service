@@ -25,7 +25,7 @@ public class FindHotelsByRatingAverage {
         this.reviewRepository = reviewRepository;
     }
 
-    public List<HotelDto> execute(Map<String, String> hotelFilters) {
+    public List<HotelDto> execute(Map<HotelFilters, String> hotelFilters) {
         List<Hotel> hotels = hotelRepository.findHotelsMatchingQuery(
                 buildHotelQuery(hotelFilters)
         );
@@ -38,16 +38,16 @@ public class FindHotelsByRatingAverage {
                 .toList();
     }
 
-    private HotelQuery buildHotelQuery(Map<String, String> hotelFilters) {
+    private HotelQuery buildHotelQuery(Map<HotelFilters, String> hotelFilters) {
         return HotelQuery.create()
-                .withLocation(hotelFilters.get(LOCATION.getValue()))
+                .withLocation(hotelFilters.get(LOCATION))
                 .withPriceRange(
                         Optional.ofNullable(
-                                        hotelFilters.get(PRICE_RANGE_BEGIN.getValue())
+                                        hotelFilters.get(PRICE_RANGE_BEGIN)
                                 ).map(Integer::parseInt)
                                 .orElse(null),
                         Optional.ofNullable(
-                                        hotelFilters.get(PRICE_RANGE_END.getValue())
+                                        hotelFilters.get(PRICE_RANGE_END)
                                 ).map(Integer::parseInt)
                                 .orElse(null)
                 ).build();

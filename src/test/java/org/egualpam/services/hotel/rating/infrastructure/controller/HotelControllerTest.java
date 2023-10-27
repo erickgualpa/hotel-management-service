@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
+import org.egualpam.services.hotel.rating.application.hotels.HotelFilters;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -34,7 +35,7 @@ class HotelControllerTest {
     private FindHotelsByRatingAverage findHotelsByRatingAverage;
 
     @Captor
-    private ArgumentCaptor<Map<String, String>> filtersCaptor;
+    private ArgumentCaptor<Map<HotelFilters, String>> filtersCaptor;
 
     @Autowired
     private MockMvc mockMvc;
@@ -73,9 +74,9 @@ class HotelControllerTest {
 
         assertThat(filtersCaptor.getValue())
                 .satisfies(filters -> {
-                            assertThat(filters).containsEntry(LOCATION.getValue(), location);
-                            assertThat(filters).containsEntry(PRICE_RANGE_BEGIN.getValue(), priceRangeBegin.toString());
-                            assertThat(filters).containsEntry(PRICE_RANGE_END.getValue(), priceRangeEnd.toString());
+                            assertThat(filters).containsEntry(LOCATION, location);
+                            assertThat(filters).containsEntry(PRICE_RANGE_BEGIN, priceRangeBegin.toString());
+                            assertThat(filters).containsEntry(PRICE_RANGE_END, priceRangeEnd.toString());
                         }
                 );
     }
