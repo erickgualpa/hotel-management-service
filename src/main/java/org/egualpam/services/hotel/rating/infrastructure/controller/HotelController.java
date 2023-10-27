@@ -3,6 +3,7 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
 import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
+import org.egualpam.services.hotel.rating.application.hotels.HotelFilters;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -39,26 +40,26 @@ public final class HotelController {
         }
     }
 
-    private Map<String, String> buildHotelFilters(Query query) {
-        Map<String, String> hotelFilters = new HashMap<>();
+    private Map<HotelFilters, String> buildHotelFilters(Query query) {
+        Map<HotelFilters, String> hotelFilters = new EnumMap<>(HotelFilters.class);
 
         Optional.ofNullable(query.location())
                 .ifPresent(
-                        l -> hotelFilters.put(LOCATION.getValue(), l)
+                        l -> hotelFilters.put(LOCATION, l)
                 );
 
         Optional.ofNullable(query.priceRange())
                 .map(PriceRange::begin)
                 .map(Object::toString)
                 .ifPresent(
-                        prb -> hotelFilters.put(PRICE_RANGE_BEGIN.getValue(), prb)
+                        prb -> hotelFilters.put(PRICE_RANGE_BEGIN, prb)
                 );
 
         Optional.ofNullable(query.priceRange())
                 .map(PriceRange::end)
                 .map(Objects::toString)
                 .ifPresent(
-                        pre -> hotelFilters.put(PRICE_RANGE_END.getValue(), pre)
+                        pre -> hotelFilters.put(PRICE_RANGE_END, pre)
                 );
 
         return hotelFilters;
