@@ -40,6 +40,7 @@ public class FindHotelsByRatingAverage {
                             if (isPriceRangeInvalid) {
                                 throw new InvalidPriceRange();
                             }
+
                             return new Price(targetMaxPrice);
                         }
                 );
