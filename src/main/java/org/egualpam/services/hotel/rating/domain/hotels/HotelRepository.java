@@ -1,10 +1,14 @@
 package org.egualpam.services.hotel.rating.domain.hotels;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class HotelRepository {
 
-    public abstract List<Hotel> findHotelsMatchingQuery(HotelQuery query);
+    public abstract List<Hotel> findHotels(Optional<Location> location,
+                                           Optional<Price> minPrice,
+                                           Optional<Price> maxPrice
+    );
 
     protected final Hotel mapIntoEntity(
             String identifier,

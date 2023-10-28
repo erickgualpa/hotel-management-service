@@ -3,11 +3,13 @@ package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.Location;
+import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.HotelDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PostgreSqlJpaHotelRepository extends HotelRepository {
 
@@ -20,9 +22,10 @@ public class PostgreSqlJpaHotelRepository extends HotelRepository {
     }
 
     @Override
-    public List<Hotel> findHotelsMatchingQuery(HotelQuery hotelQuery) {
-
-        CriteriaQuery<HotelDto> criteriaQuery = hotelCriteriaQueryBuilder.buildFrom(hotelQuery);
+    public List<Hotel> findHotels(Optional<Location> location,
+                                  Optional<Price> minPrice,
+                                  Optional<Price> maxPrice) {
+        CriteriaQuery<HotelDto> criteriaQuery = hotelCriteriaQueryBuilder.buildFrom(location, minPrice, maxPrice);
 
         return entityManager.createQuery(criteriaQuery)
                 .getResultList()
@@ -39,4 +42,5 @@ public class PostgreSqlJpaHotelRepository extends HotelRepository {
                                 )
                 ).toList();
     }
+
 }

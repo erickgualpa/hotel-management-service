@@ -1,26 +1,18 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
+import org.egualpam.services.hotel.rating.application.hotels.Filters;
 import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
-import org.egualpam.services.hotel.rating.application.hotels.HotelFilters;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Map;
-
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.LOCATION;
-import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.PRICE_RANGE_BEGIN;
-import static org.egualpam.services.hotel.rating.application.hotels.HotelFilters.PRICE_RANGE_END;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,9 +25,6 @@ class HotelControllerTest {
 
     @MockBean
     private FindHotelsByRatingAverage findHotelsByRatingAverage;
-
-    @Captor
-    private ArgumentCaptor<Map<HotelFilters, String>> filtersCaptor;
 
     @Autowired
     private MockMvc mockMvc;
@@ -70,15 +59,13 @@ class HotelControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", is(0)));
 
-        verify(findHotelsByRatingAverage).execute(filtersCaptor.capture());
-
-        assertThat(filtersCaptor.getValue())
-                .satisfies(filters -> {
-                            assertThat(filters).containsEntry(LOCATION, location);
-                            assertThat(filters).containsEntry(PRICE_RANGE_BEGIN, priceRangeBegin.toString());
-                            assertThat(filters).containsEntry(PRICE_RANGE_END, priceRangeEnd.toString());
-                        }
-                );
+        verify(findHotelsByRatingAverage).execute(
+                new Filters(
+                        location,
+                        priceRangeBegin,
+                        priceRangeEnd
+                )
+        );
     }
 
     @Test
@@ -96,7 +83,7 @@ class HotelControllerTest {
                         50
                 );
 
-        when(findHotelsByRatingAverage.execute(anyMap())).thenThrow(InvalidPriceRange.class);
+        when(findHotelsByRatingAverage.execute(any(Filters.class))).thenThrow(InvalidPriceRange.class);
 
         this.mockMvc
                 .perform(

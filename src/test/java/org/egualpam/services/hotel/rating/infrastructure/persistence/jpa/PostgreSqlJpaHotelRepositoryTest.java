@@ -3,14 +3,16 @@ package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.Location;
+import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
@@ -30,42 +32,47 @@ class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     void givenEmptyQuery_allHotelsShouldBeReturned() {
+        String location = randomAlphabetic(5);
+        int minPrice = 50;
+        int maxPrice = 1000;
 
         org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
                 new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
         hotel.setId(randomUUID());
         hotel.setName(randomAlphabetic(5));
-        hotel.setLocation(randomAlphabetic(5));
-        hotel.setTotalPrice(nextInt(50, 1000));
+        hotel.setLocation(location);
+        hotel.setTotalPrice(nextInt(minPrice, maxPrice));
 
         testEntityManager.persistAndFlush(hotel);
 
-        List<Hotel> result = testee.findHotelsMatchingQuery(HotelQuery.create().build());
+        List<Hotel> result = testee.findHotels(
+                Optional.of(new Location(location)),
+                Optional.of(new Price(minPrice)),
+                Optional.of(new Price(maxPrice))
+        );
 
         assertThat(result).hasAtLeastOneElementOfType(Hotel.class);
     }
 
     @Test
     void givenQueryWithLocationFilter_matchingHotelsShouldBeReturned() {
-
         UUID hotelIdentifier = randomUUID();
-        String hotelLocation = randomAlphabetic(5);
+        String location = randomAlphabetic(5);
 
         org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
                 new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
         hotel.setId(hotelIdentifier);
         hotel.setName(randomAlphabetic(5));
-        hotel.setLocation(hotelLocation);
+        hotel.setLocation(location);
         hotel.setTotalPrice(nextInt(50, 1000));
 
         testEntityManager.persistAndFlush(hotel);
 
-        HotelQuery hotelQuery =
-                HotelQuery.create()
-                        .withLocation(hotelLocation)
-                        .build();
-
-        List<Hotel> result = testee.findHotelsMatchingQuery(hotelQuery);
+        List<Hotel> result = testee.findHotels(
+                Optional.of(new Location(location)),
+                Optional.empty(),
+                Optional.empty()
+        );
 
         assertThat(result).hasSize(1)
                 .allSatisfy(
@@ -76,25 +83,24 @@ class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
 
     @Test
     void givenQueryWithPriceRangeFilter_matchingHotelsShouldBeReturned() {
-
         UUID hotelIdentifier = randomUUID();
-
         int minPrice = 50;
         int maxPrice = 500;
-        int hotelTotalPrice = nextInt(minPrice, maxPrice);
 
         org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
                 new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
         hotel.setId(hotelIdentifier);
         hotel.setName(randomAlphabetic(5));
         hotel.setLocation(randomAlphabetic(5));
-        hotel.setTotalPrice(hotelTotalPrice);
+        hotel.setTotalPrice(nextInt(minPrice, maxPrice));
 
         testEntityManager.persistAndFlush(hotel);
 
-        List<Hotel> result = testee.findHotelsMatchingQuery(HotelQuery.create()
-                .withPriceRange(minPrice, maxPrice)
-                .build());
+        List<Hotel> result = testee.findHotels(
+                Optional.empty(),
+                Optional.of(new Price(minPrice)),
+                Optional.of(new Price(maxPrice))
+        );
 
         assertThat(result).hasSize(1)
                 .allSatisfy(
