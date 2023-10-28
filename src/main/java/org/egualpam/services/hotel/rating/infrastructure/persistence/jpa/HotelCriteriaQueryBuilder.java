@@ -5,7 +5,8 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelQuery;
+import org.egualpam.services.hotel.rating.domain.hotels.Location;
+import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.HotelDto;
 
 import java.util.ArrayList;
@@ -27,7 +28,9 @@ public class HotelCriteriaQueryBuilder {
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
-    public CriteriaQuery<HotelDto> buildFrom(HotelQuery hotelQuery) {
+    public CriteriaQuery<HotelDto> buildFrom(Optional<Location> location,
+                                             Optional<Price> minPrice,
+                                             Optional<Price> maxPrice) {
         CriteriaQuery<HotelDto> criteriaQuery = criteriaBuilder.createQuery(HotelDto.class);
 
         Root<Hotel> rootHotelEntity = criteriaQuery.from(Hotel.class);
@@ -42,29 +45,41 @@ public class HotelCriteriaQueryBuilder {
                         rootHotelEntity.get(TOTAL_PRICE),
                         rootHotelEntity.get(IMAGE_URL)));
 
-        criteriaQuery.where(buildFilters(hotelQuery, rootHotelEntity));
+        criteriaQuery.where(
+                buildFilters(
+                        rootHotelEntity,
+                        location,
+                        minPrice,
+                        maxPrice)
+        );
 
         return criteriaQuery;
     }
 
-    private Predicate[] buildFilters(HotelQuery hotelQuery, Root<Hotel> rootEntity) {
+    private Predicate[] buildFilters(Root<Hotel> rootEntity,
+                                     Optional<Location> location,
+                                     Optional<Price> minPrice,
+                                     Optional<Price> maxPrice
+    ) {
         List<Predicate> filters = new ArrayList<>();
 
-        Optional.ofNullable(hotelQuery.getLocation())
-                .ifPresent(
-                        location -> filters.add(locationFilter(rootEntity, location)));
+        location.ifPresent(
+                targetLocation -> filters.add(
+                        locationFilter(rootEntity, targetLocation.value())
+                )
+        );
 
-        HotelQuery.PriceRange targetPriceRange = hotelQuery.getPriceRange();
+        minPrice.ifPresent(
+                targetMinPrice -> filters.add(
+                        minPriceFilter(rootEntity, targetMinPrice.value())
+                )
+        );
 
-        Optional.ofNullable(targetPriceRange)
-                .map(HotelQuery.PriceRange::begin)
-                .ifPresent(
-                        minPrice -> filters.add(minPriceFilter(rootEntity, minPrice)));
-
-        Optional.ofNullable(targetPriceRange)
-                .map(HotelQuery.PriceRange::end)
-                .ifPresent(
-                        maxPrice -> filters.add(maxPriceFilter(rootEntity, maxPrice)));
+        maxPrice.ifPresent(
+                targetMaxPrice -> filters.add(
+                        maxPriceFilter(rootEntity, targetMaxPrice.value())
+                )
+        );
 
         return filters.toArray(new Predicate[0]);
     }

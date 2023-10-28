@@ -31,7 +31,6 @@ class FindReviewsMatchingHotelTest extends AbstractIntegrationTest {
 
     @Test
     void reviewsMatchingHotelIdentifierShouldBeReturned() throws Exception {
-
         UUID hotelIdentifier = randomUUID();
 
         int rating = nextInt(1, 5);
