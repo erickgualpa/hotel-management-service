@@ -44,11 +44,7 @@ public class FindHotelsByRatingAverage {
                         }
                 );
 
-        List<Hotel> hotels = hotelRepository.findHotels(
-                location,
-                minPrice,
-                maxPrice
-        );
+        List<Hotel> hotels = hotelRepository.findHotels(location, minPrice, maxPrice);
 
         hotels.forEach(this::decorateReviews);
 
