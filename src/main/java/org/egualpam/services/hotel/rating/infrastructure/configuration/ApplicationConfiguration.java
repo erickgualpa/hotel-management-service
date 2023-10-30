@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.configuration;
 
 import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
+import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.FindReviews;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
@@ -19,5 +20,10 @@ public class ApplicationConfiguration {
     @Bean
     public FindReviews findReviews(ReviewRepository reviewRepository) {
         return new FindReviews(reviewRepository);
+    }
+
+    @Bean
+    public CreateReview createReview() {
+        return new CreateReview();
     }
 }

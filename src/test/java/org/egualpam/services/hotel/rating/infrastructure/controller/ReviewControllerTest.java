@@ -30,6 +30,7 @@ class ReviewControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    // TODO: Review if this test is still needed
     @Test
     void reviewsMatchingHotelIdentifierAreReturnedSuccessfully() throws Exception {
 
