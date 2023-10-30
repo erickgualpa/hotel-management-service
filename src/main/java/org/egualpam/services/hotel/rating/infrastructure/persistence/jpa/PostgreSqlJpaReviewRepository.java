@@ -40,4 +40,10 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
                         )
                 ).toList();
     }
+
+    @Override
+    public void save(Review review) {
+        // TODO:
+        throw new RuntimeException("NOT IMPLEMENTED");
+    }
 }

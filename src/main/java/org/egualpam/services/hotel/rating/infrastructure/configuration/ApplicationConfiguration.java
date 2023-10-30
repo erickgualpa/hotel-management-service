@@ -23,7 +23,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public CreateReview createReview() {
-        return new CreateReview();
+    public CreateReview createReview(ReviewRepository reviewRepository) {
+        return new CreateReview(reviewRepository);
     }
 }
