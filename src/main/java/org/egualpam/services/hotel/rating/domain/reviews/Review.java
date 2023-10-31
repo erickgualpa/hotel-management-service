@@ -4,31 +4,31 @@ import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 public final class Review {
 
-    private final Identifier identifierVO;
-    private final Identifier hotelIdentifierVO;
-    private final Rating ratingVO;
-    private final Comment commentVO;
+    private final Identifier identifier;
+    private final Identifier hotelIdentifier;
+    private final Rating rating;
+    private final Comment comment;
 
     public Review(Identifier identifier, Identifier hotelIdentifier, Rating rating, Comment comment) {
-        this.identifierVO = identifier;
-        this.hotelIdentifierVO = hotelIdentifier;
-        this.ratingVO = rating;
-        this.commentVO = comment;
+        this.identifier = identifier;
+        this.hotelIdentifier = hotelIdentifier;
+        this.rating = rating;
+        this.comment = comment;
     }
 
     public Identifier getIdentifier() {
-        return identifierVO;
+        return identifier;
     }
 
     public Identifier getHotelIdentifier() {
-        return hotelIdentifierVO;
+        return hotelIdentifier;
     }
 
     public Rating getRating() {
-        return ratingVO;
+        return rating;
     }
 
     public Comment getComment() {
-        return commentVO;
+        return comment;
     }
 }
