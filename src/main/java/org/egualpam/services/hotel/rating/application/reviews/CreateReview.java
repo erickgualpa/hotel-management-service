@@ -14,9 +14,11 @@ public class CreateReview {
         this.reviewRepository = reviewRepository;
     }
 
-    public void execute(String reviewIdentifier, Integer rating, String comment) {
+    // TODO: Create class or record for holding this parameters
+    public void execute(String reviewIdentifier, String hotelIdentifier, Integer rating, String comment) {
         Review review = new Review(
                 new Identifier(reviewIdentifier),
+                new Identifier(hotelIdentifier),
                 new Rating(rating),
                 new Comment(comment)
         );

@@ -1,21 +1,29 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
+import org.egualpam.services.hotel.rating.domain.reviews.Comment;
+import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
-import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 @ExtendWith(MockitoExtension.class)
 class CreateReviewTest {
+
+    @Captor
+    private ArgumentCaptor<Review> reviewCaptor;
 
     @Mock
     private ReviewRepository reviewRepository;
@@ -30,11 +38,23 @@ class CreateReviewTest {
     @Test
     void reviewEntityShouldBeCreated() {
         String reviewIdentifier = randomUUID().toString();
-        Integer randomRating = nextInt(1, 5);
+        String hotelIdentifier = randomUUID().toString();
+        Integer rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
-        testee.execute(reviewIdentifier, randomRating, comment);
+        testee.execute(reviewIdentifier, hotelIdentifier, rating, comment);
 
-        verify(reviewRepository).save(any(Review.class));
+        verify(reviewRepository).save(reviewCaptor.capture());
+
+        assertThat(reviewCaptor.getValue())
+                .isNotNull()
+                .satisfies(
+                        actualReview -> {
+                            assertThat(actualReview.getIdentifierVO()).isEqualTo(new Identifier(reviewIdentifier));
+                            assertThat(actualReview.getHotelIdentifierVO()).isEqualTo(new Identifier(hotelIdentifier));
+                            assertThat(actualReview.getRatingVO()).isEqualTo(new Rating(rating));
+                            assertThat(actualReview.getCommentVO()).isEqualTo(new Comment(comment));
+                        }
+                );
     }
 }

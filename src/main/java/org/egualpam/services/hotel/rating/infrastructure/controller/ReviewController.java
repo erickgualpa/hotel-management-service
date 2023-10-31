@@ -37,6 +37,7 @@ public class ReviewController {
                                              @RequestBody CreateReviewRequest createReviewRequest) {
         createReview.execute(
                 reviewIdentifier,
+                createReviewRequest.hotelIdentifier(),
                 createReviewRequest.rating(),
                 createReviewRequest.comment()
         );

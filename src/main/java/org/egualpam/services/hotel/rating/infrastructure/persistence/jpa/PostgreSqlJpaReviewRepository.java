@@ -43,7 +43,14 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
 
     @Override
     public void save(Review review) {
-        // TODO:
-        throw new RuntimeException("NOT IMPLEMENTED");
+        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review persistenceEntity =
+                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review();
+        persistenceEntity.setId(UUID.fromString(review.getIdentifierVO().value()));
+        persistenceEntity.setHotelId(UUID.fromString(review.getHotelIdentifierVO().value()));
+        persistenceEntity.setRating(review.getRatingVO().value());
+        persistenceEntity.setComment(review.getCommentVO().value());
+
+        entityManager.persist(persistenceEntity);
+        entityManager.flush();
     }
 }

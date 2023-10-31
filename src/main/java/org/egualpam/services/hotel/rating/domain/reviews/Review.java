@@ -5,6 +5,7 @@ import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 public final class Review {
 
     private Identifier identifierVO;
+    private Identifier hotelIdentifierVO;
     private Rating ratingVO;
     private Comment commentVO;
 
@@ -13,13 +14,14 @@ public final class Review {
     private Integer rating;
     private String comment;
 
-    // TODO: Remove this constructor once unused
-    public Review(Identifier identifier, Rating rating, Comment comment) {
+    public Review(Identifier identifier, Identifier hotelIdentifier, Rating rating, Comment comment) {
         this.identifierVO = identifier;
+        this.hotelIdentifierVO = hotelIdentifier;
         this.ratingVO = rating;
         this.commentVO = comment;
     }
 
+    // TODO: Remove this constructor once unused
     public Review(String identifier, Integer rating, String comment) {
         this.identifier = identifier;
         this.rating = rating;
@@ -36,5 +38,21 @@ public final class Review {
 
     public String getComment() {
         return comment;
+    }
+
+    public Identifier getIdentifierVO() {
+        return identifierVO;
+    }
+
+    public Identifier getHotelIdentifierVO() {
+        return hotelIdentifierVO;
+    }
+
+    public Rating getRatingVO() {
+        return ratingVO;
+    }
+
+    public Comment getCommentVO() {
+        return commentVO;
     }
 }
