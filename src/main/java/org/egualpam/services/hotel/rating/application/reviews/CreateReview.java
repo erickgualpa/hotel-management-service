@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
+import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.domain.reviews.Comment;
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
@@ -15,6 +16,7 @@ public class CreateReview {
     }
 
     // TODO: Create class or record for holding this parameters
+    @Transactional
     public void execute(String reviewIdentifier, String hotelIdentifier, Integer rating, String comment) {
         Review review = new Review(
                 new Identifier(reviewIdentifier),

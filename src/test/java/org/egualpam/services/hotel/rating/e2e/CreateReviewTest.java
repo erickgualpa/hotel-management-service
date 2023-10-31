@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating.e2e;
 
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
+import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,12 +20,21 @@ import static org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils.nex
 class CreateReviewTest extends AbstractIntegrationTest {
 
     @Autowired
+    private HotelTestRepository hotelTestRepository;
+
+    @Autowired
     private MockMvc mockMvc;
 
     @Test
     void reviewShouldBeCreatedGivenHotelIdentifier() throws Exception {
         UUID hotelIdentifier = randomUUID();
         UUID reviewIdentifier = randomUUID();
+
+        hotelTestRepository
+                .insertHotelWithIdentifierAndLocationAndTotalPrice(
+                        hotelIdentifier,
+                        randomAlphabetic(5),
+                        nextInt(50, 1000));
 
         mockMvc.perform(
                         post("/v1/reviews/{reviewIdentifier}", reviewIdentifier.toString())

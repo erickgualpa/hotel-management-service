@@ -70,10 +70,11 @@ public class FindHotelsByRatingAverage {
                 hotel.getReviews().stream()
                         .map(review ->
                                 new ReviewDto(
-                                        review.getRating(),
-                                        review.getComment()
+                                        review.getRatingVO().value(),
+                                        review.getCommentVO().value()
                                 )
-                        ).toList()
+                        )
+                        .toList()
         );
     }
 }
