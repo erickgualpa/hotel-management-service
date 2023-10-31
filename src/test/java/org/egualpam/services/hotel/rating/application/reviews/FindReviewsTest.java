@@ -1,7 +1,10 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
+import org.egualpam.services.hotel.rating.domain.reviews.Comment;
+import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,9 +34,8 @@ class FindReviewsTest {
 
     @Test
     void returnReviewsGivenHotelIdentifier() {
-
+        String reviewIdentifier = randomUUID().toString();
         String hotelIdentifier = randomUUID().toString();
-
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
@@ -41,11 +43,13 @@ class FindReviewsTest {
                 .thenReturn(
                         List.of(
                                 new Review(
-                                        randomUUID().toString(),
-                                        rating,
-                                        comment
+                                        new Identifier(reviewIdentifier),
+                                        new Identifier(hotelIdentifier),
+                                        new Rating(rating),
+                                        new Comment(comment)
                                 )
-                        ));
+                        )
+                );
 
         List<ReviewDto> result = testee.findByHotelIdentifier(hotelIdentifier);
 

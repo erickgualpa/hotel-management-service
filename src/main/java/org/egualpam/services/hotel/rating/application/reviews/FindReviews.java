@@ -14,7 +14,12 @@ public class FindReviews {
 
     public List<ReviewDto> findByHotelIdentifier(String hotelIdentifier) {
         return reviewRepository.findByHotelIdentifier(hotelIdentifier).stream()
-                .map(review -> new ReviewDto(review.getRating(), review.getComment()))
+                .map(review ->
+                        new ReviewDto(
+                                review.getRatingVO().value(),
+                                review.getCommentVO().value()
+                        )
+                )
                 .toList();
     }
 }
