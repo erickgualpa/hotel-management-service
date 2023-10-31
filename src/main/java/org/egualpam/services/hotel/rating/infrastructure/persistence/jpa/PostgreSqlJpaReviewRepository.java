@@ -35,6 +35,7 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
                 .map(review ->
                         mapIntoEntity(
                                 review.getId().toString(),
+                                review.getHotelId().toString(),
                                 review.getRating(),
                                 review.getComment()
                         )
