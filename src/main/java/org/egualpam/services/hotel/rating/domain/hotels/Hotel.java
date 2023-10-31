@@ -39,7 +39,7 @@ public final class Hotel {
 
     public Double calculateRatingAverage() {
         return this.reviews.stream()
-                .map(Review::getRatingVO)
+                .map(Review::getRating)
                 .mapToDouble(Rating::value)
                 .filter(Objects::nonNull)
                 .average()

@@ -50,10 +50,10 @@ class CreateReviewTest {
                 .isNotNull()
                 .satisfies(
                         actualReview -> {
-                            assertThat(actualReview.getIdentifierVO()).isEqualTo(new Identifier(reviewIdentifier));
-                            assertThat(actualReview.getHotelIdentifierVO()).isEqualTo(new Identifier(hotelIdentifier));
-                            assertThat(actualReview.getRatingVO()).isEqualTo(new Rating(rating));
-                            assertThat(actualReview.getCommentVO()).isEqualTo(new Comment(comment));
+                            assertThat(actualReview.getIdentifier()).isEqualTo(new Identifier(reviewIdentifier));
+                            assertThat(actualReview.getHotelIdentifier()).isEqualTo(new Identifier(hotelIdentifier));
+                            assertThat(actualReview.getRating()).isEqualTo(new Rating(rating));
+                            assertThat(actualReview.getComment()).isEqualTo(new Comment(comment));
                         }
                 );
     }

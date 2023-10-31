@@ -16,19 +16,19 @@ public final class Review {
         this.commentVO = comment;
     }
 
-    public Identifier getIdentifierVO() {
+    public Identifier getIdentifier() {
         return identifierVO;
     }
 
-    public Identifier getHotelIdentifierVO() {
+    public Identifier getHotelIdentifier() {
         return hotelIdentifierVO;
     }
 
-    public Rating getRatingVO() {
+    public Rating getRating() {
         return ratingVO;
     }
 
-    public Comment getCommentVO() {
+    public Comment getComment() {
         return commentVO;
     }
 }

@@ -54,16 +54,16 @@ class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
                 .hasSize(1)
                 .allSatisfy(
                         actualReview -> {
-                            assertThat(actualReview.getIdentifierVO())
+                            assertThat(actualReview.getIdentifier())
                                     .isEqualTo(
                                             new Identifier(reviewIdentifier.toString())
                                     );
-                            assertThat(actualReview.getHotelIdentifierVO())
+                            assertThat(actualReview.getHotelIdentifier())
                                     .isEqualTo(
                                             new Identifier(hotelIdentifier.toString())
                                     );
-                            assertThat(actualReview.getRatingVO()).isEqualTo(new Rating(rating));
-                            assertThat(actualReview.getCommentVO()).isEqualTo(new Comment(comment));
+                            assertThat(actualReview.getRating()).isEqualTo(new Rating(rating));
+                            assertThat(actualReview.getComment()).isEqualTo(new Comment(comment));
                         }
                 );
     }

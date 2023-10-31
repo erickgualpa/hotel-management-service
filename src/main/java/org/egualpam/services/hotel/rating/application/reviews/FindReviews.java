@@ -16,8 +16,8 @@ public class FindReviews {
         return reviewRepository.findByHotelIdentifier(hotelIdentifier).stream()
                 .map(review ->
                         new ReviewDto(
-                                review.getRatingVO().value(),
-                                review.getCommentVO().value()
+                                review.getRating().value(),
+                                review.getComment().value()
                         )
                 )
                 .toList();

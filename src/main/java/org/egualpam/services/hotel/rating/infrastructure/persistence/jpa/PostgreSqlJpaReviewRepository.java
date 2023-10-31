@@ -46,10 +46,10 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
     public void save(Review review) {
         org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review persistenceEntity =
                 new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review();
-        persistenceEntity.setId(UUID.fromString(review.getIdentifierVO().value()));
-        persistenceEntity.setHotelId(UUID.fromString(review.getHotelIdentifierVO().value()));
-        persistenceEntity.setRating(review.getRatingVO().value());
-        persistenceEntity.setComment(review.getCommentVO().value());
+        persistenceEntity.setId(UUID.fromString(review.getIdentifier().value()));
+        persistenceEntity.setHotelId(UUID.fromString(review.getHotelIdentifier().value()));
+        persistenceEntity.setRating(review.getRating().value());
+        persistenceEntity.setComment(review.getComment().value());
 
         entityManager.persist(persistenceEntity);
         entityManager.flush();
