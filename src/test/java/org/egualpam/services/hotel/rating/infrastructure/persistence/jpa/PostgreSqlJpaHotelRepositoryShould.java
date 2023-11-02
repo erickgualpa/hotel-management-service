@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @AutoConfigureTestEntityManager
-class PostgreSqlJpaHotelRepositoryTest extends AbstractIntegrationTest {
+class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
 
     @Autowired
     private TestEntityManager testEntityManager;

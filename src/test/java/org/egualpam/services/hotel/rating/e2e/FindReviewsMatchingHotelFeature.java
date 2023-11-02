@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-class FindReviewsMatchingHotelTest extends AbstractIntegrationTest {
+class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
 
     @Autowired
     private HotelTestRepository hotelTestRepository;

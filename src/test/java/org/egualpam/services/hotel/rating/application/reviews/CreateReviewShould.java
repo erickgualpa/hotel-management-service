@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 @ExtendWith(MockitoExtension.class)
-class CreateReviewTest {
+class CreateReviewShould {
 
     @Captor
     private ArgumentCaptor<Review> reviewCaptor;
