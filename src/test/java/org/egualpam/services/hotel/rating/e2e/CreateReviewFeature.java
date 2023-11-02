@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils.nextInt;
 
 @AutoConfigureMockMvc
-class CreateReviewTest extends AbstractIntegrationTest {
+class CreateReviewFeature extends AbstractIntegrationTest {
 
     @Autowired
     private HotelTestRepository hotelTestRepository;
