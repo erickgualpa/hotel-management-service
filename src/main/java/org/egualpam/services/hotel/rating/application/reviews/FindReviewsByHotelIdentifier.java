@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 import java.util.List;
 
@@ -13,7 +14,11 @@ public class FindReviewsByHotelIdentifier {
     }
 
     public List<ReviewDto> execute(String hotelIdentifier) {
-        return reviewRepository.findByHotelIdentifier(hotelIdentifier).stream()
+        return reviewRepository
+                .findByHotelIdentifier(
+                        new Identifier(hotelIdentifier)
+                )
+                .stream()
                 .map(review ->
                         new ReviewDto(
                                 review.getRating().value(),

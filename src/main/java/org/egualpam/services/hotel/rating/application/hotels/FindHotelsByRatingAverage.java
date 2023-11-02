@@ -7,6 +7,7 @@ import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 import java.util.Comparator;
 import java.util.List;
@@ -56,7 +57,11 @@ public class FindHotelsByRatingAverage {
     }
 
     private void decorateReviews(Hotel hotel) {
-        hotel.addReviews(reviewRepository.findByHotelIdentifier(hotel.getIdentifier()));
+        hotel.addReviews(
+                reviewRepository.findByHotelIdentifier(
+                        new Identifier(hotel.getIdentifier())
+                )
+        );
     }
 
     private HotelDto mapIntoHotelDto(Hotel hotel) {

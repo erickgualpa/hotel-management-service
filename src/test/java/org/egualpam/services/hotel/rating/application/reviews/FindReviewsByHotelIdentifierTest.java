@@ -39,7 +39,7 @@ class FindReviewsByHotelIdentifierTest {
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
-        when(reviewRepository.findByHotelIdentifier(hotelIdentifier))
+        when(reviewRepository.findByHotelIdentifier(new Identifier(hotelIdentifier)))
                 .thenReturn(
                         List.of(
                                 new Review(
@@ -53,7 +53,8 @@ class FindReviewsByHotelIdentifierTest {
 
         List<ReviewDto> result = testee.execute(hotelIdentifier);
 
-        assertThat(result).hasSize(1)
+        assertThat(result)
+                .hasSize(1)
                 .allSatisfy(actualReview ->
                         {
                             assertThat(actualReview.rating()).isEqualTo(rating);

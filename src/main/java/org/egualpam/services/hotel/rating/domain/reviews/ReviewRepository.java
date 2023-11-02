@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class ReviewRepository {
 
-    public abstract List<Review> findByHotelIdentifier(String hotelIdentifier);
+    public abstract List<Review> findByHotelIdentifier(Identifier hotelIdentifier);
 
     public abstract void save(Review review);
 

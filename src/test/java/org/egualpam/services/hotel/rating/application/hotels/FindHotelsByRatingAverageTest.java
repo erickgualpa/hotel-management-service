@@ -58,19 +58,19 @@ class FindHotelsByRatingAverageTest {
                         buildHotelStubWithIdentifier(worstHotelIdentifier),
                         buildHotelStubWithIdentifier(bestHotelIdentifier)));
 
-        when(reviewRepository.findByHotelIdentifier(worstHotelIdentifier))
+        when(reviewRepository.findByHotelIdentifier(new Identifier(worstHotelIdentifier)))
                 .thenReturn(
                         List.of(
                                 buildReviewStubWithRating(worstHotelIdentifier, 1),
                                 buildReviewStubWithRating(worstHotelIdentifier, 2)));
 
-        when(reviewRepository.findByHotelIdentifier(intermediateHotelIdentifier))
+        when(reviewRepository.findByHotelIdentifier(new Identifier(intermediateHotelIdentifier)))
                 .thenReturn(
                         List.of(
                                 buildReviewStubWithRating(intermediateHotelIdentifier, 3),
                                 buildReviewStubWithRating(intermediateHotelIdentifier, 3)));
 
-        when(reviewRepository.findByHotelIdentifier(bestHotelIdentifier))
+        when(reviewRepository.findByHotelIdentifier(new Identifier(bestHotelIdentifier)))
                 .thenReturn(
                         List.of(
                                 buildReviewStubWithRating(bestHotelIdentifier, 4),

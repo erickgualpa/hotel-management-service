@@ -48,7 +48,9 @@ class PostgreSqlJpaReviewRepositoryTest extends AbstractIntegrationTest {
 
         testEntityManager.persistAndFlush(review);
 
-        List<Review> result = testee.findByHotelIdentifier(hotelIdentifier.toString());
+        List<Review> result = testee.findByHotelIdentifier(
+                new Identifier(hotelIdentifier.toString())
+        );
 
         assertThat(result)
                 .hasSize(1)

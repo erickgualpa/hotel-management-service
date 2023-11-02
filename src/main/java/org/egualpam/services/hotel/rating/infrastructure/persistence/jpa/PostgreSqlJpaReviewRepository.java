@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +18,11 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
     }
 
     @Override
-    public List<Review> findByHotelIdentifier(String hotelIdentifier) {
+    public List<Review> findByHotelIdentifier(Identifier hotelIdentifier) {
+        // TODO: Check if parsing here is needed
+        UUID targetHotelIdentifier = UUID.fromString(
+                hotelIdentifier.value()
+        );
         Query query =
                 entityManager
                         .createNativeQuery("""
@@ -26,20 +31,22 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
                                         WHERE r.hotel_id = :hotel_id
                                         """,
                                 org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review.class)
-                        .setParameter("hotel_id", UUID.fromString(hotelIdentifier));
+                        .setParameter("hotel_id", targetHotelIdentifier);
 
         List<org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review> reviews =
                 query.getResultList();
 
         return reviews.stream()
-                .map(review ->
-                        mapIntoEntity(
-                                review.getId().toString(),
-                                review.getHotelId().toString(),
-                                review.getRating(),
-                                review.getComment()
-                        )
-                ).toList();
+                .map(
+                        review ->
+                                mapIntoEntity(
+                                        review.getId().toString(),
+                                        review.getHotelId().toString(),
+                                        review.getRating(),
+                                        review.getComment()
+                                )
+                )
+                .toList();
     }
 
     @Override
