@@ -49,22 +49,25 @@ class FindReviewsMatchingHotelTest extends AbstractIntegrationTest {
         );
 
         mockMvc.perform(
-                        get("/v1/reviews").queryParam("hotelIdentifier", hotelIdentifier.toString())
+                        get("/v1/reviews")
+                                .queryParam(
+                                        "hotelIdentifier", hotelIdentifier.toString()
+                                )
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().json(
-                        """
+                .andExpect(content().json("""
                                 [
-                                        {
-                                            "rating": %d,
-                                            "comment": "%s"
-                                        }
-                                      ]
+                                    {
+                                        "rating": %d,
+                                        "comment": "%s"
+                                    }
+                                ]
                                 """.formatted
                                 (
                                         rating,
                                         comment
                                 )
-                ));
+                        )
+                );
     }
 }

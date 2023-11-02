@@ -5,13 +5,13 @@ import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils.nextInt;
@@ -38,7 +38,7 @@ class CreateReviewTest extends AbstractIntegrationTest {
 
         mockMvc.perform(
                         post("/v1/reviews/{reviewIdentifier}", reviewIdentifier.toString())
-                                .contentType(MediaType.APPLICATION_JSON)
+                                .contentType(APPLICATION_JSON)
                                 .content("""
                                         {
                                             "hotelIdentifier": "%s",

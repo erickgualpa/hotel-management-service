@@ -36,7 +36,7 @@ class CreateReviewTest {
     }
 
     @Test
-    void reviewEntityShouldBeCreated() {
+    void givenReviewShouldBeSaved() {
         String reviewIdentifier = randomUUID().toString();
         String hotelIdentifier = randomUUID().toString();
         Integer rating = nextInt(1, 5);
