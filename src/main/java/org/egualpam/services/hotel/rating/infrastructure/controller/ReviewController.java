@@ -4,7 +4,7 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
-import org.egualpam.services.hotel.rating.application.reviews.FindReviews;
+import org.egualpam.services.hotel.rating.application.reviews.FindReviewsByHotelIdentifier;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +23,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    private final FindReviews findReviews;
+    private final FindReviewsByHotelIdentifier findReviewsByHotelIdentifier;
     private final CreateReview createReview;
 
     @GetMapping
     public ResponseEntity<List<ReviewDto>> findReviewsByHotelIdentifier(@RequestParam String hotelIdentifier) {
         return ResponseEntity.ok(
-                findReviews.findByHotelIdentifier(hotelIdentifier)
+                findReviewsByHotelIdentifier.execute(hotelIdentifier)
         );
     }
 

@@ -20,16 +20,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class FindReviewsTest {
+class FindReviewsByHotelIdentifierTest {
 
     @Mock
     private ReviewRepository reviewRepository;
 
-    private FindReviews testee;
+    private FindReviewsByHotelIdentifier testee;
 
     @BeforeEach
     void setUp() {
-        testee = new FindReviews(reviewRepository);
+        testee = new FindReviewsByHotelIdentifier(reviewRepository);
     }
 
     @Test
@@ -51,7 +51,7 @@ class FindReviewsTest {
                         )
                 );
 
-        List<ReviewDto> result = testee.findByHotelIdentifier(hotelIdentifier);
+        List<ReviewDto> result = testee.execute(hotelIdentifier);
 
         assertThat(result).hasSize(1)
                 .allSatisfy(actualReview ->

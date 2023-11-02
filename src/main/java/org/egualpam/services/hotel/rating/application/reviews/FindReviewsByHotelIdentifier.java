@@ -4,16 +4,15 @@ import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 
 import java.util.List;
 
-public class FindReviews {
+public class FindReviewsByHotelIdentifier {
 
     private final ReviewRepository reviewRepository;
 
-    public FindReviews(ReviewRepository reviewRepository) {
+    public FindReviewsByHotelIdentifier(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
 
-    // TODO: Rename this to 'execute' once class is renamed as well
-    public List<ReviewDto> findByHotelIdentifier(String hotelIdentifier) {
+    public List<ReviewDto> execute(String hotelIdentifier) {
         return reviewRepository.findByHotelIdentifier(hotelIdentifier).stream()
                 .map(review ->
                         new ReviewDto(
