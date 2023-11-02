@@ -12,6 +12,7 @@ public class FindReviews {
         this.reviewRepository = reviewRepository;
     }
 
+    // TODO: Rename this to 'execute' once class is renamed as well
     public List<ReviewDto> findByHotelIdentifier(String hotelIdentifier) {
         return reviewRepository.findByHotelIdentifier(hotelIdentifier).stream()
                 .map(review ->

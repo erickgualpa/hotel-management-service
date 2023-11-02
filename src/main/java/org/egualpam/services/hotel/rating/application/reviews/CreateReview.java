@@ -15,14 +15,13 @@ public class CreateReview {
         this.reviewRepository = reviewRepository;
     }
 
-    // TODO: Create class or record for holding this parameters
     @Transactional
-    public void execute(String reviewIdentifier, String hotelIdentifier, Integer rating, String comment) {
+    public void execute(CreateReviewCommand command) {
         Review review = new Review(
-                new Identifier(reviewIdentifier),
-                new Identifier(hotelIdentifier),
-                new Rating(rating),
-                new Comment(comment)
+                new Identifier(command.reviewIdentifier()),
+                new Identifier(command.hotelIdentifier()),
+                new Rating(command.rating()),
+                new Comment(command.comment())
         );
         reviewRepository.save(review);
     }

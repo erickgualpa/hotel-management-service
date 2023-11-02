@@ -3,6 +3,7 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
+import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
 import org.egualpam.services.hotel.rating.application.reviews.FindReviews;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.springframework.http.HttpStatus;
@@ -36,10 +37,12 @@ public class ReviewController {
     public ResponseEntity<Void> createReview(@PathVariable String reviewIdentifier,
                                              @RequestBody CreateReviewRequest createReviewRequest) {
         createReview.execute(
-                reviewIdentifier,
-                createReviewRequest.hotelIdentifier(),
-                createReviewRequest.rating(),
-                createReviewRequest.comment()
+                new CreateReviewCommand(
+                        reviewIdentifier,
+                        createReviewRequest.hotelIdentifier(),
+                        createReviewRequest.rating(),
+                        createReviewRequest.comment()
+                )
         );
 
         return new ResponseEntity<>(HttpStatus.CREATED);

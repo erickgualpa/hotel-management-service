@@ -42,7 +42,14 @@ class CreateReviewTest {
         Integer rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
-        testee.execute(reviewIdentifier, hotelIdentifier, rating, comment);
+        testee.execute(
+                new CreateReviewCommand(
+                        reviewIdentifier,
+                        hotelIdentifier,
+                        rating,
+                        comment
+                )
+        );
 
         verify(reviewRepository).save(reviewCaptor.capture());
 
