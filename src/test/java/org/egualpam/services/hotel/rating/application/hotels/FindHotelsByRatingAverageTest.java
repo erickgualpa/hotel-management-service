@@ -3,8 +3,11 @@ package org.egualpam.services.hotel.rating.application.hotels;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
+import org.egualpam.services.hotel.rating.domain.reviews.Comment;
+import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,23 +58,23 @@ class FindHotelsByRatingAverageTest {
                         buildHotelStubWithIdentifier(worstHotelIdentifier),
                         buildHotelStubWithIdentifier(bestHotelIdentifier)));
 
-        when(reviewRepository.findByHotelIdentifier(worstHotelIdentifier))
+        when(reviewRepository.findByHotelIdentifier(new Identifier(worstHotelIdentifier)))
                 .thenReturn(
                         List.of(
-                                buildReviewStubWithRating(1),
-                                buildReviewStubWithRating(2)));
+                                buildReviewStubWithRating(worstHotelIdentifier, 1),
+                                buildReviewStubWithRating(worstHotelIdentifier, 2)));
 
-        when(reviewRepository.findByHotelIdentifier(intermediateHotelIdentifier))
+        when(reviewRepository.findByHotelIdentifier(new Identifier(intermediateHotelIdentifier)))
                 .thenReturn(
                         List.of(
-                                buildReviewStubWithRating(3),
-                                buildReviewStubWithRating(3)));
+                                buildReviewStubWithRating(intermediateHotelIdentifier, 3),
+                                buildReviewStubWithRating(intermediateHotelIdentifier, 3)));
 
-        when(reviewRepository.findByHotelIdentifier(bestHotelIdentifier))
+        when(reviewRepository.findByHotelIdentifier(new Identifier(bestHotelIdentifier)))
                 .thenReturn(
                         List.of(
-                                buildReviewStubWithRating(4),
-                                buildReviewStubWithRating(5)));
+                                buildReviewStubWithRating(bestHotelIdentifier, 4),
+                                buildReviewStubWithRating(bestHotelIdentifier, 5)));
 
         List<HotelDto> result = testee.execute(new Filters(null, null, null));
 
@@ -104,7 +107,12 @@ class FindHotelsByRatingAverageTest {
                 randomUUID().toString());
     }
 
-    private Review buildReviewStubWithRating(int rating) {
-        return new Review(randomUUID().toString(), rating, randomAlphabetic(10));
+    private Review buildReviewStubWithRating(String hotelIdentifier, int rating) {
+        return new Review(
+                new Identifier(randomUUID().toString()),
+                new Identifier(hotelIdentifier),
+                new Rating(rating),
+                new Comment(randomAlphabetic(10))
+        );
     }
 }

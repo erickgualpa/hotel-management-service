@@ -1,26 +1,34 @@
 package org.egualpam.services.hotel.rating.domain.reviews;
 
+import org.egualpam.services.hotel.rating.domain.shared.Identifier;
+
 public final class Review {
 
-    private final String identifier;
-    private final Integer rating;
-    private final String comment;
+    private final Identifier identifier;
+    private final Identifier hotelIdentifier;
+    private final Rating rating;
+    private final Comment comment;
 
-    public Review(String identifier, Integer rating, String comment) {
+    public Review(Identifier identifier, Identifier hotelIdentifier, Rating rating, Comment comment) {
         this.identifier = identifier;
+        this.hotelIdentifier = hotelIdentifier;
         this.rating = rating;
         this.comment = comment;
     }
 
-    public String getIdentifier() {
+    public Identifier getIdentifier() {
         return identifier;
     }
 
-    public Integer getRating() {
+    public Identifier getHotelIdentifier() {
+        return hotelIdentifier;
+    }
+
+    public Rating getRating() {
         return rating;
     }
 
-    public String getComment() {
+    public Comment getComment() {
         return comment;
     }
 }

@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.domain.hotels;
 
+import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 
 import java.util.ArrayList;
@@ -38,7 +39,8 @@ public final class Hotel {
 
     public Double calculateRatingAverage() {
         return this.reviews.stream()
-                .mapToDouble(Review::getRating)
+                .map(Review::getRating)
+                .mapToDouble(Rating::value)
                 .filter(Objects::nonNull)
                 .average()
                 .orElse(0.0);
