@@ -103,7 +103,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <!-- TODO: Make integration tests be included in main build-->
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <includes>

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./mvnw clean package
+./mvnw clean verify
 
 if [ $? -eq 0 ]; then
   echo "Maven build successful. Building Docker containers..."
