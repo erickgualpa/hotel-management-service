@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class FindReviewsByHotelIdentifierTest {
+class FindReviewsByHotelIdentifierShould {
 
     @Mock
     private ReviewRepository reviewRepository;
