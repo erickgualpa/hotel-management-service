@@ -31,10 +31,14 @@ class CreateReviewFeature extends AbstractIntegrationTest {
         UUID reviewIdentifier = randomUUID();
 
         hotelTestRepository
-                .insertHotelWithIdentifierAndLocationAndTotalPrice(
+                .insertHotel(
                         hotelIdentifier,
                         randomAlphabetic(5),
-                        nextInt(50, 1000));
+                        randomAlphabetic(10),
+                        randomAlphabetic(5),
+                        nextInt(50, 1000),
+                        "www." + randomAlphabetic(5) + ".com"
+                );
 
         mockMvc.perform(
                         post("/v1/reviews/{reviewIdentifier}", reviewIdentifier.toString())

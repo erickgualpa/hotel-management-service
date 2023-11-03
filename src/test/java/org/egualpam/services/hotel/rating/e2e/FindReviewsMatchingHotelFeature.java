@@ -36,11 +36,15 @@ class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
-        hotelTestRepository.insertHotelWithIdentifierAndLocationAndTotalPrice(
-                hotelIdentifier,
-                randomAlphabetic(5),
-                nextInt(50, 1000)
-        );
+        hotelTestRepository
+                .insertHotel(
+                        hotelIdentifier,
+                        randomAlphabetic(5),
+                        randomAlphabetic(10),
+                        randomAlphabetic(5),
+                        nextInt(50, 1000),
+                        "www." + randomAlphabetic(5) + ".com"
+                );
 
         reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
                 rating,
