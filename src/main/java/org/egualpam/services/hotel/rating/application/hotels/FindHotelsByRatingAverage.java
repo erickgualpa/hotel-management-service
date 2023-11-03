@@ -3,7 +3,6 @@ package org.egualpam.services.hotel.rating.application.hotels;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
-import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
 
@@ -27,20 +26,7 @@ public class FindHotelsByRatingAverage {
                 .map(Price::new);
 
         Optional<Price> maxPrice = Optional.ofNullable(filters.priceEnd())
-                .map(
-                        targetMaxPrice -> {
-                            boolean isPriceRangeInvalid = minPrice
-                                    .map(Price::value)
-                                    .filter(targetMinPrice -> targetMinPrice > targetMaxPrice)
-                                    .isPresent();
-
-                            if (isPriceRangeInvalid) {
-                                throw new InvalidPriceRange();
-                            }
-
-                            return new Price(targetMaxPrice);
-                        }
-                );
+                .map(Price::new);
 
         return hotelRepository.findHotels(location, minPrice, maxPrice)
                 .stream()
