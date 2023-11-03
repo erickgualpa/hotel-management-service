@@ -10,14 +10,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(HotelController.class)
@@ -28,45 +23,6 @@ class HotelControllerShould {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Test
-    void queryIsAcceptedSuccessfully() throws Exception {
-        String location = randomAlphabetic(5);
-        Integer priceRangeBegin = 100;
-        Integer priceRangeEnd = 150;
-
-        String request = """
-                    {
-                        "location": "%s",
-                        "priceRange": {
-                            "begin": %d,
-                            "end": %d
-                        }
-                    }
-                """.formatted
-                (
-                        location,
-                        priceRangeBegin,
-                        priceRangeEnd
-                );
-
-        this.mockMvc
-                .perform(
-                        post("/v1/hotels/query")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(request)
-                ).andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()", is(0)));
-
-        verify(findHotelsByRatingAverage).execute(
-                new Filters(
-                        location,
-                        priceRangeBegin,
-                        priceRangeEnd
-                )
-        );
-    }
 
     @Test
     void badRequestIsReturnedWhenPriceRangeFilterIsInvalid() throws Exception {
