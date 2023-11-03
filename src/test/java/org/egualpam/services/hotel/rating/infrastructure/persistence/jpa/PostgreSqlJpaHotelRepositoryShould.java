@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
@@ -31,18 +32,26 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
 
     @Test
     void hotelsMatchingFiltersShouldBeReturned() {
+        UUID hotelIdentifier = randomUUID();
         String location = randomAlphabetic(5);
         int minPrice = 50;
         int maxPrice = 1000;
 
         org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
                 new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
-        hotel.setId(randomUUID());
+        hotel.setId(hotelIdentifier);
         hotel.setName(randomAlphabetic(5));
         hotel.setLocation(location);
         hotel.setTotalPrice(nextInt(minPrice, maxPrice));
 
+        Review review = new Review();
+        review.setId(randomUUID());
+        review.setRating(nextInt(1, 5));
+        review.setComment(randomAlphabetic(10));
+        review.setHotelId(hotelIdentifier);
+
         testEntityManager.persistAndFlush(hotel);
+        testEntityManager.persistAndFlush(review);
 
         List<Hotel> result = testee.findHotels(
                 Optional.of(new Location(location)),
@@ -50,6 +59,10 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
                 Optional.of(new Price(maxPrice))
         );
 
-        assertThat(result).hasSize(1);
+        assertThat(result)
+                .hasSize(1)
+                .allSatisfy(
+                        actualHotels -> assertThat(actualHotels.getReviews()).hasSize(1)
+                );
     }
 }

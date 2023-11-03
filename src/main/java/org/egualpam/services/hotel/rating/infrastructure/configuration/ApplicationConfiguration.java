@@ -12,9 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfiguration {
 
     @Bean
-    public FindHotelsByRatingAverage findHotelsByRatingAverage(HotelRepository hotelRepository,
-                                                               ReviewRepository reviewRepository) {
-        return new FindHotelsByRatingAverage(hotelRepository, reviewRepository);
+    public FindHotelsByRatingAverage findHotelsByRatingAverage(HotelRepository hotelRepository) {
+        return new FindHotelsByRatingAverage(hotelRepository);
     }
 
     @Bean

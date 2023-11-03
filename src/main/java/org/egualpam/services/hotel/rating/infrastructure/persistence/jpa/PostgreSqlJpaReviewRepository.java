@@ -19,10 +19,6 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
 
     @Override
     public List<Review> findByHotelIdentifier(Identifier hotelIdentifier) {
-        // TODO: Check if parsing here is needed
-        UUID targetHotelIdentifier = UUID.fromString(
-                hotelIdentifier.value()
-        );
         Query query =
                 entityManager
                         .createNativeQuery("""
@@ -31,7 +27,10 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
                                         WHERE r.hotel_id = :hotel_id
                                         """,
                                 org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review.class)
-                        .setParameter("hotel_id", targetHotelIdentifier);
+                        .setParameter(
+                                "hotel_id",
+                                UUID.fromString(hotelIdentifier.value())
+                        );
 
         List<org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review> reviews =
                 query.getResultList();
