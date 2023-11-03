@@ -1,5 +1,7 @@
 package org.egualpam.services.hotel.rating.domain.hotels;
 
+import org.egualpam.services.hotel.rating.domain.shared.Identifier;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,12 +21,12 @@ public abstract class HotelRepository {
             String imageURL
     ) {
         return new Hotel(
-                identifier,
-                name,
-                description,
-                location,
-                totalPrice,
-                imageURL
+                new Identifier(identifier),
+                new HotelName(name),
+                new HotelDescription(description),
+                new Location(location),
+                new Price(totalPrice),
+                new ImageURL(imageURL)
         );
     }
 }
