@@ -42,7 +42,7 @@ class FindHotelsByRatingAverageShould {
 
     @BeforeEach
     void setup() {
-        testee = new FindHotelsByRatingAverage(hotelRepository, reviewRepository);
+        testee = new FindHotelsByRatingAverage(hotelRepository);
     }
 
     @Test
@@ -59,27 +59,29 @@ class FindHotelsByRatingAverageShould {
                 )
         ).thenReturn(
                 List.of(
-                        buildHotelStubWithIdentifier(intermediateHotelIdentifier),
-                        buildHotelStubWithIdentifier(worstHotelIdentifier),
-                        buildHotelStubWithIdentifier(bestHotelIdentifier)));
-
-        when(reviewRepository.findByHotelIdentifier(new Identifier(worstHotelIdentifier)))
-                .thenReturn(
-                        List.of(
-                                buildReviewStubWithRating(worstHotelIdentifier, 1),
-                                buildReviewStubWithRating(worstHotelIdentifier, 2)));
-
-        when(reviewRepository.findByHotelIdentifier(new Identifier(intermediateHotelIdentifier)))
-                .thenReturn(
-                        List.of(
-                                buildReviewStubWithRating(intermediateHotelIdentifier, 3),
-                                buildReviewStubWithRating(intermediateHotelIdentifier, 3)));
-
-        when(reviewRepository.findByHotelIdentifier(new Identifier(bestHotelIdentifier)))
-                .thenReturn(
-                        List.of(
-                                buildReviewStubWithRating(bestHotelIdentifier, 4),
-                                buildReviewStubWithRating(bestHotelIdentifier, 5)));
+                        buildHotelStub(
+                                new Identifier(intermediateHotelIdentifier),
+                                List.of(
+                                        buildReviewStub(intermediateHotelIdentifier, 3),
+                                        buildReviewStub(intermediateHotelIdentifier, 3)
+                                )
+                        ),
+                        buildHotelStub(
+                                new Identifier(worstHotelIdentifier),
+                                List.of(
+                                        buildReviewStub(worstHotelIdentifier, 1),
+                                        buildReviewStub(worstHotelIdentifier, 2)
+                                )
+                        ),
+                        buildHotelStub(
+                                new Identifier(bestHotelIdentifier),
+                                List.of(
+                                        buildReviewStub(bestHotelIdentifier, 4),
+                                        buildReviewStub(bestHotelIdentifier, 5)
+                                )
+                        )
+                )
+        );
 
         List<HotelDto> result = testee.execute(new Filters(null, null, null));
 
@@ -102,18 +104,20 @@ class FindHotelsByRatingAverageShould {
         assertThrows(InvalidPriceRange.class, () -> testee.execute(filters));
     }
 
-    private Hotel buildHotelStubWithIdentifier(String identifier) {
-        return new Hotel(
-                new Identifier(identifier),
+    private Hotel buildHotelStub(Identifier identifier, List<Review> reviews) {
+        Hotel hotel = new Hotel(
+                identifier,
                 new HotelName(randomAlphabetic(5)),
                 new HotelDescription(randomAlphabetic(10)),
                 new Location(randomAlphabetic(5)),
                 new Price(nextInt(50, 1000)),
                 new ImageURL("www." + randomAlphabetic(5) + ".com")
         );
+        hotel.addReviews(reviews);
+        return hotel;
     }
 
-    private Review buildReviewStubWithRating(String hotelIdentifier, int rating) {
+    private Review buildReviewStub(String hotelIdentifier, int rating) {
         return new Review(
                 new Identifier(randomUUID().toString()),
                 new Identifier(hotelIdentifier),

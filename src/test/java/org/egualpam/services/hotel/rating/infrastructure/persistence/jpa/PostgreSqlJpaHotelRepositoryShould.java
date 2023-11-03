@@ -31,85 +31,38 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
     private HotelRepository testee;
 
     @Test
-    void givenEmptyQuery_allHotelsShouldBeReturned() {
+    void hotelsMatchingFiltersShouldBeReturned() {
+        UUID hotelIdentifier = randomUUID();
         String location = randomAlphabetic(5);
         int minPrice = 50;
         int maxPrice = 1000;
 
         org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
                 new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
-        hotel.setId(randomUUID());
+        hotel.setId(hotelIdentifier);
         hotel.setName(randomAlphabetic(5));
         hotel.setLocation(location);
         hotel.setTotalPrice(nextInt(minPrice, maxPrice));
 
+        Review review = new Review();
+        review.setId(randomUUID());
+        review.setRating(nextInt(1, 5));
+        review.setComment(randomAlphabetic(10));
+        review.setHotelId(hotelIdentifier);
+
         testEntityManager.persistAndFlush(hotel);
+        testEntityManager.persistAndFlush(review);
 
         List<Hotel> result = testee.findHotels(
                 Optional.of(new Location(location)),
-                Optional.of(new Price(minPrice)),
-                Optional.of(new Price(maxPrice))
-        );
-
-        assertThat(result).hasAtLeastOneElementOfType(Hotel.class);
-    }
-
-    @Test
-    void givenQueryWithLocationFilter_matchingHotelsShouldBeReturned() {
-        UUID hotelIdentifier = randomUUID();
-        String location = randomAlphabetic(5);
-
-        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
-                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
-        hotel.setId(hotelIdentifier);
-        hotel.setName(randomAlphabetic(5));
-        hotel.setLocation(location);
-        hotel.setTotalPrice(nextInt(50, 1000));
-
-        testEntityManager.persistAndFlush(hotel);
-
-        List<Hotel> result = testee.findHotels(
-                Optional.of(new Location(location)),
-                Optional.empty(),
-                Optional.empty()
-        );
-
-        assertThat(result).hasSize(1)
-                .allSatisfy(
-                        actualHotel ->
-                                assertThat(actualHotel.getIdentifier().value())
-                                        .isEqualTo(hotelIdentifier.toString())
-                );
-    }
-
-    @Test
-    void givenQueryWithPriceRangeFilter_matchingHotelsShouldBeReturned() {
-        UUID hotelIdentifier = randomUUID();
-        int minPrice = 50;
-        int maxPrice = 500;
-
-        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
-                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
-        hotel.setId(hotelIdentifier);
-        hotel.setName(randomAlphabetic(5));
-        hotel.setLocation(randomAlphabetic(5));
-        hotel.setTotalPrice(nextInt(minPrice, maxPrice));
-
-        testEntityManager.persistAndFlush(hotel);
-
-        List<Hotel> result = testee.findHotels(
-                Optional.empty(),
                 Optional.of(new Price(minPrice)),
                 Optional.of(new Price(maxPrice))
         );
 
         assertThat(result)
-                .isNotEmpty()
-                // TODO: Amend this workaround once flaky test is addressed
-                .anySatisfy(
-                        actualHotel ->
-                                assertThat(actualHotel.getIdentifier().value())
-                                        .isEqualTo(hotelIdentifier.toString())
+                .hasSize(1)
+                .allSatisfy(
+                        actualHotels -> assertThat(actualHotels.getReviews()).hasSize(1)
                 );
     }
 }

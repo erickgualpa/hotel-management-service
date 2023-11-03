@@ -6,7 +6,6 @@ import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,11 +14,9 @@ import java.util.Optional;
 public class FindHotelsByRatingAverage {
 
     private final HotelRepository hotelRepository;
-    private final ReviewRepository reviewRepository;
 
-    public FindHotelsByRatingAverage(HotelRepository hotelRepository, ReviewRepository reviewRepository) {
+    public FindHotelsByRatingAverage(HotelRepository hotelRepository) {
         this.hotelRepository = hotelRepository;
-        this.reviewRepository = reviewRepository;
     }
 
     public List<HotelDto> execute(Filters filters) {
@@ -45,22 +42,11 @@ public class FindHotelsByRatingAverage {
                         }
                 );
 
-        List<Hotel> hotels = hotelRepository.findHotels(location, minPrice, maxPrice);
-
-        hotels.forEach(this::decorateReviews);
-
-        return hotels.stream()
+        return hotelRepository.findHotels(location, minPrice, maxPrice)
+                .stream()
                 .sorted(Comparator.comparingDouble(Hotel::calculateRatingAverage).reversed())
                 .map(this::mapIntoHotelDto)
                 .toList();
-    }
-
-    private void decorateReviews(Hotel hotel) {
-        hotel.addReviews(
-                reviewRepository.findByHotelIdentifier(
-                        hotel.getIdentifier()
-                )
-        );
     }
 
     private HotelDto mapIntoHotelDto(Hotel hotel) {
