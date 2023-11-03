@@ -77,7 +77,8 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
         assertThat(result).hasSize(1)
                 .allSatisfy(
                         actualHotel ->
-                                assertThat(actualHotel.getIdentifier()).isEqualTo(hotelIdentifier.toString())
+                                assertThat(actualHotel.getIdentifier().value())
+                                        .isEqualTo(hotelIdentifier.toString())
                 );
     }
 
@@ -107,7 +108,8 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
                 // TODO: Amend this workaround once flaky test is addressed
                 .anySatisfy(
                         actualHotel ->
-                                assertThat(actualHotel.getIdentifier()).isEqualTo(hotelIdentifier.toString())
+                                assertThat(actualHotel.getIdentifier().value())
+                                        .isEqualTo(hotelIdentifier.toString())
                 );
     }
 }

@@ -2,6 +2,7 @@ package org.egualpam.services.hotel.rating.domain.hotels;
 
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
+import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +10,20 @@ import java.util.Objects;
 
 public final class Hotel {
 
-    private final String identifier;
-    private final String name;
-    private final String description;
-    private final String location;
-    private final Integer totalPrice;
-    private final String imageURL;
+    private final Identifier identifier;
+    private final HotelName name;
+    private final HotelDescription description;
+    private final Location location;
+    private final Price totalPrice;
+    private final ImageURL imageURL;
 
     public Hotel(
-            String identifier,
-            String name,
-            String description,
-            String location,
-            Integer totalPrice,
-            String imageURL) {
+            Identifier identifier,
+            HotelName name,
+            HotelDescription description,
+            Location location,
+            Price totalPrice,
+            ImageURL imageURL) {
         this.identifier = identifier;
         this.name = name;
         this.description = description;
@@ -46,31 +47,31 @@ public final class Hotel {
                 .orElse(0.0);
     }
 
-    public String getIdentifier() {
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public Identifier getIdentifier() {
         return identifier;
     }
 
-    public String getName() {
+    public HotelName getName() {
         return name;
     }
 
-    public String getDescription() {
+    public HotelDescription getDescription() {
         return description;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public Integer getTotalPrice() {
+    public Price getTotalPrice() {
         return totalPrice;
     }
 
-    public String getImageURL() {
+    public ImageURL getImageURL() {
         return imageURL;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
     }
 }

@@ -1,8 +1,13 @@
 package org.egualpam.services.hotel.rating.application.hotels;
 
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelDescription;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelName;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
+import org.egualpam.services.hotel.rating.domain.hotels.Location;
+import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.domain.reviews.Comment;
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
@@ -99,12 +104,13 @@ class FindHotelsByRatingAverageShould {
 
     private Hotel buildHotelStubWithIdentifier(String identifier) {
         return new Hotel(
-                identifier,
-                randomAlphabetic(5),
-                randomAlphabetic(10),
-                randomAlphabetic(5),
-                nextInt(50, 1000),
-                randomUUID().toString());
+                new Identifier(identifier),
+                new HotelName(randomAlphabetic(5)),
+                new HotelDescription(randomAlphabetic(10)),
+                new Location(randomAlphabetic(5)),
+                new Price(nextInt(50, 1000)),
+                new ImageURL("www." + randomAlphabetic(5) + ".com")
+        );
     }
 
     private Review buildReviewStubWithRating(String hotelIdentifier, int rating) {
