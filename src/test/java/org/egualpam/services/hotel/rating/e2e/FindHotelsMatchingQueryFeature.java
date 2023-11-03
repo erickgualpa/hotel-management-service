@@ -33,8 +33,11 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
     @Test
     void hotelsMatchingQueryShouldBeReturned() throws Exception {
         UUID hotelIdentifier = randomUUID();
+        String hotelName = randomAlphabetic(5);
+        String hotelDescription = randomAlphabetic(10);
         String hotelLocation = randomAlphabetic(5);
         String comment = randomAlphabetic(10);
+        String imageURL = "www." + randomAlphabetic(5) + ".com";
 
         int minPrice = 50;
         int maxPrice = 150;
@@ -42,16 +45,21 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
         int rating = nextInt(1, 5);
 
         hotelTestRepository
-                .insertHotelWithIdentifierAndLocationAndTotalPrice(
+                .insertHotel(
                         hotelIdentifier,
+                        hotelName,
+                        hotelDescription,
                         hotelLocation,
-                        totalPrice);
+                        totalPrice,
+                        imageURL
+                );
 
-        reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
-                rating,
-                comment,
-                hotelIdentifier
-        );
+        reviewTestRepository
+                .insertReview(
+                        rating,
+                        comment,
+                        hotelIdentifier
+                );
 
         String request = """
                     {
@@ -78,11 +86,11 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                                         [
                                             {
                                               "identifier": "%s",
-                                              "name": "Amazing hotel",
-                                              "description": "Eloquent description",
+                                              "name": "%s",
+                                              "description": "%s",
                                               "location": "%s",
                                               "totalPrice": %d,
-                                              "imageURL": "amazing-hotel-image.com",
+                                              "imageURL": "%s",
                                               "reviews": [
                                                 {
                                                     "rating": %d,
@@ -94,8 +102,11 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                                         """.formatted
                                         (
                                                 hotelIdentifier.toString(),
+                                                hotelName,
+                                                hotelDescription,
                                                 hotelLocation,
                                                 totalPrice,
+                                                imageURL,
                                                 rating,
                                                 comment
                                         )
