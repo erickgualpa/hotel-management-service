@@ -5,6 +5,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.HotelDto;
@@ -68,6 +69,20 @@ public class HotelCriteriaQueryBuilder {
                         locationFilter(rootEntity, targetLocation.value())
                 )
         );
+
+        if (
+                minPrice
+                        .map(Price::value)
+                        .filter(
+                                min -> maxPrice
+                                        .map(Price::value)
+                                        .filter(max -> min > max)
+                                        .isPresent()
+                        )
+                        .isPresent()
+        ) {
+            throw new InvalidPriceRange();
+        }
 
         minPrice.ifPresent(
                 targetMinPrice -> filters.add(

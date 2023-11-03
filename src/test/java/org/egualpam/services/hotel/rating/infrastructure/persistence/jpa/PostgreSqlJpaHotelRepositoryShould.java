@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional
 @AutoConfigureTestEntityManager
@@ -64,5 +66,20 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
                 .allSatisfy(
                         actualHotels -> assertThat(actualHotels.getReviews()).hasSize(1)
                 );
+    }
+
+    @Test
+    void invalidPriceRangeShouldBeThrown_whenMinPriceFilterIsGreaterThanMaxPriceFilter() {
+        Optional<Location> locationFilter = Optional.empty();
+        Optional<Price> minPriceFilter = Optional.of(new Price(100));
+        Optional<Price> maxPriceFilter = Optional.of(new Price(50));
+        assertThrows(
+                InvalidPriceRange.class,
+                () -> testee.findHotels(
+                        locationFilter,
+                        minPriceFilter,
+                        maxPriceFilter
+                )
+        );
     }
 }

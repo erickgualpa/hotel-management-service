@@ -5,7 +5,6 @@ import org.egualpam.services.hotel.rating.domain.hotels.HotelDescription;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelName;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
-import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.domain.reviews.Comment;
@@ -26,7 +25,6 @@ import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -96,12 +94,6 @@ class FindHotelsByRatingAverageShould {
         assertThat(result)
                 .allSatisfy(
                         hotelDto -> assertThat(hotelDto.reviews()).isNotEmpty());
-    }
-
-    @Test
-    void invalidPriceRangeIsThrownWhenMinPriceIsGreaterThanMaxPrice() {
-        Filters filters = new Filters(null, 150, 50);
-        assertThrows(InvalidPriceRange.class, () -> testee.execute(filters));
     }
 
     private Hotel buildHotelStub(Identifier identifier, List<Review> reviews) {
