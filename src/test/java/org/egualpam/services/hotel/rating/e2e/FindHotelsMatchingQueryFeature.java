@@ -54,11 +54,12 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                         imageURL
                 );
 
-        reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
-                rating,
-                comment,
-                hotelIdentifier
-        );
+        reviewTestRepository
+                .insertReview(
+                        rating,
+                        comment,
+                        hotelIdentifier
+                );
 
         String request = """
                     {

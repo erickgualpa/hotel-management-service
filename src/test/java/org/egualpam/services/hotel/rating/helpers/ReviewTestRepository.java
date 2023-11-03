@@ -13,7 +13,7 @@ public class ReviewTestRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public void insertReviewWithRatingAndCommentAndHotelIdentifier(
+    public void insertReview(
             Integer rating, String comment, UUID hotelIdentifier) {
         String query = """
                 INSERT INTO reviews(rating, comment, hotel_id)

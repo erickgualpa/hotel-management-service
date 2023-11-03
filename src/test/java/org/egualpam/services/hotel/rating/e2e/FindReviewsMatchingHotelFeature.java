@@ -46,11 +46,12 @@ class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
                         "www." + randomAlphabetic(5) + ".com"
                 );
 
-        reviewTestRepository.insertReviewWithRatingAndCommentAndHotelIdentifier(
-                rating,
-                comment,
-                hotelIdentifier
-        );
+        reviewTestRepository
+                .insertReview(
+                        rating,
+                        comment,
+                        hotelIdentifier
+                );
 
         mockMvc.perform(
                         get("/v1/reviews")
