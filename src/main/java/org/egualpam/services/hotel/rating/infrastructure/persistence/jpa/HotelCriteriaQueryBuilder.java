@@ -70,17 +70,7 @@ public class HotelCriteriaQueryBuilder {
                 )
         );
 
-        if (
-                minPrice
-                        .map(Price::value)
-                        .filter(
-                                min -> maxPrice
-                                        .map(Price::value)
-                                        .filter(max -> min > max)
-                                        .isPresent()
-                        )
-                        .isPresent()
-        ) {
+        if (pricingFilteringIsInvalid(minPrice, maxPrice)) {
             throw new InvalidPriceRange();
         }
 
@@ -97,6 +87,18 @@ public class HotelCriteriaQueryBuilder {
         );
 
         return filters.toArray(new Predicate[0]);
+    }
+
+    private boolean pricingFilteringIsInvalid(Optional<Price> minPrice, Optional<Price> maxPrice) {
+        return minPrice
+                .map(Price::value)
+                .filter(
+                        min -> maxPrice
+                                .map(Price::value)
+                                .filter(max -> min > max)
+                                .isPresent()
+                )
+                .isPresent();
     }
 
     private Predicate locationFilter(Root<Hotel> rootEntity, String location) {
