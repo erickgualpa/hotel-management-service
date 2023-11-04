@@ -8,7 +8,6 @@ import jakarta.persistence.criteria.Root;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
-import org.egualpam.services.hotel.rating.infrastructure.persistence.HotelDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +28,17 @@ public class HotelCriteriaQueryBuilder {
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
-    public CriteriaQuery<HotelDto> buildFrom(Optional<Location> location,
-                                             Optional<Price> minPrice,
-                                             Optional<Price> maxPrice) {
-        CriteriaQuery<HotelDto> criteriaQuery = criteriaBuilder.createQuery(HotelDto.class);
+    public CriteriaQuery<PersistenceHotel> buildFrom(Optional<Location> location,
+                                                     Optional<Price> minPrice,
+                                                     Optional<Price> maxPrice) {
+
+        CriteriaQuery<PersistenceHotel> criteriaQuery = criteriaBuilder.createQuery(PersistenceHotel.class);
 
         Root<PersistenceHotel> rootHotelEntity = criteriaQuery.from(PersistenceHotel.class);
 
         criteriaQuery.select(
                 criteriaBuilder.construct(
-                        HotelDto.class,
+                        PersistenceHotel.class,
                         rootHotelEntity.get(ID),
                         rootHotelEntity.get(NAME),
                         rootHotelEntity.get(DESCRIPTION),

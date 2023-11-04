@@ -23,6 +23,23 @@ public class PersistenceHotel {
     @Column(name = "image_url")
     private String imageURL;
 
+    public PersistenceHotel() {
+    }
+
+    public PersistenceHotel(UUID id,
+                            String name,
+                            String description,
+                            String location,
+                            Integer totalPrice,
+                            String imageURL) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.totalPrice = totalPrice;
+        this.imageURL = imageURL;
+    }
+
     public UUID getId() {
         return id;
     }

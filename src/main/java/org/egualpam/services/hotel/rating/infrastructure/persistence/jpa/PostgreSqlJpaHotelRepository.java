@@ -10,7 +10,6 @@ import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
-import org.egualpam.services.hotel.rating.infrastructure.persistence.HotelDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,19 +30,19 @@ public final class PostgreSqlJpaHotelRepository extends HotelRepository {
                                   Optional<Price> minPrice,
                                   Optional<Price> maxPrice) {
 
-        CriteriaQuery<HotelDto> criteriaQuery = hotelCriteriaQueryBuilder.buildFrom(location, minPrice, maxPrice);
+        CriteriaQuery<PersistenceHotel> criteriaQuery = hotelCriteriaQueryBuilder.buildFrom(location, minPrice, maxPrice);
 
         List<Hotel> hotels = entityManager.createQuery(criteriaQuery).getResultList()
                 .stream()
                 .map(
-                        hotelDto ->
+                        persistenceHotel ->
                                 mapIntoEntity(
-                                        hotelDto.id().toString(),
-                                        hotelDto.name(),
-                                        hotelDto.description(),
-                                        hotelDto.location(),
-                                        hotelDto.totalPrice(),
-                                        hotelDto.imageURL()
+                                        persistenceHotel.getId().toString(),
+                                        persistenceHotel.getName(),
+                                        persistenceHotel.getDescription(),
+                                        persistenceHotel.getLocation(),
+                                        persistenceHotel.getTotalPrice(),
+                                        persistenceHotel.getImageURL()
                                 )
                 )
                 .toList();
