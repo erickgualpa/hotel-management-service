@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PostgreSqlJpaHotelRepository extends HotelRepository {
+public final class PostgreSqlJpaHotelRepository extends HotelRepository {
 
     private final EntityManager entityManager;
     private final HotelCriteriaQueryBuilder hotelCriteriaQueryBuilder;

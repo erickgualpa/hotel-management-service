@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class FindHotelsByRatingAverage {
+public final class FindHotelsByRatingAverage {
 
     private final HotelRepository hotelRepository;
 
