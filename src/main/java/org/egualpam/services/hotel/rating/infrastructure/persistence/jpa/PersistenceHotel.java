@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "hotels")
-public class Hotel {
+public class PersistenceHotel {
 
     @Id
     private UUID id;

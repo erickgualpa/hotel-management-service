@@ -39,8 +39,7 @@ class PostgreSqlJpaReviewRepositoryShould extends AbstractIntegrationTest {
 
         persistHotelStub(hotelIdentifier);
 
-        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review review =
-                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review();
+        PersistenceReview review = new PersistenceReview();
         review.setId(reviewIdentifier);
         review.setRating(rating);
         review.setComment(comment);
@@ -88,9 +87,9 @@ class PostgreSqlJpaReviewRepositoryShould extends AbstractIntegrationTest {
 
         testee.save(review);
 
-        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review result =
+        PersistenceReview result =
                 testEntityManager.find(
-                        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review.class,
+                        PersistenceReview.class,
                         reviewIdentifier
                 );
 
@@ -98,7 +97,7 @@ class PostgreSqlJpaReviewRepositoryShould extends AbstractIntegrationTest {
     }
 
     private void persistHotelStub(UUID hotelIdentifier) {
-        Hotel hotel = new Hotel();
+        PersistenceHotel hotel = new PersistenceHotel();
         hotel.setId(hotelIdentifier);
         hotel.setName(randomAlphabetic(5));
         hotel.setLocation(randomAlphabetic(5));

@@ -26,14 +26,13 @@ public final class PostgreSqlJpaReviewRepository extends ReviewRepository {
                                         FROM reviews r
                                         WHERE r.hotel_id = :hotel_id
                                         """,
-                                org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review.class)
+                                PersistenceReview.class)
                         .setParameter(
                                 "hotel_id",
                                 UUID.fromString(hotelIdentifier.value())
                         );
 
-        List<org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review> reviews =
-                query.getResultList();
+        List<PersistenceReview> reviews = query.getResultList();
 
         return reviews.stream()
                 .map(
@@ -50,14 +49,13 @@ public final class PostgreSqlJpaReviewRepository extends ReviewRepository {
 
     @Override
     public void save(Review review) {
-        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review persistenceEntity =
-                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Review();
-        persistenceEntity.setId(UUID.fromString(review.getIdentifier().value()));
-        persistenceEntity.setHotelId(UUID.fromString(review.getHotelIdentifier().value()));
-        persistenceEntity.setRating(review.getRating().value());
-        persistenceEntity.setComment(review.getComment().value());
+        PersistenceReview persistenceReview = new PersistenceReview();
+        persistenceReview.setId(UUID.fromString(review.getIdentifier().value()));
+        persistenceReview.setHotelId(UUID.fromString(review.getHotelIdentifier().value()));
+        persistenceReview.setRating(review.getRating().value());
+        persistenceReview.setComment(review.getComment().value());
 
-        entityManager.persist(persistenceEntity);
+        entityManager.persist(persistenceReview);
         entityManager.flush();
     }
 }

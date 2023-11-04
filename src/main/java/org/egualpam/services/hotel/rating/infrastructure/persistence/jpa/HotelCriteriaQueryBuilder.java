@@ -34,7 +34,7 @@ public class HotelCriteriaQueryBuilder {
                                              Optional<Price> maxPrice) {
         CriteriaQuery<HotelDto> criteriaQuery = criteriaBuilder.createQuery(HotelDto.class);
 
-        Root<Hotel> rootHotelEntity = criteriaQuery.from(Hotel.class);
+        Root<PersistenceHotel> rootHotelEntity = criteriaQuery.from(PersistenceHotel.class);
 
         criteriaQuery.select(
                 criteriaBuilder.construct(
@@ -57,7 +57,7 @@ public class HotelCriteriaQueryBuilder {
         return criteriaQuery;
     }
 
-    private Predicate[] buildFilters(Root<Hotel> rootEntity,
+    private Predicate[] buildFilters(Root<PersistenceHotel> rootEntity,
                                      Optional<Location> location,
                                      Optional<Price> minPrice,
                                      Optional<Price> maxPrice
@@ -101,15 +101,15 @@ public class HotelCriteriaQueryBuilder {
                 .isPresent();
     }
 
-    private Predicate locationFilter(Root<Hotel> rootEntity, String location) {
+    private Predicate locationFilter(Root<PersistenceHotel> rootEntity, String location) {
         return criteriaBuilder.equal(rootEntity.get(LOCATION), location);
     }
 
-    private Predicate minPriceFilter(Root<Hotel> hotel, Integer minPrice) {
+    private Predicate minPriceFilter(Root<PersistenceHotel> hotel, Integer minPrice) {
         return criteriaBuilder.greaterThanOrEqualTo(hotel.get(TOTAL_PRICE), minPrice);
     }
 
-    private Predicate maxPriceFilter(Root<Hotel> hotel, Integer maxPrice) {
+    private Predicate maxPriceFilter(Root<PersistenceHotel> hotel, Integer maxPrice) {
         return criteriaBuilder.lessThanOrEqualTo(hotel.get(TOTAL_PRICE), maxPrice);
     }
 }

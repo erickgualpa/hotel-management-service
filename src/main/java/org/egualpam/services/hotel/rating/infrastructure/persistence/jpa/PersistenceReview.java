@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "reviews")
-public class Review {
+public class PersistenceReview {
 
     @Id
     private UUID id;

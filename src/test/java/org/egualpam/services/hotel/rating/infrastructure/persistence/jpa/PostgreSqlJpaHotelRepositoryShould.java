@@ -39,14 +39,13 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
         int minPrice = 50;
         int maxPrice = 1000;
 
-        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
-                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
+        PersistenceHotel hotel = new PersistenceHotel();
         hotel.setId(hotelIdentifier);
         hotel.setName(randomAlphabetic(5));
         hotel.setLocation(location);
         hotel.setTotalPrice(nextInt(minPrice, maxPrice));
 
-        Review review = new Review();
+        PersistenceReview review = new PersistenceReview();
         review.setId(randomUUID());
         review.setRating(nextInt(1, 5));
         review.setComment(randomAlphabetic(10));

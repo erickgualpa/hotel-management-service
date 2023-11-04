@@ -56,14 +56,14 @@ public final class PostgreSqlJpaHotelRepository extends HotelRepository {
                                             FROM reviews r
                                             WHERE r.hotel_id = :hotel_id
                                             """,
-                                    Review.class
+                                    PersistenceReview.class
                             )
                             .setParameter(
                                     "hotel_id",
                                     UUID.fromString(h.getIdentifier().value())
                             );
 
-                    List<Review> reviews = query.getResultList();
+                    List<PersistenceReview> reviews = query.getResultList();
 
                     h.addReviews(
                             reviews.stream()
