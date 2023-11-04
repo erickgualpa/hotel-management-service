@@ -1,10 +1,10 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
-import org.egualpam.services.hotel.rating.domain.reviews.Comment;
-import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
+import org.egualpam.services.hotel.rating.domain.shared.Rating;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

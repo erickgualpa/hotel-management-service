@@ -1,6 +1,8 @@
 package org.egualpam.services.hotel.rating.domain.reviews;
 
+import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
+import org.egualpam.services.hotel.rating.domain.shared.Rating;
 
 import java.util.List;
 

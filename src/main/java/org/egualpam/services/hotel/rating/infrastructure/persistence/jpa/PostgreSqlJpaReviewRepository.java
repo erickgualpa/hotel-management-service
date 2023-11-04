@@ -9,7 +9,7 @@ import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import java.util.List;
 import java.util.UUID;
 
-public class PostgreSqlJpaReviewRepository extends ReviewRepository {
+public final class PostgreSqlJpaReviewRepository extends ReviewRepository {
 
     private final EntityManager entityManager;
 

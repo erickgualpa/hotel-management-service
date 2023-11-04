@@ -5,18 +5,18 @@ import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelReview;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
-import org.egualpam.services.hotel.rating.domain.reviews.Comment;
-import org.egualpam.services.hotel.rating.domain.reviews.Rating;
-import org.egualpam.services.hotel.rating.domain.shared.Identifier;
+import org.egualpam.services.hotel.rating.domain.shared.Comment;
+import org.egualpam.services.hotel.rating.domain.shared.Rating;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.HotelDto;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PostgreSqlJpaHotelRepository extends HotelRepository {
+public final class PostgreSqlJpaHotelRepository extends HotelRepository {
 
     private final EntityManager entityManager;
     private final HotelCriteriaQueryBuilder hotelCriteriaQueryBuilder;
@@ -69,9 +69,7 @@ public class PostgreSqlJpaHotelRepository extends HotelRepository {
                             reviews.stream()
                                     .map(
                                             r ->
-                                                    new org.egualpam.services.hotel.rating.domain.reviews.Review(
-                                                            new Identifier(r.getId().toString()),
-                                                            new Identifier(r.getHotelId().toString()),
+                                                    new HotelReview(
                                                             new Rating(r.getRating()),
                                                             new Comment(r.getComment())
                                                     )

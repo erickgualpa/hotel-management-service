@@ -1,8 +1,7 @@
 package org.egualpam.services.hotel.rating.domain.hotels;
 
-import org.egualpam.services.hotel.rating.domain.reviews.Rating;
-import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
+import org.egualpam.services.hotel.rating.domain.shared.Rating;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,22 +31,22 @@ public final class Hotel {
         this.imageURL = imageURL;
     }
 
-    private final List<Review> reviews = new ArrayList<>();
+    private final List<HotelReview> reviews = new ArrayList<>();
 
-    public void addReviews(List<Review> reviews) {
+    public void addReviews(List<HotelReview> reviews) {
         this.reviews.addAll(reviews);
     }
 
     public Double calculateRatingAverage() {
         return this.reviews.stream()
-                .map(Review::getRating)
+                .map(HotelReview::rating)
                 .mapToDouble(Rating::value)
                 .filter(Objects::nonNull)
                 .average()
                 .orElse(0.0);
     }
 
-    public List<Review> getReviews() {
+    public List<HotelReview> getReviews() {
         return reviews;
     }
 

@@ -7,11 +7,10 @@ import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
-import org.egualpam.services.hotel.rating.domain.reviews.Comment;
-import org.egualpam.services.hotel.rating.domain.reviews.Rating;
-import org.egualpam.services.hotel.rating.domain.reviews.Review;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelReview;
+import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
+import org.egualpam.services.hotel.rating.domain.shared.Rating;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,9 +31,6 @@ class FindHotelsByRatingAverageShould {
 
     @Mock
     private HotelRepository hotelRepository;
-
-    @Mock
-    private ReviewRepository reviewRepository;
 
     private FindHotelsByRatingAverage testee;
 
@@ -60,22 +56,22 @@ class FindHotelsByRatingAverageShould {
                         buildHotelStub(
                                 new Identifier(intermediateHotelIdentifier),
                                 List.of(
-                                        buildReviewStub(intermediateHotelIdentifier, 3),
-                                        buildReviewStub(intermediateHotelIdentifier, 3)
+                                        buildReviewStub(new Rating(3)),
+                                        buildReviewStub(new Rating(3))
                                 )
                         ),
                         buildHotelStub(
                                 new Identifier(worstHotelIdentifier),
                                 List.of(
-                                        buildReviewStub(worstHotelIdentifier, 1),
-                                        buildReviewStub(worstHotelIdentifier, 2)
+                                        buildReviewStub(new Rating(1)),
+                                        buildReviewStub(new Rating(1))
                                 )
                         ),
                         buildHotelStub(
                                 new Identifier(bestHotelIdentifier),
                                 List.of(
-                                        buildReviewStub(bestHotelIdentifier, 4),
-                                        buildReviewStub(bestHotelIdentifier, 5)
+                                        buildReviewStub(new Rating(4)),
+                                        buildReviewStub(new Rating(5))
                                 )
                         )
                 )
@@ -96,7 +92,7 @@ class FindHotelsByRatingAverageShould {
                         hotelDto -> assertThat(hotelDto.reviews()).isNotEmpty());
     }
 
-    private Hotel buildHotelStub(Identifier identifier, List<Review> reviews) {
+    private Hotel buildHotelStub(Identifier identifier, List<HotelReview> reviews) {
         Hotel hotel = new Hotel(
                 identifier,
                 new HotelName(randomAlphabetic(5)),
@@ -109,11 +105,9 @@ class FindHotelsByRatingAverageShould {
         return hotel;
     }
 
-    private Review buildReviewStub(String hotelIdentifier, int rating) {
-        return new Review(
-                new Identifier(randomUUID().toString()),
-                new Identifier(hotelIdentifier),
-                new Rating(rating),
+    private HotelReview buildReviewStub(Rating rating) {
+        return new HotelReview(
+                rating,
                 new Comment(randomAlphabetic(10))
         );
     }
