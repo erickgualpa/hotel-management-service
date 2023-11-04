@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public abstract class HotelRepository {
 
-    public abstract List<Hotel> findHotels(Optional<Location> location,
-                                           Optional<Price> minPrice,
-                                           Optional<Price> maxPrice
+    public abstract List<Hotel> find(Optional<Location> location,
+                                     Optional<Price> minPrice,
+                                     Optional<Price> maxPrice
     );
 
     protected final Hotel mapIntoEntity(

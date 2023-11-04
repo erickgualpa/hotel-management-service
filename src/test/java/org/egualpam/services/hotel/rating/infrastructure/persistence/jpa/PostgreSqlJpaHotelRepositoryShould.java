@@ -54,7 +54,7 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
         testEntityManager.persistAndFlush(hotel);
         testEntityManager.persistAndFlush(review);
 
-        List<Hotel> result = testee.findHotels(
+        List<Hotel> result = testee.find(
                 Optional.of(new Location(location)),
                 Optional.of(new Price(minPrice)),
                 Optional.of(new Price(maxPrice))
@@ -74,7 +74,7 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
         Optional<Price> maxPriceFilter = Optional.of(new Price(50));
         assertThrows(
                 InvalidPriceRange.class,
-                () -> testee.findHotels(
+                () -> testee.find(
                         locationFilter,
                         minPriceFilter,
                         maxPriceFilter

@@ -4,10 +4,10 @@ import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelDescription;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelName;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelReview;
 import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelReview;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
@@ -46,7 +46,7 @@ class FindHotelsByRatingAverageShould {
         String bestHotelIdentifier = randomUUID().toString();
 
         when(
-                hotelRepository.findHotels(
+                hotelRepository.find(
                         Optional.empty(),
                         Optional.empty(),
                         Optional.empty()

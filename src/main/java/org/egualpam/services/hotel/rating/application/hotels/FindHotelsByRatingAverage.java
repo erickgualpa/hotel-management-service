@@ -28,7 +28,7 @@ public final class FindHotelsByRatingAverage {
         Optional<Price> maxPrice = Optional.ofNullable(filters.priceEnd())
                 .map(Price::new);
 
-        return hotelRepository.findHotels(location, minPrice, maxPrice)
+        return hotelRepository.find(location, minPrice, maxPrice)
                 .stream()
                 .sorted(Comparator.comparingDouble(Hotel::calculateRatingAverage).reversed())
                 .map(this::mapIntoHotelDto)
