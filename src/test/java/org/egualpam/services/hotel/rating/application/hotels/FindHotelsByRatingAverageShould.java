@@ -10,7 +10,6 @@ import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.domain.reviews.Comment;
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,9 +31,6 @@ class FindHotelsByRatingAverageShould {
 
     @Mock
     private HotelRepository hotelRepository;
-
-    @Mock
-    private ReviewRepository reviewRepository;
 
     private FindHotelsByRatingAverage testee;
 
