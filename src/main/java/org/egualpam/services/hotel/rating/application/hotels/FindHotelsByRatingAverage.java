@@ -46,8 +46,8 @@ public class FindHotelsByRatingAverage {
                 hotel.getReviews().stream()
                         .map(review ->
                                 new ReviewDto(
-                                        review.getRating().value(),
-                                        review.getComment().value()
+                                        review.rating().value(),
+                                        review.comment().value()
                                 )
                         )
                         .toList()
