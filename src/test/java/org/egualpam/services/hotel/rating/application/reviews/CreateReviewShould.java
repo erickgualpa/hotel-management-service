@@ -4,6 +4,7 @@ import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
+import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -3,7 +3,7 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
 import org.egualpam.services.hotel.rating.application.reviews.FindReviewsByHotelIdentifier;
-import org.egualpam.services.hotel.rating.application.reviews.InvalidRating;
+import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
