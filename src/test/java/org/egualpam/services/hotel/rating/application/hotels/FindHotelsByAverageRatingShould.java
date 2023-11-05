@@ -28,16 +28,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-class FindHotelsByRatingAverageShould {
+class FindHotelsByAverageRatingShould {
 
     @Mock
     private HotelRepository hotelRepository;
 
-    private FindHotelsByRatingAverage testee;
+    private FindHotelsByAverageRating testee;
 
     @BeforeEach
     void setup() {
-        testee = new FindHotelsByRatingAverage(hotelRepository);
+        testee = new FindHotelsByAverageRating(hotelRepository);
     }
 
     @Test

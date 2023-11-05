@@ -11,13 +11,13 @@ import java.util.function.ToDoubleFunction;
 
 import static java.util.Comparator.comparingDouble;
 
-public final class FindHotelsByRatingAverage {
+public final class FindHotelsByAverageRating {
 
     private static final ToDoubleFunction<Hotel> getHotelAverageRating = h -> h.getAverageRating().value();
 
     private final HotelRepository hotelRepository;
 
-    public FindHotelsByRatingAverage(HotelRepository hotelRepository) {
+    public FindHotelsByAverageRating(HotelRepository hotelRepository) {
         this.hotelRepository = hotelRepository;
     }
 

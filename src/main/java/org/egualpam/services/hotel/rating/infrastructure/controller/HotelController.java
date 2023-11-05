@@ -2,7 +2,7 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.hotels.Filters;
-import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
+import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByAverageRating;
 import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public final class HotelController {
 
-    private final FindHotelsByRatingAverage findHotelsByRatingAverage;
+    private final FindHotelsByAverageRating findHotelsByAverageRating;
 
     @PostMapping(value = "/query")
     public ResponseEntity<List<HotelDto>> queryHotels(@RequestBody Query query) {
@@ -33,7 +33,7 @@ public final class HotelController {
                         .orElse(null)
         );
         try {
-            List<HotelDto> hotels = findHotelsByRatingAverage.execute(filters);
+            List<HotelDto> hotels = findHotelsByAverageRating.execute(filters);
             return ResponseEntity.ok(hotels);
         } catch (InvalidPriceRange e) {
             return ResponseEntity.badRequest().build();
