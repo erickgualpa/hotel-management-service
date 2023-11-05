@@ -34,7 +34,7 @@ class ReviewControllerShould {
     private MockMvc mockMvc;
 
     @Test
-    void badRequestIsReturned_whenRatingValueIsOutOfAllowedBounds() throws Exception {
+    void badRequestIsReturned_whenInvalidRatingIsThrown() throws Exception {
         Integer invalidRating = nextInt(6, 10);
 
         doThrow(InvalidRating.class)
@@ -63,7 +63,7 @@ class ReviewControllerShould {
     }
 
     @Test
-    void badRequestIsReturned_whenReviewIdentifierHasInvalidFormat() throws Exception {
+    void badRequestIsReturned_whenInvalidIdentifierIsThrown() throws Exception {
         String invalidIdentifier = randomAlphanumeric(10);
 
         doThrow(InvalidIdentifier.class)
@@ -82,7 +82,7 @@ class ReviewControllerShould {
                                         }
                                         """
                                         .formatted(
-                                                randomUUID(),
+                                                randomUUID().toString(),
                                                 nextInt(1, 5),
                                                 randomAlphabetic(10)
                                         )
