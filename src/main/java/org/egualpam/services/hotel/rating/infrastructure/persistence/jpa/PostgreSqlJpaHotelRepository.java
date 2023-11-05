@@ -4,14 +4,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelReview;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
-import org.egualpam.services.hotel.rating.domain.shared.Comment;
-import org.egualpam.services.hotel.rating.domain.shared.Rating;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -47,32 +45,21 @@ public final class PostgreSqlJpaHotelRepository extends HotelRepository {
                 .stream()
                 .map(
                         persistenceHotel ->
-                        {
-                            Hotel hotel = mapIntoEntity(
-                                    persistenceHotel.getId().toString(),
-                                    persistenceHotel.getName(),
-                                    persistenceHotel.getDescription(),
-                                    persistenceHotel.getLocation(),
-                                    persistenceHotel.getTotalPrice(),
-                                    persistenceHotel.getImageURL()
-                            );
-
-                            hotel.addReviews(
-                                    findReviewsByHotel
-                                            .apply(persistenceHotel)
-                                            .stream()
-                                            .map(
-                                                    persistenceReview ->
-                                                            new HotelReview(
-                                                                    new Rating(persistenceReview.getRating()),
-                                                                    new Comment(persistenceReview.getComment())
-                                                            )
-                                            )
-                                            .toList()
-                            );
-
-                            return hotel;
-                        }
+                                mapIntoEntity(
+                                        persistenceHotel.getId().toString(),
+                                        persistenceHotel.getName(),
+                                        persistenceHotel.getDescription(),
+                                        persistenceHotel.getLocation(),
+                                        persistenceHotel.getTotalPrice(),
+                                        persistenceHotel.getImageURL(),
+                                        findReviewsByHotel
+                                                .apply(persistenceHotel)
+                                                .stream()
+                                                .mapToDouble(PersistenceReview::getRating)
+                                                .filter(Objects::nonNull)
+                                                .average()
+                                                .orElse(0.0)
+                                )
                 )
                 .toList();
     }

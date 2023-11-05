@@ -1,12 +1,10 @@
 package org.egualpam.services.hotel.rating.application.hotels;
 
-import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +28,6 @@ public final class FindHotelsByRatingAverage {
 
         return hotelRepository.find(location, minPrice, maxPrice)
                 .stream()
-                .sorted(Comparator.comparingDouble(Hotel::calculateRatingAverage).reversed())
                 .map(this::mapIntoHotelDto)
                 .toList();
     }
@@ -43,14 +40,7 @@ public final class FindHotelsByRatingAverage {
                 hotel.getLocation().value(),
                 hotel.getTotalPrice().value(),
                 hotel.getImageURL().value(),
-                hotel.getReviews().stream()
-                        .map(review ->
-                                new ReviewDto(
-                                        review.rating().value(),
-                                        review.comment().value()
-                                )
-                        )
-                        .toList()
+                hotel.getAverageRating().value()
         );
     }
 }

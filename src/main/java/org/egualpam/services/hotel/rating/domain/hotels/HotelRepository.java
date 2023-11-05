@@ -18,7 +18,8 @@ public abstract class HotelRepository {
             String description,
             String location,
             Integer totalPrice,
-            String imageURL
+            String imageURL,
+            Double averageRating
     ) {
         return new Hotel(
                 new Identifier(identifier),
@@ -26,7 +27,8 @@ public abstract class HotelRepository {
                 new HotelDescription(description),
                 new Location(location),
                 new Price(totalPrice),
-                new ImageURL(imageURL)
+                new ImageURL(imageURL),
+                new AverageRating(averageRating)
         );
     }
 }

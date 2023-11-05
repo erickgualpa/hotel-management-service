@@ -11,6 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static java.lang.Double.parseDouble;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -41,8 +42,8 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
 
         int minPrice = 50;
         int maxPrice = 150;
-        int totalPrice = nextInt(minPrice, maxPrice);
-        int rating = nextInt(1, 5);
+        Integer price = nextInt(minPrice, maxPrice);
+        Integer rating = nextInt(1, 5);
 
         hotelTestRepository
                 .insertHotel(
@@ -50,7 +51,7 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                         hotelName,
                         hotelDescription,
                         hotelLocation,
-                        totalPrice,
+                        price,
                         imageURL
                 );
 
@@ -91,12 +92,7 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                                               "location": "%s",
                                               "totalPrice": %d,
                                               "imageURL": "%s",
-                                              "reviews": [
-                                                {
-                                                    "rating": %d,
-                                                    "comment": "%s"
-                                                }
-                                              ]
+                                              "averageRating": %f
                                             }
                                         ]
                                         """.formatted
@@ -105,10 +101,9 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                                                 hotelName,
                                                 hotelDescription,
                                                 hotelLocation,
-                                                totalPrice,
+                                                price,
                                                 imageURL,
-                                                rating,
-                                                comment
+                                                parseDouble(rating.toString())
                                         )
                         )
                 );

@@ -15,6 +15,7 @@ public final class Hotel {
     private final Location location;
     private final Price totalPrice;
     private final ImageURL imageURL;
+    private AverageRating averageRating;
 
     public Hotel(
             Identifier identifier,
@@ -29,6 +30,22 @@ public final class Hotel {
         this.location = location;
         this.totalPrice = totalPrice;
         this.imageURL = imageURL;
+    }
+
+    public Hotel(Identifier identifier,
+                 HotelName name,
+                 HotelDescription description,
+                 Location location,
+                 Price totalPrice,
+                 ImageURL imageURL,
+                 AverageRating averageRating) {
+        this.identifier = identifier;
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.totalPrice = totalPrice;
+        this.imageURL = imageURL;
+        this.averageRating = averageRating;
     }
 
     private final List<HotelReview> reviews = new ArrayList<>();
@@ -72,5 +89,9 @@ public final class Hotel {
 
     public ImageURL getImageURL() {
         return imageURL;
+    }
+
+    public AverageRating getAverageRating() {
+        return averageRating;
     }
 }

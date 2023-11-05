@@ -1,16 +1,14 @@
 package org.egualpam.services.hotel.rating.application.hotels;
 
+import org.egualpam.services.hotel.rating.domain.hotels.AverageRating;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelDescription;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelName;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelReview;
 import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
-import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
-import org.egualpam.services.hotel.rating.domain.shared.Rating;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,9 +20,10 @@ import java.util.Optional;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomUtils.nextDouble;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class FindHotelsByRatingAverageShould {
@@ -41,74 +40,55 @@ class FindHotelsByRatingAverageShould {
 
     @Test
     void hotelsMatchingQueryShouldBeReturnedSortedByRatingAverage() {
-        String intermediateHotelIdentifier = randomUUID().toString();
-        String worstHotelIdentifier = randomUUID().toString();
-        String bestHotelIdentifier = randomUUID().toString();
+        String identifier = randomUUID().toString();
+        String name = randomAlphabetic(5);
+        String description = randomAlphabetic(10);
+        String location = randomAlphabetic(5);
+        Integer price = nextInt(50, 1000);
+        String imageURL = "www." + randomAlphabetic(5) + ".com";
+        Double averageRating = nextDouble(1, 5);
 
-        when(
-                hotelRepository.find(
+        List<Hotel> hotels =
+                List.of(
+                        new Hotel(
+                                new Identifier(identifier),
+                                new HotelName(name),
+                                new HotelDescription(description),
+                                new Location(location),
+                                new Price(price),
+                                new ImageURL(imageURL),
+                                new AverageRating(averageRating)
+                        )
+                );
+
+        doReturn(hotels)
+                .when(hotelRepository)
+                .find(
                         Optional.empty(),
                         Optional.empty(),
                         Optional.empty()
-                )
-        ).thenReturn(
-                List.of(
-                        buildHotelStub(
-                                new Identifier(intermediateHotelIdentifier),
-                                List.of(
-                                        buildReviewStub(new Rating(3)),
-                                        buildReviewStub(new Rating(3))
-                                )
-                        ),
-                        buildHotelStub(
-                                new Identifier(worstHotelIdentifier),
-                                List.of(
-                                        buildReviewStub(new Rating(1)),
-                                        buildReviewStub(new Rating(1))
-                                )
-                        ),
-                        buildHotelStub(
-                                new Identifier(bestHotelIdentifier),
-                                List.of(
-                                        buildReviewStub(new Rating(4)),
-                                        buildReviewStub(new Rating(5))
-                                )
-                        )
-                )
-        );
-
-        List<HotelDto> result = testee.execute(new Filters(null, null, null));
-
-        assertThat(result).hasSize(3)
-                .extracting("identifier")
-                .containsExactly(
-                        bestHotelIdentifier,
-                        intermediateHotelIdentifier,
-                        worstHotelIdentifier
                 );
 
+        List<HotelDto> result = testee.execute(
+                new Filters(
+                        null,
+                        null,
+                        null
+                )
+        );
+
         assertThat(result)
+                .hasSize(1)
                 .allSatisfy(
-                        hotelDto -> assertThat(hotelDto.reviews()).isNotEmpty());
-    }
-
-    private Hotel buildHotelStub(Identifier identifier, List<HotelReview> reviews) {
-        Hotel hotel = new Hotel(
-                identifier,
-                new HotelName(randomAlphabetic(5)),
-                new HotelDescription(randomAlphabetic(10)),
-                new Location(randomAlphabetic(5)),
-                new Price(nextInt(50, 1000)),
-                new ImageURL("www." + randomAlphabetic(5) + ".com")
-        );
-        hotel.addReviews(reviews);
-        return hotel;
-    }
-
-    private HotelReview buildReviewStub(Rating rating) {
-        return new HotelReview(
-                rating,
-                new Comment(randomAlphabetic(10))
-        );
+                        actualHotel -> {
+                            assertThat(actualHotel.identifier()).isEqualTo(identifier);
+                            assertThat(actualHotel.name()).isEqualTo(name);
+                            assertThat(actualHotel.description()).isEqualTo(description);
+                            assertThat(actualHotel.location()).isEqualTo(location);
+                            assertThat(actualHotel.totalPrice()).isEqualTo(price);
+                            assertThat(actualHotel.imageURL()).isEqualTo(imageURL);
+                            assertThat(actualHotel.averageRating()).isEqualTo(averageRating);
+                        }
+                );
     }
 }
