@@ -18,6 +18,7 @@ public final class PostgreSqlJpaReviewRepository extends ReviewRepository {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Review> findByHotelIdentifier(Identifier hotelIdentifier) {
         Query query =
                 entityManager
