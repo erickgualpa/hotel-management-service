@@ -4,10 +4,13 @@ import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
+import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -16,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
@@ -63,5 +67,17 @@ class CreateReviewShould {
                             assertThat(actualReview.getComment()).isEqualTo(new Comment(comment));
                         }
                 );
+    }
+
+    @ValueSource(ints = {0, 6})
+    @ParameterizedTest
+    void invalidRatingShouldBeThrown_whenRatingValueIsOutOfAllowedBounds(Integer invalidRating) {
+        CreateReviewCommand createReviewCommand = new CreateReviewCommand(
+                randomUUID().toString(),
+                randomUUID().toString(),
+                invalidRating,
+                randomAlphabetic(10)
+        );
+        assertThrows(InvalidRating.class, () -> testee.execute(createReviewCommand));
     }
 }

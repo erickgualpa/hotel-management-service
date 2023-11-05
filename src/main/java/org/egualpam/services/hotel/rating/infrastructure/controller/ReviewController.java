@@ -6,6 +6,7 @@ import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
 import org.egualpam.services.hotel.rating.application.reviews.FindReviewsByHotelIdentifier;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
+import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,22 +29,25 @@ public class ReviewController {
 
     @GetMapping
     public ResponseEntity<List<ReviewDto>> findReviewsByHotelIdentifier(@RequestParam String hotelIdentifier) {
-        return ResponseEntity.ok(
-                findReviewsByHotelIdentifier.execute(hotelIdentifier)
-        );
+        List<ReviewDto> reviews = findReviewsByHotelIdentifier.execute(hotelIdentifier);
+        return ResponseEntity.ok(reviews);
     }
 
     @PostMapping(path = "/{reviewIdentifier}")
     public ResponseEntity<Void> createReview(@PathVariable String reviewIdentifier,
                                              @RequestBody CreateReviewRequest createReviewRequest) {
-        createReview.execute(
-                new CreateReviewCommand(
-                        reviewIdentifier,
-                        createReviewRequest.hotelIdentifier(),
-                        createReviewRequest.rating(),
-                        createReviewRequest.comment()
-                )
+        CreateReviewCommand createReviewCommand = new CreateReviewCommand(
+                reviewIdentifier,
+                createReviewRequest.hotelIdentifier(),
+                createReviewRequest.rating(),
+                createReviewRequest.comment()
         );
+
+        try {
+            createReview.execute(createReviewCommand);
+        } catch (InvalidRating e) {
+            return ResponseEntity.badRequest().build();
+        }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
