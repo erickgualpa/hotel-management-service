@@ -1,7 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 
 import java.util.List;
 import java.util.function.Function;
@@ -14,18 +13,20 @@ public final class FindReviewsByHotel implements Function<PersistenceHotel, List
             WHERE r.hotel_id = :hotel_id
             """;
 
-    private final Query query;
+    private final EntityManager entityManager;
 
     public FindReviewsByHotel(EntityManager entityManager) {
-        this.query = entityManager.createNativeQuery(
-                findReviewsByHotelId,
-                PersistenceHotel.class
-        );
+        this.entityManager = entityManager;
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<PersistenceReview> apply(PersistenceHotel hotel) {
-        return query.setParameter("hotel_id", hotel.getId()).getResultList();
+        return entityManager.createNativeQuery(
+                        findReviewsByHotelId,
+                        PersistenceReview.class
+                )
+                .setParameter("hotel_id", hotel.getId())
+                .getResultList();
     }
 }
