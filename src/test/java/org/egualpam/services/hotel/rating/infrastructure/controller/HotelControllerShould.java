@@ -1,7 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import org.egualpam.services.hotel.rating.application.hotels.Filters;
-import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByRatingAverage;
+import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByAverageRating;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class HotelControllerShould {
 
     @MockBean
-    private FindHotelsByRatingAverage findHotelsByRatingAverage;
+    private FindHotelsByAverageRating findHotelsByAverageRating;
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,7 +39,7 @@ class HotelControllerShould {
                         50
                 );
 
-        when(findHotelsByRatingAverage.execute(any(Filters.class))).thenThrow(InvalidPriceRange.class);
+        when(findHotelsByAverageRating.execute(any(Filters.class))).thenThrow(InvalidPriceRange.class);
 
         this.mockMvc
                 .perform(

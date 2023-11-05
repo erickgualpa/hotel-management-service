@@ -1,11 +1,6 @@
 package org.egualpam.services.hotel.rating.domain.hotels;
 
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
-import org.egualpam.services.hotel.rating.domain.shared.Rating;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public final class Hotel {
 
@@ -15,39 +10,22 @@ public final class Hotel {
     private final Location location;
     private final Price totalPrice;
     private final ImageURL imageURL;
+    private final AverageRating averageRating;
 
-    public Hotel(
-            Identifier identifier,
-            HotelName name,
-            HotelDescription description,
-            Location location,
-            Price totalPrice,
-            ImageURL imageURL) {
+    public Hotel(Identifier identifier,
+                 HotelName name,
+                 HotelDescription description,
+                 Location location,
+                 Price totalPrice,
+                 ImageURL imageURL,
+                 AverageRating averageRating) {
         this.identifier = identifier;
         this.name = name;
         this.description = description;
         this.location = location;
         this.totalPrice = totalPrice;
         this.imageURL = imageURL;
-    }
-
-    private final List<HotelReview> reviews = new ArrayList<>();
-
-    public void addReviews(List<HotelReview> reviews) {
-        this.reviews.addAll(reviews);
-    }
-
-    public Double calculateRatingAverage() {
-        return this.reviews.stream()
-                .map(HotelReview::rating)
-                .mapToDouble(Rating::value)
-                .filter(Objects::nonNull)
-                .average()
-                .orElse(0.0);
-    }
-
-    public List<HotelReview> getReviews() {
-        return reviews;
+        this.averageRating = averageRating;
     }
 
     public Identifier getIdentifier() {
@@ -72,5 +50,9 @@ public final class Hotel {
 
     public ImageURL getImageURL() {
         return imageURL;
+    }
+
+    public AverageRating getAverageRating() {
+        return averageRating;
     }
 }

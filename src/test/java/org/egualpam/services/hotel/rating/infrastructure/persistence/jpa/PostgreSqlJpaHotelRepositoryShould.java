@@ -2,11 +2,14 @@ package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
+import org.egualpam.services.hotel.rating.domain.hotels.AverageRating;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelName;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
+import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static java.lang.Double.parseDouble;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -35,19 +39,22 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
     @Test
     void hotelsMatchingFiltersShouldBeReturned() {
         UUID hotelIdentifier = randomUUID();
+        String hotelName = randomAlphabetic(5);
         String location = randomAlphabetic(5);
         int minPrice = 50;
         int maxPrice = 1000;
+        Integer price = nextInt(minPrice, maxPrice);
+        Integer rating = nextInt(1, 5);
 
         PersistenceHotel hotel = new PersistenceHotel();
         hotel.setId(hotelIdentifier);
-        hotel.setName(randomAlphabetic(5));
+        hotel.setName(hotelName);
         hotel.setLocation(location);
-        hotel.setTotalPrice(nextInt(minPrice, maxPrice));
+        hotel.setTotalPrice(price);
 
         PersistenceReview review = new PersistenceReview();
         review.setId(randomUUID());
-        review.setRating(nextInt(1, 5));
+        review.setRating(rating);
         review.setComment(randomAlphabetic(10));
         review.setHotelId(hotelIdentifier);
 
@@ -63,7 +70,22 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
         assertThat(result)
                 .hasSize(1)
                 .allSatisfy(
-                        actualHotels -> assertThat(actualHotels.getReviews()).hasSize(1)
+                        actualHotel ->
+                        {
+                            assertThat(actualHotel.getIdentifier())
+                                    .isEqualTo(
+                                            new Identifier(hotelIdentifier.toString())
+                                    );
+                            assertThat(actualHotel.getName()).isEqualTo(new HotelName(hotelName));
+                            assertThat(actualHotel.getLocation()).isEqualTo(new Location(location));
+                            assertThat(actualHotel.getTotalPrice()).isEqualTo(new Price(price));
+                            assertThat(actualHotel.getAverageRating())
+                                    .isEqualTo(
+                                            new AverageRating(
+                                                    parseDouble(rating.toString())
+                                            )
+                                    );
+                        }
                 );
     }
 
