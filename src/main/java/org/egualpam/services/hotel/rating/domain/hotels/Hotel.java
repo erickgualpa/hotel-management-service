@@ -1,11 +1,6 @@
 package org.egualpam.services.hotel.rating.domain.hotels;
 
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
-import org.egualpam.services.hotel.rating.domain.shared.Rating;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public final class Hotel {
 
@@ -15,22 +10,7 @@ public final class Hotel {
     private final Location location;
     private final Price totalPrice;
     private final ImageURL imageURL;
-    private AverageRating averageRating;
-
-    public Hotel(
-            Identifier identifier,
-            HotelName name,
-            HotelDescription description,
-            Location location,
-            Price totalPrice,
-            ImageURL imageURL) {
-        this.identifier = identifier;
-        this.name = name;
-        this.description = description;
-        this.location = location;
-        this.totalPrice = totalPrice;
-        this.imageURL = imageURL;
-    }
+    private final AverageRating averageRating;
 
     public Hotel(Identifier identifier,
                  HotelName name,
@@ -46,25 +26,6 @@ public final class Hotel {
         this.totalPrice = totalPrice;
         this.imageURL = imageURL;
         this.averageRating = averageRating;
-    }
-
-    private final List<HotelReview> reviews = new ArrayList<>();
-
-    public void addReviews(List<HotelReview> reviews) {
-        this.reviews.addAll(reviews);
-    }
-
-    public Double calculateRatingAverage() {
-        return this.reviews.stream()
-                .map(HotelReview::rating)
-                .mapToDouble(Rating::value)
-                .filter(Objects::nonNull)
-                .average()
-                .orElse(0.0);
-    }
-
-    public List<HotelReview> getReviews() {
-        return reviews;
     }
 
     public Identifier getIdentifier() {
