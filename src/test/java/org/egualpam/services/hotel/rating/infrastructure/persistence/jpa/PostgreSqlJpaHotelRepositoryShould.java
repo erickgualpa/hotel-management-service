@@ -39,14 +39,13 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
         int minPrice = 50;
         int maxPrice = 1000;
 
-        org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel hotel =
-                new org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Hotel();
+        PersistenceHotel hotel = new PersistenceHotel();
         hotel.setId(hotelIdentifier);
         hotel.setName(randomAlphabetic(5));
         hotel.setLocation(location);
         hotel.setTotalPrice(nextInt(minPrice, maxPrice));
 
-        Review review = new Review();
+        PersistenceReview review = new PersistenceReview();
         review.setId(randomUUID());
         review.setRating(nextInt(1, 5));
         review.setComment(randomAlphabetic(10));
@@ -55,7 +54,7 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
         testEntityManager.persistAndFlush(hotel);
         testEntityManager.persistAndFlush(review);
 
-        List<Hotel> result = testee.findHotels(
+        List<Hotel> result = testee.find(
                 Optional.of(new Location(location)),
                 Optional.of(new Price(minPrice)),
                 Optional.of(new Price(maxPrice))
@@ -75,7 +74,7 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
         Optional<Price> maxPriceFilter = Optional.of(new Price(50));
         assertThrows(
                 InvalidPriceRange.class,
-                () -> testee.findHotels(
+                () -> testee.find(
                         locationFilter,
                         minPriceFilter,
                         maxPriceFilter

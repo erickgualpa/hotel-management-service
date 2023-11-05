@@ -1,84 +1,91 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelReview;
+import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
-import org.egualpam.services.hotel.rating.infrastructure.persistence.HotelDto;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.function.Function;
 
 public final class PostgreSqlJpaHotelRepository extends HotelRepository {
 
     private final EntityManager entityManager;
-    private final HotelCriteriaQueryBuilder hotelCriteriaQueryBuilder;
+    private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
 
     public PostgreSqlJpaHotelRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
-        this.hotelCriteriaQueryBuilder = new HotelCriteriaQueryBuilder(entityManager);
+        this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
     }
 
     @Override
-    public List<Hotel> findHotels(Optional<Location> location,
-                                  Optional<Price> minPrice,
-                                  Optional<Price> maxPrice) {
+    public List<Hotel> find(Optional<Location> location,
+                            Optional<Price> minPrice,
+                            Optional<Price> maxPrice) {
 
-        CriteriaQuery<HotelDto> criteriaQuery = hotelCriteriaQueryBuilder.buildFrom(location, minPrice, maxPrice);
+        if (pricingFilteringIsInvalid(minPrice, maxPrice)) {
+            throw new InvalidPriceRange();
+        }
 
-        List<Hotel> hotels = entityManager.createQuery(criteriaQuery).getResultList()
+        CriteriaQuery<PersistenceHotel> criteriaQuery =
+                new HotelCriteriaQueryBuilder(entityManager)
+                        .withLocation(location.map(Location::value))
+                        .withMinPrice(minPrice.map(Price::value))
+                        .withMaxPrice(maxPrice.map(Price::value))
+                        .build();
+
+        return entityManager
+                .createQuery(criteriaQuery)
+                .getResultList()
                 .stream()
                 .map(
-                        hotelDto ->
-                                mapIntoEntity(
-                                        hotelDto.id().toString(),
-                                        hotelDto.name(),
-                                        hotelDto.description(),
-                                        hotelDto.location(),
-                                        hotelDto.totalPrice(),
-                                        hotelDto.imageURL()
-                                )
-                )
-                .toList();
-
-        hotels.forEach(
-                h -> {
-                    Query query = entityManager
-                            .createNativeQuery("""
-                                            SELECT r.id, r.rating, r.comment, r.hotel_id
-                                            FROM reviews r
-                                            WHERE r.hotel_id = :hotel_id
-                                            """,
-                                    Review.class
-                            )
-                            .setParameter(
-                                    "hotel_id",
-                                    UUID.fromString(h.getIdentifier().value())
+                        persistenceHotel ->
+                        {
+                            Hotel hotel = mapIntoEntity(
+                                    persistenceHotel.getId().toString(),
+                                    persistenceHotel.getName(),
+                                    persistenceHotel.getDescription(),
+                                    persistenceHotel.getLocation(),
+                                    persistenceHotel.getTotalPrice(),
+                                    persistenceHotel.getImageURL()
                             );
 
-                    List<Review> reviews = query.getResultList();
+                            hotel.addReviews(
+                                    findReviewsByHotel
+                                            .apply(persistenceHotel)
+                                            .stream()
+                                            .map(
+                                                    persistenceReview ->
+                                                            new HotelReview(
+                                                                    new Rating(persistenceReview.getRating()),
+                                                                    new Comment(persistenceReview.getComment())
+                                                            )
+                                            )
+                                            .toList()
+                            );
 
-                    h.addReviews(
-                            reviews.stream()
-                                    .map(
-                                            r ->
-                                                    new HotelReview(
-                                                            new Rating(r.getRating()),
-                                                            new Comment(r.getComment())
-                                                    )
-                                    )
-                                    .toList()
-                    );
-                }
-        );
+                            return hotel;
+                        }
+                )
+                .toList();
+    }
 
-        return hotels;
+    private boolean pricingFilteringIsInvalid(Optional<Price> minPrice, Optional<Price> maxPrice) {
+        return minPrice
+                .map(Price::value)
+                .filter(
+                        min -> maxPrice
+                                .map(Price::value)
+                                .filter(max -> min > max)
+                                .isPresent()
+                )
+                .isPresent();
     }
 }

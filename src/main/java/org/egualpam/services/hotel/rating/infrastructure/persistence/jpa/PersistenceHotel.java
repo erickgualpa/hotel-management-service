@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "hotels")
-public class Hotel {
+public class PersistenceHotel {
 
     @Id
     private UUID id;
@@ -22,6 +22,23 @@ public class Hotel {
 
     @Column(name = "image_url")
     private String imageURL;
+
+    public PersistenceHotel() {
+    }
+
+    public PersistenceHotel(UUID id,
+                            String name,
+                            String description,
+                            String location,
+                            Integer totalPrice,
+                            String imageURL) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.location = location;
+        this.totalPrice = totalPrice;
+        this.imageURL = imageURL;
+    }
 
     public UUID getId() {
         return id;
