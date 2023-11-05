@@ -6,6 +6,7 @@ import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
 import org.egualpam.services.hotel.rating.application.reviews.FindReviewsByHotelIdentifier;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
+import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class ReviewController {
 
         try {
             createReview.execute(createReviewCommand);
-        } catch (InvalidRating e) {
+        } catch (InvalidIdentifier | InvalidRating e) {
             return ResponseEntity.badRequest().build();
         }
 
