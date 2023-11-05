@@ -15,9 +15,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Collections.shuffle;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextDouble;
@@ -39,7 +41,7 @@ class FindHotelsByRatingAverageShould {
     }
 
     @Test
-    void hotelsMatchingQueryShouldBeReturnedSortedByRatingAverage() {
+    void returnHotelsMatchingFilters() {
         String identifier = randomUUID().toString();
         String name = randomAlphabetic(5);
         String description = randomAlphabetic(10);
@@ -88,6 +90,70 @@ class FindHotelsByRatingAverageShould {
                             assertThat(actualHotel.totalPrice()).isEqualTo(price);
                             assertThat(actualHotel.imageURL()).isEqualTo(imageURL);
                             assertThat(actualHotel.averageRating()).isEqualTo(averageRating);
+                        }
+                );
+    }
+
+    @Test
+    void returnHotelsSortedByAverageRating() {
+        String expectedFirstIdentifier = randomUUID().toString();
+        Double highestAverageRating = nextDouble(4, 5);
+        String expectedLastIdentifier = randomUUID().toString();
+        Double lowestAverageRating = nextDouble(1, 2);
+
+        final List<Hotel> hotels = new ArrayList<>();
+        hotels.add(
+                new Hotel(
+                        new Identifier(expectedLastIdentifier),
+                        new HotelName(randomAlphabetic(5)),
+                        new HotelDescription(randomAlphabetic(10)),
+                        new Location(randomAlphabetic(5)),
+                        new Price(nextInt(50, 1000)),
+                        new ImageURL("www." + randomAlphabetic(5) + ".com"),
+                        new AverageRating(lowestAverageRating)
+                )
+        );
+
+        hotels.add(
+                new Hotel(
+                        new Identifier(expectedFirstIdentifier),
+                        new HotelName(randomAlphabetic(5)),
+                        new HotelDescription(randomAlphabetic(10)),
+                        new Location(randomAlphabetic(5)),
+                        new Price(nextInt(50, 1000)),
+                        new ImageURL("www." + randomAlphabetic(5) + ".com"),
+                        new AverageRating(highestAverageRating)
+                )
+        );
+
+        shuffle(hotels);
+
+        doReturn(hotels)
+                .when(hotelRepository)
+                .find(
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty()
+                );
+
+        List<HotelDto> result = testee.execute(
+                new Filters(
+                        null,
+                        null,
+                        null
+                )
+        );
+
+        assertThat(result)
+                .hasSize(2)
+                .satisfies(
+                        actualHotels -> {
+                            assertThat(actualHotels).first().satisfies(
+                                    first -> assertThat(first.identifier()).isEqualTo(expectedFirstIdentifier)
+                            );
+                            assertThat(actualHotels).last().satisfies(
+                                    last -> assertThat(last.identifier()).isEqualTo(expectedLastIdentifier)
+                            );
                         }
                 );
     }

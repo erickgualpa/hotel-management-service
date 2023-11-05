@@ -7,8 +7,13 @@ import org.egualpam.services.hotel.rating.domain.hotels.Price;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.ToDoubleFunction;
+
+import static java.util.Comparator.comparingDouble;
 
 public final class FindHotelsByRatingAverage {
+
+    private static final ToDoubleFunction<Hotel> getHotelAverageRating = h -> h.getAverageRating().value();
 
     private final HotelRepository hotelRepository;
 
@@ -28,6 +33,7 @@ public final class FindHotelsByRatingAverage {
 
         return hotelRepository.find(location, minPrice, maxPrice)
                 .stream()
+                .sorted(comparingDouble(getHotelAverageRating).reversed())
                 .map(this::mapIntoHotelDto)
                 .toList();
     }
