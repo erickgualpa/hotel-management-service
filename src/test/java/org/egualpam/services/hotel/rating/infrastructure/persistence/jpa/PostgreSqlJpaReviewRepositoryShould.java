@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
@@ -11,6 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,8 +24,18 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@TestConfiguration
+class PostgreSqlJpaReviewRepositoryTestConfiguration {
+
+    @Bean
+    public ReviewRepository testee(EntityManager entityManager) {
+        return new PostgreSqlJpaReviewRepository(entityManager);
+    }
+}
+
 @Transactional
 @AutoConfigureTestEntityManager
+@Import(PostgreSqlJpaHotelRepositoryTestConfiguration.class)
 class PostgreSqlJpaReviewRepositoryShould extends AbstractIntegrationTest {
 
     @Autowired
