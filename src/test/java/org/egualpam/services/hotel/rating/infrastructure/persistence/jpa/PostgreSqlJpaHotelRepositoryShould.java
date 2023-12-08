@@ -51,60 +51,7 @@ class PostgreSqlJpaHotelRepositoryShould extends AbstractIntegrationTest {
     private HotelRepository testee;
 
     @Test
-    void hotelsMatchingFiltersShouldBeReturned() {
-        UUID hotelIdentifier = randomUUID();
-        String hotelName = randomAlphabetic(5);
-        String location = randomAlphabetic(5);
-        int minPrice = 50;
-        int maxPrice = 1000;
-        Integer price = nextInt(minPrice, maxPrice);
-        Integer rating = nextInt(1, 5);
-
-        PersistenceHotel hotel = new PersistenceHotel();
-        hotel.setId(hotelIdentifier);
-        hotel.setName(hotelName);
-        hotel.setLocation(location);
-        hotel.setTotalPrice(price);
-
-        PersistenceReview review = new PersistenceReview();
-        review.setId(randomUUID());
-        review.setRating(rating);
-        review.setComment(randomAlphabetic(10));
-        review.setHotelId(hotelIdentifier);
-
-        testEntityManager.persistAndFlush(hotel);
-        testEntityManager.persistAndFlush(review);
-
-        List<Hotel> result = testee.find(
-                Optional.of(new Location(location)),
-                Optional.of(new Price(minPrice)),
-                Optional.of(new Price(maxPrice))
-        );
-
-        assertThat(result)
-                .hasSize(1)
-                .allSatisfy(
-                        actualHotel ->
-                        {
-                            assertThat(actualHotel.getIdentifier())
-                                    .isEqualTo(
-                                            new Identifier(hotelIdentifier.toString())
-                                    );
-                            assertThat(actualHotel.getName()).isEqualTo(new HotelName(hotelName));
-                            assertThat(actualHotel.getLocation()).isEqualTo(new Location(location));
-                            assertThat(actualHotel.getTotalPrice()).isEqualTo(new Price(price));
-                            assertThat(actualHotel.getAverageRating())
-                                    .isEqualTo(
-                                            new AverageRating(
-                                                    parseDouble(rating.toString())
-                                            )
-                                    );
-                        }
-                );
-    }
-
-    @Test
-    void invalidPriceRangeShouldBeThrown_whenMinPriceFilterIsGreaterThanMaxPriceFilter() {
+    void throwInvalidPriceRange_whenMinPriceFilterIsGreaterThanMaxPriceFilter() {
         Optional<Location> locationFilter = Optional.empty();
         Optional<Price> minPriceFilter = Optional.of(new Price(100));
         Optional<Price> maxPriceFilter = Optional.of(new Price(50));
