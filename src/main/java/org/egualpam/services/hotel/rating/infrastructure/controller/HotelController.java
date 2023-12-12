@@ -22,14 +22,14 @@ public final class HotelController {
     private final FindHotelsByAverageRating findHotelsByAverageRating;
 
     @PostMapping(value = "/query")
-    public ResponseEntity<List<HotelDto>> queryHotels(@RequestBody Query query) {
+    public ResponseEntity<List<HotelDto>> queryHotels(@RequestBody QueryHotelRequest query) {
         Filters filters = new Filters(
                 query.location(),
                 Optional.ofNullable(query.priceRange())
-                        .map(PriceRange::begin)
+                        .map(QueryHotelRequest.PriceRange::begin)
                         .orElse(null),
                 Optional.ofNullable(query.priceRange())
-                        .map(PriceRange::end)
+                        .map(QueryHotelRequest.PriceRange::end)
                         .orElse(null)
         );
         try {
