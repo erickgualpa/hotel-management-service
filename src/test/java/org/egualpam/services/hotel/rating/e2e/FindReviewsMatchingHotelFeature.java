@@ -5,8 +5,6 @@ import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.egualpam.services.hotel.rating.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
@@ -17,7 +15,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
 class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
 
     private static final String FIND_REVIEW_RESPONSE = """
@@ -34,9 +31,6 @@ class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
 
     @Autowired
     private ReviewTestRepository reviewTestRepository;
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Test
     void reviewsMatchingHotelIdentifierShouldBeReturned() throws Exception {
