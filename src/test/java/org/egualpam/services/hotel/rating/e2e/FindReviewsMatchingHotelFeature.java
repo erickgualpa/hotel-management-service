@@ -20,6 +20,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
 
+    private static final String FIND_REVIEW_RESPONSE = """
+            [
+                {
+                    "rating": %d,
+                    "comment": "%s"
+                }
+            ]
+            """;
+
     @Autowired
     private HotelTestRepository hotelTestRepository;
 
@@ -32,8 +41,7 @@ class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
     @Test
     void reviewsMatchingHotelIdentifierShouldBeReturned() throws Exception {
         UUID hotelIdentifier = randomUUID();
-
-        int rating = nextInt(1, 5);
+        Integer rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
         hotelTestRepository
@@ -60,15 +68,9 @@ class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
                                 )
                 )
                 .andExpect(status().isOk())
-                .andExpect(content().json("""
-                                [
-                                    {
-                                        "rating": %d,
-                                        "comment": "%s"
-                                    }
-                                ]
-                                """.formatted
-                                (
+                .andExpect(content().json(
+                                String.format(
+                                        FIND_REVIEW_RESPONSE,
                                         rating,
                                         comment
                                 )
