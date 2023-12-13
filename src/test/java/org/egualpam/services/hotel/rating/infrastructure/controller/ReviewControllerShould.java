@@ -37,7 +37,7 @@ class ReviewControllerShould {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void shouldReturnBadRequest_whenInvalidRatingIsThrown() throws Exception {
+    void returnBadRequest_whenInvalidRatingIsThrown() throws Exception {
         String hotelIdentifier = randomUUID().toString();
         String reviewIdentifier = randomUUID().toString();
         String comment = randomAlphabetic(10);
@@ -64,7 +64,7 @@ class ReviewControllerShould {
     }
 
     @Test
-    void shouldReturnBadRequest_whenInvalidIdentifierIsThrown() throws Exception {
+    void returnBadRequest_whenInvalidIdentifierIsThrown() throws Exception {
         String invalidHotelIdentifier = randomAlphanumeric(10);
         String invalidReviewIdentifier = randomAlphanumeric(10);
         String comment = randomAlphabetic(10);
