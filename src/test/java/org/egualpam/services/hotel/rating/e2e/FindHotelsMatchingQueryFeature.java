@@ -5,9 +5,6 @@ import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.egualpam.services.hotel.rating.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
@@ -15,21 +12,42 @@ import static java.lang.Double.parseDouble;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@AutoConfigureMockMvc
 class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
+
+    private static final String QUERY_HOTEL_REQUEST = """
+                {
+                    "location": "%s",
+                    "priceRange": {
+                        "begin": %d,
+                        "end": %d
+                    }
+                }
+            """;
+
+    private static final String QUERY_HOTEL_RESPONSE = """
+            [
+                {
+                  "identifier": "%s",
+                  "name": "%s",
+                  "description": "%s",
+                  "location": "%s",
+                  "totalPrice": %d,
+                  "imageURL": "%s",
+                  "averageRating": %f
+                }
+            ]
+            """;
 
     @Autowired
     private HotelTestRepository hotelTestRepository;
 
     @Autowired
     private ReviewTestRepository reviewTestRepository;
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Test
     void hotelsMatchingQueryShouldBeReturned() throws Exception {
@@ -62,49 +80,30 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                         hotelIdentifier
                 );
 
-        String request = """
-                    {
-                        "location": "%s",
-                        "priceRange": {
-                            "begin": %d,
-                            "end": %d
-                        }
-                    }
-                """.formatted
-                (
-                        hotelLocation,
-                        minPrice,
-                        maxPrice
-                );
+        String request = String.format(
+                QUERY_HOTEL_REQUEST,
+                hotelLocation,
+                minPrice,
+                maxPrice
+        );
 
         mockMvc.perform(
                         post("/v1/hotels/query")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(request))
+                                .contentType(APPLICATION_JSON)
+                                .content(request)
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json(
-                                """
-                                        [
-                                            {
-                                              "identifier": "%s",
-                                              "name": "%s",
-                                              "description": "%s",
-                                              "location": "%s",
-                                              "totalPrice": %d,
-                                              "imageURL": "%s",
-                                              "averageRating": %f
-                                            }
-                                        ]
-                                        """.formatted
-                                        (
-                                                hotelIdentifier.toString(),
-                                                hotelName,
-                                                hotelDescription,
-                                                hotelLocation,
-                                                price,
-                                                imageURL,
-                                                parseDouble(rating.toString())
-                                        )
+                                String.format(
+                                        QUERY_HOTEL_RESPONSE,
+                                        hotelIdentifier,
+                                        hotelName,
+                                        hotelDescription,
+                                        hotelLocation,
+                                        price,
+                                        imageURL,
+                                        parseDouble(rating.toString())
+                                )
                         )
                 );
     }

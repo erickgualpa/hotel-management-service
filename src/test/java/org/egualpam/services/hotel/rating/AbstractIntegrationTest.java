@@ -1,14 +1,18 @@
 package org.egualpam.services.hotel.rating;
 
 import org.egualpam.services.hotel.rating.infrastructure.HotelRatingServiceApplication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 
+@AutoConfigureMockMvc
 @ActiveProfiles("integration-test")
 @SpringBootTest(
         classes = HotelRatingServiceApplication.class,
@@ -39,4 +43,7 @@ public abstract class AbstractIntegrationTest {
             ).applyTo(applicationContext.getEnvironment());
         }
     }
+
+    @Autowired
+    protected MockMvc mockMvc;
 }

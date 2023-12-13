@@ -4,8 +4,6 @@ import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
@@ -16,19 +14,23 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils.nextInt;
 
-@AutoConfigureMockMvc
 class CreateReviewFeature extends AbstractIntegrationTest {
+
+    private static final String CREATE_REVIEW_REQUEST = """
+            {
+                "hotelIdentifier": "%s",
+                "rating": "%d",
+                "comment": "%s"
+            }
+            """;
 
     @Autowired
     private HotelTestRepository hotelTestRepository;
 
-    @Autowired
-    private MockMvc mockMvc;
-
     @Test
     void reviewShouldBeCreatedGivenHotelIdentifier() throws Exception {
         UUID hotelIdentifier = randomUUID();
-        UUID reviewIdentifier = randomUUID();
+        String reviewIdentifier = randomUUID().toString();
 
         hotelTestRepository
                 .insertHotel(
@@ -41,17 +43,12 @@ class CreateReviewFeature extends AbstractIntegrationTest {
                 );
 
         mockMvc.perform(
-                        post("/v1/reviews/{reviewIdentifier}", reviewIdentifier.toString())
+                        post("/v1/reviews/{reviewIdentifier}", reviewIdentifier)
                                 .contentType(APPLICATION_JSON)
-                                .content("""
-                                        {
-                                            "hotelIdentifier": "%s",
-                                            "rating": "%d",
-                                            "comment": "%s"
-                                        }
-                                        """
-                                        .formatted(
-                                                hotelIdentifier.toString(),
+                                .content(
+                                        String.format(
+                                                CREATE_REVIEW_REQUEST,
+                                                hotelIdentifier,
                                                 nextInt(1, 5),
                                                 randomAlphabetic(10)
                                         )

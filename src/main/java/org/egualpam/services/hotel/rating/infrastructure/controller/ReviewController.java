@@ -29,7 +29,7 @@ public class ReviewController {
     private final CreateReview createReview;
 
     @GetMapping
-    public ResponseEntity<List<ReviewDto>> findReviewsByHotelIdentifier(@RequestParam String hotelIdentifier) {
+    public ResponseEntity<List<ReviewDto>> findReviews(@RequestParam String hotelIdentifier) {
         List<ReviewDto> reviews = findReviewsByHotelIdentifier.execute(hotelIdentifier);
         return ResponseEntity.ok(reviews);
     }
