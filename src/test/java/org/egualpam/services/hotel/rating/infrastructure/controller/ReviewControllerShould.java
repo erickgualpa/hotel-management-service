@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
@@ -33,60 +34,58 @@ class ReviewControllerShould {
     @Autowired
     private MockMvc mockMvc;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     @Test
-    void badRequestIsReturned_whenInvalidRatingIsThrown() throws Exception {
+    void shouldReturnBadRequest_whenInvalidRatingIsThrown() throws Exception {
+        String hotelIdentifier = randomUUID().toString();
+        String reviewIdentifier = randomUUID().toString();
+        String comment = randomAlphabetic(10);
         Integer invalidRating = nextInt(6, 10);
+
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                hotelIdentifier,
+                invalidRating,
+                comment
+        );
+
+        String request = objectMapper.writeValueAsString(createReviewRequest);
 
         doThrow(InvalidRating.class)
                 .when(createReview)
                 .execute(any(CreateReviewCommand.class));
 
-        this.mockMvc
-                .perform(
-                        post("/v1/reviews/{reviewIdentifier}", randomUUID().toString())
+        mockMvc.perform(
+                        post("/v1/reviews/{reviewIdentifier}", reviewIdentifier)
                                 .contentType(APPLICATION_JSON)
-                                .content("""
-                                        {
-                                            "hotelIdentifier": "%s",
-                                            "rating": "%d",
-                                            "comment": "%s"
-                                        }
-                                        """
-                                        .formatted(
-                                                randomUUID(),
-                                                invalidRating,
-                                                randomAlphabetic(10)
-                                        )
-                                )
+                                .content(request)
                 )
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void badRequestIsReturned_whenInvalidIdentifierIsThrown() throws Exception {
-        String invalidIdentifier = randomAlphanumeric(10);
+    void shouldReturnBadRequest_whenInvalidIdentifierIsThrown() throws Exception {
+        String invalidHotelIdentifier = randomAlphanumeric(10);
+        String invalidReviewIdentifier = randomAlphanumeric(10);
+        String comment = randomAlphabetic(10);
+        Integer rating = nextInt(1, 5);
+
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                invalidHotelIdentifier,
+                rating,
+                comment
+        );
+
+        String request = objectMapper.writeValueAsString(createReviewRequest);
 
         doThrow(InvalidIdentifier.class)
                 .when(createReview)
                 .execute(any(CreateReviewCommand.class));
 
-        this.mockMvc
-                .perform(
-                        post("/v1/reviews/{reviewIdentifier}", invalidIdentifier)
+        mockMvc.perform(
+                        post("/v1/reviews/{reviewIdentifier}", invalidReviewIdentifier)
                                 .contentType(APPLICATION_JSON)
-                                .content("""
-                                        {
-                                            "hotelIdentifier": "%s",
-                                            "rating": "%d",
-                                            "comment": "%s"
-                                        }
-                                        """
-                                        .formatted(
-                                                randomUUID().toString(),
-                                                nextInt(1, 5),
-                                                randomAlphabetic(10)
-                                        )
-                                )
+                                .content(request)
                 )
                 .andExpect(status().isBadRequest());
     }
