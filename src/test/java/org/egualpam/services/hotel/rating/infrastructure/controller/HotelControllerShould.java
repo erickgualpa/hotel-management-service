@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,11 +28,13 @@ class HotelControllerShould {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void returnBadRequest_whenPriceRangeFilterIsInvalid() throws Exception {
+    void returnBadRequest_whenInvalidPriceRangeIsThrown() throws Exception {
         QueryHotelRequest query = new QueryHotelRequest(null, new QueryHotelRequest.PriceRange(500, 50));
         String request = objectMapper.writeValueAsString(query);
 
-        when(findHotelsByAverageRating.execute(any(Filters.class))).thenThrow(InvalidPriceRange.class);
+        doThrow(InvalidPriceRange.class)
+                .when(findHotelsByAverageRating)
+                .execute(any(Filters.class));
 
         mockMvc.perform(
                         post("/v1/hotels/query")
