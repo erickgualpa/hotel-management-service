@@ -22,6 +22,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
 
+    private static final String QUERY_HOTEL_REQUEST = """
+                {
+                    "location": "%s",
+                    "priceRange": {
+                        "begin": %d,
+                        "end": %d
+                    }
+                }
+            """;
+
+    private static final String QUERY_HOTEL_RESPONSE = """
+            [
+                {
+                  "identifier": "%s",
+                  "name": "%s",
+                  "description": "%s",
+                  "location": "%s",
+                  "totalPrice": %d,
+                  "imageURL": "%s",
+                  "averageRating": %f
+                }
+            ]
+            """;
+
     @Autowired
     private HotelTestRepository hotelTestRepository;
 
@@ -62,49 +86,30 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                         hotelIdentifier
                 );
 
-        String request = """
-                    {
-                        "location": "%s",
-                        "priceRange": {
-                            "begin": %d,
-                            "end": %d
-                        }
-                    }
-                """.formatted
-                (
-                        hotelLocation,
-                        minPrice,
-                        maxPrice
-                );
+        String request = String.format(
+                QUERY_HOTEL_REQUEST,
+                hotelLocation,
+                minPrice,
+                maxPrice
+        );
 
         mockMvc.perform(
                         post("/v1/hotels/query")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(request))
+                                .content(request)
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().json(
-                                """
-                                        [
-                                            {
-                                              "identifier": "%s",
-                                              "name": "%s",
-                                              "description": "%s",
-                                              "location": "%s",
-                                              "totalPrice": %d,
-                                              "imageURL": "%s",
-                                              "averageRating": %f
-                                            }
-                                        ]
-                                        """.formatted
-                                        (
-                                                hotelIdentifier.toString(),
-                                                hotelName,
-                                                hotelDescription,
-                                                hotelLocation,
-                                                price,
-                                                imageURL,
-                                                parseDouble(rating.toString())
-                                        )
+                                String.format(
+                                        QUERY_HOTEL_RESPONSE,
+                                        hotelIdentifier,
+                                        hotelName,
+                                        hotelDescription,
+                                        hotelLocation,
+                                        price,
+                                        imageURL,
+                                        parseDouble(rating.toString())
+                                )
                         )
                 );
     }
