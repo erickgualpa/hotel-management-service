@@ -19,6 +19,14 @@ import static org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils.nex
 @AutoConfigureMockMvc
 class CreateReviewFeature extends AbstractIntegrationTest {
 
+    private static final String CREATE_REVIEW_REQUEST = """
+            {
+                "hotelIdentifier": "%s",
+                "rating": "%d",
+                "comment": "%s"
+            }
+            """;
+
     @Autowired
     private HotelTestRepository hotelTestRepository;
 
@@ -28,7 +36,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
     @Test
     void reviewShouldBeCreatedGivenHotelIdentifier() throws Exception {
         UUID hotelIdentifier = randomUUID();
-        UUID reviewIdentifier = randomUUID();
+        String reviewIdentifier = randomUUID().toString();
 
         hotelTestRepository
                 .insertHotel(
@@ -41,17 +49,12 @@ class CreateReviewFeature extends AbstractIntegrationTest {
                 );
 
         mockMvc.perform(
-                        post("/v1/reviews/{reviewIdentifier}", reviewIdentifier.toString())
+                        post("/v1/reviews/{reviewIdentifier}", reviewIdentifier)
                                 .contentType(APPLICATION_JSON)
-                                .content("""
-                                        {
-                                            "hotelIdentifier": "%s",
-                                            "rating": "%d",
-                                            "comment": "%s"
-                                        }
-                                        """
-                                        .formatted(
-                                                hotelIdentifier.toString(),
+                                .content(
+                                        String.format(
+                                                CREATE_REVIEW_REQUEST,
+                                                hotelIdentifier,
                                                 nextInt(1, 5),
                                                 randomAlphabetic(10)
                                         )
