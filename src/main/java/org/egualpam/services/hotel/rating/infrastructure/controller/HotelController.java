@@ -21,7 +21,7 @@ public final class HotelController {
     private final FindHotelsByAverageRating findHotelsByAverageRating;
 
     @PostMapping(value = "/query")
-    public ResponseEntity<HotelResponse> queryHotels(@RequestBody QueryHotelRequest query) {
+    public ResponseEntity<QueryHotelResponse> queryHotels(@RequestBody QueryHotelRequest query) {
         Filters filters = new Filters(
                 query.location(),
                 Optional.ofNullable(query.priceRange())
@@ -32,10 +32,10 @@ public final class HotelController {
                         .orElse(null)
         );
         try {
-            List<HotelResponse.Hotel> hotels =
+            List<QueryHotelResponse.Hotel> hotels =
                     findHotelsByAverageRating.execute(filters).stream()
                             .map(
-                                    h -> new HotelResponse.Hotel(
+                                    h -> new QueryHotelResponse.Hotel(
                                             h.identifier(),
                                             h.name(),
                                             h.description(),
@@ -46,7 +46,7 @@ public final class HotelController {
                                     )
                             )
                             .toList();
-            return ResponseEntity.ok(new HotelResponse(hotels));
+            return ResponseEntity.ok(new QueryHotelResponse(hotels));
         } catch (InvalidPriceRange e) {
             return ResponseEntity.badRequest().build();
         }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.List;
 
 @JsonSerialize
-public record HotelResponse(List<Hotel> hotels) {
+public record QueryHotelResponse(List<Hotel> hotels) {
     record Hotel(
             String identifier,
             String name,
