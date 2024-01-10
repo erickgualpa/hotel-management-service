@@ -30,17 +30,19 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
             """;
 
     private static final String QUERY_HOTEL_RESPONSE = """
-            [
-                {
-                  "identifier": "%s",
-                  "name": "%s",
-                  "description": "%s",
-                  "location": "%s",
-                  "totalPrice": %d,
-                  "imageURL": "%s",
-                  "averageRating": %f
-                }
-            ]
+            {
+                hotels: [
+                    {
+                      "identifier": "%s",
+                      "name": "%s",
+                      "description": "%s",
+                      "location": "%s",
+                      "totalPrice": %d,
+                      "imageURL": "%s",
+                      "averageRating": %f
+                    }
+                ]
+            }
             """;
 
     @Autowired
