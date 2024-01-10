@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
 import org.egualpam.services.hotel.rating.application.reviews.FindReviewsByHotelIdentifier;
-import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.springframework.http.HttpStatus;
@@ -29,9 +28,17 @@ public class ReviewController {
     private final CreateReview createReview;
 
     @GetMapping
-    public ResponseEntity<List<ReviewDto>> findReviews(@RequestParam String hotelIdentifier) {
-        List<ReviewDto> reviews = findReviewsByHotelIdentifier.execute(hotelIdentifier);
-        return ResponseEntity.ok(reviews);
+    public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelIdentifier) {
+        List<GetReviewsResponse.Review> reviews =
+                findReviewsByHotelIdentifier.execute(hotelIdentifier).stream()
+                        .map(
+                                r -> new GetReviewsResponse.Review(
+                                        r.rating(),
+                                        r.comment()
+                                )
+                        )
+                        .toList();
+        return ResponseEntity.ok(new GetReviewsResponse(reviews));
     }
 
     @PostMapping(path = "/{reviewIdentifier}")
