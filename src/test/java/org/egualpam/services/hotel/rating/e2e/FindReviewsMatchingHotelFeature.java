@@ -18,12 +18,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
 
     private static final String FIND_REVIEW_RESPONSE = """
-            [
-                {
-                    "rating": %d,
-                    "comment": "%s"
-                }
-            ]
+            {
+                "reviews": [
+                    {
+                        "rating": %d,
+                        "comment": "%s"
+                    }
+                ]
+            }
             """;
 
     @Autowired
