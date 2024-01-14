@@ -4,6 +4,7 @@ import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
+import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,11 @@ public final class FindHotelsByAverageRating {
 
         Optional<Price> maxPrice = Optional.ofNullable(filters.priceEnd())
                 .map(Price::new);
+
+        maxPrice.ifPresent(
+                max -> minPrice.filter(min -> min.value() < max.value())
+                        .orElseThrow(PriceRangeValuesSwapped::new)
+        );
 
         return hotelRepository.find(location, minPrice, maxPrice)
                 .stream()
