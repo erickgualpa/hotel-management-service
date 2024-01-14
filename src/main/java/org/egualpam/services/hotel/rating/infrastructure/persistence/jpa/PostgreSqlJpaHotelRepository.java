@@ -6,6 +6,7 @@ import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
+import org.egualpam.services.hotel.rating.domain.hotels.PriceRange;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,16 +24,12 @@ public final class PostgreSqlJpaHotelRepository extends HotelRepository {
     }
 
     @Override
-    public List<Hotel> find(
-            Optional<Location> location,
-            Optional<Price> minPrice,
-            Optional<Price> maxPrice
-    ) {
+    public List<Hotel> find(Optional<Location> location, PriceRange priceRange) {
         CriteriaQuery<PersistenceHotel> criteriaQuery =
                 new HotelCriteriaQueryBuilder(entityManager)
                         .withLocation(location.map(Location::value))
-                        .withMinPrice(minPrice.map(Price::value))
-                        .withMaxPrice(maxPrice.map(Price::value))
+                        .withMinPrice(priceRange.minPrice().map(Price::value))
+                        .withMaxPrice(priceRange.maxPrice().map(Price::value))
                         .build();
 
         return entityManager

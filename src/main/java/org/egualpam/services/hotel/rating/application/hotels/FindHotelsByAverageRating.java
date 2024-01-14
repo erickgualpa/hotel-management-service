@@ -4,7 +4,7 @@ import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
-import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
+import org.egualpam.services.hotel.rating.domain.hotels.PriceRange;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,21 +23,13 @@ public final class FindHotelsByAverageRating {
     }
 
     public List<HotelDto> execute(Filters filters) {
-        Optional<Location> location = Optional.ofNullable(filters.location())
-                .map(Location::new);
-
-        Optional<Price> minPrice = Optional.ofNullable(filters.priceBegin())
-                .map(Price::new);
-
-        Optional<Price> maxPrice = Optional.ofNullable(filters.priceEnd())
-                .map(Price::new);
-
-        maxPrice.ifPresent(
-                max -> minPrice.filter(min -> min.value() < max.value())
-                        .orElseThrow(PriceRangeValuesSwapped::new)
+        Optional<Location> location = Optional.ofNullable(filters.location()).map(Location::new);
+        PriceRange priceRange = new PriceRange(
+                Optional.ofNullable(filters.priceBegin()).map(Price::new),
+                Optional.ofNullable(filters.priceEnd()).map(Price::new)
         );
 
-        return hotelRepository.find(location, minPrice, maxPrice)
+        return hotelRepository.find(location, priceRange)
                 .stream()
                 .sorted(comparingDouble(getHotelAverageRating).reversed())
                 .map(this::mapIntoHotelDto)

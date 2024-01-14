@@ -8,6 +8,7 @@ import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
+import org.egualpam.services.hotel.rating.domain.hotels.PriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,8 +70,10 @@ class FindHotelsByAverageRatingShould {
                 .when(hotelRepository)
                 .find(
                         Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty()
+                        new PriceRange(
+                                Optional.empty(),
+                                Optional.empty()
+                        )
                 );
 
         List<HotelDto> result = testee.execute(
@@ -134,8 +137,10 @@ class FindHotelsByAverageRatingShould {
                 .when(hotelRepository)
                 .find(
                         Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty()
+                        new PriceRange(
+                                Optional.empty(),
+                                Optional.empty()
+                        )
                 );
 
         List<HotelDto> result = testee.execute(
