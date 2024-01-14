@@ -3,7 +3,7 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.hotels.Filters;
 import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByAverageRating;
-import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
+import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +47,7 @@ public final class HotelController {
                             )
                             .toList();
             return ResponseEntity.ok(new QueryHotelResponse(hotels));
-        } catch (InvalidPriceRange e) {
+        } catch (PriceRangeValuesSwapped e) {
             return ResponseEntity.badRequest().build();
         }
     }

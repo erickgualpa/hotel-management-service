@@ -2,7 +2,7 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import org.egualpam.services.hotel.rating.application.hotels.Filters;
 import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByAverageRating;
-import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
+import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -28,11 +28,11 @@ class HotelControllerShould {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void returnBadRequest_whenInvalidPriceRangeIsThrown() throws Exception {
+    void returnBadRequest_whenPriceRangeValuesSwappedIsThrown() throws Exception {
         QueryHotelRequest query = new QueryHotelRequest(null, new QueryHotelRequest.PriceRange(500, 50));
         String request = objectMapper.writeValueAsString(query);
 
-        doThrow(InvalidPriceRange.class)
+        doThrow(PriceRangeValuesSwapped.class)
                 .when(findHotelsByAverageRating)
                 .execute(any(Filters.class));
 
