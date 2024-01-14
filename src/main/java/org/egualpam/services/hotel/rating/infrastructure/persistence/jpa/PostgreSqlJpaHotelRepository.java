@@ -4,9 +4,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
-import org.egualpam.services.hotel.rating.domain.hotels.InvalidPriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
+import org.egualpam.services.hotel.rating.domain.hotels.PriceRange;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,19 +24,12 @@ public final class PostgreSqlJpaHotelRepository extends HotelRepository {
     }
 
     @Override
-    public List<Hotel> find(Optional<Location> location,
-                            Optional<Price> minPrice,
-                            Optional<Price> maxPrice) {
-
-        if (pricingFilteringIsInvalid(minPrice, maxPrice)) {
-            throw new InvalidPriceRange();
-        }
-
+    public List<Hotel> find(Optional<Location> location, PriceRange priceRange) {
         CriteriaQuery<PersistenceHotel> criteriaQuery =
                 new HotelCriteriaQueryBuilder(entityManager)
                         .withLocation(location.map(Location::value))
-                        .withMinPrice(minPrice.map(Price::value))
-                        .withMaxPrice(maxPrice.map(Price::value))
+                        .withMinPrice(priceRange.minPrice().map(Price::value))
+                        .withMaxPrice(priceRange.maxPrice().map(Price::value))
                         .build();
 
         return entityManager
@@ -62,17 +55,5 @@ public final class PostgreSqlJpaHotelRepository extends HotelRepository {
                                 )
                 )
                 .toList();
-    }
-
-    private boolean pricingFilteringIsInvalid(Optional<Price> minPrice, Optional<Price> maxPrice) {
-        return minPrice
-                .map(Price::value)
-                .filter(
-                        min -> maxPrice
-                                .map(Price::value)
-                                .filter(max -> min > max)
-                                .isPresent()
-                )
-                .isPresent();
     }
 }

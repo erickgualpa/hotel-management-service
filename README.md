@@ -37,6 +37,7 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                       │   └── reviews
     │   │                       ├── domain
     │   │                       │   ├── hotels
+    │   │                       │   │   └── exception
     │   │                       │   ├── reviews
     │   │                       │   └── shared
     │   │                       └── infrastructure

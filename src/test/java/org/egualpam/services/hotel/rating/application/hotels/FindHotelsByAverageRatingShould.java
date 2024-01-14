@@ -8,6 +8,8 @@ import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
+import org.egualpam.services.hotel.rating.domain.hotels.PriceRange;
+import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextDouble;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,8 +70,10 @@ class FindHotelsByAverageRatingShould {
                 .when(hotelRepository)
                 .find(
                         Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty()
+                        new PriceRange(
+                                Optional.empty(),
+                                Optional.empty()
+                        )
                 );
 
         List<HotelDto> result = testee.execute(
@@ -132,8 +137,10 @@ class FindHotelsByAverageRatingShould {
                 .when(hotelRepository)
                 .find(
                         Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty()
+                        new PriceRange(
+                                Optional.empty(),
+                                Optional.empty()
+                        )
                 );
 
         List<HotelDto> result = testee.execute(
@@ -156,5 +163,19 @@ class FindHotelsByAverageRatingShould {
                             );
                         }
                 );
+    }
+
+    @Test
+    void throwDomainException_whenValuesFromPriceRangeFilterAreSwapped() {
+        int priceBegin = 50;
+        int priceEnd = priceBegin - 1;
+
+        Filters filters = new Filters(
+                null,
+                priceBegin,
+                priceEnd
+        );
+
+        assertThrows(PriceRangeValuesSwapped.class, () -> testee.execute(filters));
     }
 }
