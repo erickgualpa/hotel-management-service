@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
-import static java.lang.Double.parseDouble;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -39,7 +38,7 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                       "location": "%s",
                       "totalPrice": %d,
                       "imageURL": "%s",
-                      "averageRating": %f
+                      "averageRating": %.2f
                     }
                 ]
             }
@@ -62,8 +61,8 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
 
         int minPrice = 50;
         int maxPrice = 150;
-        Integer price = nextInt(minPrice, maxPrice);
-        Integer rating = nextInt(1, 5);
+        int price = nextInt(minPrice, maxPrice);
+        int rating = nextInt(1, 5);
 
         hotelTestRepository
                 .insertHotel(
@@ -104,7 +103,7 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                                         hotelLocation,
                                         price,
                                         imageURL,
-                                        parseDouble(rating.toString())
+                                        (double) rating
                                 )
                         )
                 );
