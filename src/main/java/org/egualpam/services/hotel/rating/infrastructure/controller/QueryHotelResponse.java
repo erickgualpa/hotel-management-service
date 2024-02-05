@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;
@@ -13,6 +14,10 @@ public record QueryHotelResponse(List<Hotel> hotels) {
             String location,
             Integer totalPrice,
             String imageURL,
+            @JsonFormat(
+                    shape = JsonFormat.Shape.NUMBER_FLOAT,
+                    pattern = "#.##"
+            )
             Double averageRating
     ) {
     }
