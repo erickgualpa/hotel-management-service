@@ -103,7 +103,7 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
                                         hotelLocation,
                                         price,
                                         imageURL,
-                                        (double) 1
+                                        (double) rating
                                 )
                         )
                 );
