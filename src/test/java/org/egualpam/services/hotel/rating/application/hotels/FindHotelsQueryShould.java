@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.application.hotels;
 
+import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.domain.hotels.AverageRating;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelDescription;
@@ -31,16 +32,21 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-class FindHotelsByAverageRatingShould {
+class FindHotelsQueryShould {
 
     @Mock
     private HotelRepository hotelRepository;
 
-    private FindHotelsByAverageRating testee;
+    private Query<List<HotelDto>> testee;
 
     @BeforeEach
     void setup() {
-        testee = new FindHotelsByAverageRating(hotelRepository);
+        testee = new FindHotelsQuery(
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                hotelRepository
+        );
     }
 
     @Test
@@ -76,13 +82,7 @@ class FindHotelsByAverageRatingShould {
                         )
                 );
 
-        List<HotelDto> result = testee.execute(
-                new Filters(
-                        null,
-                        null,
-                        null
-                )
-        );
+        List<HotelDto> result = testee.get();
 
         assertThat(result)
                 .hasSize(1)
@@ -143,13 +143,7 @@ class FindHotelsByAverageRatingShould {
                         )
                 );
 
-        List<HotelDto> result = testee.execute(
-                new Filters(
-                        null,
-                        null,
-                        null
-                )
-        );
+        List<HotelDto> result = testee.get();
 
         assertThat(result)
                 .hasSize(2)
@@ -170,12 +164,13 @@ class FindHotelsByAverageRatingShould {
         int priceBegin = 50;
         int priceEnd = priceBegin - 1;
 
-        Filters filters = new Filters(
-                null,
-                priceBegin,
-                priceEnd
+        testee = new FindHotelsQuery(
+                Optional.empty(),
+                Optional.of(priceBegin),
+                Optional.of(priceEnd),
+                hotelRepository
         );
 
-        assertThrows(PriceRangeValuesSwapped.class, () -> testee.execute(filters));
+        assertThrows(PriceRangeValuesSwapped.class, () -> testee.get());
     }
 }

@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.application.hotels;
 
+import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
@@ -12,21 +13,32 @@ import java.util.function.ToDoubleFunction;
 
 import static java.util.Comparator.comparingDouble;
 
-public final class FindHotelsByAverageRating {
+public class FindHotelsQuery implements Query<List<HotelDto>> {
 
     private static final ToDoubleFunction<Hotel> getHotelAverageRating = h -> h.getAverageRating().value();
 
+    private final Optional<String> locationFilter;
+    private final Optional<Integer> minPriceFilter;
+    private final Optional<Integer> maxPriceFilter;
     private final HotelRepository hotelRepository;
 
-    public FindHotelsByAverageRating(HotelRepository hotelRepository) {
+    public FindHotelsQuery(
+            Optional<String> locationFilter,
+            Optional<Integer> minPriceFilter,
+            Optional<Integer> maxPriceFilter,
+            HotelRepository hotelRepository) {
+        this.locationFilter = locationFilter;
+        this.minPriceFilter = minPriceFilter;
+        this.maxPriceFilter = maxPriceFilter;
         this.hotelRepository = hotelRepository;
     }
 
-    public List<HotelDto> execute(Filters filters) {
-        Optional<Location> location = Optional.ofNullable(filters.location()).map(Location::new);
+    @Override
+    public List<HotelDto> get() {
+        Optional<Location> location = locationFilter.map(Location::new);
         PriceRange priceRange = new PriceRange(
-                Optional.ofNullable(filters.priceBegin()).map(Price::new),
-                Optional.ofNullable(filters.priceEnd()).map(Price::new)
+                minPriceFilter.map(Price::new),
+                maxPriceFilter.map(Price::new)
         );
 
         return hotelRepository.find(location, priceRange)
