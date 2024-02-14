@@ -2,7 +2,7 @@ package org.egualpam.services.hotel.rating.infrastructure.configuration;
 
 import org.egualpam.services.hotel.rating.application.hotels.HotelQueryAssistant;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
-import org.egualpam.services.hotel.rating.application.reviews.FindReviewsByHotelIdentifier;
+import org.egualpam.services.hotel.rating.application.reviews.ReviewQueryAssistant;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +17,8 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public FindReviewsByHotelIdentifier findReviewsByHotelIdentifier(ReviewRepository reviewRepository) {
-        return new FindReviewsByHotelIdentifier(reviewRepository);
+    public ReviewQueryAssistant reviewQueryAssistant(ReviewRepository reviewRepository) {
+        return new ReviewQueryAssistant(reviewRepository);
     }
 
     @Bean

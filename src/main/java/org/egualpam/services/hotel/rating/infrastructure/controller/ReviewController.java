@@ -4,7 +4,7 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
-import org.egualpam.services.hotel.rating.application.reviews.FindReviewsByHotelIdentifier;
+import org.egualpam.services.hotel.rating.application.reviews.ReviewQueryAssistant;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.springframework.http.HttpStatus;
@@ -24,13 +24,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    private final FindReviewsByHotelIdentifier findReviewsByHotelIdentifier;
+    private final ReviewQueryAssistant reviewQueryAssistant;
     private final CreateReview createReview;
 
     @GetMapping
     public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelIdentifier) {
         List<GetReviewsResponse.Review> reviews =
-                findReviewsByHotelIdentifier.execute(hotelIdentifier).stream()
+                reviewQueryAssistant
+                        .findHotelReviews(hotelIdentifier)
+                        .get()
+                        .stream()
                         .map(
                                 r -> new GetReviewsResponse.Review(
                                         r.rating(),

@@ -2,7 +2,7 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
-import org.egualpam.services.hotel.rating.application.reviews.FindReviewsByHotelIdentifier;
+import org.egualpam.services.hotel.rating.application.reviews.ReviewQueryAssistant;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ReviewControllerShould {
 
     @MockBean
-    private FindReviewsByHotelIdentifier findReviewsByHotelIdentifier;
+    private ReviewQueryAssistant reviewQueryAssistant;
 
     @MockBean
     private CreateReview createReview;
