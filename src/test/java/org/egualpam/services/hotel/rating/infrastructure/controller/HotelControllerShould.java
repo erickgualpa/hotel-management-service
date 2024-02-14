@@ -1,17 +1,18 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
-import org.egualpam.services.hotel.rating.application.hotels.Filters;
-import org.egualpam.services.hotel.rating.application.hotels.FindHotelsByAverageRating;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.egualpam.services.hotel.rating.application.hotels.HotelQueryAssistant;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
 import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
+import java.util.Optional;
+
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -19,8 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(HotelController.class)
 class HotelControllerShould {
 
-    @MockBean
-    private FindHotelsByAverageRating findHotelsByAverageRating;
+    @MockBean(answer = Answers.RETURNS_DEEP_STUBS)
+    private HotelQueryAssistant hotelQueryFactory;
 
     @Autowired
     private MockMvc mockMvc;
@@ -29,12 +30,15 @@ class HotelControllerShould {
 
     @Test
     void returnBadRequest_whenPriceRangeValuesSwappedIsThrown() throws Exception {
-        QueryHotelRequest query = new QueryHotelRequest(null, new QueryHotelRequest.PriceRange(500, 50));
+        int minPrice = 500;
+        int maxPrice = 50;
+
+        QueryHotelRequest query = new QueryHotelRequest(null, new QueryHotelRequest.PriceRange(minPrice, maxPrice));
         String request = objectMapper.writeValueAsString(query);
 
-        doThrow(PriceRangeValuesSwapped.class)
-                .when(findHotelsByAverageRating)
-                .execute(any(Filters.class));
+        when(hotelQueryFactory
+                .findHotelsQuery(Optional.empty(), Optional.of(minPrice), Optional.of(maxPrice)).get())
+                .thenThrow(PriceRangeValuesSwapped.class);
 
         mockMvc.perform(
                         post("/v1/hotels/query")
