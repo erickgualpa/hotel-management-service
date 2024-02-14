@@ -1,11 +1,11 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
+import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -20,17 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class FindReviewsByHotelIdentifierShould {
+class FindHotelReviewsQueryShould {
 
     @Mock
     private ReviewRepository reviewRepository;
-
-    private FindReviewsByHotelIdentifier testee;
-
-    @BeforeEach
-    void setUp() {
-        testee = new FindReviewsByHotelIdentifier(reviewRepository);
-    }
 
     @Test
     void returnReviewsGivenHotelIdentifier() {
@@ -51,7 +44,8 @@ class FindReviewsByHotelIdentifierShould {
                         )
                 );
 
-        List<ReviewDto> result = testee.execute(hotelIdentifier);
+        Query<List<ReviewDto>> testee = new FindHotelReviewsQuery(hotelIdentifier, reviewRepository);
+        List<ReviewDto> result = testee.get();
 
         assertThat(result)
                 .hasSize(1)
