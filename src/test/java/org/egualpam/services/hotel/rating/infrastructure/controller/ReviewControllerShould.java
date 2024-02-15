@@ -2,11 +2,12 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
-import org.egualpam.services.hotel.rating.application.reviews.ReviewQueryAssistant;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandFactory;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -28,13 +29,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ReviewControllerShould {
 
     @MockBean
-    private ReviewQueryAssistant reviewQueryAssistant;
-
-    @MockBean
     private CommandFactory commandFactory;
 
     @MockBean
     private CommandBus commandBus;
+
+    @MockBean
+    private QueryFactory queryFactory;
+
+    @MockBean
+    private QueryBus queryBus;
 
     @Autowired
     private MockMvc mockMvc;

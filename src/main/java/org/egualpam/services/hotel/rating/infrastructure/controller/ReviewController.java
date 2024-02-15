@@ -2,12 +2,15 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotel.rating.application.reviews.ReviewQueryAssistant;
+import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.egualpam.services.hotel.rating.application.shared.Command;
+import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandFactory;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,23 +28,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    private final ReviewQueryAssistant reviewQueryAssistant;
     private final CommandFactory commandFactory;
     private final CommandBus commandBus;
+    private final QueryFactory queryFactory;
+    private final QueryBus queryBus;
 
     @GetMapping
     public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelIdentifier) {
+        Query<List<ReviewDto>> findHotelReviewsQuery = queryFactory
+                .findHotelReviewsQuery(hotelIdentifier);
         List<GetReviewsResponse.Review> reviews =
-                reviewQueryAssistant
-                        .findHotelReviews(hotelIdentifier)
-                        .get()
+                queryBus.publish(findHotelReviewsQuery)
                         .stream()
                         .map(
                                 r -> new GetReviewsResponse.Review(
                                         r.rating(),
-                                        r.comment()
-                                )
-                        )
+                                        r.comment()))
                         .toList();
         return ResponseEntity.ok(new GetReviewsResponse(reviews));
     }

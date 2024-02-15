@@ -1,8 +1,11 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotel.rating.application.hotels.HotelQueryAssistant;
+import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
+import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +20,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public final class HotelController {
 
-    private final HotelQueryAssistant hotelQueryFactory;
+    private final QueryFactory queryFactory;
+    private final QueryBus queryBus;
 
     @PostMapping(value = "/query")
     public ResponseEntity<QueryHotelResponse> queryHotels(@RequestBody QueryHotelRequest query) {
@@ -30,15 +34,16 @@ public final class HotelController {
                     Optional.ofNullable(query.priceRange())
                             .map(QueryHotelRequest.PriceRange::end);
 
-            List<QueryHotelResponse.Hotel> hotels =
-                    hotelQueryFactory
-                            .findHotelsQuery(
-                                    locationFilter,
-                                    minPriceFilter,
-                                    maxPriceFilter
+            Query<List<HotelDto>> findHotelsQuery = queryFactory
+                    .findHotelsQuery(
+                            locationFilter,
+                            minPriceFilter,
+                            maxPriceFilter
 
-                            )
-                            .get()
+                    );
+
+            List<QueryHotelResponse.Hotel> hotels =
+                    queryBus.publish(findHotelsQuery)
                             .stream()
                             .map(
                                     h -> new QueryHotelResponse.Hotel(
@@ -48,9 +53,7 @@ public final class HotelController {
                                             h.location(),
                                             h.totalPrice(),
                                             h.imageURL(),
-                                            h.averageRating()
-                                    )
-                            )
+                                            h.averageRating()))
                             .toList();
             return ResponseEntity.ok(new QueryHotelResponse(hotels));
         } catch (PriceRangeValuesSwapped e) {
