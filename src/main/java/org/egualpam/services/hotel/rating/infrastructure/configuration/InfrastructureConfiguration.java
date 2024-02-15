@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import jakarta.persistence.EntityManager;
@@ -26,6 +27,11 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
+
+    @Bean
     public HotelRepository hotelRepository(EntityManager entityManager) {
         return new PostgreSqlJpaHotelRepository(entityManager);
     }
@@ -41,7 +47,10 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public QueryBus queryBus(HotelRepository hotelRepository, ReviewRepository reviewRepository) {
-        return new SimpleQueryBus(hotelRepository, reviewRepository);
+    public QueryBus queryBus(
+            ObjectMapper objectMapper,
+            HotelRepository hotelRepository,
+            ReviewRepository reviewRepository) {
+        return new SimpleQueryBus(objectMapper, hotelRepository, reviewRepository);
     }
 }

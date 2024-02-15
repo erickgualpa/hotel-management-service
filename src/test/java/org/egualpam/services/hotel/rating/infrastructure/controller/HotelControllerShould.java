@@ -2,9 +2,10 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
+import org.egualpam.services.hotel.rating.infrastructure.configuration.InfrastructureConfiguration;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
 import org.junit.jupiter.api.Test;
-import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,13 +20,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(HotelController.class)
 class HotelControllerShould {
 
-    @MockBean(answer = Answers.RETURNS_DEEP_STUBS)
+    @MockBean
     private QueryBus queryBus;
 
     @Autowired
     private MockMvc mockMvc;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new InfrastructureConfiguration().objectMapper();
 
     @Test
     void returnBadRequest_whenPriceRangeValuesSwappedIsThrown() throws Exception {
@@ -37,7 +38,7 @@ class HotelControllerShould {
 
         doThrow(PriceRangeValuesSwapped.class)
                 .when(queryBus)
-                .publish(any());
+                .publish(any(Query.class));
 
         mockMvc.perform(
                         post("/v1/hotels/query")

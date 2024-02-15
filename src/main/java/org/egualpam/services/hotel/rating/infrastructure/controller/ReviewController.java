@@ -1,13 +1,14 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
-import org.egualpam.services.hotel.rating.application.shared.Command;
-import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.Command;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,39 +25,49 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/reviews")
 @RequiredArgsConstructor
-public class ReviewController {
+public final class ReviewController {
 
+    private final ObjectMapper objectMapper;
     private final CommandBus commandBus;
     private final QueryBus queryBus;
 
     @GetMapping
     public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelIdentifier) {
-        Query<List<ReviewDto>> findHotelReviewsQuery =
-                queryBus.queryBuilder()
-                        .findHotelReviews(hotelIdentifier);
+        Query findHotelReviewsQuery = new FindHotelReviewsQuery(hotelIdentifier);
+
+        final List<ReviewDto> reviewsDto;
+        try {
+            String outcome = queryBus.publish(findHotelReviewsQuery);
+            reviewsDto = objectMapper.readerForListOf(ReviewDto.class).readValue(outcome);
+        } catch (Exception e) {
+            // TODO: Add proper logging here
+            return ResponseEntity
+                    .internalServerError()
+                    .build();
+        }
+
         List<GetReviewsResponse.Review> reviews =
-                queryBus.publish(findHotelReviewsQuery)
-                        .stream()
-                        .map(
-                                r -> new GetReviewsResponse.Review(
+                reviewsDto.stream()
+                        .map(r ->
+                                new GetReviewsResponse.Review(
                                         r.rating(),
                                         r.comment()))
                         .toList();
+
         return ResponseEntity.ok(new GetReviewsResponse(reviews));
     }
 
     @PostMapping(path = "/{reviewIdentifier}")
     public ResponseEntity<Void> createReview(@PathVariable String reviewIdentifier,
                                              @RequestBody CreateReviewRequest createReviewRequest) {
-        try {
-            Command createReviewCommand = commandBus
-                    .commandBuilder()
-                    .createReview(
-                            reviewIdentifier,
-                            createReviewRequest.hotelIdentifier(),
-                            createReviewRequest.rating(),
-                            createReviewRequest.comment());
+        Command createReviewCommand = new CreateReviewCommand(
+                reviewIdentifier,
+                createReviewRequest.hotelIdentifier(),
+                createReviewRequest.rating(),
+                createReviewRequest.comment()
+        );
 
+        try {
             commandBus.publish(createReviewCommand);
         } catch (InvalidIdentifier | InvalidRating e) {
             return ResponseEntity.badRequest().build();

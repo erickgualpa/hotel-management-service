@@ -1,13 +1,13 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.egualpam.services.hotel.rating.application.shared.Command;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
+import org.egualpam.services.hotel.rating.infrastructure.configuration.InfrastructureConfiguration;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.Command;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
 import org.junit.jupiter.api.Test;
-import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ReviewController.class)
 class ReviewControllerShould {
 
-    @MockBean(answer = Answers.RETURNS_DEEP_STUBS)
+    @MockBean
     private CommandBus commandBus;
 
     @MockBean
@@ -35,7 +35,7 @@ class ReviewControllerShould {
     @Autowired
     private MockMvc mockMvc;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new InfrastructureConfiguration().objectMapper();
 
     @Test
     void returnBadRequest_whenInvalidRatingIsThrown() throws Exception {
