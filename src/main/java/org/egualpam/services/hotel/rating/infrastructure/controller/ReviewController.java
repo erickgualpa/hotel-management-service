@@ -2,11 +2,12 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
-import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewQueryAssistant;
+import org.egualpam.services.hotel.rating.application.shared.Command;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,8 @@ import java.util.List;
 public class ReviewController {
 
     private final ReviewQueryAssistant reviewQueryAssistant;
-    private final CreateReview createReview;
+    private final CommandFactory commandFactory;
+    private final CommandBus commandBus;
 
     @GetMapping
     public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelIdentifier) {
@@ -47,15 +49,15 @@ public class ReviewController {
     @PostMapping(path = "/{reviewIdentifier}")
     public ResponseEntity<Void> createReview(@PathVariable String reviewIdentifier,
                                              @RequestBody CreateReviewRequest createReviewRequest) {
-        CreateReviewCommand createReviewCommand = new CreateReviewCommand(
-                reviewIdentifier,
-                createReviewRequest.hotelIdentifier(),
-                createReviewRequest.rating(),
-                createReviewRequest.comment()
-        );
-
         try {
-            createReview.execute(createReviewCommand);
+            Command createReviewCommand =
+                    commandFactory
+                            .createReviewCommand(
+                                    reviewIdentifier,
+                                    createReviewRequest.hotelIdentifier(),
+                                    createReviewRequest.rating(),
+                                    createReviewRequest.comment());
+            commandBus.publish(createReviewCommand);
         } catch (InvalidIdentifier | InvalidRating e) {
             return ResponseEntity.badRequest().build();
         }

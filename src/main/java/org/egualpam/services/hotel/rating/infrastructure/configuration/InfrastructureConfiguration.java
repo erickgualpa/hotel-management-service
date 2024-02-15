@@ -5,6 +5,8 @@ import io.swagger.v3.oas.models.info.Info;
 import jakarta.persistence.EntityManager;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.SimpleCommandBus;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.PostgreSqlJpaReviewRepository;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,11 @@ public class InfrastructureConfiguration {
                 .info(
                         new Info().title("Hotel Rating Service API")
                 );
+    }
+
+    @Bean
+    public CommandBus commandBus() {
+        return new SimpleCommandBus();
     }
 
     @Bean

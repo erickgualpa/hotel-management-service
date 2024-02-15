@@ -1,10 +1,10 @@
 package org.egualpam.services.hotel.rating.infrastructure.configuration;
 
 import org.egualpam.services.hotel.rating.application.hotels.HotelQueryAssistant;
-import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewQueryAssistant;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +22,7 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    public CreateReview createReview(ReviewRepository reviewRepository) {
-        return new CreateReview(reviewRepository);
+    public CommandFactory reviewCommandFactory(ReviewRepository reviewRepository) {
+        return new CommandFactory(reviewRepository);
     }
 }
