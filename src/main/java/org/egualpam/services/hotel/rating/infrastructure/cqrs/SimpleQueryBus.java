@@ -45,9 +45,9 @@ public final class SimpleQueryBus implements QueryBus {
         } else if (query instanceof FindHotelsQuery) {
             org.egualpam.services.hotel.rating.application.hotels.FindHotelsQuery findHotelsQuery =
                     new org.egualpam.services.hotel.rating.application.hotels.FindHotelsQuery(
-                            ((FindHotelsQuery) query).getLocationFilter(),
-                            ((FindHotelsQuery) query).getMinPriceFilter(),
-                            ((FindHotelsQuery) query).getMaxPriceFilter(),
+                            ((FindHotelsQuery) query).getLocation(),
+                            ((FindHotelsQuery) query).getMinPrice(),
+                            ((FindHotelsQuery) query).getMaxPrice(),
                             hotelRepository
                     );
 
