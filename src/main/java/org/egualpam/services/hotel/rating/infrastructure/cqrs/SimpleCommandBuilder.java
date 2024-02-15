@@ -4,19 +4,20 @@ import org.egualpam.services.hotel.rating.application.reviews.CreateReviewComman
 import org.egualpam.services.hotel.rating.application.shared.Command;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 
-public class CommandFactory {
+final class SimpleCommandBuilder implements CommandBuilder {
 
     private final ReviewRepository reviewRepository;
 
-    public CommandFactory(ReviewRepository reviewRepository) {
+    SimpleCommandBuilder(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
 
-    public Command createReviewCommand(
+    public Command createReview(
             String reviewIdentifier,
             String hotelIdentifier,
             Integer rating,
-            String comment) {
+            String comment
+    ) {
         return new CreateReviewCommand(
                 reviewIdentifier,
                 hotelIdentifier,

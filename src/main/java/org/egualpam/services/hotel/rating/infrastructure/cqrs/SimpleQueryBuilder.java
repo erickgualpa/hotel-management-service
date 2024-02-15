@@ -11,21 +11,18 @@ import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import java.util.List;
 import java.util.Optional;
 
-public final class QueryFactory {
+final class SimpleQueryBuilder implements QueryBuilder {
 
     private final HotelRepository hotelRepository;
     private final ReviewRepository reviewRepository;
 
-    public QueryFactory(HotelRepository hotelRepository, ReviewRepository reviewRepository) {
+    SimpleQueryBuilder(HotelRepository hotelRepository, ReviewRepository reviewRepository) {
         this.hotelRepository = hotelRepository;
         this.reviewRepository = reviewRepository;
     }
 
-    public Query<List<HotelDto>> findHotelsQuery(
-            Optional<String> locationFilter,
-            Optional<Integer> minPriceFilter,
-            Optional<Integer> maxPriceFilter
-    ) {
+    @Override
+    public Query<List<HotelDto>> findHotels(Optional<String> locationFilter, Optional<Integer> minPriceFilter, Optional<Integer> maxPriceFilter) {
         return new FindHotelsQuery(
                 locationFilter,
                 minPriceFilter,
@@ -34,7 +31,8 @@ public final class QueryFactory {
         );
     }
 
-    public Query<List<ReviewDto>> findHotelReviewsQuery(String hotelIdentifier) {
+    @Override
+    public Query<List<ReviewDto>> findHotelReviews(String hotelIdentifier) {
         return new FindHotelReviewsQuery(hotelIdentifier, reviewRepository);
     }
 }

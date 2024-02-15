@@ -5,7 +5,6 @@ import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
 import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +19,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public final class HotelController {
 
-    private final QueryFactory queryFactory;
     private final QueryBus queryBus;
 
     @PostMapping(value = "/query")
@@ -34,13 +32,13 @@ public final class HotelController {
                     Optional.ofNullable(query.priceRange())
                             .map(QueryHotelRequest.PriceRange::end);
 
-            Query<List<HotelDto>> findHotelsQuery = queryFactory
-                    .findHotelsQuery(
-                            locationFilter,
-                            minPriceFilter,
-                            maxPriceFilter
-
-                    );
+            Query<List<HotelDto>> findHotelsQuery =
+                    queryBus.queryBuilder()
+                            .findHotels(
+                                    locationFilter,
+                                    minPriceFilter,
+                                    maxPriceFilter
+                            );
 
             List<QueryHotelResponse.Hotel> hotels =
                     queryBus.publish(findHotelsQuery)
