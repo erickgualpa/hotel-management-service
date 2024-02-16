@@ -1,6 +1,6 @@
 package org.egualpam.services.hotel.rating.application.shared;
 
 @FunctionalInterface
-public interface Command {
+public interface InternalCommand {
     void execute();
 }

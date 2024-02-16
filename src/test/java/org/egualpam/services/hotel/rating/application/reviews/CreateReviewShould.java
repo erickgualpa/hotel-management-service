@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verify;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 @ExtendWith(MockitoExtension.class)
-class CreateReviewCommandShould {
+class CreateReviewShould {
 
     @Captor
     private ArgumentCaptor<Review> reviewCaptor;
@@ -33,7 +33,7 @@ class CreateReviewCommandShould {
     @Mock
     private ReviewRepository reviewRepository;
 
-    private CreateReviewCommand testee;
+    private CreateReview testee;
 
     @Test
     void givenReviewShouldBeSaved() {
@@ -42,7 +42,7 @@ class CreateReviewCommandShould {
         Integer rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
-        testee = new CreateReviewCommand(
+        testee = new CreateReview(
                 reviewIdentifier,
                 hotelIdentifier,
                 rating,
@@ -68,7 +68,7 @@ class CreateReviewCommandShould {
     @ValueSource(ints = {0, 6})
     @ParameterizedTest
     void invalidRatingShouldBeThrown_whenRatingValueIsOutOfAllowedBounds(Integer invalidRating) {
-        testee = new CreateReviewCommand(
+        testee = new CreateReview(
                 randomUUID().toString(),
                 randomUUID().toString(),
                 invalidRating,
@@ -81,7 +81,7 @@ class CreateReviewCommandShould {
     @Test
     void invalidIdentifierShouldBeThrown_whenReviewIdentifierHasInvalidFormat() {
         String invalidIdentifier = randomAlphanumeric(10);
-        testee = new CreateReviewCommand(
+        testee = new CreateReview(
                 invalidIdentifier,
                 randomUUID().toString(),
                 nextInt(1, 5),
@@ -94,7 +94,7 @@ class CreateReviewCommandShould {
     @Test
     void invalidIdentifierShouldBeThrown_whenHotelIdentifierHasInvalidFormat() {
         String invalidIdentifier = randomAlphanumeric(10);
-        testee = new CreateReviewCommand(
+        testee = new CreateReview(
                 randomUUID().toString(),
                 invalidIdentifier,
                 nextInt(1, 5),

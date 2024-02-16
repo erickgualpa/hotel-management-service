@@ -1,13 +1,13 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
-import org.egualpam.services.hotel.rating.application.shared.Command;
+import org.egualpam.services.hotel.rating.application.shared.InternalCommand;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
 
-public final class CreateReviewCommand implements Command {
+public final class CreateReview implements InternalCommand {
 
     private final String reviewIdentifier;
     private final String hotelIdentifier;
@@ -16,7 +16,7 @@ public final class CreateReviewCommand implements Command {
 
     private final ReviewRepository reviewRepository;
 
-    public CreateReviewCommand(
+    public CreateReview(
             String reviewIdentifier,
             String hotelIdentifier,
             Integer rating,

@@ -1,6 +1,6 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
-import org.egualpam.services.hotel.rating.application.shared.Query;
+import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class FindHotelReviewsQueryShould {
+class FindHotelReviewsShould {
 
     @Mock
     private ReviewRepository reviewRepository;
@@ -44,7 +44,7 @@ class FindHotelReviewsQueryShould {
                         )
                 );
 
-        Query<List<ReviewDto>> testee = new FindHotelReviewsQuery(hotelIdentifier, reviewRepository);
+        InternalQuery<List<ReviewDto>> testee = new FindHotelReviews(hotelIdentifier, reviewRepository);
         List<ReviewDto> result = testee.get();
 
         assertThat(result)

@@ -1,6 +1,6 @@
 package org.egualpam.services.hotel.rating.application.hotels;
 
-import org.egualpam.services.hotel.rating.application.shared.Query;
+import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
@@ -13,7 +13,7 @@ import java.util.function.ToDoubleFunction;
 
 import static java.util.Comparator.comparingDouble;
 
-public class FindHotelsQuery implements Query<List<HotelDto>> {
+public class FindHotels implements InternalQuery<List<HotelDto>> {
 
     private static final ToDoubleFunction<Hotel> getHotelAverageRating = h -> h.getAverageRating().value();
 
@@ -22,7 +22,7 @@ public class FindHotelsQuery implements Query<List<HotelDto>> {
     private final Optional<Integer> maxPriceFilter;
     private final HotelRepository hotelRepository;
 
-    public FindHotelsQuery(
+    public FindHotels(
             Optional<String> locationFilter,
             Optional<Integer> minPriceFilter,
             Optional<Integer> maxPriceFilter,

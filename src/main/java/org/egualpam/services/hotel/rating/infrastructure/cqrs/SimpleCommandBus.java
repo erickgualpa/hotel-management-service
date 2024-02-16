@@ -1,5 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.cqrs;
 
+import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
+import org.egualpam.services.hotel.rating.application.shared.InternalCommand;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.egualpam.services.hotel.rating.infrastructure.controller.CreateReviewCommand;
 
@@ -13,16 +15,16 @@ public final class SimpleCommandBus implements CommandBus {
 
     @Override
     public void publish(Command command) {
-        if (command instanceof CreateReviewCommand) {
-            org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand createReviewCommand =
-                    new org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand(
-                            ((CreateReviewCommand) command).getReviewIdentifier(),
-                            ((CreateReviewCommand) command).getHotelIdentifier(),
-                            ((CreateReviewCommand) command).getRating(),
-                            ((CreateReviewCommand) command).getComment(),
+        if (command instanceof CreateReviewCommand createReviewCommand) {
+            InternalCommand internalCommand =
+                    new CreateReview(
+                            createReviewCommand.getReviewIdentifier(),
+                            createReviewCommand.getHotelIdentifier(),
+                            createReviewCommand.getRating(),
+                            createReviewCommand.getComment(),
                             reviewRepository
                     );
-            createReviewCommand.execute();
+            internalCommand.execute();
         }
     }
 }
