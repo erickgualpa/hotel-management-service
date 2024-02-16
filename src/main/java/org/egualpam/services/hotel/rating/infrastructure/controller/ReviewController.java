@@ -3,8 +3,6 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
-import org.egualpam.services.hotel.rating.application.reviews.FindHotelReviewsQuery;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.egualpam.services.hotel.rating.application.shared.Command;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
@@ -12,6 +10,8 @@ import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.CreateReviewCommand;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.FindHotelReviewsQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
