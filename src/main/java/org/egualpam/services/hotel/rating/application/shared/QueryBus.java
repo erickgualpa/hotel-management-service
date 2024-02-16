@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.cqrs;
+package org.egualpam.services.hotel.rating.application.shared;
 
 @FunctionalInterface
 public interface QueryBus {

@@ -1,10 +1,10 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.egualpam.services.hotel.rating.application.shared.Query;
+import org.egualpam.services.hotel.rating.application.shared.QueryBus;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotel.rating.infrastructure.configuration.InfrastructureConfiguration;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

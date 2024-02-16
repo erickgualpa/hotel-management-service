@@ -1,6 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
 
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
+import org.egualpam.services.hotel.rating.application.shared.Query;
 
 public final class FindHotelReviewsQuery implements Query {
 
