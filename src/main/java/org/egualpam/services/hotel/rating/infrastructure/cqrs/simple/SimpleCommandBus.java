@@ -7,23 +7,48 @@ import org.egualpam.services.hotel.rating.infrastructure.controller.CreateReview
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.Command;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
 
+import java.util.Map;
+
+@FunctionalInterface
+interface CommandHandler {
+    void handle(Command query);
+}
+
 public final class SimpleCommandBus implements CommandBus {
 
-    private final ReviewRepository reviewRepository;
+    private final Map<Class<? extends Command>, CommandHandler> handlers;
 
     public SimpleCommandBus(ReviewRepository reviewRepository) {
-        this.reviewRepository = reviewRepository;
+        handlers = Map.of(
+                CreateReviewCommand.class, new CreateReviewCommandHandler(reviewRepository)
+        );
     }
 
     @Override
     public void publish(Command command) {
-        if (command instanceof CreateReviewCommand createReviewCommand) {
+        CommandHandler commandHandler = handlers.get(command.getClass());
+        if (commandHandler == null) {
+            throw new CommandHandlerNotFound();
+        }
+        commandHandler.handle(command);
+    }
+
+    static class CreateReviewCommandHandler implements CommandHandler {
+
+        private final ReviewRepository reviewRepository;
+
+        public CreateReviewCommandHandler(ReviewRepository reviewRepository) {
+            this.reviewRepository = reviewRepository;
+        }
+
+        @Override
+        public void handle(Command query) {
             InternalCommand internalCommand =
                     new CreateReview(
-                            createReviewCommand.getReviewIdentifier(),
-                            createReviewCommand.getHotelIdentifier(),
-                            createReviewCommand.getRating(),
-                            createReviewCommand.getComment(),
+                            ((CreateReviewCommand) query).getReviewIdentifier(),
+                            ((CreateReviewCommand) query).getHotelIdentifier(),
+                            ((CreateReviewCommand) query).getRating(),
+                            ((CreateReviewCommand) query).getComment(),
                             reviewRepository
                     );
             internalCommand.execute();
