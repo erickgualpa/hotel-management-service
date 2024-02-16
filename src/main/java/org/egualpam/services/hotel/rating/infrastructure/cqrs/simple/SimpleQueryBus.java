@@ -9,36 +9,55 @@ import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
-import org.egualpam.services.hotel.rating.infrastructure.controller.FindHotelReviewsQuery;
-import org.egualpam.services.hotel.rating.infrastructure.controller.FindHotelsQuery;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.InternalQueryNotFound;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.OutcomeSerializationFailed;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
 
 import java.util.List;
+import java.util.Map;
+
+@FunctionalInterface
+interface QueryHandler {
+    String handle(Query query);
+}
 
 public final class SimpleQueryBus implements QueryBus {
 
-    private final HotelRepository hotelRepository;
-    private final ReviewRepository reviewRepository;
-    private final ObjectMapper objectMapper;
+    private final Map<Class<? extends Query>, QueryHandler> handlers;
 
     public SimpleQueryBus(
             ObjectMapper objectMapper,
             HotelRepository hotelRepository,
             ReviewRepository reviewRepository) {
-        this.hotelRepository = hotelRepository;
-        this.reviewRepository = reviewRepository;
-        this.objectMapper = objectMapper;
+        handlers = Map.of(
+                FindHotelReviewsQuery.class, new FindHotelReviewsQueryHandler(objectMapper, reviewRepository),
+                FindHotelsQuery.class, new FindHotelsQueryHandler(objectMapper, hotelRepository)
+        );
     }
 
     @Override
     public String publish(Query query) {
-        if (query instanceof FindHotelReviewsQuery findHotelReviewsQuery) {
+        QueryHandler queryHandler = handlers.get(query.getClass());
+        if (queryHandler == null) {
+            throw new QueryHandlerNotFound();
+        }
+        return queryHandler.handle(query);
+    }
+
+    static class FindHotelReviewsQueryHandler implements QueryHandler {
+
+        private final ObjectMapper objectMapper;
+        private final ReviewRepository reviewRepository;
+
+        public FindHotelReviewsQueryHandler(ObjectMapper objectMapper, ReviewRepository reviewRepository) {
+            this.objectMapper = objectMapper;
+            this.reviewRepository = reviewRepository;
+        }
+
+        @Override
+        public String handle(Query query) {
             InternalQuery<List<ReviewDto>> internalQuery =
                     new FindHotelReviews(
-                            findHotelReviewsQuery.getHotelIdentifier(),
+                            ((FindHotelReviewsQuery) query).getHotelIdentifier(),
                             reviewRepository
                     );
 
@@ -49,12 +68,26 @@ public final class SimpleQueryBus implements QueryBus {
             } catch (JsonProcessingException e) {
                 throw new OutcomeSerializationFailed(e);
             }
-        } else if (query instanceof FindHotelsQuery findHotelsQuery) {
+        }
+    }
+
+    static class FindHotelsQueryHandler implements QueryHandler {
+
+        private final ObjectMapper objectMapper;
+        private final HotelRepository hotelRepository;
+
+        public FindHotelsQueryHandler(ObjectMapper objectMapper, HotelRepository hotelRepository) {
+            this.objectMapper = objectMapper;
+            this.hotelRepository = hotelRepository;
+        }
+
+        @Override
+        public String handle(Query query) {
             InternalQuery<List<HotelDto>> internalQuery =
                     new FindHotels(
-                            findHotelsQuery.getLocation(),
-                            findHotelsQuery.getMinPrice(),
-                            findHotelsQuery.getMaxPrice(),
+                            ((FindHotelsQuery) query).getLocation(),
+                            ((FindHotelsQuery) query).getMinPrice(),
+                            ((FindHotelsQuery) query).getMaxPrice(),
                             hotelRepository
                     );
 
@@ -66,6 +99,5 @@ public final class SimpleQueryBus implements QueryBus {
                 throw new OutcomeSerializationFailed(e);
             }
         }
-        throw new InternalQueryNotFound();
     }
 }

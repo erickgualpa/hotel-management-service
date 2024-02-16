@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.controller;
+package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
 
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
 
