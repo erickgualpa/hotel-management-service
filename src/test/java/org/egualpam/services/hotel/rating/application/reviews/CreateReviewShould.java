@@ -7,7 +7,6 @@ import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,11 +35,6 @@ class CreateReviewShould {
 
     private CreateReview testee;
 
-    @BeforeEach
-    void setUp() {
-        testee = new CreateReview(reviewRepository);
-    }
-
     @Test
     void givenReviewShouldBeSaved() {
         String reviewIdentifier = randomUUID().toString();
@@ -48,14 +42,14 @@ class CreateReviewShould {
         Integer rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
-        testee.execute(
-                new CreateReviewCommand(
-                        reviewIdentifier,
-                        hotelIdentifier,
-                        rating,
-                        comment
-                )
+        testee = new CreateReview(
+                reviewIdentifier,
+                hotelIdentifier,
+                rating,
+                comment,
+                reviewRepository
         );
+        testee.execute();
 
         verify(reviewRepository).save(reviewCaptor.capture());
 
@@ -74,36 +68,39 @@ class CreateReviewShould {
     @ValueSource(ints = {0, 6})
     @ParameterizedTest
     void invalidRatingShouldBeThrown_whenRatingValueIsOutOfAllowedBounds(Integer invalidRating) {
-        CreateReviewCommand createReviewCommand = new CreateReviewCommand(
+        testee = new CreateReview(
                 randomUUID().toString(),
                 randomUUID().toString(),
                 invalidRating,
-                randomAlphabetic(10)
+                randomAlphabetic(10),
+                reviewRepository
         );
-        assertThrows(InvalidRating.class, () -> testee.execute(createReviewCommand));
+        assertThrows(InvalidRating.class, () -> testee.execute());
     }
 
     @Test
     void invalidIdentifierShouldBeThrown_whenReviewIdentifierHasInvalidFormat() {
         String invalidIdentifier = randomAlphanumeric(10);
-        CreateReviewCommand createReviewCommand = new CreateReviewCommand(
+        testee = new CreateReview(
                 invalidIdentifier,
                 randomUUID().toString(),
                 nextInt(1, 5),
-                randomAlphabetic(10)
+                randomAlphabetic(10),
+                reviewRepository
         );
-        assertThrows(InvalidIdentifier.class, () -> testee.execute(createReviewCommand));
+        assertThrows(InvalidIdentifier.class, () -> testee.execute());
     }
 
     @Test
     void invalidIdentifierShouldBeThrown_whenHotelIdentifierHasInvalidFormat() {
         String invalidIdentifier = randomAlphanumeric(10);
-        CreateReviewCommand createReviewCommand = new CreateReviewCommand(
+        testee = new CreateReview(
                 randomUUID().toString(),
                 invalidIdentifier,
                 nextInt(1, 5),
-                randomAlphabetic(10)
+                randomAlphabetic(10),
+                reviewRepository
         );
-        assertThrows(InvalidIdentifier.class, () -> testee.execute(createReviewCommand));
+        assertThrows(InvalidIdentifier.class, () -> testee.execute());
     }
 }

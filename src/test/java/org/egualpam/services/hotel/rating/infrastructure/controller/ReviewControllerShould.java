@@ -1,16 +1,17 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
-import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
-import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
-import org.egualpam.services.hotel.rating.application.reviews.ReviewQueryAssistant;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
+import org.egualpam.services.hotel.rating.infrastructure.configuration.InfrastructureConfiguration;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.Command;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
@@ -26,15 +27,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ReviewControllerShould {
 
     @MockBean
-    private ReviewQueryAssistant reviewQueryAssistant;
+    private CommandBus commandBus;
 
     @MockBean
-    private CreateReview createReview;
+    private QueryBus queryBus;
 
     @Autowired
     private MockMvc mockMvc;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new InfrastructureConfiguration().objectMapper();
 
     @Test
     void returnBadRequest_whenInvalidRatingIsThrown() throws Exception {
@@ -52,14 +53,13 @@ class ReviewControllerShould {
         String request = objectMapper.writeValueAsString(createReviewRequest);
 
         doThrow(InvalidRating.class)
-                .when(createReview)
-                .execute(any(CreateReviewCommand.class));
+                .when(commandBus)
+                .publish(any(Command.class));
 
         mockMvc.perform(
                         post("/v1/reviews/{reviewIdentifier}", reviewIdentifier)
                                 .contentType(APPLICATION_JSON)
-                                .content(request)
-                )
+                                .content(request))
                 .andExpect(status().isBadRequest());
     }
 
@@ -79,14 +79,13 @@ class ReviewControllerShould {
         String request = objectMapper.writeValueAsString(createReviewRequest);
 
         doThrow(InvalidIdentifier.class)
-                .when(createReview)
-                .execute(any(CreateReviewCommand.class));
+                .when(commandBus)
+                .publish(any(Command.class));
 
         mockMvc.perform(
                         post("/v1/reviews/{reviewIdentifier}", invalidReviewIdentifier)
                                 .contentType(APPLICATION_JSON)
-                                .content(request)
-                )
+                                .content(request))
                 .andExpect(status().isBadRequest());
     }
 }

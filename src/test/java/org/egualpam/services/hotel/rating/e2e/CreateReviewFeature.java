@@ -2,6 +2,7 @@ package org.egualpam.services.hotel.rating.e2e;
 
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
 import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
+import org.egualpam.services.hotel.rating.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,10 +29,13 @@ class CreateReviewFeature extends AbstractIntegrationTest {
     @Autowired
     private HotelTestRepository hotelTestRepository;
 
+    @Autowired
+    private ReviewTestRepository reviewTestRepository;
+
     @Test
     void reviewShouldBeCreatedGivenHotelIdentifier() throws Exception {
         UUID hotelIdentifier = randomUUID();
-        String reviewIdentifier = randomUUID().toString();
+        UUID reviewIdentifier = randomUUID();
 
         hotelTestRepository
                 .insertHotel(
@@ -43,7 +48,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
                 );
 
         mockMvc.perform(
-                        post("/v1/reviews/{reviewIdentifier}", reviewIdentifier)
+                        post("/v1/reviews/{reviewIdentifier}", reviewIdentifier.toString())
                                 .contentType(APPLICATION_JSON)
                                 .content(
                                         String.format(
@@ -55,5 +60,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
                                 )
                 )
                 .andExpect(status().isCreated());
+
+        assertTrue(reviewTestRepository.reviewExists(reviewIdentifier));
     }
 }

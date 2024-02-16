@@ -1,6 +1,6 @@
 package org.egualpam.services.hotel.rating.application.shared;
 
 @FunctionalInterface
-public interface Query<T> {
+public interface InternalQuery<T> {
     T get();
 }

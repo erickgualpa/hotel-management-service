@@ -1,6 +1,6 @@
 package org.egualpam.services.hotel.rating.application.hotels;
 
-import org.egualpam.services.hotel.rating.application.shared.Query;
+import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.AverageRating;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelDescription;
@@ -32,16 +32,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-class FindHotelsQueryShould {
+class FindHotelsShould {
 
     @Mock
     private HotelRepository hotelRepository;
 
-    private Query<List<HotelDto>> testee;
+    private InternalQuery<List<HotelDto>> testee;
 
     @BeforeEach
     void setup() {
-        testee = new FindHotelsQuery(
+        testee = new FindHotels(
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
@@ -164,7 +164,7 @@ class FindHotelsQueryShould {
         int priceBegin = 50;
         int priceEnd = priceBegin - 1;
 
-        testee = new FindHotelsQuery(
+        testee = new FindHotels(
                 Optional.empty(),
                 Optional.of(priceBegin),
                 Optional.of(priceEnd),

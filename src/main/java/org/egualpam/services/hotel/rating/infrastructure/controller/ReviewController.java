@@ -1,12 +1,18 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
-import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
-import org.egualpam.services.hotel.rating.application.reviews.ReviewQueryAssistant;
+import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.Command;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.FindHotelReviewsQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,32 +28,50 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/reviews")
 @RequiredArgsConstructor
-public class ReviewController {
+public final class ReviewController {
 
-    private final ReviewQueryAssistant reviewQueryAssistant;
-    private final CreateReview createReview;
+    private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
+
+    private final ObjectMapper objectMapper;
+    private final CommandBus commandBus;
+    private final QueryBus queryBus;
 
     @GetMapping
     public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelIdentifier) {
+        Query findHotelReviewsQuery = new FindHotelReviewsQuery(hotelIdentifier);
+
+        final List<ReviewDto> reviewsDto;
+        try {
+            String outcome = queryBus.publish(findHotelReviewsQuery);
+            reviewsDto = objectMapper.readerForListOf(ReviewDto.class).readValue(outcome);
+        } catch (Exception e) {
+            logger.error(
+                    String.format(
+                            "An error occurred while processing the request with hotel identifier: [%s]",
+                            hotelIdentifier
+                    ),
+                    e
+            );
+            return ResponseEntity
+                    .internalServerError()
+                    .build();
+        }
+
         List<GetReviewsResponse.Review> reviews =
-                reviewQueryAssistant
-                        .findHotelReviews(hotelIdentifier)
-                        .get()
-                        .stream()
-                        .map(
-                                r -> new GetReviewsResponse.Review(
+                reviewsDto.stream()
+                        .map(r ->
+                                new GetReviewsResponse.Review(
                                         r.rating(),
-                                        r.comment()
-                                )
-                        )
+                                        r.comment()))
                         .toList();
+
         return ResponseEntity.ok(new GetReviewsResponse(reviews));
     }
 
     @PostMapping(path = "/{reviewIdentifier}")
     public ResponseEntity<Void> createReview(@PathVariable String reviewIdentifier,
                                              @RequestBody CreateReviewRequest createReviewRequest) {
-        CreateReviewCommand createReviewCommand = new CreateReviewCommand(
+        Command createReviewCommand = new CreateReviewCommand(
                 reviewIdentifier,
                 createReviewRequest.hotelIdentifier(),
                 createReviewRequest.rating(),
@@ -55,7 +79,7 @@ public class ReviewController {
         );
 
         try {
-            createReview.execute(createReviewCommand);
+            commandBus.publish(createReviewCommand);
         } catch (InvalidIdentifier | InvalidRating e) {
             return ResponseEntity.badRequest().build();
         }
