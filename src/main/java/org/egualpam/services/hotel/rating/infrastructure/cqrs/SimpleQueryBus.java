@@ -43,7 +43,7 @@ public final class SimpleQueryBus implements QueryBus {
             try {
                 return objectMapper.writeValueAsString(reviewsDto);
             } catch (JsonProcessingException e) {
-                throw new RuntimeException("QueryResultSerializationFailed");
+                throw new QueryResultSerializationFailed(e);
             }
         } else if (query instanceof FindHotelsQuery findHotelsQuery) {
             InternalQuery<List<HotelDto>> internalQuery =
@@ -59,9 +59,9 @@ public final class SimpleQueryBus implements QueryBus {
             try {
                 return objectMapper.writeValueAsString(hotelsDto);
             } catch (JsonProcessingException e) {
-                throw new RuntimeException("QueryResultSerializationFailed");
+                throw new QueryResultSerializationFailed(e);
             }
         }
-        throw new RuntimeException("QueryHandlerNotFound");
+        throw new InternalQueryNotFound();
     }
 }
