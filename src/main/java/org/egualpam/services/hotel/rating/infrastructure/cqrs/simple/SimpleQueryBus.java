@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.infrastructure.cqrs;
+package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +11,10 @@ import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
 import org.egualpam.services.hotel.rating.infrastructure.controller.FindHotelReviewsQuery;
 import org.egualpam.services.hotel.rating.infrastructure.controller.FindHotelsQuery;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.InternalQueryNotFound;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.OutcomeSerializationFailed;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
 
 import java.util.List;
 
@@ -43,7 +47,7 @@ public final class SimpleQueryBus implements QueryBus {
             try {
                 return objectMapper.writeValueAsString(reviewsDto);
             } catch (JsonProcessingException e) {
-                throw new QueryResultSerializationFailed(e);
+                throw new OutcomeSerializationFailed(e);
             }
         } else if (query instanceof FindHotelsQuery findHotelsQuery) {
             InternalQuery<List<HotelDto>> internalQuery =
@@ -59,7 +63,7 @@ public final class SimpleQueryBus implements QueryBus {
             try {
                 return objectMapper.writeValueAsString(hotelsDto);
             } catch (JsonProcessingException e) {
-                throw new QueryResultSerializationFailed(e);
+                throw new OutcomeSerializationFailed(e);
             }
         }
         throw new InternalQueryNotFound();
