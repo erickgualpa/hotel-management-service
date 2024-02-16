@@ -21,7 +21,10 @@ docker compose down --rmi local
 Check it and try to find the best available hotel in Mars! 👽
 <br>
 
-📣 This project has been structured following an Hexagonal Architecure
+📣 This project has been structured following a Hexagonal Architecture
+
+[//]: # (Directory tree below was generated using 'tree -d -I target' command)
+
 ```
 .
 └── src
@@ -34,7 +37,8 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   └── rating
     │   │                       ├── application
     │   │                       │   ├── hotels
-    │   │                       │   └── reviews
+    │   │                       │   ├── reviews
+    │   │                       │   └── shared
     │   │                       ├── domain
     │   │                       │   ├── hotels
     │   │                       │   │   └── exception
@@ -43,6 +47,8 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                       └── infrastructure
     │   │                           ├── configuration
     │   │                           ├── controller
+    │   │                           ├── cqrs
+    │   │                           │   └── simple
     │   │                           └── persistence
     │   │                               └── jpa
     │   └── resources
@@ -61,8 +67,6 @@ Check it and try to find the best available hotel in Mars! 👽
         │                       ├── e2e
         │                       ├── helpers
         │                       └── infrastructure
-        │                           ├── controller
-        │                           └── persistence
-        │                               └── jpa
+        │                           └── controller
         └── resources
 ```
