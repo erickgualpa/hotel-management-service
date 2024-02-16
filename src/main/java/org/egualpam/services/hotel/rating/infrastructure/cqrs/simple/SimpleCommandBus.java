@@ -1,11 +1,11 @@
 package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
 
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
+import org.egualpam.services.hotel.rating.application.reviews.CreateReviewCommand;
+import org.egualpam.services.hotel.rating.application.shared.Command;
+import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.InternalCommand;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
-import org.egualpam.services.hotel.rating.infrastructure.controller.CreateReviewCommand;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.Command;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
 
 import java.util.Map;
 

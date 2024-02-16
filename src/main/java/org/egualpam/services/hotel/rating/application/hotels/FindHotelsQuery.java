@@ -1,6 +1,6 @@
-package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
+package org.egualpam.services.hotel.rating.application.hotels;
 
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
+import org.egualpam.services.hotel.rating.application.shared.Query;
 
 import java.util.Optional;
 

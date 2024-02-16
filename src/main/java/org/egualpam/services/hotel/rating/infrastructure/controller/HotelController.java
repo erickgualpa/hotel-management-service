@@ -2,11 +2,11 @@ package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.egualpam.services.hotel.rating.application.hotels.FindHotelsQuery;
 import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
+import org.egualpam.services.hotel.rating.application.shared.Query;
+import org.egualpam.services.hotel.rating.application.shared.QueryBus;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.FindHotelsQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

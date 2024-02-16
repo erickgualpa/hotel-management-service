@@ -3,14 +3,16 @@ package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egualpam.services.hotel.rating.application.hotels.FindHotels;
+import org.egualpam.services.hotel.rating.application.hotels.FindHotelsQuery;
 import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
 import org.egualpam.services.hotel.rating.application.reviews.FindHotelReviews;
+import org.egualpam.services.hotel.rating.application.reviews.FindHotelReviewsQuery;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
+import org.egualpam.services.hotel.rating.application.shared.Query;
+import org.egualpam.services.hotel.rating.application.shared.QueryBus;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
-import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
 
 import java.util.List;
 import java.util.Map;
