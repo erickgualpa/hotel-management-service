@@ -31,9 +31,11 @@ public final class HotelController {
     public ResponseEntity<QueryHotelResponse> queryHotels(@RequestBody QueryHotelRequest request) {
         Optional<String> location = Optional.ofNullable(request.location());
         Optional<Integer> minPrice =
-                Optional.ofNullable(request.priceRange()).map(QueryHotelRequest.PriceRange::begin);
+                Optional.ofNullable(request.priceRange())
+                        .map(QueryHotelRequest.PriceRange::begin);
         Optional<Integer> maxPrice =
-                Optional.ofNullable(request.priceRange()).map(QueryHotelRequest.PriceRange::end);
+                Optional.ofNullable(request.priceRange())
+                        .map(QueryHotelRequest.PriceRange::end);
 
         Query findHotelsQuery = new FindHotelsQuery(
                 location,
