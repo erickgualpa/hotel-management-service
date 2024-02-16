@@ -6,6 +6,8 @@ import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,16 +22,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public final class HotelController {
 
+    private static final Logger logger = LoggerFactory.getLogger(HotelController.class);
+
     private final ObjectMapper objectMapper;
     private final QueryBus queryBus;
 
     @PostMapping(value = "/query")
-    public ResponseEntity<QueryHotelResponse> queryHotels(@RequestBody QueryHotelRequest query) {
-        Optional<String> location = Optional.ofNullable(query.location());
+    public ResponseEntity<QueryHotelResponse> queryHotels(@RequestBody QueryHotelRequest request) {
+        Optional<String> location = Optional.ofNullable(request.location());
         Optional<Integer> minPrice =
-                Optional.ofNullable(query.priceRange()).map(QueryHotelRequest.PriceRange::begin);
+                Optional.ofNullable(request.priceRange()).map(QueryHotelRequest.PriceRange::begin);
         Optional<Integer> maxPrice =
-                Optional.ofNullable(query.priceRange()).map(QueryHotelRequest.PriceRange::end);
+                Optional.ofNullable(request.priceRange()).map(QueryHotelRequest.PriceRange::end);
 
         Query findHotelsQuery = new FindHotelsQuery(
                 location,
@@ -44,7 +48,10 @@ public final class HotelController {
         } catch (PriceRangeValuesSwapped e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
-            // TODO: Add proper logging here
+            logger.error(
+                    String.format("An error occurred while processing the request [%s]", request),
+                    e
+            );
             return ResponseEntity
                     .internalServerError()
                     .build();

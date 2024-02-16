@@ -10,6 +10,8 @@ import org.egualpam.services.hotel.rating.infrastructure.cqrs.Command;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.CommandBus;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.Query;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.QueryBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public final class ReviewController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
+
     private final ObjectMapper objectMapper;
     private final CommandBus commandBus;
     private final QueryBus queryBus;
@@ -40,7 +44,13 @@ public final class ReviewController {
             String outcome = queryBus.publish(findHotelReviewsQuery);
             reviewsDto = objectMapper.readerForListOf(ReviewDto.class).readValue(outcome);
         } catch (Exception e) {
-            // TODO: Add proper logging here
+            logger.error(
+                    String.format(
+                            "An error occurred while processing the request with hotel identifier: [%s]",
+                            hotelIdentifier
+                    ),
+                    e
+            );
             return ResponseEntity
                     .internalServerError()
                     .build();
