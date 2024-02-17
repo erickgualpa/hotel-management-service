@@ -1,6 +1,5 @@
 CREATE TABLE reviews
 (
-    -- TODO: Review function used to generate uuid identifier
     id       uuid DEFAULT gen_random_uuid(),
     rating   BIGINT,
     comment  TEXT,

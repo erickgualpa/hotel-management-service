@@ -19,6 +19,32 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
     }
 
     @Override
+    public Review findByIdentifier(Identifier identifier) {
+        String sql = """
+                SELECT r.id, r.rating, r.comment, r.hotel_id
+                FROM reviews r
+                WHERE r.id = :id
+                """;
+
+        Query query =
+                entityManager
+                        .createNativeQuery(sql, PersistenceReview.class)
+                        .setParameter(
+                                "id",
+                                UUID.fromString(identifier.value())
+                        );
+
+        PersistenceReview review = (PersistenceReview) query.getSingleResult();
+
+        return mapIntoEntity(
+                review.getId().toString(),
+                review.getHotelId().toString(),
+                review.getRating(),
+                review.getComment()
+        );
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public List<Review> findByHotelIdentifier(Identifier hotelIdentifier) {
         Query query =
@@ -43,9 +69,7 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
                                         review.getId().toString(),
                                         review.getHotelId().toString(),
                                         review.getRating(),
-                                        review.getComment()
-                                )
-                )
+                                        review.getComment()))
                 .toList();
     }
 
@@ -58,7 +82,7 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
         persistenceReview.setRating(review.getRating().value());
         persistenceReview.setComment(review.getComment().value());
 
-        entityManager.persist(persistenceReview);
+        entityManager.merge(persistenceReview);
         entityManager.flush();
     }
 }

@@ -9,12 +9,16 @@ public final class Review {
     private final Identifier identifier;
     private final Identifier hotelIdentifier;
     private final Rating rating;
-    private final Comment comment;
+    private Comment comment;
 
     public Review(Identifier identifier, Identifier hotelIdentifier, Rating rating, Comment comment) {
         this.identifier = identifier;
         this.hotelIdentifier = hotelIdentifier;
         this.rating = rating;
+        this.comment = comment;
+    }
+
+    public void updateComment(Comment comment) {
         this.comment = comment;
     }
 

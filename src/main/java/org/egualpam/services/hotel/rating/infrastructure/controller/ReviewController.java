@@ -12,6 +12,7 @@ import org.egualpam.services.hotel.rating.domain.shared.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.InvalidRating;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.CreateReviewCommand;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.FindHotelReviewsQuery;
+import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.UpdateReviewCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -86,5 +88,22 @@ public final class ReviewController {
         }
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping(path = "/{reviewIdentifier}")
+    public ResponseEntity<Void> updateReview(@PathVariable String reviewIdentifier,
+                                             @RequestBody UpdateReviewRequest updateReviewRequest) {
+        Command createReviewCommand = new UpdateReviewCommand(
+                reviewIdentifier,
+                updateReviewRequest.comment()
+        );
+
+        try {
+            commandBus.publish(createReviewCommand);
+        } catch (InvalidIdentifier e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.noContent().build();
     }
 }
