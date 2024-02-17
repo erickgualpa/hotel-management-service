@@ -47,14 +47,15 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
     @Override
     @SuppressWarnings("unchecked")
     public List<Review> findByHotelIdentifier(Identifier hotelIdentifier) {
+        String sql = """
+                SELECT r.id, r.rating, r.comment, r.hotel_id
+                FROM reviews r
+                WHERE r.hotel_id = :hotel_id
+                """;
+
         Query query =
                 entityManager
-                        .createNativeQuery("""
-                                        SELECT r.id, r.rating, r.comment, r.hotel_id
-                                        FROM reviews r
-                                        WHERE r.hotel_id = :hotel_id
-                                        """,
-                                PersistenceReview.class)
+                        .createNativeQuery(sql, PersistenceReview.class)
                         .setParameter(
                                 "hotel_id",
                                 UUID.fromString(hotelIdentifier.value())
