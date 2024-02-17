@@ -16,13 +16,17 @@ public class ReviewTestRepository {
     }
 
     public void insertReview(
-            Integer rating, String comment, UUID hotelIdentifier) {
+            UUID reviewIdentifier,
+            Integer rating,
+            String comment,
+            UUID hotelIdentifier) {
         String query = """
-                INSERT INTO reviews(rating, comment, hotel_id)
-                VALUES (:rating, :comment, :hotelIdentifier);
+                INSERT INTO reviews(id, rating, comment, hotel_id)
+                VALUES (:reviewIdentifier, :rating, :comment, :hotelIdentifier);
                 """;
 
         MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+        queryParameters.addValue("reviewIdentifier", reviewIdentifier);
         queryParameters.addValue("rating", rating);
         queryParameters.addValue("hotelIdentifier", hotelIdentifier);
         queryParameters.addValue("comment", comment);
@@ -47,5 +51,25 @@ public class ReviewTestRepository {
         );
 
         return nonNull(count) && count == 1;
+    }
+
+    public ReviewResult findReview(UUID reviewIdentifier) {
+        String query = """
+                SELECT comment
+                FROM reviews
+                WHERE id = :reviewIdentifier
+                """;
+
+        MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+        queryParameters.addValue("reviewIdentifier", reviewIdentifier);
+
+        return namedParameterJdbcTemplate.queryForObject(
+                query,
+                queryParameters,
+                ReviewResult.class
+        );
+    }
+
+    public record ReviewResult(String comment) {
     }
 }

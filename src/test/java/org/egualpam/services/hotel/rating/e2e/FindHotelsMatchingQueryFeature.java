@@ -76,6 +76,7 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
 
         reviewTestRepository
                 .insertReview(
+                        randomUUID(),
                         rating,
                         comment,
                         hotelIdentifier

@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
 
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
+import org.egualpam.services.hotel.rating.application.reviews.UpdateReview;
 import org.egualpam.services.hotel.rating.application.shared.Command;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.InternalCommand;
@@ -19,7 +20,8 @@ public final class SimpleCommandBus implements CommandBus {
 
     public SimpleCommandBus(ReviewRepository reviewRepository) {
         handlers = Map.of(
-                CreateReviewCommand.class, new CreateReviewCommandHandler(reviewRepository)
+                CreateReviewCommand.class, new CreateReviewCommandHandler(reviewRepository),
+                UpdateReviewCommand.class, new UpdateReviewCommandHandler(reviewRepository)
         );
     }
 
@@ -48,6 +50,26 @@ public final class SimpleCommandBus implements CommandBus {
                             ((CreateReviewCommand) query).getHotelIdentifier(),
                             ((CreateReviewCommand) query).getRating(),
                             ((CreateReviewCommand) query).getComment(),
+                            reviewRepository
+                    );
+            internalCommand.execute();
+        }
+    }
+
+    static class UpdateReviewCommandHandler implements CommandHandler {
+
+        private final ReviewRepository reviewRepository;
+
+        public UpdateReviewCommandHandler(ReviewRepository reviewRepository) {
+            this.reviewRepository = reviewRepository;
+        }
+
+        @Override
+        public void handle(Command query) {
+            InternalCommand internalCommand =
+                    new UpdateReview(
+                            ((UpdateReviewCommand) query).getReviewIdentifier(),
+                            ((UpdateReviewCommand) query).getComment(),
                             reviewRepository
                     );
             internalCommand.execute();

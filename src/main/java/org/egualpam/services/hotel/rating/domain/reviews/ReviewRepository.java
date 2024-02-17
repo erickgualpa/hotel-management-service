@@ -8,6 +8,8 @@ import java.util.List;
 
 public abstract class ReviewRepository {
 
+    public abstract Review findByIdentifier(Identifier identifier);
+
     public abstract List<Review> findByHotelIdentifier(Identifier hotelIdentifier);
 
     public abstract void save(Review review);
@@ -20,4 +22,5 @@ public abstract class ReviewRepository {
                 new Comment(comment)
         );
     }
+
 }

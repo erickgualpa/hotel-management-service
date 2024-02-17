@@ -52,6 +52,7 @@ class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
 
         reviewTestRepository
                 .insertReview(
+                        randomUUID(),
                         rating,
                         comment,
                         hotelIdentifier
