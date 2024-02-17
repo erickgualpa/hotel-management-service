@@ -93,13 +93,13 @@ public final class ReviewController {
     @PutMapping(path = "/{reviewIdentifier}")
     public ResponseEntity<Void> updateReview(@PathVariable String reviewIdentifier,
                                              @RequestBody UpdateReviewRequest updateReviewRequest) {
-        Command createReviewCommand = new UpdateReviewCommand(
+        Command updateReviewCommand = new UpdateReviewCommand(
                 reviewIdentifier,
                 updateReviewRequest.comment()
         );
 
         try {
-            commandBus.publish(createReviewCommand);
+            commandBus.publish(updateReviewCommand);
         } catch (InvalidIdentifier e) {
             return ResponseEntity.badRequest().build();
         }
