@@ -8,8 +8,10 @@ import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.SimpleCommandBus;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.SimpleQueryBus;
+import org.egualpam.services.hotel.rating.infrastructure.events.publishers.simple.SimpleDomainEventsPublisher;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.PostgreSqlJpaReviewRepository;
 import org.springframework.context.annotation.Bean;
@@ -42,8 +44,16 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public CommandBus commandBus(ReviewRepository reviewRepository) {
-        return new SimpleCommandBus(reviewRepository);
+    public DomainEventsPublisher domainEventsPublisher(EntityManager entityManager) {
+        return new SimpleDomainEventsPublisher(entityManager);
+    }
+
+    @Bean
+    public CommandBus commandBus(
+            ReviewRepository reviewRepository,
+            DomainEventsPublisher domainEventsPublisher
+    ) {
+        return new SimpleCommandBus(reviewRepository, domainEventsPublisher);
     }
 
     @Bean

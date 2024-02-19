@@ -1,10 +1,17 @@
 package org.egualpam.services.hotel.rating.domain.reviews;
 
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRoot;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
+import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
 
-public final class Review {
+import java.util.ArrayList;
+import java.util.List;
+
+public final class Review implements AggregateRoot {
+
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
 
     private final Identifier identifier;
     private final Identifier hotelIdentifier;
@@ -16,6 +23,12 @@ public final class Review {
         this.hotelIdentifier = hotelIdentifier;
         this.rating = rating;
         this.comment = comment;
+        this.domainEvents.add(new ReviewCreated(this.identifier));
+    }
+
+    @Override
+    public List<DomainEvent> getDomainEvents() {
+        return domainEvents;
     }
 
     public void updateComment(Comment comment) {

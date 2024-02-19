@@ -6,6 +6,7 @@ import org.egualpam.services.hotel.rating.application.shared.Command;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.InternalCommand;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
 
 import java.util.Map;
 
@@ -18,9 +19,9 @@ public final class SimpleCommandBus implements CommandBus {
 
     private final Map<Class<? extends Command>, CommandHandler> handlers;
 
-    public SimpleCommandBus(ReviewRepository reviewRepository) {
+    public SimpleCommandBus(ReviewRepository reviewRepository, DomainEventsPublisher domainEventsPublisher) {
         handlers = Map.of(
-                CreateReviewCommand.class, new CreateReviewCommandHandler(reviewRepository),
+                CreateReviewCommand.class, new CreateReviewCommandHandler(reviewRepository, domainEventsPublisher),
                 UpdateReviewCommand.class, new UpdateReviewCommandHandler(reviewRepository)
         );
     }
@@ -37,9 +38,13 @@ public final class SimpleCommandBus implements CommandBus {
     static class CreateReviewCommandHandler implements CommandHandler {
 
         private final ReviewRepository reviewRepository;
+        private final DomainEventsPublisher domainEventsPublisher;
 
-        public CreateReviewCommandHandler(ReviewRepository reviewRepository) {
+        public CreateReviewCommandHandler(
+                ReviewRepository reviewRepository,
+                DomainEventsPublisher domainEventsPublisher) {
             this.reviewRepository = reviewRepository;
+            this.domainEventsPublisher = domainEventsPublisher;
         }
 
         @Override
@@ -50,7 +55,8 @@ public final class SimpleCommandBus implements CommandBus {
                             ((CreateReviewCommand) query).getHotelIdentifier(),
                             ((CreateReviewCommand) query).getRating(),
                             ((CreateReviewCommand) query).getComment(),
-                            reviewRepository
+                            reviewRepository,
+                            domainEventsPublisher
                     );
             internalCommand.execute();
         }
