@@ -1,11 +1,11 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.domain.reviews.Comment;
+import org.egualpam.services.hotel.rating.domain.reviews.HotelId;
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
-import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -38,7 +38,7 @@ class UpdateReviewShould {
                 .thenReturn(
                         new Review(
                                 new AggregateId(reviewId),
-                                new Identifier(randomUUID().toString()),
+                                new HotelId(randomUUID().toString()),
                                 new Rating(nextInt(1, 5)),
                                 new Comment(randomAlphabetic(10))
                         )

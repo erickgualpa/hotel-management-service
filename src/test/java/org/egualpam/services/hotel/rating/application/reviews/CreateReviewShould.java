@@ -1,13 +1,13 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.domain.reviews.Comment;
+import org.egualpam.services.hotel.rating.domain.reviews.HotelId;
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
-import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.egualpam.services.hotel.rating.domain.shared.exception.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.exception.InvalidRating;
 import org.junit.jupiter.api.Test;
@@ -66,7 +66,7 @@ class CreateReviewShould {
                 .satisfies(
                         result -> {
                             assertThat(result.getId()).isEqualTo(new AggregateId(reviewId));
-                            assertThat(result.getHotelIdentifier()).isEqualTo(new Identifier(hotelIdentifier));
+                            assertThat(result.getHotelIdentifier()).isEqualTo(new HotelId(hotelIdentifier));
                             assertThat(result.getRating()).isEqualTo(new Rating(rating));
                             assertThat(result.getComment()).isEqualTo(new Comment(comment));
                         }
