@@ -68,8 +68,6 @@ Check it and try to find the best available hotel in Mars! 👽
         │                       ├── application
         │                       │   ├── hotels
         │                       │   └── reviews
-        │                       ├── domain
-        │                       │   └── shared
         │                       ├── e2e
         │                       ├── helpers
         │                       └── infrastructure
