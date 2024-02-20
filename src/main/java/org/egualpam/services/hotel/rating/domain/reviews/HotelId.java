@@ -1,12 +1,12 @@
-package org.egualpam.services.hotel.rating.domain.shared;
+package org.egualpam.services.hotel.rating.domain.reviews;
 
 import org.egualpam.services.hotel.rating.domain.shared.exception.InvalidIdentifier;
 
 import java.util.UUID;
 
-public record AggregateId(UUID value) {
+public record HotelId(UUID value) {
 
-    public AggregateId(String value) {
+    public HotelId(String value) {
         this(valid(value));
     }
 

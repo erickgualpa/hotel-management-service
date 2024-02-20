@@ -4,13 +4,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.domain.reviews.Comment;
+import org.egualpam.services.hotel.rating.domain.reviews.HotelId;
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewCriteria;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Criteria;
-import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +40,7 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
 
         return new Review(
                 new AggregateId(review.getId()),
-                new Identifier(review.getHotelId().toString()),
+                new HotelId(review.getHotelId().toString()),
                 new Rating(review.getRating()),
                 new Comment(review.getComment())
         );
@@ -48,7 +48,7 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
 
     @Override
     public List<Review> find(Criteria reviewCriteria) {
-        UUID hotelId = UUID.fromString(((ReviewCriteria) reviewCriteria).getHotelId().value());
+        UUID hotelId = ((ReviewCriteria) reviewCriteria).getHotelId().value();
 
         String sql = """
                 SELECT r.id, r.rating, r.comment, r.hotel_id
@@ -68,7 +68,7 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
                         review ->
                                 new Review(
                                         new AggregateId(review.getId()),
-                                        new Identifier(review.getHotelId().toString()),
+                                        new HotelId(review.getHotelId().toString()),
                                         new Rating(review.getRating()),
                                         new Comment(review.getComment())))
                 .toList();
@@ -79,7 +79,7 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
     public void save(Review review) {
         PersistenceReview persistenceReview = new PersistenceReview();
         persistenceReview.setId(review.getId().value());
-        persistenceReview.setHotelId(UUID.fromString(review.getHotelIdentifier().value()));
+        persistenceReview.setHotelId(review.getHotelIdentifier().value());
         persistenceReview.setRating(review.getRating().value());
         persistenceReview.setComment(review.getComment().value());
 
