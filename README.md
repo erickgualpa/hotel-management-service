@@ -44,11 +44,15 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                       │   │   └── exception
     │   │                       │   ├── reviews
     │   │                       │   └── shared
+    │   │                       │       └── exception
     │   │                       └── infrastructure
     │   │                           ├── configuration
     │   │                           ├── controller
     │   │                           ├── cqrs
     │   │                           │   └── simple
+    │   │                           ├── events
+    │   │                           │   └── publishers
+    │   │                           │       └── simple
     │   │                           └── persistence
     │   │                               └── jpa
     │   └── resources
@@ -64,6 +68,8 @@ Check it and try to find the best available hotel in Mars! 👽
         │                       ├── application
         │                       │   ├── hotels
         │                       │   └── reviews
+        │                       ├── domain
+        │                       │   └── shared
         │                       ├── e2e
         │                       ├── helpers
         │                       └── infrastructure
