@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating.application.reviews;
+package org.egualpam.services.hotel.rating.domain.reviews;
 
 import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
