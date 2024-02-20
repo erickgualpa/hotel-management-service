@@ -6,7 +6,6 @@ import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
 
 import java.util.List;
-import java.util.UUID;
 
 public class SimpleDomainEventsPublisher implements DomainEventsPublisher {
 
@@ -25,7 +24,7 @@ public class SimpleDomainEventsPublisher implements DomainEventsPublisher {
                 """;
         events.forEach(
                 e -> entityManager.createNativeQuery(sql)
-                        .setParameter("aggregateId", UUID.fromString(e.getAggregateId().value()))
+                        .setParameter("aggregateId", e.getAggregateId().value())
                         .setParameter("eventType", e.getType())
                         .executeUpdate()
         );

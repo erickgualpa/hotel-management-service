@@ -1,19 +1,19 @@
 package org.egualpam.services.hotel.rating.domain.reviews;
 
+import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
-import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 public class ReviewCreated implements DomainEvent {
 
-    private final Identifier aggregateId;
+    private final AggregateId id;
 
-    public ReviewCreated(Identifier aggregateId) {
-        this.aggregateId = aggregateId;
+    public ReviewCreated(AggregateId id) {
+        this.id = id;
     }
 
     @Override
-    public Identifier getAggregateId() {
-        return this.aggregateId;
+    public AggregateId getAggregateId() {
+        return this.id;
     }
 
     @Override

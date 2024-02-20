@@ -3,6 +3,7 @@ package org.egualpam.services.hotel.rating.application.reviews;
 import org.egualpam.services.hotel.rating.domain.reviews.Comment;
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
@@ -64,7 +65,7 @@ class CreateReviewShould {
         assertThat(reviewCaptor.getValue())
                 .satisfies(
                         result -> {
-                            assertThat(result.getIdentifier()).isEqualTo(new Identifier(reviewIdentifier));
+                            assertThat(result.getId()).isEqualTo(new AggregateId(reviewIdentifier));
                             assertThat(result.getHotelIdentifier()).isEqualTo(new Identifier(hotelIdentifier));
                             assertThat(result.getRating()).isEqualTo(new Rating(rating));
                             assertThat(result.getComment()).isEqualTo(new Comment(comment));

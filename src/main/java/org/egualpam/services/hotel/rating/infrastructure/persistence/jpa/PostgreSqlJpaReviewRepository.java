@@ -78,7 +78,7 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
     @Transactional
     public void save(Review review) {
         PersistenceReview persistenceReview = new PersistenceReview();
-        persistenceReview.setId(UUID.fromString(review.getIdentifier().value()));
+        persistenceReview.setId(review.getId().value());
         persistenceReview.setHotelId(UUID.fromString(review.getHotelIdentifier().value()));
         persistenceReview.setRating(review.getRating().value());
         persistenceReview.setComment(review.getComment().value());
