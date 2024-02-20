@@ -37,7 +37,7 @@ class UpdateReviewShould {
         when(aggregateReviewRepository.find(new AggregateId(reviewId)))
                 .thenReturn(
                         new Review(
-                                new Identifier(reviewId),
+                                new AggregateId(reviewId),
                                 new Identifier(randomUUID().toString()),
                                 new Rating(nextInt(1, 5)),
                                 new Comment(randomAlphabetic(10))

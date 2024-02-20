@@ -39,7 +39,7 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
         PersistenceReview review = (PersistenceReview) query.getSingleResult();
 
         return new Review(
-                new Identifier(review.getId().toString()),
+                new AggregateId(review.getId()),
                 new Identifier(review.getHotelId().toString()),
                 new Rating(review.getRating()),
                 new Comment(review.getComment())
@@ -67,7 +67,7 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
                 .map(
                         review ->
                                 new Review(
-                                        new Identifier(review.getId().toString()),
+                                        new AggregateId(review.getId()),
                                         new Identifier(review.getHotelId().toString()),
                                         new Rating(review.getRating()),
                                         new Comment(review.getComment())))

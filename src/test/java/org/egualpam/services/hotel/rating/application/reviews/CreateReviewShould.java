@@ -46,13 +46,13 @@ class CreateReviewShould {
 
     @Test
     void givenReviewShouldBeSaved() {
-        String reviewIdentifier = randomUUID().toString();
+        String reviewId = randomUUID().toString();
         String hotelIdentifier = randomUUID().toString();
         Integer rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
         CreateReview testee = new CreateReview(
-                reviewIdentifier,
+                reviewId,
                 hotelIdentifier,
                 rating,
                 comment,
@@ -65,7 +65,7 @@ class CreateReviewShould {
         assertThat(reviewCaptor.getValue())
                 .satisfies(
                         result -> {
-                            assertThat(result.getId()).isEqualTo(new AggregateId(reviewIdentifier));
+                            assertThat(result.getId()).isEqualTo(new AggregateId(reviewId));
                             assertThat(result.getHotelIdentifier()).isEqualTo(new Identifier(hotelIdentifier));
                             assertThat(result.getRating()).isEqualTo(new Rating(rating));
                             assertThat(result.getComment()).isEqualTo(new Comment(comment));
@@ -85,14 +85,14 @@ class CreateReviewShould {
 
     @ValueSource(ints = {0, 6})
     @ParameterizedTest
-    void invalidRatingShouldBeThrown_whenRatingValueIsOutOfAllowedBounds(Integer invalidRating) {
-        String reviewIdentifier = randomUUID().toString();
+    void domainExceptionShouldBeThrown_whenRatingValueIsOutOfAllowedBounds(Integer invalidRating) {
+        String reviewId = randomUUID().toString();
         String hotelIdentifier = randomUUID().toString();
         String comment = randomAlphabetic(10);
         assertThrows(
                 InvalidRating.class,
                 () -> new CreateReview(
-                        reviewIdentifier,
+                        reviewId,
                         hotelIdentifier,
                         invalidRating,
                         comment,
@@ -103,7 +103,7 @@ class CreateReviewShould {
     }
 
     @Test
-    void invalidIdentifierShouldBeThrown_whenReviewIdentifierHasInvalidFormat() {
+    void domainExceptionShouldBeThrown_whenReviewIdHasInvalidFormat() {
         String invalidIdentifier = randomAlphanumeric(10);
         String hotelIdentifier = randomUUID().toString();
         int rating = nextInt(1, 5);
@@ -122,15 +122,15 @@ class CreateReviewShould {
     }
 
     @Test
-    void invalidIdentifierShouldBeThrown_whenHotelIdentifierHasInvalidFormat() {
+    void domainExceptionShouldBeThrown_whenHotelIdentifierHasInvalidFormat() {
         String invalidIdentifier = randomAlphanumeric(10);
-        String reviewIdentifier = randomUUID().toString();
+        String reviewId = randomUUID().toString();
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
         assertThrows(
                 InvalidIdentifier.class,
                 () -> new CreateReview(
-                        reviewIdentifier,
+                        reviewId,
                         invalidIdentifier,
                         rating,
                         comment,

@@ -4,6 +4,7 @@ import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
 import org.egualpam.services.hotel.rating.domain.reviews.Comment;
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
@@ -37,7 +38,7 @@ class FindHotelReviewsShould {
                 .thenReturn(
                         List.of(
                                 new Review(
-                                        new Identifier(randomUUID().toString()),
+                                        new AggregateId(randomUUID()),
                                         new Identifier(hotelIdentifier),
                                         new Rating(rating),
                                         new Comment(comment)

@@ -12,18 +12,18 @@ public final class Review implements AggregateRoot {
 
     private final List<DomainEvent> domainEvents = new ArrayList<>();
 
-    private final AggregateId aggregateId;
+    private final AggregateId id;
     private final Identifier hotelIdentifier;
     private final Rating rating;
     private Comment comment;
 
     public Review(
-            Identifier identifier,
+            AggregateId id,
             Identifier hotelIdentifier,
             Rating rating,
             Comment comment
     ) {
-        this.aggregateId = new AggregateId(identifier.value());
+        this.id = id;
         this.hotelIdentifier = hotelIdentifier;
         this.rating = rating;
         this.comment = comment;
@@ -32,7 +32,7 @@ public final class Review implements AggregateRoot {
 
     @Override
     public AggregateId getId() {
-        return this.aggregateId;
+        return this.id;
     }
 
     @Override
