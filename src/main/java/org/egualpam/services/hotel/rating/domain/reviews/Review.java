@@ -2,10 +2,8 @@ package org.egualpam.services.hotel.rating.domain.reviews;
 
 import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRoot;
-import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
-import org.egualpam.services.hotel.rating.domain.shared.Rating;
 
 import java.util.ArrayList;
 import java.util.List;
