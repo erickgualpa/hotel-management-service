@@ -146,16 +146,21 @@ class FindHotelsShould {
 
     @Test
     void throwDomainException_whenValuesFromPriceRangeFilterAreSwapped() {
-        int priceBegin = 50;
-        int priceEnd = priceBegin - 1;
+        int minPriceValue = 50;
+        int maxPriceValue = minPriceValue - 1;
 
-        testee = new FindHotels(
-                Optional.empty(),
-                Optional.of(priceBegin),
-                Optional.of(priceEnd),
-                aggregateHotelRepository
+        Optional<String> location = Optional.empty();
+        Optional<Integer> minPrice = Optional.of(minPriceValue);
+        Optional<Integer> maxPrice = Optional.of(maxPriceValue);
+
+        assertThrows(
+                PriceRangeValuesSwapped.class,
+                () -> new FindHotels(
+                        location,
+                        minPrice,
+                        maxPrice,
+                        aggregateHotelRepository
+                )
         );
-
-        assertThrows(PriceRangeValuesSwapped.class, () -> testee.get());
     }
 }
