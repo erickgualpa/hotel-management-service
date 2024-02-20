@@ -2,10 +2,12 @@ package org.egualpam.services.hotel.rating.application.hotels;
 
 import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelCriteria;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.domain.hotels.PriceRange;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
+import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,17 +22,18 @@ public class FindHotels implements InternalQuery<List<HotelDto>> {
     private final Optional<String> locationFilter;
     private final Optional<Integer> minPriceFilter;
     private final Optional<Integer> maxPriceFilter;
-    private final HotelRepository hotelRepository;
+    private final AggregateRepository<Hotel> aggregateHotelRepository;
 
     public FindHotels(
             Optional<String> locationFilter,
             Optional<Integer> minPriceFilter,
             Optional<Integer> maxPriceFilter,
-            HotelRepository hotelRepository) {
+            AggregateRepository<Hotel> aggregateHotelRepository
+    ) {
         this.locationFilter = locationFilter;
         this.minPriceFilter = minPriceFilter;
         this.maxPriceFilter = maxPriceFilter;
-        this.hotelRepository = hotelRepository;
+        this.aggregateHotelRepository = aggregateHotelRepository;
     }
 
     @Override
@@ -40,8 +43,11 @@ public class FindHotels implements InternalQuery<List<HotelDto>> {
                 minPriceFilter.map(Price::new),
                 maxPriceFilter.map(Price::new)
         );
-
-        return hotelRepository.find(location, priceRange)
+        Criteria criteria = new HotelCriteria(
+                location,
+                priceRange
+        );
+        return aggregateHotelRepository.find(criteria)
                 .stream()
                 .sorted(comparingDouble(getHotelAverageRating).reversed())
                 .map(this::mapIntoHotelDto)
@@ -50,7 +56,7 @@ public class FindHotels implements InternalQuery<List<HotelDto>> {
 
     private HotelDto mapIntoHotelDto(Hotel hotel) {
         return new HotelDto(
-                hotel.getIdentifier().value(),
+                hotel.getId().value().toString(),
                 hotel.getName().value(),
                 hotel.getDescription().value(),
                 hotel.getLocation().value(),

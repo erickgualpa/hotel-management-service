@@ -1,5 +1,7 @@
 package org.egualpam.services.hotel.rating.domain.shared;
 
+import org.egualpam.services.hotel.rating.domain.shared.exception.InvalidIdentifier;
+
 import static java.util.UUID.fromString;
 
 public record Identifier(String value) {

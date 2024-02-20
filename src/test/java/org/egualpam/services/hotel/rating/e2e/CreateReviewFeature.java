@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating.e2e;
 
 import org.egualpam.services.hotel.rating.AbstractIntegrationTest;
+import org.egualpam.services.hotel.rating.helpers.EventStoreTestRepository;
 import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.egualpam.services.hotel.rating.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,9 @@ class CreateReviewFeature extends AbstractIntegrationTest {
     @Autowired
     private ReviewTestRepository reviewTestRepository;
 
+    @Autowired
+    private EventStoreTestRepository eventStoreTestRepository;
+
     @Test
     void reviewShouldBeCreatedGivenHotelIdentifier() throws Exception {
         UUID hotelIdentifier = randomUUID();
@@ -61,6 +65,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
                 )
                 .andExpect(status().isCreated());
 
+        assertTrue(eventStoreTestRepository.domainEventExists("domain.review.created.v1.0"));
         assertTrue(reviewTestRepository.reviewExists(reviewIdentifier));
     }
 }

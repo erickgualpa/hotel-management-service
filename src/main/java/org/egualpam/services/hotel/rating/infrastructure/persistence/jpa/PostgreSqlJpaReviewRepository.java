@@ -3,14 +3,19 @@ package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import org.egualpam.services.hotel.rating.domain.reviews.Comment;
+import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.reviews.ReviewCriteria;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
+import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 import java.util.List;
 import java.util.UUID;
 
-public class PostgreSqlJpaReviewRepository extends ReviewRepository {
+public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review> {
 
     private final EntityManager entityManager;
 
@@ -19,7 +24,7 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
     }
 
     @Override
-    public Review findByIdentifier(Identifier identifier) {
+    public Review find(AggregateId id) {
         String sql = """
                 SELECT r.id, r.rating, r.comment, r.hotel_id
                 FROM reviews r
@@ -29,24 +34,22 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
         Query query =
                 entityManager
                         .createNativeQuery(sql, PersistenceReview.class)
-                        .setParameter(
-                                "id",
-                                UUID.fromString(identifier.value())
-                        );
+                        .setParameter("id", id.value());
 
         PersistenceReview review = (PersistenceReview) query.getSingleResult();
 
-        return mapIntoEntity(
-                review.getId().toString(),
-                review.getHotelId().toString(),
-                review.getRating(),
-                review.getComment()
+        return new Review(
+                new AggregateId(review.getId()),
+                new Identifier(review.getHotelId().toString()),
+                new Rating(review.getRating()),
+                new Comment(review.getComment())
         );
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<Review> findByHotelIdentifier(Identifier hotelIdentifier) {
+    public List<Review> find(Criteria reviewCriteria) {
+        UUID hotelId = UUID.fromString(((ReviewCriteria) reviewCriteria).getHotelId().value());
+
         String sql = """
                 SELECT r.id, r.rating, r.comment, r.hotel_id
                 FROM reviews r
@@ -56,21 +59,18 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
         Query query =
                 entityManager
                         .createNativeQuery(sql, PersistenceReview.class)
-                        .setParameter(
-                                "hotel_id",
-                                UUID.fromString(hotelIdentifier.value())
-                        );
+                        .setParameter("hotel_id", hotelId);
 
         List<PersistenceReview> reviews = query.getResultList();
 
         return reviews.stream()
                 .map(
                         review ->
-                                mapIntoEntity(
-                                        review.getId().toString(),
-                                        review.getHotelId().toString(),
-                                        review.getRating(),
-                                        review.getComment()))
+                                new Review(
+                                        new AggregateId(review.getId()),
+                                        new Identifier(review.getHotelId().toString()),
+                                        new Rating(review.getRating()),
+                                        new Comment(review.getComment())))
                 .toList();
     }
 
@@ -78,7 +78,7 @@ public class PostgreSqlJpaReviewRepository extends ReviewRepository {
     @Transactional
     public void save(Review review) {
         PersistenceReview persistenceReview = new PersistenceReview();
-        persistenceReview.setId(UUID.fromString(review.getIdentifier().value()));
+        persistenceReview.setId(review.getId().value());
         persistenceReview.setHotelId(UUID.fromString(review.getHotelIdentifier().value()));
         persistenceReview.setRating(review.getRating().value());
         persistenceReview.setComment(review.getComment().value());

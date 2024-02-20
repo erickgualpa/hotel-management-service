@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating;
 
+import org.egualpam.services.hotel.rating.helpers.EventStoreTestRepository;
 import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
 import org.egualpam.services.hotel.rating.helpers.ReviewTestRepository;
 import org.springframework.context.annotation.Bean;
@@ -17,5 +18,10 @@ public class InfrastructureTestConfiguration {
     @Bean
     public ReviewTestRepository reviewTestRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         return new ReviewTestRepository(namedParameterJdbcTemplate);
+    }
+
+    @Bean
+    public EventStoreTestRepository eventStoreTestRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        return new EventStoreTestRepository(namedParameterJdbcTemplate);
     }
 }
