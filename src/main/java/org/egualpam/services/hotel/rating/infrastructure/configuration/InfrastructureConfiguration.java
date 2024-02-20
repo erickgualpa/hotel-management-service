@@ -6,7 +6,7 @@ import io.swagger.v3.oas.models.info.Info;
 import jakarta.persistence.EntityManager;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
@@ -35,13 +35,13 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public AggregateRepository<Review> aggregateReviewRepository(EntityManager entityManager) {
-        return new PostgreSqlJpaReviewRepository(entityManager);
+    public AggregateRepository<Hotel> aggregateHotelRepository(EntityManager entityManager) {
+        return new PostgreSqlJpaHotelRepository(entityManager);
     }
 
     @Bean
-    public HotelRepository hotelRepository(EntityManager entityManager) {
-        return new PostgreSqlJpaHotelRepository(entityManager);
+    public AggregateRepository<Review> aggregateReviewRepository(EntityManager entityManager) {
+        return new PostgreSqlJpaReviewRepository(entityManager);
     }
 
     @Bean
@@ -63,12 +63,12 @@ public class InfrastructureConfiguration {
     @Bean
     public QueryBus queryBus(
             ObjectMapper objectMapper,
-            HotelRepository hotelRepository,
+            AggregateRepository<Hotel> aggregateHotelRepository,
             AggregateRepository<Review> aggregateReviewRepository
     ) {
         return new SimpleQueryBus(
                 objectMapper,
-                hotelRepository,
+                aggregateHotelRepository,
                 aggregateReviewRepository
         );
     }

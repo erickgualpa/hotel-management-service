@@ -9,7 +9,7 @@ import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
 import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
 import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
+import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 
@@ -27,14 +27,14 @@ public final class SimpleQueryBus implements QueryBus {
 
     public SimpleQueryBus(
             ObjectMapper objectMapper,
-            HotelRepository hotelRepository,
+            AggregateRepository<Hotel> aggregateHotelRepository,
             AggregateRepository<Review> aggregateReviewRepository
     ) {
         handlers = Map.of(
                 FindHotelReviewsQuery.class,
                 new FindHotelReviewsQueryHandler(objectMapper, aggregateReviewRepository),
                 FindHotelsQuery.class,
-                new FindHotelsQueryHandler(objectMapper, hotelRepository)
+                new FindHotelsQueryHandler(objectMapper, aggregateHotelRepository)
         );
     }
 
@@ -81,11 +81,14 @@ public final class SimpleQueryBus implements QueryBus {
     static class FindHotelsQueryHandler implements QueryHandler {
 
         private final ObjectMapper objectMapper;
-        private final HotelRepository hotelRepository;
+        private final AggregateRepository<Hotel> aggregateHotelRepository;
 
-        public FindHotelsQueryHandler(ObjectMapper objectMapper, HotelRepository hotelRepository) {
+        public FindHotelsQueryHandler(
+                ObjectMapper objectMapper,
+                AggregateRepository<Hotel> aggregateHotelRepository
+        ) {
             this.objectMapper = objectMapper;
-            this.hotelRepository = hotelRepository;
+            this.aggregateHotelRepository = aggregateHotelRepository;
         }
 
         @Override
@@ -95,7 +98,7 @@ public final class SimpleQueryBus implements QueryBus {
                             ((FindHotelsQuery) query).getLocation(),
                             ((FindHotelsQuery) query).getMinPrice(),
                             ((FindHotelsQuery) query).getMaxPrice(),
-                            hotelRepository
+                            aggregateHotelRepository
                     );
 
             List<HotelDto> hotelsDto = internalQuery.get();

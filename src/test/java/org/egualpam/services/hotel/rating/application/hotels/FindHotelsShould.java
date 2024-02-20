@@ -5,12 +5,12 @@ import org.egualpam.services.hotel.rating.domain.hotels.AverageRating;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelDescription;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelName;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
 import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
-import org.egualpam.services.hotel.rating.domain.hotels.PriceRange;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
+import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,13 +29,14 @@ import static org.apache.commons.lang3.RandomUtils.nextDouble;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FindHotelsShould {
 
     @Mock
-    private HotelRepository hotelRepository;
+    private AggregateRepository<Hotel> aggregateHotelRepository;
 
     private InternalQuery<List<HotelDto>> testee;
 
@@ -45,7 +46,7 @@ class FindHotelsShould {
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
-                hotelRepository
+                aggregateHotelRepository
         );
     }
 
@@ -72,15 +73,7 @@ class FindHotelsShould {
                         )
                 );
 
-        doReturn(hotels)
-                .when(hotelRepository)
-                .find(
-                        Optional.empty(),
-                        new PriceRange(
-                                Optional.empty(),
-                                Optional.empty()
-                        )
-                );
+        when(aggregateHotelRepository.find(any(Criteria.class))).thenReturn(hotels);
 
         List<HotelDto> result = testee.get();
 
@@ -133,15 +126,7 @@ class FindHotelsShould {
 
         shuffle(hotels);
 
-        doReturn(hotels)
-                .when(hotelRepository)
-                .find(
-                        Optional.empty(),
-                        new PriceRange(
-                                Optional.empty(),
-                                Optional.empty()
-                        )
-                );
+        when(aggregateHotelRepository.find(any(Criteria.class))).thenReturn(hotels);
 
         List<HotelDto> result = testee.get();
 
@@ -168,7 +153,7 @@ class FindHotelsShould {
                 Optional.empty(),
                 Optional.of(priceBegin),
                 Optional.of(priceEnd),
-                hotelRepository
+                aggregateHotelRepository
         );
 
         assertThrows(PriceRangeValuesSwapped.class, () -> testee.get());
