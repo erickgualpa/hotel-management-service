@@ -7,7 +7,8 @@ import jakarta.persistence.EntityManager;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
 import org.egualpam.services.hotel.rating.domain.hotels.HotelRepository;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.reviews.Review;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.SimpleCommandBus;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.SimpleQueryBus;
@@ -34,13 +35,13 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public HotelRepository hotelRepository(EntityManager entityManager) {
-        return new PostgreSqlJpaHotelRepository(entityManager);
+    public AggregateRepository<Review> aggregateReviewRepository(EntityManager entityManager) {
+        return new PostgreSqlJpaReviewRepository(entityManager);
     }
 
     @Bean
-    public ReviewRepository reviewRepository(EntityManager entityManager) {
-        return new PostgreSqlJpaReviewRepository(entityManager);
+    public HotelRepository hotelRepository(EntityManager entityManager) {
+        return new PostgreSqlJpaHotelRepository(entityManager);
     }
 
     @Bean
@@ -50,17 +51,25 @@ public class InfrastructureConfiguration {
 
     @Bean
     public CommandBus commandBus(
-            ReviewRepository reviewRepository,
+            AggregateRepository<Review> aggregateReviewRepository,
             DomainEventsPublisher domainEventsPublisher
     ) {
-        return new SimpleCommandBus(reviewRepository, domainEventsPublisher);
+        return new SimpleCommandBus(
+                aggregateReviewRepository,
+                domainEventsPublisher
+        );
     }
 
     @Bean
     public QueryBus queryBus(
             ObjectMapper objectMapper,
             HotelRepository hotelRepository,
-            ReviewRepository reviewRepository) {
-        return new SimpleQueryBus(objectMapper, hotelRepository, reviewRepository);
+            AggregateRepository<Review> aggregateReviewRepository
+    ) {
+        return new SimpleQueryBus(
+                objectMapper,
+                hotelRepository,
+                aggregateReviewRepository
+        );
     }
 }

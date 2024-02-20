@@ -1,7 +1,7 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
@@ -38,7 +38,7 @@ class CreateReviewShould {
     private ArgumentCaptor<List<DomainEvent>> domainEventsCaptor;
 
     @Mock
-    private ReviewRepository reviewRepository;
+    private AggregateRepository<Review> aggregateReviewRepository;
 
     @Mock
     DomainEventsPublisher domainEventsPublisher;
@@ -55,26 +55,23 @@ class CreateReviewShould {
                 hotelIdentifier,
                 rating,
                 comment,
-                reviewRepository,
+                aggregateReviewRepository,
                 domainEventsPublisher
         );
         testee.execute();
 
-        verify(reviewRepository).save(reviewCaptor.capture());
-
+        verify(aggregateReviewRepository).save(reviewCaptor.capture());
         assertThat(reviewCaptor.getValue())
-                .isNotNull()
                 .satisfies(
-                        actualReview -> {
-                            assertThat(actualReview.getIdentifier()).isEqualTo(new Identifier(reviewIdentifier));
-                            assertThat(actualReview.getHotelIdentifier()).isEqualTo(new Identifier(hotelIdentifier));
-                            assertThat(actualReview.getRating()).isEqualTo(new Rating(rating));
-                            assertThat(actualReview.getComment()).isEqualTo(new Comment(comment));
+                        result -> {
+                            assertThat(result.getIdentifier()).isEqualTo(new Identifier(reviewIdentifier));
+                            assertThat(result.getHotelIdentifier()).isEqualTo(new Identifier(hotelIdentifier));
+                            assertThat(result.getRating()).isEqualTo(new Rating(rating));
+                            assertThat(result.getComment()).isEqualTo(new Comment(comment));
                         }
                 );
 
         verify(domainEventsPublisher).publish(domainEventsCaptor.capture());
-
         assertThat(domainEventsCaptor.getValue())
                 .isNotEmpty()
                 .satisfies(
@@ -98,7 +95,7 @@ class CreateReviewShould {
                         hotelIdentifier,
                         invalidRating,
                         comment,
-                        reviewRepository,
+                        aggregateReviewRepository,
                         domainEventsPublisher
                 )
         );
@@ -117,7 +114,7 @@ class CreateReviewShould {
                         hotelIdentifier,
                         rating,
                         comment,
-                        reviewRepository,
+                        aggregateReviewRepository,
                         domainEventsPublisher
                 )
         );
@@ -136,7 +133,7 @@ class CreateReviewShould {
                         invalidIdentifier,
                         rating,
                         comment,
-                        reviewRepository,
+                        aggregateReviewRepository,
                         domainEventsPublisher
                 )
         );

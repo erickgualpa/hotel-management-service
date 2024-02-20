@@ -2,29 +2,29 @@ package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.application.shared.InternalCommand;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
-import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 public class UpdateReview implements InternalCommand {
 
-    private final Identifier reviewIdentifier;
+    private final AggregateId reviewId;
     private final Comment comment;
-    private final ReviewRepository reviewRepository;
+    private final AggregateRepository<Review> aggregateReviewRepository;
 
     public UpdateReview(
-            String reviewIdentifier,
+            String reviewId,
             String comment,
-            ReviewRepository reviewRepository) {
-        this.reviewIdentifier = new Identifier(reviewIdentifier);
+            AggregateRepository<Review> aggregateReviewRepository) {
+        this.reviewId = new AggregateId(reviewId);
         this.comment = new Comment(comment);
-        this.reviewRepository = reviewRepository;
+        this.aggregateReviewRepository = aggregateReviewRepository;
     }
 
     @Override
     public void execute() {
-        Review review = reviewRepository.findByIdentifier(reviewIdentifier);
+        Review review = aggregateReviewRepository.find(reviewId);
         review.updateComment(comment);
-        reviewRepository.save(review);
+        aggregateReviewRepository.save(review);
     }
 }

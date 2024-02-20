@@ -2,8 +2,9 @@ package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
+import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
 import org.junit.jupiter.api.Test;
@@ -17,26 +18,26 @@ import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class FindHotelReviewsShould {
 
     @Mock
-    private ReviewRepository reviewRepository;
+    private AggregateRepository<Review> aggregateReviewRepository;
 
     @Test
     void returnReviewsGivenHotelIdentifier() {
-        String reviewIdentifier = randomUUID().toString();
         String hotelIdentifier = randomUUID().toString();
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
-        when(reviewRepository.findByHotelIdentifier(new Identifier(hotelIdentifier)))
+        when(aggregateReviewRepository.find(any(Criteria.class)))
                 .thenReturn(
                         List.of(
                                 new Review(
-                                        new Identifier(reviewIdentifier),
+                                        new Identifier(randomUUID().toString()),
                                         new Identifier(hotelIdentifier),
                                         new Rating(rating),
                                         new Comment(comment)
@@ -44,7 +45,11 @@ class FindHotelReviewsShould {
                         )
                 );
 
-        InternalQuery<List<ReviewDto>> testee = new FindHotelReviews(hotelIdentifier, reviewRepository);
+        InternalQuery<List<ReviewDto>> testee = new FindHotelReviews(
+                hotelIdentifier,
+                aggregateReviewRepository
+        );
+
         List<ReviewDto> result = testee.get();
 
         assertThat(result)

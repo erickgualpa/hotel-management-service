@@ -5,7 +5,8 @@ import org.egualpam.services.hotel.rating.application.reviews.UpdateReview;
 import org.egualpam.services.hotel.rating.application.shared.Command;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.InternalCommand;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.reviews.Review;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
 
 import java.util.Map;
@@ -19,10 +20,18 @@ public final class SimpleCommandBus implements CommandBus {
 
     private final Map<Class<? extends Command>, CommandHandler> handlers;
 
-    public SimpleCommandBus(ReviewRepository reviewRepository, DomainEventsPublisher domainEventsPublisher) {
+    public SimpleCommandBus(
+            AggregateRepository<Review> aggregateReviewRepository,
+            DomainEventsPublisher domainEventsPublisher
+    ) {
         handlers = Map.of(
-                CreateReviewCommand.class, new CreateReviewCommandHandler(reviewRepository, domainEventsPublisher),
-                UpdateReviewCommand.class, new UpdateReviewCommandHandler(reviewRepository)
+                CreateReviewCommand.class,
+                new CreateReviewCommandHandler(
+                        aggregateReviewRepository,
+                        domainEventsPublisher
+                ),
+                UpdateReviewCommand.class,
+                new UpdateReviewCommandHandler(aggregateReviewRepository)
         );
     }
 
@@ -37,13 +46,14 @@ public final class SimpleCommandBus implements CommandBus {
 
     static class CreateReviewCommandHandler implements CommandHandler {
 
-        private final ReviewRepository reviewRepository;
+        private final AggregateRepository<Review> aggregateReviewRepository;
         private final DomainEventsPublisher domainEventsPublisher;
 
         public CreateReviewCommandHandler(
-                ReviewRepository reviewRepository,
-                DomainEventsPublisher domainEventsPublisher) {
-            this.reviewRepository = reviewRepository;
+                AggregateRepository<Review> reviewRepository,
+                DomainEventsPublisher domainEventsPublisher
+        ) {
+            this.aggregateReviewRepository = reviewRepository;
             this.domainEventsPublisher = domainEventsPublisher;
         }
 
@@ -55,7 +65,7 @@ public final class SimpleCommandBus implements CommandBus {
                             ((CreateReviewCommand) query).getHotelIdentifier(),
                             ((CreateReviewCommand) query).getRating(),
                             ((CreateReviewCommand) query).getComment(),
-                            reviewRepository,
+                            aggregateReviewRepository,
                             domainEventsPublisher
                     );
             internalCommand.execute();
@@ -64,10 +74,10 @@ public final class SimpleCommandBus implements CommandBus {
 
     static class UpdateReviewCommandHandler implements CommandHandler {
 
-        private final ReviewRepository reviewRepository;
+        private final AggregateRepository<Review> aggregateReviewRepository;
 
-        public UpdateReviewCommandHandler(ReviewRepository reviewRepository) {
-            this.reviewRepository = reviewRepository;
+        public UpdateReviewCommandHandler(AggregateRepository<Review> aggregateReviewRepository) {
+            this.aggregateReviewRepository = aggregateReviewRepository;
         }
 
         @Override
@@ -76,7 +86,7 @@ public final class SimpleCommandBus implements CommandBus {
                     new UpdateReview(
                             ((UpdateReviewCommand) query).getReviewIdentifier(),
                             ((UpdateReviewCommand) query).getComment(),
-                            reviewRepository
+                            aggregateReviewRepository
                     );
             internalCommand.execute();
         }

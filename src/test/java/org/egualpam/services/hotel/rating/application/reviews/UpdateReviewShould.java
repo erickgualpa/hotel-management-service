@@ -1,7 +1,8 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.egualpam.services.hotel.rating.domain.shared.Rating;
@@ -23,20 +24,20 @@ import static org.mockito.Mockito.when;
 class UpdateReviewShould {
 
     @Mock
-    private ReviewRepository reviewRepository;
+    private AggregateRepository<Review> aggregateReviewRepository;
 
     @Captor
     private ArgumentCaptor<Review> reviewCaptor;
 
     @Test
     void updateReview() {
-        String reviewIdentifier = randomUUID().toString();
+        String reviewId = randomUUID().toString();
         String comment = randomAlphabetic(10);
 
-        when(reviewRepository.findByIdentifier(new Identifier(reviewIdentifier)))
+        when(aggregateReviewRepository.find(new AggregateId(reviewId)))
                 .thenReturn(
                         new Review(
-                                new Identifier(reviewIdentifier),
+                                new Identifier(reviewId),
                                 new Identifier(randomUUID().toString()),
                                 new Rating(nextInt(1, 5)),
                                 new Comment(randomAlphabetic(10))
@@ -44,14 +45,14 @@ class UpdateReviewShould {
                 );
 
         UpdateReview testee = new UpdateReview(
-                reviewIdentifier,
+                reviewId,
                 comment,
-                reviewRepository
+                aggregateReviewRepository
         );
 
         testee.execute();
 
-        verify(reviewRepository).save(reviewCaptor.capture());
+        verify(aggregateReviewRepository).save(reviewCaptor.capture());
         assertThat(reviewCaptor.getValue())
                 .isNotNull()
                 .satisfies(

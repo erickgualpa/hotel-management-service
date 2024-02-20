@@ -1,9 +1,19 @@
 package org.egualpam.services.hotel.rating.domain.hotels;
 
+import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRoot;
+import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
-public final class Hotel {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
+public final class Hotel implements AggregateRoot {
+
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
+
+    private final AggregateId aggregateId;
     private final Identifier identifier;
     private final HotelName name;
     private final HotelDescription description;
@@ -12,13 +22,16 @@ public final class Hotel {
     private final ImageURL imageURL;
     private final AverageRating averageRating;
 
-    public Hotel(Identifier identifier,
-                 HotelName name,
-                 HotelDescription description,
-                 Location location,
-                 Price totalPrice,
-                 ImageURL imageURL,
-                 AverageRating averageRating) {
+    public Hotel(
+            Identifier identifier,
+            HotelName name,
+            HotelDescription description,
+            Location location,
+            Price totalPrice,
+            ImageURL imageURL,
+            AverageRating averageRating
+    ) {
+        this.aggregateId = new AggregateId(UUID.fromString(identifier.value()));
         this.identifier = identifier;
         this.name = name;
         this.description = description;
@@ -26,6 +39,16 @@ public final class Hotel {
         this.totalPrice = totalPrice;
         this.imageURL = imageURL;
         this.averageRating = averageRating;
+    }
+
+    @Override
+    public AggregateId getId() {
+        return aggregateId;
+    }
+
+    @Override
+    public List<DomainEvent> getDomainEvents() {
+        return this.domainEvents;
     }
 
     public Identifier getIdentifier() {

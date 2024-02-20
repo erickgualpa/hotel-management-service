@@ -2,7 +2,7 @@ package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.application.shared.InternalCommand;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewRepository;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Comment;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
 import org.egualpam.services.hotel.rating.domain.shared.Identifier;
@@ -15,7 +15,7 @@ public final class CreateReview implements InternalCommand {
     private final Rating rating;
     private final Comment comment;
 
-    private final ReviewRepository reviewRepository;
+    private final AggregateRepository<Review> aggregateRepository;
     private final DomainEventsPublisher domainEventsPublisher;
 
     public CreateReview(
@@ -23,14 +23,14 @@ public final class CreateReview implements InternalCommand {
             String hotelIdentifier,
             Integer rating,
             String comment,
-            ReviewRepository reviewRepository,
+            AggregateRepository<Review> aggregateRepository,
             DomainEventsPublisher domainEventsPublisher
     ) {
         this.reviewIdentifier = new Identifier(reviewIdentifier);
         this.hotelIdentifier = new Identifier(hotelIdentifier);
         this.rating = new Rating(rating);
         this.comment = new Comment(comment);
-        this.reviewRepository = reviewRepository;
+        this.aggregateRepository = aggregateRepository;
         this.domainEventsPublisher = domainEventsPublisher;
     }
 
@@ -42,7 +42,7 @@ public final class CreateReview implements InternalCommand {
                 rating,
                 comment
         );
-        reviewRepository.save(review);
+        aggregateRepository.save(review);
         domainEventsPublisher.publish(review.getDomainEvents());
     }
 }
