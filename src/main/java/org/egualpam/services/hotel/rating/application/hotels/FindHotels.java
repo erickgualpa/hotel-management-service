@@ -19,30 +19,26 @@ public class FindHotels implements InternalQuery<List<HotelDto>> {
 
     private static final ToDoubleFunction<Hotel> getHotelAverageRating = h -> h.getAverageRating().value();
 
-    private final Optional<String> locationFilter;
-    private final Optional<Integer> minPriceFilter;
-    private final Optional<Integer> maxPriceFilter;
+    private final Optional<Location> location;
+    private final PriceRange priceRange;
     private final AggregateRepository<Hotel> aggregateHotelRepository;
 
     public FindHotels(
-            Optional<String> locationFilter,
-            Optional<Integer> minPriceFilter,
-            Optional<Integer> maxPriceFilter,
+            Optional<String> location,
+            Optional<Integer> minPrice,
+            Optional<Integer> maxPrice,
             AggregateRepository<Hotel> aggregateHotelRepository
     ) {
-        this.locationFilter = locationFilter;
-        this.minPriceFilter = minPriceFilter;
-        this.maxPriceFilter = maxPriceFilter;
+        this.location = location.map(Location::new);
+        this.priceRange = new PriceRange(
+                minPrice.map(Price::new),
+                maxPrice.map(Price::new)
+        );
         this.aggregateHotelRepository = aggregateHotelRepository;
     }
 
     @Override
     public List<HotelDto> get() {
-        Optional<Location> location = locationFilter.map(Location::new);
-        PriceRange priceRange = new PriceRange(
-                minPriceFilter.map(Price::new),
-                maxPriceFilter.map(Price::new)
-        );
         Criteria criteria = new HotelCriteria(
                 location,
                 priceRange
