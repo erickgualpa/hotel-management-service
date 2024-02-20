@@ -14,7 +14,6 @@ import org.egualpam.services.hotel.rating.domain.hotels.PriceRange;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Criteria;
-import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 import java.util.List;
 import java.util.Objects;
@@ -72,7 +71,7 @@ public final class PostgreSqlJpaHotelRepository implements AggregateRepository<H
                         .orElse(0.0)
         );
         return new Hotel(
-                new Identifier(persistenceHotel.getId().toString()),
+                new AggregateId(persistenceHotel.getId()),
                 new HotelName(name),
                 new HotelDescription(description),
                 new Location(location),

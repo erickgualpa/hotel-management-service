@@ -3,18 +3,15 @@ package org.egualpam.services.hotel.rating.domain.hotels;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRoot;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
-import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public final class Hotel implements AggregateRoot {
 
     private final List<DomainEvent> domainEvents = new ArrayList<>();
 
-    private final AggregateId aggregateId;
-    private final Identifier identifier;
+    private final AggregateId id;
     private final HotelName name;
     private final HotelDescription description;
     private final Location location;
@@ -23,7 +20,7 @@ public final class Hotel implements AggregateRoot {
     private final AverageRating averageRating;
 
     public Hotel(
-            Identifier identifier,
+            AggregateId id,
             HotelName name,
             HotelDescription description,
             Location location,
@@ -31,8 +28,7 @@ public final class Hotel implements AggregateRoot {
             ImageURL imageURL,
             AverageRating averageRating
     ) {
-        this.aggregateId = new AggregateId(UUID.fromString(identifier.value()));
-        this.identifier = identifier;
+        this.id = id;
         this.name = name;
         this.description = description;
         this.location = location;
@@ -43,16 +39,12 @@ public final class Hotel implements AggregateRoot {
 
     @Override
     public AggregateId getId() {
-        return aggregateId;
+        return id;
     }
 
     @Override
     public List<DomainEvent> getDomainEvents() {
         return this.domainEvents;
-    }
-
-    public Identifier getIdentifier() {
-        return identifier;
     }
 
     public HotelName getName() {

@@ -56,7 +56,7 @@ public class FindHotels implements InternalQuery<List<HotelDto>> {
 
     private HotelDto mapIntoHotelDto(Hotel hotel) {
         return new HotelDto(
-                hotel.getIdentifier().value(),
+                hotel.getId().value().toString(),
                 hotel.getName().value(),
                 hotel.getDescription().value(),
                 hotel.getLocation().value(),

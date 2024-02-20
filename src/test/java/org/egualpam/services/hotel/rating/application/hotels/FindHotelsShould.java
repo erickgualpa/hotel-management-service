@@ -9,9 +9,9 @@ import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
 import org.egualpam.services.hotel.rating.domain.hotels.Location;
 import org.egualpam.services.hotel.rating.domain.hotels.Price;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Criteria;
-import org.egualpam.services.hotel.rating.domain.shared.Identifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,7 +63,7 @@ class FindHotelsShould {
         List<Hotel> hotels =
                 List.of(
                         new Hotel(
-                                new Identifier(identifier),
+                                new AggregateId(identifier),
                                 new HotelName(name),
                                 new HotelDescription(description),
                                 new Location(location),
@@ -102,7 +102,7 @@ class FindHotelsShould {
         final List<Hotel> hotels = new ArrayList<>();
         hotels.add(
                 new Hotel(
-                        new Identifier(expectedLastIdentifier),
+                        new AggregateId(expectedLastIdentifier),
                         new HotelName(randomAlphabetic(5)),
                         new HotelDescription(randomAlphabetic(10)),
                         new Location(randomAlphabetic(5)),
@@ -114,7 +114,7 @@ class FindHotelsShould {
 
         hotels.add(
                 new Hotel(
-                        new Identifier(expectedFirstIdentifier),
+                        new AggregateId(expectedFirstIdentifier),
                         new HotelName(randomAlphabetic(5)),
                         new HotelDescription(randomAlphabetic(10)),
                         new Location(randomAlphabetic(5)),
