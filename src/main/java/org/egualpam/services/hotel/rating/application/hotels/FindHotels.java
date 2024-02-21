@@ -15,7 +15,7 @@ import java.util.function.ToDoubleFunction;
 
 import static java.util.Comparator.comparingDouble;
 
-public class FindHotels implements InternalQuery<List<HotelDto>> {
+public class FindHotels implements InternalQuery<HotelsView> {
 
     private static final ToDoubleFunction<Hotel> getHotelAverageRating = h -> h.getAverageRating().value();
 
@@ -38,20 +38,21 @@ public class FindHotels implements InternalQuery<List<HotelDto>> {
     }
 
     @Override
-    public List<HotelDto> get() {
+    public HotelsView get() {
         Criteria criteria = new HotelCriteria(
                 location,
                 priceRange
         );
-        return aggregateHotelRepository.find(criteria)
+        List<HotelsView.Hotel> hotels = aggregateHotelRepository.find(criteria)
                 .stream()
                 .sorted(comparingDouble(getHotelAverageRating).reversed())
-                .map(this::mapIntoHotelDto)
+                .map(this::mapIntoView)
                 .toList();
+        return new HotelsView(hotels);
     }
 
-    private HotelDto mapIntoHotelDto(Hotel hotel) {
-        return new HotelDto(
+    private HotelsView.Hotel mapIntoView(Hotel hotel) {
+        return new HotelsView.Hotel(
                 hotel.getId().value().toString(),
                 hotel.getName().value(),
                 hotel.getDescription().value(),

@@ -3,9 +3,9 @@ package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egualpam.services.hotel.rating.application.hotels.FindHotels;
-import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
+import org.egualpam.services.hotel.rating.application.hotels.HotelsView;
 import org.egualpam.services.hotel.rating.application.reviews.FindHotelReviews;
-import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
+import org.egualpam.services.hotel.rating.application.reviews.ReviewsView;
 import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
 import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
@@ -13,7 +13,6 @@ import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 
-import java.util.List;
 import java.util.Map;
 
 @FunctionalInterface
@@ -62,16 +61,16 @@ public final class SimpleQueryBus implements QueryBus {
 
         @Override
         public String handle(Query query) {
-            InternalQuery<List<ReviewDto>> internalQuery =
+            InternalQuery<ReviewsView> internalQuery =
                     new FindHotelReviews(
                             ((FindHotelReviewsQuery) query).getHotelIdentifier(),
                             aggregateReviewRepository
                     );
 
-            List<ReviewDto> reviewsDto = internalQuery.get();
+            ReviewsView reviewsView = internalQuery.get();
 
             try {
-                return objectMapper.writeValueAsString(reviewsDto);
+                return objectMapper.writeValueAsString(reviewsView);
             } catch (JsonProcessingException e) {
                 throw new OutcomeSerializationFailed(e);
             }
@@ -93,7 +92,7 @@ public final class SimpleQueryBus implements QueryBus {
 
         @Override
         public String handle(Query query) {
-            InternalQuery<List<HotelDto>> internalQuery =
+            InternalQuery<HotelsView> internalQuery =
                     new FindHotels(
                             ((FindHotelsQuery) query).getLocation(),
                             ((FindHotelsQuery) query).getMinPrice(),
@@ -101,10 +100,10 @@ public final class SimpleQueryBus implements QueryBus {
                             aggregateHotelRepository
                     );
 
-            List<HotelDto> hotelsDto = internalQuery.get();
+            HotelsView hotelsView = internalQuery.get();
 
             try {
-                return objectMapper.writeValueAsString(hotelsDto);
+                return objectMapper.writeValueAsString(hotelsView);
             } catch (JsonProcessingException e) {
                 throw new OutcomeSerializationFailed(e);
             }

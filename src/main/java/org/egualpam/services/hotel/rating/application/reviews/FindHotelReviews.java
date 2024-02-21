@@ -9,7 +9,7 @@ import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 
 import java.util.List;
 
-public class FindHotelReviews implements InternalQuery<List<ReviewDto>> {
+public class FindHotelReviews implements InternalQuery<ReviewsView> {
 
     private final HotelId hotelId;
     private final AggregateRepository<Review> aggregateReviewRepository;
@@ -23,14 +23,15 @@ public class FindHotelReviews implements InternalQuery<List<ReviewDto>> {
     }
 
     @Override
-    public List<ReviewDto> get() {
+    public ReviewsView get() {
         Criteria criteria = new ReviewCriteria(hotelId);
-        return aggregateReviewRepository.find(criteria)
+        List<ReviewsView.Review> reviews = aggregateReviewRepository.find(criteria)
                 .stream()
                 .map(review ->
-                        new ReviewDto(
+                        new ReviewsView.Review(
                                 review.getRating().value(),
                                 review.getComment().value()))
                 .toList();
+        return new ReviewsView(reviews);
     }
 }
