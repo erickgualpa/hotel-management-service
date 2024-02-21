@@ -14,7 +14,7 @@ import java.util.Map;
 
 @FunctionalInterface
 interface CommandHandler {
-    void handle(Command query);
+    void handle(Command command);
 }
 
 public final class SimpleCommandBus implements CommandBus {
@@ -52,13 +52,13 @@ public final class SimpleCommandBus implements CommandBus {
         private final DomainEventsPublisher domainEventsPublisher;
 
         @Override
-        public void handle(Command query) {
+        public void handle(Command command) {
             InternalCommand internalCommand =
                     new CreateReview(
-                            ((CreateReviewCommand) query).getReviewIdentifier(),
-                            ((CreateReviewCommand) query).getHotelIdentifier(),
-                            ((CreateReviewCommand) query).getRating(),
-                            ((CreateReviewCommand) query).getComment(),
+                            ((CreateReviewCommand) command).getReviewIdentifier(),
+                            ((CreateReviewCommand) command).getHotelIdentifier(),
+                            ((CreateReviewCommand) command).getRating(),
+                            ((CreateReviewCommand) command).getComment(),
                             aggregateReviewRepository,
                             domainEventsPublisher
                     );
@@ -72,11 +72,11 @@ public final class SimpleCommandBus implements CommandBus {
         private final AggregateRepository<Review> aggregateReviewRepository;
 
         @Override
-        public void handle(Command query) {
+        public void handle(Command command) {
             InternalCommand internalCommand =
                     new UpdateReview(
-                            ((UpdateReviewCommand) query).getReviewIdentifier(),
-                            ((UpdateReviewCommand) query).getComment(),
+                            ((UpdateReviewCommand) command).getReviewIdentifier(),
+                            ((UpdateReviewCommand) command).getComment(),
                             aggregateReviewRepository
                     );
             internalCommand.execute();
