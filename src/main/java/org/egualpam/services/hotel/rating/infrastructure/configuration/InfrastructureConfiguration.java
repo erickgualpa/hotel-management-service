@@ -62,12 +62,10 @@ public class InfrastructureConfiguration {
 
     @Bean
     public QueryBus queryBus(
-            ObjectMapper objectMapper,
             AggregateRepository<Hotel> aggregateHotelRepository,
             AggregateRepository<Review> aggregateReviewRepository
     ) {
         return new SimpleQueryBus(
-                objectMapper,
                 aggregateHotelRepository,
                 aggregateReviewRepository
         );

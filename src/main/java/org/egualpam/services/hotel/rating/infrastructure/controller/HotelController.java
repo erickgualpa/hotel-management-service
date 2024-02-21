@@ -1,6 +1,5 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.hotels.HotelsView;
 import org.egualpam.services.hotel.rating.application.shared.Query;
@@ -25,7 +24,6 @@ public final class HotelController {
 
     private static final Logger logger = LoggerFactory.getLogger(HotelController.class);
 
-    private final ObjectMapper objectMapper;
     private final QueryBus queryBus;
 
     @PostMapping(value = "/query")
@@ -46,8 +44,7 @@ public final class HotelController {
 
         final HotelsView hotelsView;
         try {
-            String outcome = queryBus.publish(findHotelsQuery);
-            hotelsView = objectMapper.readValue(outcome, HotelsView.class);
+            hotelsView = (HotelsView) queryBus.publish(findHotelsQuery);
         } catch (PriceRangeValuesSwapped e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
