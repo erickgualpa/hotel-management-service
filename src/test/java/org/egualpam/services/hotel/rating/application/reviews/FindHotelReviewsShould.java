@@ -46,19 +46,20 @@ class FindHotelReviewsShould {
                         )
                 );
 
-        InternalQuery<List<ReviewDto>> testee = new FindHotelReviews(
+        InternalQuery<ReviewsView> testee = new FindHotelReviews(
                 hotelIdentifier,
                 aggregateReviewRepository
         );
 
-        List<ReviewDto> result = testee.get();
+        ReviewsView result = testee.get();
 
-        assertThat(result)
+        assertThat(result.reviews())
                 .hasSize(1)
-                .allSatisfy(actualReview ->
+                .first()
+                .satisfies(actual ->
                         {
-                            assertThat(actualReview.rating()).isEqualTo(rating);
-                            assertThat(actualReview.comment()).isEqualTo(comment);
+                            assertThat(actual.rating()).isEqualTo(rating);
+                            assertThat(actual.comment()).isEqualTo(comment);
                         }
                 );
     }

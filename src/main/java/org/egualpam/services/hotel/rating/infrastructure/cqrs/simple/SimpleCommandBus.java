@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
 
+import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.UpdateReview;
 import org.egualpam.services.hotel.rating.application.shared.Command;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 @FunctionalInterface
 interface CommandHandler {
-    void handle(Command query);
+    void handle(Command command);
 }
 
 public final class SimpleCommandBus implements CommandBus {
@@ -44,27 +45,20 @@ public final class SimpleCommandBus implements CommandBus {
         commandHandler.handle(command);
     }
 
+    @RequiredArgsConstructor
     static class CreateReviewCommandHandler implements CommandHandler {
 
         private final AggregateRepository<Review> aggregateReviewRepository;
         private final DomainEventsPublisher domainEventsPublisher;
 
-        public CreateReviewCommandHandler(
-                AggregateRepository<Review> reviewRepository,
-                DomainEventsPublisher domainEventsPublisher
-        ) {
-            this.aggregateReviewRepository = reviewRepository;
-            this.domainEventsPublisher = domainEventsPublisher;
-        }
-
         @Override
-        public void handle(Command query) {
+        public void handle(Command command) {
             InternalCommand internalCommand =
                     new CreateReview(
-                            ((CreateReviewCommand) query).getReviewIdentifier(),
-                            ((CreateReviewCommand) query).getHotelIdentifier(),
-                            ((CreateReviewCommand) query).getRating(),
-                            ((CreateReviewCommand) query).getComment(),
+                            ((CreateReviewCommand) command).getReviewIdentifier(),
+                            ((CreateReviewCommand) command).getHotelIdentifier(),
+                            ((CreateReviewCommand) command).getRating(),
+                            ((CreateReviewCommand) command).getComment(),
                             aggregateReviewRepository,
                             domainEventsPublisher
                     );
@@ -72,20 +66,17 @@ public final class SimpleCommandBus implements CommandBus {
         }
     }
 
+    @RequiredArgsConstructor
     static class UpdateReviewCommandHandler implements CommandHandler {
 
         private final AggregateRepository<Review> aggregateReviewRepository;
 
-        public UpdateReviewCommandHandler(AggregateRepository<Review> aggregateReviewRepository) {
-            this.aggregateReviewRepository = aggregateReviewRepository;
-        }
-
         @Override
-        public void handle(Command query) {
+        public void handle(Command command) {
             InternalCommand internalCommand =
                     new UpdateReview(
-                            ((UpdateReviewCommand) query).getReviewIdentifier(),
-                            ((UpdateReviewCommand) query).getComment(),
+                            ((UpdateReviewCommand) command).getReviewIdentifier(),
+                            ((UpdateReviewCommand) command).getComment(),
                             aggregateReviewRepository
                     );
             internalCommand.execute();

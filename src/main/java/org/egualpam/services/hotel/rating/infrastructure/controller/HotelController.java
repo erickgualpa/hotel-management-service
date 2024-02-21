@@ -1,8 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotel.rating.application.hotels.HotelDto;
+import org.egualpam.services.hotel.rating.application.hotels.HotelsView;
 import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
@@ -25,7 +24,6 @@ public final class HotelController {
 
     private static final Logger logger = LoggerFactory.getLogger(HotelController.class);
 
-    private final ObjectMapper objectMapper;
     private final QueryBus queryBus;
 
     @PostMapping(value = "/query")
@@ -44,10 +42,9 @@ public final class HotelController {
                 maxPrice
         );
 
-        final List<HotelDto> hotelsDto;
+        final HotelsView hotelsView;
         try {
-            String outcome = queryBus.publish(findHotelsQuery);
-            hotelsDto = objectMapper.readerForListOf(HotelDto.class).readValue(outcome);
+            hotelsView = (HotelsView) queryBus.publish(findHotelsQuery);
         } catch (PriceRangeValuesSwapped e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -61,7 +58,7 @@ public final class HotelController {
         }
 
         List<QueryHotelResponse.Hotel> hotels =
-                hotelsDto.stream()
+                hotelsView.hotels().stream()
                         .map(
                                 h -> new QueryHotelResponse.Hotel(
                                         h.identifier(),

@@ -38,7 +38,7 @@ class FindHotelsShould {
     @Mock
     private AggregateRepository<Hotel> aggregateHotelRepository;
 
-    private InternalQuery<List<HotelDto>> testee;
+    private InternalQuery<HotelsView> testee;
 
     @BeforeEach
     void setup() {
@@ -75,19 +75,20 @@ class FindHotelsShould {
 
         when(aggregateHotelRepository.find(any(Criteria.class))).thenReturn(hotels);
 
-        List<HotelDto> result = testee.get();
+        HotelsView result = testee.get();
 
-        assertThat(result)
+        assertThat(result.hotels())
                 .hasSize(1)
-                .allSatisfy(
-                        actualHotel -> {
-                            assertThat(actualHotel.identifier()).isEqualTo(identifier);
-                            assertThat(actualHotel.name()).isEqualTo(name);
-                            assertThat(actualHotel.description()).isEqualTo(description);
-                            assertThat(actualHotel.location()).isEqualTo(location);
-                            assertThat(actualHotel.totalPrice()).isEqualTo(price);
-                            assertThat(actualHotel.imageURL()).isEqualTo(imageURL);
-                            assertThat(actualHotel.averageRating()).isEqualTo(averageRating);
+                .first()
+                .satisfies(
+                        actual -> {
+                            assertThat(actual.identifier()).isEqualTo(identifier);
+                            assertThat(actual.name()).isEqualTo(name);
+                            assertThat(actual.description()).isEqualTo(description);
+                            assertThat(actual.location()).isEqualTo(location);
+                            assertThat(actual.totalPrice()).isEqualTo(price);
+                            assertThat(actual.imageURL()).isEqualTo(imageURL);
+                            assertThat(actual.averageRating()).isEqualTo(averageRating);
                         }
                 );
     }
@@ -128,16 +129,16 @@ class FindHotelsShould {
 
         when(aggregateHotelRepository.find(any(Criteria.class))).thenReturn(hotels);
 
-        List<HotelDto> result = testee.get();
+        HotelsView result = testee.get();
 
-        assertThat(result)
+        assertThat(result.hotels())
                 .hasSize(2)
                 .satisfies(
-                        actualHotels -> {
-                            assertThat(actualHotels).first().satisfies(
+                        actual -> {
+                            assertThat(actual).first().satisfies(
                                     first -> assertThat(first.identifier()).isEqualTo(expectedFirstIdentifier)
                             );
-                            assertThat(actualHotels).last().satisfies(
+                            assertThat(actual).last().satisfies(
                                     last -> assertThat(last.identifier()).isEqualTo(expectedLastIdentifier)
                             );
                         }

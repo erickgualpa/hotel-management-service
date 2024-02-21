@@ -1,9 +1,8 @@
 package org.egualpam.services.hotel.rating.infrastructure.controller;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotel.rating.application.reviews.ReviewDto;
+import org.egualpam.services.hotel.rating.application.reviews.ReviewsView;
 import org.egualpam.services.hotel.rating.application.shared.Command;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.Query;
@@ -35,7 +34,6 @@ public final class ReviewController {
 
     private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
-    private final ObjectMapper objectMapper;
     private final CommandBus commandBus;
     private final QueryBus queryBus;
 
@@ -43,10 +41,9 @@ public final class ReviewController {
     public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelIdentifier) {
         Query findHotelReviewsQuery = new FindHotelReviewsQuery(hotelIdentifier);
 
-        final List<ReviewDto> reviewsDto;
+        final ReviewsView reviewsView;
         try {
-            String outcome = queryBus.publish(findHotelReviewsQuery);
-            reviewsDto = objectMapper.readerForListOf(ReviewDto.class).readValue(outcome);
+            reviewsView = (ReviewsView) queryBus.publish(findHotelReviewsQuery);
         } catch (Exception e) {
             logger.error(
                     String.format(
@@ -61,7 +58,7 @@ public final class ReviewController {
         }
 
         List<GetReviewsResponse.Review> reviews =
-                reviewsDto.stream()
+                reviewsView.reviews().stream()
                         .map(r ->
                                 new GetReviewsResponse.Review(
                                         r.rating(),
