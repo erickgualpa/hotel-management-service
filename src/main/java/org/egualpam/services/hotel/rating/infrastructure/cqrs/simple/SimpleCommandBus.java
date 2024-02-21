@@ -1,5 +1,6 @@
 package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
 
+import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.reviews.CreateReview;
 import org.egualpam.services.hotel.rating.application.reviews.UpdateReview;
 import org.egualpam.services.hotel.rating.application.shared.Command;
@@ -44,18 +45,11 @@ public final class SimpleCommandBus implements CommandBus {
         commandHandler.handle(command);
     }
 
+    @RequiredArgsConstructor
     static class CreateReviewCommandHandler implements CommandHandler {
 
         private final AggregateRepository<Review> aggregateReviewRepository;
         private final DomainEventsPublisher domainEventsPublisher;
-
-        public CreateReviewCommandHandler(
-                AggregateRepository<Review> reviewRepository,
-                DomainEventsPublisher domainEventsPublisher
-        ) {
-            this.aggregateReviewRepository = reviewRepository;
-            this.domainEventsPublisher = domainEventsPublisher;
-        }
 
         @Override
         public void handle(Command query) {
@@ -72,13 +66,10 @@ public final class SimpleCommandBus implements CommandBus {
         }
     }
 
+    @RequiredArgsConstructor
     static class UpdateReviewCommandHandler implements CommandHandler {
 
         private final AggregateRepository<Review> aggregateReviewRepository;
-
-        public UpdateReviewCommandHandler(AggregateRepository<Review> aggregateReviewRepository) {
-            this.aggregateReviewRepository = aggregateReviewRepository;
-        }
 
         @Override
         public void handle(Command query) {
