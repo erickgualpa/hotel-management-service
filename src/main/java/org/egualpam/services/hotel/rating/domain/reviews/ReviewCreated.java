@@ -10,8 +10,8 @@ public final class ReviewCreated implements DomainEvent {
     private final AggregateId id;
     private final Instant occurredOn;
 
-    public ReviewCreated(AggregateId id) {
-        this.id = id;
+    public ReviewCreated(Review review) {
+        this.id = review.getId();
         this.occurredOn = Instant.now();
     }
 

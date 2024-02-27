@@ -26,7 +26,7 @@ public final class Review implements AggregateRoot {
         this.hotelIdentifier = hotelIdentifier;
         this.rating = rating;
         this.comment = comment;
-        this.domainEvents.add(new ReviewCreated(this.getId()));
+        this.domainEvents.add(new ReviewCreated(this));
     }
 
     @Override

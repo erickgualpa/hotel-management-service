@@ -74,12 +74,14 @@ class CreateReviewShould {
 
         verify(domainEventsPublisher).publish(domainEventsCaptor.capture());
         assertThat(domainEventsCaptor.getValue())
-                .isNotEmpty()
+                .hasSize(1)
+                .first()
                 .satisfies(
-                        result ->
-                                assertThat(result).first().satisfies(
-                                        first -> assertThat(first.getType()).isEqualTo("domain.review.created.v1.0")
-                                )
+                        result -> {
+                            assertThat(result.getAggregateId()).isEqualTo(new AggregateId(reviewId));
+                            assertThat(result.getOccurredOn()).isNotNull();
+                            assertThat(result.getType()).isEqualTo("domain.review.created.v1.0");
+                        }
                 );
     }
 
