@@ -3,6 +3,8 @@ package org.egualpam.services.hotel.rating.helpers;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.UUID;
+
 import static java.util.Objects.nonNull;
 
 public class EventStoreTestRepository {
@@ -13,14 +15,15 @@ public class EventStoreTestRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public boolean domainEventExists(String eventType) {
+    public boolean domainEventExists(UUID aggregateId, String eventType) {
         String sql = """
                 SELECT COUNT(*)
                 FROM event_store
-                WHERE event_type = :eventType
+                WHERE aggregate_id = :aggregateId AND event_type = :eventType
                 """;
 
         MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+        queryParameters.addValue("aggregateId", aggregateId);
         queryParameters.addValue("eventType", eventType);
 
         Integer count = namedParameterJdbcTemplate.queryForObject(
