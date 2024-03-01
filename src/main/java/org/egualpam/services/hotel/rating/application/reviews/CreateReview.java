@@ -37,7 +37,7 @@ public final class CreateReview implements InternalCommand {
 
     @Override
     public void execute() {
-        Review review = new Review(
+        Review review = Review.create(
                 reviewId,
                 hotelIdentifier,
                 rating,
