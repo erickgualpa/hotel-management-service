@@ -71,6 +71,7 @@ Check it and try to find the best available hotel in Mars! 👽
         │                       ├── e2e
         │                       ├── helpers
         │                       └── infrastructure
+        │                           ├── configuration
         │                           └── controller
         └── resources
 ```

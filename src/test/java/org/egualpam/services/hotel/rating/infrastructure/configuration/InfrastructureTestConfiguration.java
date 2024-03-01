@@ -1,4 +1,4 @@
-package org.egualpam.services.hotel.rating;
+package org.egualpam.services.hotel.rating.infrastructure.configuration;
 
 import org.egualpam.services.hotel.rating.helpers.EventStoreTestRepository;
 import org.egualpam.services.hotel.rating.helpers.HotelTestRepository;
