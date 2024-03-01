@@ -34,7 +34,7 @@ public final class Review implements AggregateRoot {
     }
 
     @Override
-    public List<DomainEvent> getDomainEvents() {
+    public List<DomainEvent> pullDomainEvents() {
         List<DomainEvent> domainEventsCopy = new ArrayList<>(this.domainEvents);
         this.domainEvents.clear();
         return domainEventsCopy;

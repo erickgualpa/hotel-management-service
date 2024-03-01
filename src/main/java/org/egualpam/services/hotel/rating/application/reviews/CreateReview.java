@@ -44,6 +44,6 @@ public final class CreateReview implements InternalCommand {
                 comment
         );
         aggregateRepository.save(review);
-        domainEventsPublisher.publish(review.getDomainEvents());
+        domainEventsPublisher.publish(review.pullDomainEvents());
     }
 }

@@ -31,6 +31,6 @@ public class UpdateReview implements InternalCommand {
         Review review = aggregateReviewRepository.find(reviewId);
         review.updateComment(comment);
         aggregateReviewRepository.save(review);
-        domainEventsPublisher.publish(review.getDomainEvents());
+        domainEventsPublisher.publish(review.pullDomainEvents());
     }
 }

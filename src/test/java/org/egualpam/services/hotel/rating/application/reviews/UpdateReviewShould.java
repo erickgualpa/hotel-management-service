@@ -69,7 +69,7 @@ class UpdateReviewShould {
                 .satisfies(
                         result -> {
                             assertThat(result.getComment().value()).isEqualTo(comment);
-                            assertThat(result.getDomainEvents()).isEmpty();
+                            assertThat(result.pullDomainEvents()).isEmpty();
                         }
                 );
 
