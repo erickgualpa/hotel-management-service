@@ -6,12 +6,16 @@ import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
+import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
+import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
@@ -26,8 +30,14 @@ class UpdateReviewShould {
     @Mock
     private AggregateRepository<Review> aggregateReviewRepository;
 
+    @Mock
+    private DomainEventsPublisher domainEventsPublisher;
+
     @Captor
     private ArgumentCaptor<Review> reviewCaptor;
+
+    @Captor
+    private ArgumentCaptor<List<DomainEvent>> domainEventsCaptor;
 
     @Test
     void updateReview() {
@@ -47,7 +57,8 @@ class UpdateReviewShould {
         UpdateReview testee = new UpdateReview(
                 reviewId,
                 comment,
-                aggregateReviewRepository
+                aggregateReviewRepository,
+                domainEventsPublisher
         );
 
         testee.execute();
@@ -56,7 +67,22 @@ class UpdateReviewShould {
         assertThat(reviewCaptor.getValue())
                 .isNotNull()
                 .satisfies(
-                        result -> assertThat(result.getComment().value()).isEqualTo(comment)
+                        result -> {
+                            assertThat(result.getComment().value()).isEqualTo(comment);
+                            assertThat(result.pullDomainEvents()).isEmpty();
+                        }
+                );
+
+        verify(domainEventsPublisher).publish(domainEventsCaptor.capture());
+        assertThat(domainEventsCaptor.getValue())
+                .hasSize(1)
+                .first()
+                .satisfies(
+                        result -> {
+                            assertThat(result.getAggregateId()).isEqualTo(new AggregateId(reviewId));
+                            assertThat(result.getOccurredOn()).isNotNull();
+                            assertThat(result.getType()).isEqualTo("domain.review.updated.v1.0");
+                        }
                 );
     }
 }

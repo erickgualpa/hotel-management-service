@@ -32,7 +32,10 @@ public final class SimpleCommandBus implements CommandBus {
                         domainEventsPublisher
                 ),
                 UpdateReviewCommand.class,
-                new UpdateReviewCommandHandler(aggregateReviewRepository)
+                new UpdateReviewCommandHandler(
+                        aggregateReviewRepository,
+                        domainEventsPublisher
+                )
         );
     }
 
@@ -70,6 +73,7 @@ public final class SimpleCommandBus implements CommandBus {
     static class UpdateReviewCommandHandler implements CommandHandler {
 
         private final AggregateRepository<Review> aggregateReviewRepository;
+        private final DomainEventsPublisher domainEventsPublisher;
 
         @Override
         public void handle(Command command) {
@@ -77,8 +81,8 @@ public final class SimpleCommandBus implements CommandBus {
                     new UpdateReview(
                             ((UpdateReviewCommand) command).getReviewIdentifier(),
                             ((UpdateReviewCommand) command).getComment(),
-                            aggregateReviewRepository
-                    );
+                            aggregateReviewRepository,
+                            domainEventsPublisher);
             internalCommand.execute();
         }
     }

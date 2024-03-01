@@ -5,5 +5,5 @@ import java.util.List;
 public interface AggregateRoot {
     AggregateId getId();
 
-    List<DomainEvent> getDomainEvents();
+    List<DomainEvent> pullDomainEvents();
 }

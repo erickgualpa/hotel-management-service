@@ -26,7 +26,6 @@ public final class Review implements AggregateRoot {
         this.hotelIdentifier = hotelIdentifier;
         this.rating = rating;
         this.comment = comment;
-        this.domainEvents.add(new ReviewCreated(this));
     }
 
     @Override
@@ -35,12 +34,26 @@ public final class Review implements AggregateRoot {
     }
 
     @Override
-    public List<DomainEvent> getDomainEvents() {
-        return domainEvents;
+    public List<DomainEvent> pullDomainEvents() {
+        List<DomainEvent> domainEventsCopy = new ArrayList<>(this.domainEvents);
+        this.domainEvents.clear();
+        return domainEventsCopy;
+    }
+
+    public static Review create(
+            AggregateId id,
+            HotelId hotelIdentifier,
+            Rating rating,
+            Comment comment
+    ) {
+        Review review = new Review(id, hotelIdentifier, rating, comment);
+        review.domainEvents.add(new ReviewCreated(review));
+        return review;
     }
 
     public void updateComment(Comment comment) {
         this.comment = comment;
+        domainEvents.add(new ReviewUpdated(this));
     }
 
     public HotelId getHotelIdentifier() {

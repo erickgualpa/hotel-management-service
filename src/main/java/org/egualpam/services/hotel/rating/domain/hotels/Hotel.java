@@ -43,7 +43,7 @@ public final class Hotel implements AggregateRoot {
     }
 
     @Override
-    public List<DomainEvent> getDomainEvents() {
+    public List<DomainEvent> pullDomainEvents() {
         return this.domainEvents;
     }
 
