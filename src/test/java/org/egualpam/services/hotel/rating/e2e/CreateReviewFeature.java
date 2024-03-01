@@ -37,13 +37,13 @@ class CreateReviewFeature extends AbstractIntegrationTest {
     private EventStoreTestRepository eventStoreTestRepository;
 
     @Test
-    void reviewShouldBeCreatedGivenHotelIdentifier() throws Exception {
-        UUID hotelIdentifier = randomUUID();
-        UUID reviewIdentifier = randomUUID();
+    void reviewShouldBeCreatedGivenHotelId() throws Exception {
+        UUID hotelId = randomUUID();
+        UUID reviewId = randomUUID();
 
         hotelTestRepository
                 .insertHotel(
-                        hotelIdentifier,
+                        hotelId,
                         randomAlphabetic(5),
                         randomAlphabetic(10),
                         randomAlphabetic(5),
@@ -52,12 +52,12 @@ class CreateReviewFeature extends AbstractIntegrationTest {
                 );
 
         mockMvc.perform(
-                        post("/v1/reviews/{reviewIdentifier}", reviewIdentifier.toString())
+                        post("/v1/reviews/{reviewIdentifier}", reviewId.toString())
                                 .contentType(APPLICATION_JSON)
                                 .content(
                                         String.format(
                                                 CREATE_REVIEW_REQUEST,
-                                                hotelIdentifier,
+                                                hotelId,
                                                 nextInt(1, 5),
                                                 randomAlphabetic(10)
                                         )
@@ -65,7 +65,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
                 )
                 .andExpect(status().isCreated());
 
-        assertTrue(eventStoreTestRepository.domainEventExists("domain.review.created.v1.0"));
-        assertTrue(reviewTestRepository.reviewExists(reviewIdentifier));
+        assertTrue(reviewTestRepository.reviewExists(reviewId));
+        assertTrue(eventStoreTestRepository.domainEventExists(reviewId, "domain.review.created.v1.0"));
     }
 }

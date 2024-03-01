@@ -19,12 +19,13 @@ public class SimpleDomainEventsPublisher implements DomainEventsPublisher {
     @Override
     public void publish(List<DomainEvent> events) {
         String sql = """
-                    INSERT INTO event_store(aggregate_id, event_type)
-                    VALUES (:aggregateId, :eventType)
+                    INSERT INTO event_store(aggregate_id, occurred_on, event_type)
+                    VALUES (:aggregateId, :occurredOn, :eventType)
                 """;
         events.forEach(
                 e -> entityManager.createNativeQuery(sql)
                         .setParameter("aggregateId", e.getAggregateId().value())
+                        .setParameter("occurredOn", e.getOccurredOn())
                         .setParameter("eventType", e.getType())
                         .executeUpdate()
         );
