@@ -67,7 +67,10 @@ class UpdateReviewShould {
         assertThat(reviewCaptor.getValue())
                 .isNotNull()
                 .satisfies(
-                        result -> assertThat(result.getComment().value()).isEqualTo(comment)
+                        result -> {
+                            assertThat(result.getComment().value()).isEqualTo(comment);
+                            assertThat(result.getDomainEvents()).isEmpty();
+                        }
                 );
 
         verify(domainEventsPublisher).publish(domainEventsCaptor.capture());

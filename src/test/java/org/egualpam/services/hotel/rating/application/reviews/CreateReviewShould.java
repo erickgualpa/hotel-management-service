@@ -69,6 +69,7 @@ class CreateReviewShould {
                             assertThat(result.getHotelIdentifier()).isEqualTo(new HotelId(hotelIdentifier));
                             assertThat(result.getRating()).isEqualTo(new Rating(rating));
                             assertThat(result.getComment()).isEqualTo(new Comment(comment));
+                            assertThat(result.getDomainEvents()).isEmpty();
                         }
                 );
 
