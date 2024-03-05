@@ -7,6 +7,7 @@ import org.egualpam.services.hotel.rating.application.shared.Command;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
+import org.egualpam.services.hotel.rating.domain.reviews.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotel.rating.domain.shared.exception.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.exception.InvalidRating;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.CreateReviewCommand;
@@ -82,6 +83,18 @@ public final class ReviewController {
             commandBus.publish(createReviewCommand);
         } catch (InvalidIdentifier | InvalidRating e) {
             return ResponseEntity.badRequest().build();
+        } catch (ReviewAlreadyExists e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (Exception e) {
+            logger.error(
+                    String.format(
+                            "An error occurred while processing the request [%s] given [reviewId=%s]",
+                            createReviewRequest,
+                            reviewIdentifier
+                    ),
+                    e
+            );
+            return ResponseEntity.internalServerError().build();
         }
 
         return new ResponseEntity<>(HttpStatus.CREATED);

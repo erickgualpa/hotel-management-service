@@ -4,6 +4,7 @@ import org.egualpam.services.hotel.rating.domain.reviews.Comment;
 import org.egualpam.services.hotel.rating.domain.reviews.HotelId;
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
+import org.egualpam.services.hotel.rating.domain.reviews.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
@@ -20,13 +21,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 @ExtendWith(MockitoExtension.class)
@@ -84,6 +88,31 @@ class CreateReviewShould {
                             assertThat(result.getType()).isEqualTo("domain.review.created.v1.0");
                         }
                 );
+    }
+
+    @Test
+    void throwDomainExceptionWhenReviewAlreadyExists() {
+        String reviewId = randomUUID().toString();
+
+        Review review = new Review(
+                new AggregateId(reviewId),
+                new HotelId(randomUUID().toString()),
+                new Rating(nextInt(1, 5)),
+                new Comment(randomAlphabetic(10))
+        );
+
+        when(aggregateReviewRepository.find(any(AggregateId.class))).thenReturn(Optional.of(review));
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                randomUUID().toString(),
+                nextInt(1, 5),
+                randomAlphabetic(10),
+                aggregateReviewRepository,
+                domainEventsPublisher
+        );
+
+        assertThrows(ReviewAlreadyExists.class, testee::execute);
     }
 
     @ValueSource(ints = {0, 6})
