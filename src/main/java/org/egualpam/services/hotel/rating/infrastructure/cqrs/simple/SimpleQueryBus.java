@@ -2,7 +2,9 @@ package org.egualpam.services.hotel.rating.infrastructure.cqrs.simple;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotel.rating.application.hotels.FindHotels;
+import org.egualpam.services.hotel.rating.application.hotels.HotelView;
 import org.egualpam.services.hotel.rating.application.hotels.HotelsView;
+import org.egualpam.services.hotel.rating.application.reviews.FindHotel;
 import org.egualpam.services.hotel.rating.application.reviews.FindHotelReviews;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewsView;
 import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
@@ -32,7 +34,9 @@ public final class SimpleQueryBus implements QueryBus {
                 FindHotelReviewsQuery.class,
                 new FindHotelReviewsQueryHandler(aggregateReviewRepository),
                 FindHotelsQuery.class,
-                new FindHotelsQueryHandler(aggregateHotelRepository)
+                new FindHotelsQueryHandler(aggregateHotelRepository),
+                FindHotelQuery.class,
+                new FindHotelQueryHandler(aggregateHotelRepository)
         );
     }
 
@@ -73,6 +77,22 @@ public final class SimpleQueryBus implements QueryBus {
                             ((FindHotelsQuery) query).getLocation(),
                             ((FindHotelsQuery) query).getMinPrice(),
                             ((FindHotelsQuery) query).getMaxPrice(),
+                            aggregateHotelRepository
+                    );
+            return internalQuery.get();
+        }
+    }
+
+    @RequiredArgsConstructor
+    static class FindHotelQueryHandler implements QueryHandler {
+
+        private final AggregateRepository<Hotel> aggregateHotelRepository;
+
+        @Override
+        public View handle(Query query) {
+            InternalQuery<HotelView> internalQuery =
+                    new FindHotel(
+                            ((FindHotelQuery) query).getHotelId(),
                             aggregateHotelRepository
                     );
             return internalQuery.get();

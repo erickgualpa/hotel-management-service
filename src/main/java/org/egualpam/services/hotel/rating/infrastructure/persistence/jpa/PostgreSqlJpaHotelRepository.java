@@ -32,7 +32,8 @@ public final class PostgreSqlJpaHotelRepository implements AggregateRepository<H
 
     @Override
     public Hotel find(AggregateId id) {
-        throw new RuntimeException("NOT_IMPLEMENTED");
+        PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, id.value());
+        return mapResultIntoHotel(persistenceHotel);
     }
 
     @Override
