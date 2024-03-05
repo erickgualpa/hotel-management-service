@@ -37,7 +37,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
     private EventStoreTestRepository eventStoreTestRepository;
 
     @Test
-    void reviewShouldBeCreatedGivenHotelId() throws Exception {
+    void reviewShouldBeCreated() throws Exception {
         UUID hotelId = randomUUID();
         UUID reviewId = randomUUID();
 
@@ -59,10 +59,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
                                                 CREATE_REVIEW_REQUEST,
                                                 hotelId,
                                                 nextInt(1, 5),
-                                                randomAlphabetic(10)
-                                        )
-                                )
-                )
+                                                randomAlphabetic(10))))
                 .andExpect(status().isCreated());
 
         assertTrue(reviewTestRepository.reviewExists(reviewId));

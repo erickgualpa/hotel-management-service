@@ -18,7 +18,7 @@ public final class FindHotel implements InternalQuery<HotelView> {
 
     @Override
     public HotelView get() {
-        Hotel hotel = aggregateHotelRepository.find(hotelId);
+        Hotel hotel = aggregateHotelRepository.find(hotelId).orElseThrow();
         return new HotelView(
                 new HotelView.Hotel(
                         hotel.getId().value().toString(),

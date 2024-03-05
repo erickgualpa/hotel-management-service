@@ -1,6 +1,7 @@
 package org.egualpam.services.hotel.rating.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotel.rating.domain.reviews.Comment;
@@ -13,6 +14,7 @@ import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review> {
@@ -24,7 +26,7 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
     }
 
     @Override
-    public Review find(AggregateId id) {
+    public Optional<Review> find(AggregateId id) {
         String sql = """
                 SELECT r.id, r.rating, r.comment, r.hotel_id
                 FROM reviews r
@@ -36,14 +38,21 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
                         .createNativeQuery(sql, PersistenceReview.class)
                         .setParameter("id", id.value());
 
-        PersistenceReview review = (PersistenceReview) query.getSingleResult();
+        final PersistenceReview persistenceReview;
+        try {
+            persistenceReview = (PersistenceReview) query.getSingleResult();
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
 
-        return new Review(
-                new AggregateId(review.getId()),
-                new HotelId(review.getHotelId().toString()),
-                new Rating(review.getRating()),
-                new Comment(review.getComment())
+        Review review = new Review(
+                new AggregateId(persistenceReview.getId()),
+                new HotelId(persistenceReview.getHotelId().toString()),
+                new Rating(persistenceReview.getRating()),
+                new Comment(persistenceReview.getComment())
         );
+
+        return Optional.of(review);
     }
 
     @Override

@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
@@ -44,15 +45,15 @@ class UpdateReviewShould {
         String reviewId = randomUUID().toString();
         String comment = randomAlphabetic(10);
 
+        Review review = new Review(
+                new AggregateId(reviewId),
+                new HotelId(randomUUID().toString()),
+                new Rating(nextInt(1, 5)),
+                new Comment(randomAlphabetic(10))
+        );
+
         when(aggregateReviewRepository.find(new AggregateId(reviewId)))
-                .thenReturn(
-                        new Review(
-                                new AggregateId(reviewId),
-                                new HotelId(randomUUID().toString()),
-                                new Rating(nextInt(1, 5)),
-                                new Comment(randomAlphabetic(10))
-                        )
-                );
+                .thenReturn(Optional.of(review));
 
         UpdateReview testee = new UpdateReview(
                 reviewId,
