@@ -15,6 +15,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextDouble;
@@ -46,7 +48,8 @@ class FindHotelShould {
                 )
         );
 
-        when(aggregateHotelRepository.find(any(AggregateId.class))).thenReturn(hotel);
+        when(aggregateHotelRepository.find(any(AggregateId.class)))
+                .thenReturn(Optional.of(hotel));
 
         FindHotel testee = new FindHotel(hotelId, aggregateHotelRepository);
         HotelView result = testee.get();

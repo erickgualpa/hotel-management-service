@@ -31,9 +31,10 @@ public final class PostgreSqlJpaHotelRepository implements AggregateRepository<H
     }
 
     @Override
-    public Hotel find(AggregateId id) {
+    public Optional<Hotel> find(AggregateId id) {
         PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, id.value());
-        return mapResultIntoHotel(persistenceHotel);
+        return Optional.ofNullable(persistenceHotel)
+                .map(this::mapResultIntoHotel);
     }
 
     @Override

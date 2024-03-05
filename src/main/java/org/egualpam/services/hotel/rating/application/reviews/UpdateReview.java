@@ -28,7 +28,7 @@ public class UpdateReview implements InternalCommand {
 
     @Override
     public void execute() {
-        Review review = aggregateReviewRepository.find(reviewId);
+        Review review = aggregateReviewRepository.find(reviewId).orElseThrow();
         review.updateComment(comment);
         aggregateReviewRepository.save(review);
         domainEventsPublisher.publish(review.pullDomainEvents());
