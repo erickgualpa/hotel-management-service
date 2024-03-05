@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egualpam.services.hotel.rating.application.shared.Command;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
+import org.egualpam.services.hotel.rating.domain.reviews.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotel.rating.domain.shared.exception.InvalidIdentifier;
 import org.egualpam.services.hotel.rating.domain.shared.exception.InvalidRating;
 import org.egualpam.services.hotel.rating.infrastructure.configuration.InfrastructureConfiguration;
@@ -87,5 +88,47 @@ class ReviewControllerShould {
                                 .contentType(APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void returnConflict_whenReviewAlreadyExistsIsThrown() throws Exception {
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                randomUUID().toString(),
+                nextInt(1, 5),
+                randomAlphabetic(10)
+        );
+
+        String request = objectMapper.writeValueAsString(createReviewRequest);
+
+        doThrow(ReviewAlreadyExists.class)
+                .when(commandBus)
+                .publish(any(Command.class));
+
+        mockMvc.perform(
+                        post("/v1/reviews/{reviewIdentifier}", randomUUID().toString())
+                                .contentType(APPLICATION_JSON)
+                                .content(request))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    void returnInternalError_whenAnyExceptionIsThrown() throws Exception {
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                randomUUID().toString(),
+                nextInt(1, 5),
+                randomAlphabetic(10)
+        );
+
+        String request = objectMapper.writeValueAsString(createReviewRequest);
+
+        doThrow(RuntimeException.class)
+                .when(commandBus)
+                .publish(any(Command.class));
+
+        mockMvc.perform(
+                        post("/v1/reviews/{reviewIdentifier}", randomUUID().toString())
+                                .contentType(APPLICATION_JSON)
+                                .content(request))
+                .andExpect(status().isInternalServerError());
     }
 }
