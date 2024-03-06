@@ -43,6 +43,7 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                       │   ├── hotels
     │   │                       │   │   └── exception
     │   │                       │   ├── reviews
+    │   │                       │   │   └── exception
     │   │                       │   └── shared
     │   │                       │       └── exception
     │   │                       └── infrastructure
@@ -72,6 +73,8 @@ Check it and try to find the best available hotel in Mars! 👽
         │                       ├── helpers
         │                       └── infrastructure
         │                           ├── configuration
-        │                           └── controller
+        │                           ├── controller
+        │                           └── persistence
+        │                               └── jpa
         └── resources
 ```

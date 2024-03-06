@@ -107,6 +107,7 @@
                 <configuration>
                     <includes>
                         <include>**/*Feature</include>
+                        <include>**/*IT</include>
                     </includes>
                 </configuration>
             </plugin>
