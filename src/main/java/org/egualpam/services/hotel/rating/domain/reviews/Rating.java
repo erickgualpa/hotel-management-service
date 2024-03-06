@@ -1,6 +1,6 @@
 package org.egualpam.services.hotel.rating.domain.reviews;
 
-import org.egualpam.services.hotel.rating.domain.shared.exception.InvalidRating;
+import org.egualpam.services.hotel.rating.domain.reviews.exception.InvalidRating;
 
 public record Rating(Integer value) {
     public Rating {
