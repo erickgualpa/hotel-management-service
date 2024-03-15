@@ -1,12 +1,7 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
-import org.egualpam.services.hotel.rating.domain.reviews.Comment;
-import org.egualpam.services.hotel.rating.domain.reviews.HotelId;
-import org.egualpam.services.hotel.rating.domain.reviews.Rating;
-import org.egualpam.services.hotel.rating.domain.reviews.Review;
-import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
-import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
+import org.egualpam.services.hotel.rating.application.shared.ViewSupplier;
 import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,29 +21,24 @@ import static org.mockito.Mockito.when;
 class FindHotelReviewsShould {
 
     @Mock
-    private AggregateRepository<Review> aggregateReviewRepository;
+    private ViewSupplier<ReviewsView> reviewsViewSupplier;
 
     @Test
-    void returnReviewsGivenHotelIdentifier() {
-        String hotelIdentifier = randomUUID().toString();
+    void getReviewsViewGivenHotelIdentifier() {
+        String hotelId = randomUUID().toString();
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
-        when(aggregateReviewRepository.find(any(Criteria.class)))
+        when(reviewsViewSupplier.get(any(Criteria.class)))
                 .thenReturn(
-                        List.of(
-                                new Review(
-                                        new AggregateId(randomUUID()),
-                                        new HotelId(hotelIdentifier),
-                                        new Rating(rating),
-                                        new Comment(comment)
-                                )
-                        )
+                        new ReviewsView(List.of(
+                                new ReviewsView.Review(rating, comment)
+                        ))
                 );
 
         InternalQuery<ReviewsView> testee = new FindHotelReviews(
-                hotelIdentifier,
-                aggregateReviewRepository
+                hotelId,
+                reviewsViewSupplier
         );
 
         ReviewsView result = testee.get();
