@@ -12,8 +12,6 @@ import org.egualpam.services.hotel.rating.application.shared.Query;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
 import org.egualpam.services.hotel.rating.application.shared.View;
 import org.egualpam.services.hotel.rating.application.shared.ViewSupplier;
-import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
-import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 
 import java.util.Map;
 
@@ -27,15 +25,15 @@ public final class SimpleQueryBus implements QueryBus {
     private final Map<Class<? extends Query>, QueryHandler> handlers;
 
     public SimpleQueryBus(
-            AggregateRepository<Hotel> aggregateHotelRepository,
             ViewSupplier<HotelView> hotelViewSupplier,
+            ViewSupplier<HotelsView> hotelsViewSupplier,
             ViewSupplier<ReviewsView> reviewsViewSupplier
     ) {
         handlers = Map.of(
                 FindHotelReviewsQuery.class,
                 new FindHotelReviewsQueryHandler(reviewsViewSupplier),
                 FindHotelsQuery.class,
-                new FindHotelsQueryHandler(aggregateHotelRepository),
+                new FindHotelsQueryHandler(hotelsViewSupplier),
                 FindHotelQuery.class,
                 new FindHotelQueryHandler(hotelViewSupplier)
         );
@@ -69,7 +67,7 @@ public final class SimpleQueryBus implements QueryBus {
     @RequiredArgsConstructor
     static class FindHotelsQueryHandler implements QueryHandler {
 
-        private final AggregateRepository<Hotel> aggregateHotelRepository;
+        private final ViewSupplier<HotelsView> hotelsViewSupplier;
 
         @Override
         public View handle(Query query) {
@@ -78,7 +76,7 @@ public final class SimpleQueryBus implements QueryBus {
                             ((FindHotelsQuery) query).getLocation(),
                             ((FindHotelsQuery) query).getMinPrice(),
                             ((FindHotelsQuery) query).getMaxPrice(),
-                            aggregateHotelRepository
+                            hotelsViewSupplier
                     );
             return internalQuery.get();
         }
