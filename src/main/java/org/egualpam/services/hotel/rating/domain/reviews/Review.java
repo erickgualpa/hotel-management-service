@@ -4,6 +4,7 @@ import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRoot;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,13 +48,13 @@ public final class Review implements AggregateRoot {
             Comment comment
     ) {
         Review review = new Review(id, hotelIdentifier, rating, comment);
-        review.domainEvents.add(new ReviewCreated(review));
+        review.domainEvents.add(new ReviewCreated(review.id, Instant.now()));
         return review;
     }
 
     public void updateComment(Comment comment) {
         this.comment = comment;
-        domainEvents.add(new ReviewUpdated(this));
+        domainEvents.add(new ReviewUpdated(this.id, Instant.now()));
     }
 
     public HotelId getHotelIdentifier() {

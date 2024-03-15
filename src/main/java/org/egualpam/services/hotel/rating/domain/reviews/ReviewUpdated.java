@@ -4,17 +4,24 @@ import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEvent;
 
 import java.time.Instant;
+import java.util.UUID;
 
-public class ReviewUpdated implements DomainEvent {
+public final class ReviewUpdated implements DomainEvent {
 
+    private final UUID id;
     private final AggregateId aggregateId;
     private final Instant occurredOn;
 
-    public ReviewUpdated(Review review) {
-        this.aggregateId = review.getId();
-        this.occurredOn = Instant.now();
+    public ReviewUpdated(AggregateId aggregateId, Instant occurredOn) {
+        this.id = UUID.randomUUID();
+        this.aggregateId = aggregateId;
+        this.occurredOn = occurredOn;
     }
 
+    @Override
+    public UUID getId() {
+        return id;
+    }
 
     @Override
     public AggregateId getAggregateId() {
