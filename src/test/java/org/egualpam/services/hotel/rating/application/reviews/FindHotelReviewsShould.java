@@ -24,17 +24,16 @@ class FindHotelReviewsShould {
     private ViewSupplier<ReviewsView> reviewsViewSupplier;
 
     @Test
-    void getReviewsViewGivenHotelIdentifier() {
+    void findHotelReviews() {
         String hotelId = randomUUID().toString();
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
-        when(reviewsViewSupplier.get(any(Criteria.class)))
-                .thenReturn(
-                        new ReviewsView(List.of(
-                                new ReviewsView.Review(rating, comment)
-                        ))
-                );
+        ReviewsView reviewsView = new ReviewsView(List.of(
+                new ReviewsView.Review(rating, comment)
+        ));
+
+        when(reviewsViewSupplier.get(any(Criteria.class))).thenReturn(reviewsView);
 
         InternalQuery<ReviewsView> testee = new FindHotelReviews(
                 hotelId,

@@ -1,16 +1,8 @@
 package org.egualpam.services.hotel.rating.application.hotels;
 
 import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
-import org.egualpam.services.hotel.rating.domain.hotels.AverageRating;
-import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelDescription;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelName;
-import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
-import org.egualpam.services.hotel.rating.domain.hotels.Location;
-import org.egualpam.services.hotel.rating.domain.hotels.Price;
+import org.egualpam.services.hotel.rating.application.shared.ViewSupplier;
 import org.egualpam.services.hotel.rating.domain.hotels.exception.PriceRangeValuesSwapped;
-import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
-import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +28,7 @@ import static org.mockito.Mockito.when;
 class FindHotelsShould {
 
     @Mock
-    private AggregateRepository<Hotel> aggregateHotelRepository;
+    private ViewSupplier<HotelsView> hotelsViewSupplier;
 
     private InternalQuery<HotelsView> testee;
 
@@ -46,7 +38,7 @@ class FindHotelsShould {
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
-                aggregateHotelRepository
+                hotelsViewSupplier
         );
     }
 
@@ -60,20 +52,20 @@ class FindHotelsShould {
         String imageURL = "www." + randomAlphabetic(5) + ".com";
         Double averageRating = nextDouble(1, 5);
 
-        List<Hotel> hotels =
+        List<HotelsView.Hotel> hotels =
                 List.of(
-                        new Hotel(
-                                new AggregateId(identifier),
-                                new HotelName(name),
-                                new HotelDescription(description),
-                                new Location(location),
-                                new Price(price),
-                                new ImageURL(imageURL),
-                                new AverageRating(averageRating)
+                        new HotelsView.Hotel(
+                                identifier,
+                                name,
+                                description,
+                                location,
+                                price,
+                                imageURL,
+                                averageRating
                         )
                 );
 
-        when(aggregateHotelRepository.find(any(Criteria.class))).thenReturn(hotels);
+        when(hotelsViewSupplier.get(any(Criteria.class))).thenReturn(new HotelsView(hotels));
 
         HotelsView result = testee.get();
 
@@ -100,34 +92,34 @@ class FindHotelsShould {
         String expectedLastIdentifier = randomUUID().toString();
         Double lowestAverageRating = nextDouble(1, 2);
 
-        final List<Hotel> hotels = new ArrayList<>();
+        final List<HotelsView.Hotel> hotels = new ArrayList<>();
         hotels.add(
-                new Hotel(
-                        new AggregateId(expectedLastIdentifier),
-                        new HotelName(randomAlphabetic(5)),
-                        new HotelDescription(randomAlphabetic(10)),
-                        new Location(randomAlphabetic(5)),
-                        new Price(nextInt(50, 1000)),
-                        new ImageURL("www." + randomAlphabetic(5) + ".com"),
-                        new AverageRating(lowestAverageRating)
+                new HotelsView.Hotel(
+                        expectedLastIdentifier,
+                        randomAlphabetic(5),
+                        randomAlphabetic(10),
+                        randomAlphabetic(5),
+                        nextInt(50, 1000),
+                        "www." + randomAlphabetic(5) + ".com",
+                        lowestAverageRating
                 )
         );
 
         hotels.add(
-                new Hotel(
-                        new AggregateId(expectedFirstIdentifier),
-                        new HotelName(randomAlphabetic(5)),
-                        new HotelDescription(randomAlphabetic(10)),
-                        new Location(randomAlphabetic(5)),
-                        new Price(nextInt(50, 1000)),
-                        new ImageURL("www." + randomAlphabetic(5) + ".com"),
-                        new AverageRating(highestAverageRating)
+                new HotelsView.Hotel(
+                        expectedFirstIdentifier,
+                        randomAlphabetic(5),
+                        randomAlphabetic(10),
+                        randomAlphabetic(5),
+                        nextInt(50, 1000),
+                        "www." + randomAlphabetic(5) + ".com",
+                        highestAverageRating
                 )
         );
 
         shuffle(hotels);
 
-        when(aggregateHotelRepository.find(any(Criteria.class))).thenReturn(hotels);
+        when(hotelsViewSupplier.get(any(Criteria.class))).thenReturn(new HotelsView(hotels));
 
         HotelsView result = testee.get();
 
@@ -160,7 +152,7 @@ class FindHotelsShould {
                         location,
                         minPrice,
                         maxPrice,
-                        aggregateHotelRepository
+                        hotelsViewSupplier
                 )
         );
     }
