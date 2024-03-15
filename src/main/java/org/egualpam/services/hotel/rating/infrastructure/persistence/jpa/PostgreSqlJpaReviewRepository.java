@@ -8,14 +8,12 @@ import org.egualpam.services.hotel.rating.domain.reviews.Comment;
 import org.egualpam.services.hotel.rating.domain.reviews.HotelId;
 import org.egualpam.services.hotel.rating.domain.reviews.Rating;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
-import org.egualpam.services.hotel.rating.domain.reviews.ReviewCriteria;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review> {
 
@@ -55,32 +53,10 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
         return Optional.of(review);
     }
 
+    @Deprecated
     @Override
     public List<Review> find(Criteria reviewCriteria) {
-        UUID hotelId = ((ReviewCriteria) reviewCriteria).getHotelId().value();
-
-        String sql = """
-                SELECT r.id, r.rating, r.comment, r.hotel_id
-                FROM reviews r
-                WHERE r.hotel_id = :hotel_id
-                """;
-
-        Query query =
-                entityManager
-                        .createNativeQuery(sql, PersistenceReview.class)
-                        .setParameter("hotel_id", hotelId);
-
-        List<PersistenceReview> reviews = query.getResultList();
-
-        return reviews.stream()
-                .map(
-                        review ->
-                                new Review(
-                                        new AggregateId(review.getId()),
-                                        new HotelId(review.getHotelId().toString()),
-                                        new Rating(review.getRating()),
-                                        new Comment(review.getComment())))
-                .toList();
+        throw new UnsupportedOperationException();
     }
 
     @Override

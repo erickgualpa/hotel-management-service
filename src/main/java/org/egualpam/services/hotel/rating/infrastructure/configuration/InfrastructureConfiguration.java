@@ -22,6 +22,7 @@ import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.SimpleQuery
 import org.egualpam.services.hotel.rating.infrastructure.events.publishers.simple.SimpleDomainEventsPublisher;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
 import org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.PostgreSqlJpaReviewRepository;
+import org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.PostgreSqlReviewsViewSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -113,19 +114,8 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public ViewSupplier<ReviewsView> reviewsViewSupplier(
-            AggregateRepository<Review> aggregateReviewRepository
-    ) {
-        return criteria -> {
-            List<ReviewsView.Review> reviews = aggregateReviewRepository.find(criteria)
-                    .stream()
-                    .map(review ->
-                            new ReviewsView.Review(
-                                    review.getRating().value(),
-                                    review.getComment().value()))
-                    .toList();
-            return new ReviewsView(reviews);
-        };
+    public ViewSupplier<ReviewsView> reviewsViewSupplier(EntityManager entityManager) {
+        return new PostgreSqlReviewsViewSupplier(entityManager);
     }
 
     @Bean
