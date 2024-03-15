@@ -1,21 +1,12 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.application.hotels.HotelView;
-import org.egualpam.services.hotel.rating.domain.hotels.AverageRating;
-import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelDescription;
-import org.egualpam.services.hotel.rating.domain.hotels.HotelName;
-import org.egualpam.services.hotel.rating.domain.hotels.ImageURL;
-import org.egualpam.services.hotel.rating.domain.hotels.Location;
-import org.egualpam.services.hotel.rating.domain.hotels.Price;
-import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
-import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
+import org.egualpam.services.hotel.rating.application.shared.ViewSupplier;
+import org.egualpam.services.hotel.rating.domain.shared.Criteria;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
@@ -31,39 +22,38 @@ import static org.mockito.Mockito.when;
 class FindHotelShould {
 
     @Mock
-    private AggregateRepository<Hotel> aggregateHotelRepository;
+    private ViewSupplier<HotelView> hotelViewSupplier;
 
     @Test
     void findHotel() {
         String hotelId = randomUUID().toString();
 
-        Hotel hotel = new Hotel(
-                new AggregateId(hotelId),
-                new HotelName(randomAlphabetic(5)),
-                new HotelDescription(randomAlphabetic(5)),
-                new Location(randomAlphabetic(5)),
-                new Price(nextInt(100, 200)),
-                new ImageURL("www." + randomAlphabetic(5) + ".com"),
-                new AverageRating(nextDouble(1, 5)
-                )
+        HotelView.Hotel hotel = new HotelView.Hotel(
+                hotelId,
+                randomAlphabetic(5),
+                randomAlphabetic(5),
+                randomAlphabetic(5),
+                nextInt(100, 200),
+                "www." + randomAlphabetic(5) + ".com",
+                nextDouble(1, 5)
         );
 
-        when(aggregateHotelRepository.find(any(AggregateId.class)))
-                .thenReturn(Optional.of(hotel));
+        when(hotelViewSupplier.get(any(Criteria.class))).thenReturn(new HotelView(hotel));
 
-        FindHotel testee = new FindHotel(hotelId, aggregateHotelRepository);
+        FindHotel testee = new FindHotel(hotelId, hotelViewSupplier);
         HotelView result = testee.get();
 
         assertNotNull(result);
         HotelView.Hotel actual = result.hotel();
+
         assertAll(
-                () -> assertThat(actual.identifier()).isEqualTo(hotel.getId().value().toString()),
-                () -> assertThat(actual.name()).isEqualTo(hotel.getName().value()),
-                () -> assertThat(actual.description()).isEqualTo(hotel.getDescription().value()),
-                () -> assertThat(actual.location()).isEqualTo(hotel.getLocation().value()),
-                () -> assertThat(actual.totalPrice()).isEqualTo(hotel.getTotalPrice().value()),
-                () -> assertThat(actual.imageURL()).isEqualTo(hotel.getImageURL().value()),
-                () -> assertThat(actual.averageRating()).isEqualTo(hotel.getAverageRating().value())
+                () -> assertThat(actual.identifier()).isEqualTo(hotel.identifier()),
+                () -> assertThat(actual.name()).isEqualTo(hotel.name()),
+                () -> assertThat(actual.description()).isEqualTo(hotel.description()),
+                () -> assertThat(actual.location()).isEqualTo(hotel.location()),
+                () -> assertThat(actual.totalPrice()).isEqualTo(hotel.totalPrice()),
+                () -> assertThat(actual.imageURL()).isEqualTo(hotel.imageURL()),
+                () -> assertThat(actual.averageRating()).isEqualTo(hotel.averageRating())
         );
     }
 }

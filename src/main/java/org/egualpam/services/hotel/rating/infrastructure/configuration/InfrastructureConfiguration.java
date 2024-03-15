@@ -4,12 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import jakarta.persistence.EntityManager;
+import org.egualpam.services.hotel.rating.application.hotels.HotelView;
 import org.egualpam.services.hotel.rating.application.reviews.ReviewsView;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
 import org.egualpam.services.hotel.rating.application.shared.ViewSupplier;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
+import org.egualpam.services.hotel.rating.domain.hotels.HotelCriteria;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
+import org.egualpam.services.hotel.rating.domain.shared.AggregateId;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
 import org.egualpam.services.hotel.rating.domain.shared.DomainEventsPublisher;
 import org.egualpam.services.hotel.rating.infrastructure.cqrs.simple.SimpleCommandBus;
@@ -21,6 +24,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 public class InfrastructureConfiguration {
@@ -65,6 +69,27 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
+    public ViewSupplier<HotelView> hotelViewSupplier(
+            AggregateRepository<Hotel> aggregateHotelRepository
+    ) {
+        return criteria -> {
+            Optional<AggregateId> hotelId = ((HotelCriteria) criteria).getHotelId();
+            return aggregateHotelRepository.find(hotelId.orElseThrow())
+                    .map(
+                            hotel -> new HotelView.Hotel(
+                                    hotel.getId().value().toString(),
+                                    hotel.getName().value(),
+                                    hotel.getDescription().value(),
+                                    hotel.getLocation().value(),
+                                    hotel.getTotalPrice().value(),
+                                    hotel.getImageURL().value(),
+                                    hotel.getAverageRating().value()))
+                    .map(HotelView::new)
+                    .orElseThrow();
+        };
+    }
+
+    @Bean
     public ViewSupplier<ReviewsView> reviewsViewSupplier(
             AggregateRepository<Review> aggregateReviewRepository
     ) {
@@ -83,10 +108,12 @@ public class InfrastructureConfiguration {
     @Bean
     public QueryBus queryBus(
             AggregateRepository<Hotel> aggregateHotelRepository,
+            ViewSupplier<HotelView> hotelViewSupplier,
             ViewSupplier<ReviewsView> reviewsViewSupplier
     ) {
         return new SimpleQueryBus(
                 aggregateHotelRepository,
+                hotelViewSupplier,
                 reviewsViewSupplier
         );
     }

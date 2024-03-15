@@ -28,6 +28,7 @@ public final class SimpleQueryBus implements QueryBus {
 
     public SimpleQueryBus(
             AggregateRepository<Hotel> aggregateHotelRepository,
+            ViewSupplier<HotelView> hotelViewSupplier,
             ViewSupplier<ReviewsView> reviewsViewSupplier
     ) {
         handlers = Map.of(
@@ -36,7 +37,7 @@ public final class SimpleQueryBus implements QueryBus {
                 FindHotelsQuery.class,
                 new FindHotelsQueryHandler(aggregateHotelRepository),
                 FindHotelQuery.class,
-                new FindHotelQueryHandler(aggregateHotelRepository)
+                new FindHotelQueryHandler(hotelViewSupplier)
         );
     }
 
@@ -86,14 +87,14 @@ public final class SimpleQueryBus implements QueryBus {
     @RequiredArgsConstructor
     static class FindHotelQueryHandler implements QueryHandler {
 
-        private final AggregateRepository<Hotel> aggregateHotelRepository;
+        private final ViewSupplier<HotelView> hotelViewSupplier;
 
         @Override
         public View handle(Query query) {
             InternalQuery<HotelView> internalQuery =
                     new FindHotel(
                             ((FindHotelQuery) query).getHotelId(),
-                            aggregateHotelRepository
+                            hotelViewSupplier
                     );
             return internalQuery.get();
         }
