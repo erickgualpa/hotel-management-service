@@ -1,37 +1,27 @@
 package org.egualpam.services.hotel.rating.application.reviews;
 
 import org.egualpam.services.hotel.rating.application.shared.InternalQuery;
+import org.egualpam.services.hotel.rating.application.shared.ViewSupplier;
 import org.egualpam.services.hotel.rating.domain.reviews.HotelId;
-import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.reviews.ReviewCriteria;
-import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
-import org.egualpam.services.hotel.rating.domain.shared.Criteria;
-
-import java.util.List;
 
 public class FindHotelReviews implements InternalQuery<ReviewsView> {
 
     private final HotelId hotelId;
-    private final AggregateRepository<Review> aggregateReviewRepository;
+    private final ViewSupplier<ReviewsView> reviewsViewSupplier;
 
     public FindHotelReviews(
             String hotelId,
-            AggregateRepository<Review> aggregateReviewRepository
+            ViewSupplier<ReviewsView> reviewsViewSupplier
     ) {
         this.hotelId = new HotelId(hotelId);
-        this.aggregateReviewRepository = aggregateReviewRepository;
+        this.reviewsViewSupplier = reviewsViewSupplier;
     }
 
     @Override
     public ReviewsView get() {
-        Criteria criteria = new ReviewCriteria(hotelId);
-        List<ReviewsView.Review> reviews = aggregateReviewRepository.find(criteria)
-                .stream()
-                .map(review ->
-                        new ReviewsView.Review(
-                                review.getRating().value(),
-                                review.getComment().value()))
-                .toList();
-        return new ReviewsView(reviews);
+        return reviewsViewSupplier.get(
+                new ReviewCriteria(hotelId)
+        );
     }
 }

@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import jakarta.persistence.EntityManager;
+import org.egualpam.services.hotel.rating.application.reviews.ReviewsView;
 import org.egualpam.services.hotel.rating.application.shared.CommandBus;
 import org.egualpam.services.hotel.rating.application.shared.QueryBus;
+import org.egualpam.services.hotel.rating.application.shared.ViewSupplier;
 import org.egualpam.services.hotel.rating.domain.hotels.Hotel;
 import org.egualpam.services.hotel.rating.domain.reviews.Review;
 import org.egualpam.services.hotel.rating.domain.shared.AggregateRepository;
@@ -17,6 +19,8 @@ import org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.Postgre
 import org.egualpam.services.hotel.rating.infrastructure.persistence.jpa.PostgreSqlJpaReviewRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class InfrastructureConfiguration {
@@ -61,13 +65,29 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
+    public ViewSupplier<ReviewsView> reviewsViewSupplier(
+            AggregateRepository<Review> aggregateReviewRepository
+    ) {
+        return criteria -> {
+            List<ReviewsView.Review> reviews = aggregateReviewRepository.find(criteria)
+                    .stream()
+                    .map(review ->
+                            new ReviewsView.Review(
+                                    review.getRating().value(),
+                                    review.getComment().value()))
+                    .toList();
+            return new ReviewsView(reviews);
+        };
+    }
+
+    @Bean
     public QueryBus queryBus(
             AggregateRepository<Hotel> aggregateHotelRepository,
-            AggregateRepository<Review> aggregateReviewRepository
+            ViewSupplier<ReviewsView> reviewsViewSupplier
     ) {
         return new SimpleQueryBus(
                 aggregateHotelRepository,
-                aggregateReviewRepository
+                reviewsViewSupplier
         );
     }
 }
