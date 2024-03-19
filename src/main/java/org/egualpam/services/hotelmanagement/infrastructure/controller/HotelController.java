@@ -42,28 +42,26 @@ public final class HotelController {
                     String.format("An error occurred while processing the request [hotelId=%s]", hotelId),
                     e
             );
-            return ResponseEntity
-                    .internalServerError()
-                    .build();
+            return ResponseEntity.internalServerError().build();
         }
 
-        if (hotelView.hotel().isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        return hotelView.hotel()
+                .map(hotel -> ResponseEntity.ok(mapIntoResponse(hotel)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
-        HotelView.Hotel viewHotel = hotelView.hotel().get();
-
-        GetHotelResponse.Hotel hotel = new GetHotelResponse.Hotel(
-                viewHotel.identifier(),
-                viewHotel.name(),
-                viewHotel.description(),
-                viewHotel.location(),
-                viewHotel.totalPrice(),
-                viewHotel.imageURL(),
-                viewHotel.averageRating()
+    private static GetHotelResponse mapIntoResponse(HotelView.Hotel viewHotel) {
+        return new GetHotelResponse(
+                new GetHotelResponse.Hotel(
+                        viewHotel.identifier(),
+                        viewHotel.name(),
+                        viewHotel.description(),
+                        viewHotel.location(),
+                        viewHotel.totalPrice(),
+                        viewHotel.imageURL(),
+                        viewHotel.averageRating()
+                )
         );
-
-        return ResponseEntity.ok(new GetHotelResponse(hotel));
     }
 
     @PostMapping(value = "/query")
