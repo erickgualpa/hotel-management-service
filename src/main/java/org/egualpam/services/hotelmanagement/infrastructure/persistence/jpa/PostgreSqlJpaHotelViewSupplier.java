@@ -24,6 +24,7 @@ public class PostgreSqlJpaHotelViewSupplier implements ViewSupplier<HotelView> {
 
     @Override
     public HotelView get(Criteria criteria) {
+        // TODO: Avoid having optional access to the hotelId
         AggregateId hotelId = ((HotelCriteria) criteria).getHotelId().orElseThrow();
         PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, hotelId.value());
         Optional<HotelView.Hotel> hotel = Optional.ofNullable(persistenceHotel).map(this::mapIntoViewHotel);
