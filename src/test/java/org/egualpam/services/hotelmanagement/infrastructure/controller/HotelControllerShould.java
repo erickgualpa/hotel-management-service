@@ -5,6 +5,7 @@ import org.egualpam.services.hotelmanagement.application.hotels.HotelView;
 import org.egualpam.services.hotelmanagement.application.shared.Query;
 import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.domain.hotels.exception.PriceRangeValuesSwapped;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidIdentifier;
 import org.egualpam.services.hotelmanagement.infrastructure.configuration.InfrastructureConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 
 import static java.util.UUID.randomUUID;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -35,7 +37,7 @@ class HotelControllerShould {
     private MockMvc mockMvc;
 
     @Test
-    void returnBadRequest_whenPriceRangeValuesSwappedIsThrown() throws Exception {
+    void returnBadRequest_whenQueryHotelsRequestHasPriceRangeValuesSwapped() throws Exception {
         int minPrice = 500;
         int maxPrice = 50;
 
@@ -55,7 +57,19 @@ class HotelControllerShould {
     }
 
     @Test
-    void returnNotFound_whenHotelIsNotPresentInView() throws Exception {
+    void returnBadRequest_whenGetHotelIsPerformedWithInvalidHotelId() throws Exception {
+        String hotelId = randomAlphanumeric(5);
+
+        doThrow(InvalidIdentifier.class)
+                .when(queryBus)
+                .publish(any(Query.class));
+
+        mockMvc.perform(get("/v1/hotels/{hotelId}", hotelId))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void returnNotFound_whenGetHotelIsPerformedWithNonMatchingHotelId() throws Exception {
         String hotelId = randomUUID().toString();
 
         when(queryBus.publish(any(Query.class))).thenReturn(new HotelView(Optional.empty()));
