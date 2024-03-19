@@ -2,7 +2,9 @@ package org.egualpam.services.hotelmanagement.application.hotels;
 
 import org.egualpam.services.hotelmanagement.application.shared.View;
 
-public record HotelView(Hotel hotel) implements View {
+import java.util.Optional;
+
+public record HotelView(Optional<Hotel> hotel) implements View {
     public record Hotel(
             String identifier,
             String name,

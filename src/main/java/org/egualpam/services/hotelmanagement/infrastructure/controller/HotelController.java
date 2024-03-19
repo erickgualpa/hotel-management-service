@@ -6,6 +6,7 @@ import org.egualpam.services.hotelmanagement.application.hotels.HotelsView;
 import org.egualpam.services.hotelmanagement.application.shared.Query;
 import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.domain.hotels.exception.PriceRangeValuesSwapped;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidIdentifier;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.FindHotelQuery;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.FindHotelsQuery;
 import org.slf4j.Logger;
@@ -37,27 +38,33 @@ public final class HotelController {
         final HotelView hotelView;
         try {
             hotelView = (HotelView) queryBus.publish(findHotelQuery);
+        } catch (InvalidIdentifier e) {
+            return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             logger.error(
                     String.format("An error occurred while processing the request [hotelId=%s]", hotelId),
                     e
             );
-            return ResponseEntity
-                    .internalServerError()
-                    .build();
+            return ResponseEntity.internalServerError().build();
         }
 
-        GetHotelResponse.Hotel hotel = new GetHotelResponse.Hotel(
-                hotelView.hotel().identifier(),
-                hotelView.hotel().name(),
-                hotelView.hotel().description(),
-                hotelView.hotel().location(),
-                hotelView.hotel().totalPrice(),
-                hotelView.hotel().imageURL(),
-                hotelView.hotel().averageRating()
-        );
+        return hotelView.hotel()
+                .map(hotel -> ResponseEntity.ok(mapIntoResponse(hotel)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
-        return ResponseEntity.ok(new GetHotelResponse(hotel));
+    private GetHotelResponse mapIntoResponse(HotelView.Hotel viewHotel) {
+        return new GetHotelResponse(
+                new GetHotelResponse.Hotel(
+                        viewHotel.identifier(),
+                        viewHotel.name(),
+                        viewHotel.description(),
+                        viewHotel.location(),
+                        viewHotel.totalPrice(),
+                        viewHotel.imageURL(),
+                        viewHotel.averageRating()
+                )
+        );
     }
 
     @PostMapping(value = "/query")
@@ -90,20 +97,20 @@ public final class HotelController {
                     .internalServerError()
                     .build();
         }
+        return ResponseEntity.ok(mapIntoResponse(hotelsView.hotels()));
+    }
 
-        List<QueryHotelResponse.Hotel> hotels =
-                hotelsView.hotels().stream()
-                        .map(
-                                h -> new QueryHotelResponse.Hotel(
-                                        h.identifier(),
-                                        h.name(),
-                                        h.description(),
-                                        h.location(),
-                                        h.totalPrice(),
-                                        h.imageURL(),
-                                        h.averageRating()))
-                        .toList();
-
-        return ResponseEntity.ok(new QueryHotelResponse(hotels));
+    private QueryHotelResponse mapIntoResponse(List<HotelsView.Hotel> hotels) {
+        return new QueryHotelResponse(hotels.stream()
+                .map(
+                        h -> new QueryHotelResponse.Hotel(
+                                h.identifier(),
+                                h.name(),
+                                h.description(),
+                                h.location(),
+                                h.totalPrice(),
+                                h.imageURL(),
+                                h.averageRating()))
+                .toList());
     }
 }

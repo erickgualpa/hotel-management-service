@@ -11,23 +11,19 @@ import org.egualpam.services.hotelmanagement.application.shared.CommandBus;
 import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
 import org.egualpam.services.hotelmanagement.domain.hotels.Hotel;
-import org.egualpam.services.hotelmanagement.domain.hotels.HotelCriteria;
-import org.egualpam.services.hotelmanagement.domain.hotels.exception.HotelNotFound;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.SimpleCommandBus;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.SimpleQueryBus;
 import org.egualpam.services.hotelmanagement.infrastructure.events.publishers.simple.SimpleDomainEventsPublisher;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
+import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelViewSupplier;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelsViewSupplier;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaReviewRepository;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaReviewsViewSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Optional;
 
 @Configuration
 public class InfrastructureConfiguration {
@@ -72,24 +68,8 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public ViewSupplier<HotelView> hotelViewSupplier(
-            AggregateRepository<Hotel> aggregateHotelRepository
-    ) {
-        return criteria -> {
-            Optional<AggregateId> hotelId = ((HotelCriteria) criteria).getHotelId();
-            return aggregateHotelRepository.find(hotelId.orElseThrow())
-                    .map(
-                            hotel -> new HotelView.Hotel(
-                                    hotel.getId().value().toString(),
-                                    hotel.getName().value(),
-                                    hotel.getDescription().value(),
-                                    hotel.getLocation().value(),
-                                    hotel.getTotalPrice().value(),
-                                    hotel.getImageURL().value(),
-                                    hotel.getAverageRating().value()))
-                    .map(HotelView::new)
-                    .orElseThrow(HotelNotFound::new);
-        };
+    public ViewSupplier<HotelView> hotelViewSupplier(EntityManager entityManager) {
+        return new PostgreSqlJpaHotelViewSupplier(entityManager);
     }
 
     @Bean
