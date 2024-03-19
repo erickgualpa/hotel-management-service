@@ -21,12 +21,12 @@ import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.SimpleCo
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.SimpleQueryBus;
 import org.egualpam.services.hotelmanagement.infrastructure.events.publishers.simple.SimpleDomainEventsPublisher;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
+import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelsViewSupplier;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaReviewRepository;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlReviewsViewSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
 import java.util.Optional;
 
 @Configuration
@@ -93,24 +93,8 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public ViewSupplier<HotelsView> hotelsViewSupplier(
-            AggregateRepository<Hotel> aggregateHotelRepository
-    ) {
-        return criteria -> {
-            List<HotelsView.Hotel> hotels = aggregateHotelRepository.find(criteria)
-                    .stream()
-                    .map(hotel ->
-                            new HotelsView.Hotel(
-                                    hotel.getId().value().toString(),
-                                    hotel.getName().value(),
-                                    hotel.getDescription().value(),
-                                    hotel.getLocation().value(),
-                                    hotel.getTotalPrice().value(),
-                                    hotel.getImageURL().value(),
-                                    hotel.getAverageRating().value()))
-                    .toList();
-            return new HotelsView(hotels);
-        };
+    public ViewSupplier<HotelsView> hotelsViewSupplier(EntityManager entityManager) {
+        return new PostgreSqlJpaHotelsViewSupplier(entityManager);
     }
 
     @Bean
