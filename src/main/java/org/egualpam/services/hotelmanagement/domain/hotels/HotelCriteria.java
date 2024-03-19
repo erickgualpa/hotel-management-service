@@ -6,6 +6,7 @@ import org.egualpam.services.hotelmanagement.domain.shared.Criteria;
 import java.util.Optional;
 
 public final class HotelCriteria implements Criteria {
+    // TODO: Avoid using 'AggregateId' as 'Criteria' parameter
     private final Optional<AggregateId> hotelId;
     private final Optional<Location> location;
     private final PriceRange priceRange;
