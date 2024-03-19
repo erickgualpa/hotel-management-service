@@ -53,7 +53,7 @@ public final class HotelController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    private static GetHotelResponse mapIntoResponse(HotelView.Hotel viewHotel) {
+    private GetHotelResponse mapIntoResponse(HotelView.Hotel viewHotel) {
         return new GetHotelResponse(
                 new GetHotelResponse.Hotel(
                         viewHotel.identifier(),
@@ -97,20 +97,20 @@ public final class HotelController {
                     .internalServerError()
                     .build();
         }
+        return ResponseEntity.ok(mapIntoResponse(hotelsView.hotels()));
+    }
 
-        List<QueryHotelResponse.Hotel> hotels =
-                hotelsView.hotels().stream()
-                        .map(
-                                h -> new QueryHotelResponse.Hotel(
-                                        h.identifier(),
-                                        h.name(),
-                                        h.description(),
-                                        h.location(),
-                                        h.totalPrice(),
-                                        h.imageURL(),
-                                        h.averageRating()))
-                        .toList();
-
-        return ResponseEntity.ok(new QueryHotelResponse(hotels));
+    private QueryHotelResponse mapIntoResponse(List<HotelsView.Hotel> hotels) {
+        return new QueryHotelResponse(hotels.stream()
+                .map(
+                        h -> new QueryHotelResponse.Hotel(
+                                h.identifier(),
+                                h.name(),
+                                h.description(),
+                                h.location(),
+                                h.totalPrice(),
+                                h.imageURL(),
+                                h.averageRating()))
+                .toList());
     }
 }
