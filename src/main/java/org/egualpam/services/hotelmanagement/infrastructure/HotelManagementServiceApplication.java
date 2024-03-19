@@ -9,10 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                 "org.egualpam.services.hotelmanagement.infrastructure.controller"
         }
 )
-public class HotelRatingServiceApplication {
-
+public class HotelManagementServiceApplication {
     public static void main(String[] args) {
-        SpringApplication.run(HotelRatingServiceApplication.class, args);
+        SpringApplication.run(HotelManagementServiceApplication.class, args);
     }
-
 }

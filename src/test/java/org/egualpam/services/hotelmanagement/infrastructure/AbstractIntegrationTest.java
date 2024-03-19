@@ -15,7 +15,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 @AutoConfigureMockMvc
 @ActiveProfiles("integration-test")
 @SpringBootTest(
-        classes = HotelRatingServiceApplication.class,
+        classes = HotelManagementServiceApplication.class,
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ContextConfiguration(
