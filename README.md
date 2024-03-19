@@ -1,6 +1,6 @@
 # 🏨 Hotel Management Service 🏨
 
-![CI/CD status](https://github.com/erickgualpa/hotel-rating-service/actions/workflows/maven.yml/badge.svg)
+![CI/CD status](https://github.com/erickgualpa/hotel-management-service/actions/workflows/maven.yml/badge.svg)
 
 Using wrapped maven included in this repository, you can:
 
