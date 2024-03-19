@@ -36,7 +36,7 @@ public class InfrastructureConfiguration {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(
-                        new Info().title("Hotel Rating Service API")
+                        new Info().title("Hotel Management Service API")
                 );
     }
 
