@@ -23,7 +23,7 @@ import org.egualpam.services.hotelmanagement.infrastructure.events.publishers.si
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelsViewSupplier;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaReviewRepository;
-import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlReviewsViewSupplier;
+import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaReviewsViewSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -99,7 +99,7 @@ public class InfrastructureConfiguration {
 
     @Bean
     public ViewSupplier<ReviewsView> reviewsViewSupplier(EntityManager entityManager) {
-        return new PostgreSqlReviewsViewSupplier(entityManager);
+        return new PostgreSqlJpaReviewsViewSupplier(entityManager);
     }
 
     @Bean

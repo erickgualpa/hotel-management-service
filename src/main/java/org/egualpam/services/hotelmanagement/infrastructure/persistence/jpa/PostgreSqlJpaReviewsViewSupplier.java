@@ -10,12 +10,11 @@ import org.egualpam.services.hotelmanagement.domain.shared.Criteria;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: Rename this class
-public class PostgreSqlReviewsViewSupplier implements ViewSupplier<ReviewsView> {
+public class PostgreSqlJpaReviewsViewSupplier implements ViewSupplier<ReviewsView> {
 
     private final EntityManager entityManager;
 
-    public PostgreSqlReviewsViewSupplier(EntityManager entityManager) {
+    public PostgreSqlJpaReviewsViewSupplier(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
