@@ -26,10 +26,8 @@ public class PostgreSqlJpaHotelViewSupplier implements ViewSupplier<HotelView> {
     public HotelView get(Criteria criteria) {
         AggregateId hotelId = ((HotelCriteria) criteria).getHotelId().orElseThrow();
         PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, hotelId.value());
-        return Optional.ofNullable(persistenceHotel)
-                .map(this::mapIntoViewHotel)
-                .map(HotelView::new)
-                .orElseThrow();
+        Optional<HotelView.Hotel> hotel = Optional.ofNullable(persistenceHotel).map(this::mapIntoViewHotel);
+        return new HotelView(hotel);
     }
 
     private HotelView.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {

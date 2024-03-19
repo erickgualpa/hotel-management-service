@@ -47,14 +47,20 @@ public final class HotelController {
                     .build();
         }
 
+        if (hotelView.hotel().isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        HotelView.Hotel viewHotel = hotelView.hotel().get();
+
         GetHotelResponse.Hotel hotel = new GetHotelResponse.Hotel(
-                hotelView.hotel().identifier(),
-                hotelView.hotel().name(),
-                hotelView.hotel().description(),
-                hotelView.hotel().location(),
-                hotelView.hotel().totalPrice(),
-                hotelView.hotel().imageURL(),
-                hotelView.hotel().averageRating()
+                viewHotel.identifier(),
+                viewHotel.name(),
+                viewHotel.description(),
+                viewHotel.location(),
+                viewHotel.totalPrice(),
+                viewHotel.imageURL(),
+                viewHotel.averageRating()
         );
 
         return ResponseEntity.ok(new GetHotelResponse(hotel));

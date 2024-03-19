@@ -8,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextDouble;
@@ -38,14 +40,16 @@ class FindHotelShould {
                 nextDouble(1, 5)
         );
 
-        when(hotelViewSupplier.get(any(Criteria.class))).thenReturn(new HotelView(hotel));
+        when(hotelViewSupplier.get(any(Criteria.class))).thenReturn(
+                new HotelView(Optional.of(hotel))
+        );
 
         FindHotel testee = new FindHotel(hotelId, hotelViewSupplier);
         HotelView result = testee.get();
 
         assertNotNull(result);
-        HotelView.Hotel actual = result.hotel();
-
+        assertThat(result.hotel()).isNotEmpty();
+        HotelView.Hotel actual = result.hotel().get();
         assertAll(
                 () -> assertThat(actual.identifier()).isEqualTo(hotel.identifier()),
                 () -> assertThat(actual.name()).isEqualTo(hotel.name()),
