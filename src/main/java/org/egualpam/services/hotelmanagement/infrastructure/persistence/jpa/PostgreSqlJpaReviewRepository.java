@@ -10,9 +10,7 @@ import org.egualpam.services.hotelmanagement.domain.reviews.Rating;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.Criteria;
 
-import java.util.List;
 import java.util.Optional;
 
 public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review> {
@@ -51,12 +49,6 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
         );
 
         return Optional.of(review);
-    }
-
-    @Deprecated
-    @Override
-    public List<Review> find(Criteria reviewCriteria) {
-        throw new UnsupportedOperationException();
     }
 
     @Override
