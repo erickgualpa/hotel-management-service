@@ -1,6 +1,6 @@
-# 🏨 Hotel Rating Service 🏨
+# 🏨 Hotel Management Service 🏨
 
-![CI/CD status](https://github.com/erickgualpa/hotel-rating-service/actions/workflows/maven.yml/badge.svg)
+![CI/CD status](https://github.com/erickgualpa/hotel-management-service/actions/workflows/maven.yml/badge.svg)
 
 Using wrapped maven included in this repository, you can:
 
@@ -33,29 +33,28 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │   └── org
     │   │       └── egualpam
     │   │           └── services
-    │   │               └── hotel
-    │   │                   └── rating
-    │   │                       ├── application
-    │   │                       │   ├── hotels
-    │   │                       │   ├── reviews
-    │   │                       │   └── shared
-    │   │                       ├── domain
-    │   │                       │   ├── hotels
-    │   │                       │   │   └── exception
-    │   │                       │   ├── reviews
-    │   │                       │   │   └── exception
-    │   │                       │   └── shared
-    │   │                       │       └── exception
-    │   │                       └── infrastructure
-    │   │                           ├── configuration
-    │   │                           ├── controller
-    │   │                           ├── cqrs
-    │   │                           │   └── simple
-    │   │                           ├── events
-    │   │                           │   └── publishers
-    │   │                           │       └── simple
-    │   │                           └── persistence
-    │   │                               └── jpa
+    │   │               └── hotelmanagement
+    │   │                   ├── application
+    │   │                   │   ├── hotels
+    │   │                   │   ├── reviews
+    │   │                   │   └── shared
+    │   │                   ├── domain
+    │   │                   │   ├── hotels
+    │   │                   │   │   └── exception
+    │   │                   │   ├── reviews
+    │   │                   │   │   └── exception
+    │   │                   │   └── shared
+    │   │                   │       └── exception
+    │   │                   └── infrastructure
+    │   │                       ├── configuration
+    │   │                       ├── controller
+    │   │                       ├── cqrs
+    │   │                       │   └── simple
+    │   │                       ├── events
+    │   │                       │   └── publishers
+    │   │                       │       └── simple
+    │   │                       └── persistence
+    │   │                           └── jpa
     │   └── resources
     │       └── db
     │           └── migration
@@ -64,17 +63,16 @@ Check it and try to find the best available hotel in Mars! 👽
         │   └── org
         │       └── egualpam
         │           └── services
-        │               └── hotel
-        │                   └── rating
-        │                       ├── application
-        │                       │   ├── hotels
-        │                       │   └── reviews
-        │                       ├── e2e
-        │                       ├── helpers
-        │                       └── infrastructure
-        │                           ├── configuration
-        │                           ├── controller
-        │                           └── persistence
-        │                               └── jpa
+        │               └── hotelmanagement
+        │                   ├── application
+        │                   │   ├── hotels
+        │                   │   └── reviews
+        │                   ├── e2e
+        │                   ├── helpers
+        │                   └── infrastructure
+        │                       ├── configuration
+        │                       ├── controller
+        │                       └── persistence
+        │                           └── jpa
         └── resources
 ```

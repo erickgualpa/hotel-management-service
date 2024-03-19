@@ -12,9 +12,9 @@
     </parent>
 
     <groupId>org.egualpam.services</groupId>
-    <artifactId>hotel-rating-service</artifactId>
+    <artifactId>hotel-management-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>hotel-rating-service</name>
+    <name>hotel-management-service</name>
     <description>Hotel Review Search and Sorting</description>
 
     <properties>

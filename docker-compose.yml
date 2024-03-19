@@ -2,24 +2,24 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_USER: hotel-rating-user
-      POSTGRES_PASSWORD: hotel-rating-password
+      POSTGRES_USER: test-user
+      POSTGRES_PASSWORD: test-password
     ports:
       - 5432:5432
     networks:
-      - hotel-rating-service-network
+      - hotel-management-service-network
   spring-boot-app:
     build:
       dockerfile: Dockerfile
-    image: hotel-rating-service:latest
+    image: hotel-management-service:latest
     ports:
       - 8080:8080
     depends_on:
       - postgres
     networks:
-      - hotel-rating-service-network
+      - hotel-management-service-network
 networks:
-  hotel-rating-service-network:
+  hotel-management-service-network:
     driver: bridge
 
 
