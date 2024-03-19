@@ -1,19 +1,15 @@
 package org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaQuery;
 import org.egualpam.services.hotelmanagement.domain.hotels.AverageRating;
 import org.egualpam.services.hotelmanagement.domain.hotels.Hotel;
-import org.egualpam.services.hotelmanagement.domain.hotels.HotelCriteria;
 import org.egualpam.services.hotelmanagement.domain.hotels.HotelDescription;
 import org.egualpam.services.hotelmanagement.domain.hotels.HotelName;
 import org.egualpam.services.hotelmanagement.domain.hotels.ImageURL;
 import org.egualpam.services.hotelmanagement.domain.hotels.Location;
 import org.egualpam.services.hotelmanagement.domain.hotels.Price;
-import org.egualpam.services.hotelmanagement.domain.hotels.PriceRange;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.Criteria;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,26 +31,6 @@ public final class PostgreSqlJpaHotelRepository implements AggregateRepository<H
         PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, id.value());
         return Optional.ofNullable(persistenceHotel)
                 .map(this::mapResultIntoHotel);
-    }
-
-    @Override
-    public List<Hotel> find(Criteria criteria) {
-        PriceRange priceRange = ((HotelCriteria) criteria).getPriceRange();
-        Optional<String> location = ((HotelCriteria) criteria).getLocation().map(Location::value);
-
-        CriteriaQuery<PersistenceHotel> criteriaQuery =
-                new HotelCriteriaQueryBuilder(entityManager)
-                        .withLocation(location)
-                        .withMinPrice(priceRange.minPrice().map(Price::value))
-                        .withMaxPrice(priceRange.maxPrice().map(Price::value))
-                        .build();
-
-        return entityManager
-                .createQuery(criteriaQuery)
-                .getResultList()
-                .stream()
-                .map(this::mapResultIntoHotel)
-                .toList();
     }
 
     private Hotel mapResultIntoHotel(PersistenceHotel persistenceHotel) {
