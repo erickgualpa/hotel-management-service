@@ -39,8 +39,8 @@ public final class ReviewController {
     private final QueryBus queryBus;
 
     @GetMapping
-    public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelIdentifier) {
-        Query findHotelReviewsQuery = new FindHotelReviewsQuery(hotelIdentifier);
+    public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelId) {
+        Query findHotelReviewsQuery = new FindHotelReviewsQuery(hotelId);
 
         final ReviewsView reviewsView;
         try {
@@ -48,33 +48,34 @@ public final class ReviewController {
         } catch (Exception e) {
             logger.error(
                     String.format(
-                            "An error occurred while processing the request with hotel identifier: [%s]",
-                            hotelIdentifier
+                            "An error occurred while processing the request with hotel id: [%s]",
+                            hotelId
                     ),
                     e
             );
-            return ResponseEntity
-                    .internalServerError()
-                    .build();
+            return ResponseEntity.internalServerError().build();
         }
 
-        List<GetReviewsResponse.Review> reviews =
-                reviewsView.reviews().stream()
+        return ResponseEntity.ok(mapIntoResponse(reviewsView.reviews()));
+    }
+
+    private GetReviewsResponse mapIntoResponse(List<ReviewsView.Review> reviews) {
+        return new GetReviewsResponse(
+                reviews.stream()
                         .map(r ->
                                 new GetReviewsResponse.Review(
                                         r.rating(),
                                         r.comment()))
-                        .toList();
-
-        return ResponseEntity.ok(new GetReviewsResponse(reviews));
+                        .toList()
+        );
     }
 
-    @PostMapping(path = "/{reviewIdentifier}")
-    public ResponseEntity<Void> createReview(@PathVariable String reviewIdentifier,
+    @PostMapping(path = "/{reviewId}")
+    public ResponseEntity<Void> createReview(@PathVariable String reviewId,
                                              @RequestBody CreateReviewRequest createReviewRequest) {
         Command createReviewCommand = new CreateReviewCommand(
-                reviewIdentifier,
-                createReviewRequest.hotelIdentifier(),
+                reviewId,
+                createReviewRequest.hotelId(),
                 createReviewRequest.rating(),
                 createReviewRequest.comment()
         );
@@ -90,7 +91,7 @@ public final class ReviewController {
                     String.format(
                             "An error occurred while processing the request [%s] given [reviewId=%s]",
                             createReviewRequest,
-                            reviewIdentifier
+                            reviewId
                     ),
                     e
             );
@@ -100,11 +101,11 @@ public final class ReviewController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping(path = "/{reviewIdentifier}")
-    public ResponseEntity<Void> updateReview(@PathVariable String reviewIdentifier,
+    @PutMapping(path = "/{reviewId}")
+    public ResponseEntity<Void> updateReview(@PathVariable String reviewId,
                                              @RequestBody UpdateReviewRequest updateReviewRequest) {
         Command updateReviewCommand = new UpdateReviewCommand(
-                reviewIdentifier,
+                reviewId,
                 updateReviewRequest.comment()
         );
 
@@ -117,7 +118,7 @@ public final class ReviewController {
                     String.format(
                             "An error occurred while processing the request [%s] given [reviewId=%s]",
                             updateReviewRequest,
-                            reviewIdentifier
+                            reviewId
                     ),
                     e
             );

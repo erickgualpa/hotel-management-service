@@ -37,7 +37,7 @@ class UpdateReviewCommentFeature extends AbstractIntegrationTest {
     private EventStoreTestRepository eventStoreTestRepository;
 
     @Test
-    void reviewCommentShouldBeUpdatedGivenReviewIdentifier() throws Exception {
+    void reviewCommentShouldBeUpdatedGivenReviewId() throws Exception {
         UUID hotelId = randomUUID();
         UUID reviewId = randomUUID();
         String newComment = randomAlphabetic(10);
@@ -58,10 +58,9 @@ class UpdateReviewCommentFeature extends AbstractIntegrationTest {
                 hotelId
         );
 
-        mockMvc.perform(
-                        put("/v1/reviews/{reviewIdentifier}", reviewId.toString())
-                                .contentType(APPLICATION_JSON)
-                                .content(String.format(UPDATE_REVIEW_REQUEST, newComment)))
+        mockMvc.perform(put("/v1/reviews/{reviewId}", reviewId.toString())
+                        .contentType(APPLICATION_JSON)
+                        .content(String.format(UPDATE_REVIEW_REQUEST, newComment)))
                 .andExpect(status().isNoContent());
 
         assertThat(reviewTestRepository.findReview(reviewId))

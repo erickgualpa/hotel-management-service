@@ -141,7 +141,7 @@ class ReviewControllerShould {
                 .when(queryBus)
                 .publish(any(Query.class));
 
-        mockMvc.perform(get("/v1/reviews", hotelId).queryParam("hotelIdentifier", hotelId))
+        mockMvc.perform(get("/v1/reviews", hotelId).queryParam("hotelId", hotelId))
                 .andExpect(status().isInternalServerError());
     }
 

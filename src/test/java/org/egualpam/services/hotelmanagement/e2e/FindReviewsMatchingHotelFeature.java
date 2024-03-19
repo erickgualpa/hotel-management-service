@@ -35,14 +35,14 @@ class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
     private ReviewTestRepository reviewTestRepository;
 
     @Test
-    void reviewsMatchingHotelIdentifierShouldBeReturned() throws Exception {
-        UUID hotelIdentifier = randomUUID();
+    void reviewsMatchingHotelIdShouldBeReturned() throws Exception {
+        UUID hotelId = randomUUID();
         Integer rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
 
         hotelTestRepository
                 .insertHotel(
-                        hotelIdentifier,
+                        hotelId,
                         randomAlphabetic(5),
                         randomAlphabetic(10),
                         randomAlphabetic(5),
@@ -55,15 +55,10 @@ class FindReviewsMatchingHotelFeature extends AbstractIntegrationTest {
                         randomUUID(),
                         rating,
                         comment,
-                        hotelIdentifier
+                        hotelId
                 );
 
-        mockMvc.perform(
-                        get("/v1/reviews")
-                                .queryParam(
-                                        "hotelIdentifier", hotelIdentifier.toString()
-                                )
-                )
+        mockMvc.perform(get("/v1/reviews").queryParam("hotelId", hotelId.toString()))
                 .andExpect(status().isOk())
                 .andExpect(content().json(
                                 String.format(

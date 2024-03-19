@@ -21,7 +21,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
 
     private static final String CREATE_REVIEW_REQUEST = """
             {
-                "hotelIdentifier": "%s",
+                "hotelId": "%s",
                 "rating": "%d",
                 "comment": "%s"
             }
@@ -52,7 +52,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
                 );
 
         mockMvc.perform(
-                        post("/v1/reviews/{reviewIdentifier}", reviewId.toString())
+                        post("/v1/reviews/{reviewId}", reviewId.toString())
                                 .contentType(APPLICATION_JSON)
                                 .content(
                                         String.format(
