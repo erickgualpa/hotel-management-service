@@ -112,6 +112,16 @@ public final class ReviewController {
             commandBus.publish(updateReviewCommand);
         } catch (InvalidIdentifier e) {
             return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            logger.error(
+                    String.format(
+                            "An error occurred while processing the request [%s] given [reviewId=%s]",
+                            updateReviewRequest,
+                            reviewIdentifier
+                    ),
+                    e
+            );
+            return ResponseEntity.internalServerError().build();
         }
 
         return ResponseEntity.noContent().build();
