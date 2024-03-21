@@ -29,6 +29,19 @@ public final class HotelCriteria implements Criteria {
         this.hotelId = Optional.empty();
     }
 
+    public HotelCriteria(
+            Optional<String> location,
+            Optional<Integer> minPrice,
+            Optional<Integer> maxPrice
+    ) {
+        this.hotelId = Optional.empty();
+        this.location = location.map(Location::new);
+        this.priceRange = new PriceRange(
+                minPrice.map(Price::new),
+                maxPrice.map(Price::new)
+        );
+    }
+
     public Optional<Location> getLocation() {
         return location;
     }

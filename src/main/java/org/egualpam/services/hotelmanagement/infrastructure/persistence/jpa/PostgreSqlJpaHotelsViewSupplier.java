@@ -15,6 +15,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static java.util.Comparator.comparingDouble;
+
 public class PostgreSqlJpaHotelsViewSupplier implements ViewSupplier<HotelsView> {
 
     private final EntityManager entityManager;
@@ -42,6 +44,7 @@ public class PostgreSqlJpaHotelsViewSupplier implements ViewSupplier<HotelsView>
                 .getResultList()
                 .stream()
                 .map(this::mapIntoViewHotel)
+                .sorted(comparingDouble(HotelsView.Hotel::averageRating).reversed())
                 .toList();
 
         return new HotelsView(hotels);

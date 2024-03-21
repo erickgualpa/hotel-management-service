@@ -18,6 +18,16 @@ public class PersistenceReview {
     @Column(name = "hotel_id")
     private UUID hotelId;
 
+    public PersistenceReview() {
+    }
+
+    public PersistenceReview(UUID id, Integer rating, String comment, UUID hotelId) {
+        this.id = id;
+        this.rating = rating;
+        this.comment = comment;
+        this.hotelId = hotelId;
+    }
+
     public UUID getId() {
         return id;
     }
