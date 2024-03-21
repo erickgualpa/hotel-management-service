@@ -7,7 +7,7 @@ import org.egualpam.services.hotelmanagement.application.shared.Query;
 import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.InvalidRating;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
-import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidIdentifier;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.infrastructure.configuration.InfrastructureConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +82,7 @@ class ReviewControllerShould {
 
         String request = objectMapper.writeValueAsString(createReviewRequest);
 
-        doThrow(InvalidIdentifier.class)
+        doThrow(InvalidUniqueId.class)
                 .when(commandBus)
                 .publish(any(Command.class));
 
@@ -101,7 +101,7 @@ class ReviewControllerShould {
         UpdateReviewRequest createReviewRequest = new UpdateReviewRequest(comment);
         String request = objectMapper.writeValueAsString(createReviewRequest);
 
-        doThrow(InvalidIdentifier.class)
+        doThrow(InvalidUniqueId.class)
                 .when(commandBus)
                 .publish(any(Command.class));
 

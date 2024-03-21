@@ -4,8 +4,8 @@ import jakarta.persistence.EntityManager;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelView;
 import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
 import org.egualpam.services.hotelmanagement.domain.hotels.HotelCriteria;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.Criteria;
+import org.egualpam.services.hotelmanagement.domain.shared.UniqueId;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +25,7 @@ public class PostgreSqlJpaHotelViewSupplier implements ViewSupplier<HotelView> {
     @Override
     public HotelView get(Criteria criteria) {
         // TODO: Avoid having optional access to the hotelId
-        AggregateId hotelId = ((HotelCriteria) criteria).getHotelId().orElseThrow();
+        UniqueId hotelId = ((HotelCriteria) criteria).getHotelId().orElseThrow();
         PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, hotelId.value());
         Optional<HotelView.Hotel> hotel = Optional.ofNullable(persistenceHotel).map(this::mapIntoViewHotel);
         return new HotelView(hotel);
