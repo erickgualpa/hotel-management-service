@@ -10,7 +10,7 @@ import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
-import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidIdentifier;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -141,7 +141,7 @@ class CreateReviewShould {
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
         assertThrows(
-                InvalidIdentifier.class,
+                InvalidUniqueId.class,
                 () -> new CreateReview(
                         invalidIdentifier,
                         hotelIdentifier,
@@ -160,7 +160,7 @@ class CreateReviewShould {
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
         assertThrows(
-                InvalidIdentifier.class,
+                InvalidUniqueId.class,
                 () -> new CreateReview(
                         reviewId,
                         invalidIdentifier,

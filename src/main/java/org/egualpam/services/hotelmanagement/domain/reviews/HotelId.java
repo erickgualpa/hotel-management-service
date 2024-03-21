@@ -1,20 +1,12 @@
 package org.egualpam.services.hotelmanagement.domain.reviews;
 
-import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidIdentifier;
+import org.egualpam.services.hotelmanagement.domain.shared.UniqueId;
 
 import java.util.UUID;
 
+// TODO: Avoid having UUID at this level
 public record HotelId(UUID value) {
-
     public HotelId(String value) {
-        this(valid(value));
-    }
-
-    private static UUID valid(String value) {
-        try {
-            return UUID.fromString(value);
-        } catch (Exception e) {
-            throw new InvalidIdentifier(e);
-        }
+        this(new UniqueId(value).value());
     }
 }

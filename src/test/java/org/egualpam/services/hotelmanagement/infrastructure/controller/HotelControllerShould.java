@@ -5,7 +5,7 @@ import org.egualpam.services.hotelmanagement.application.hotels.HotelView;
 import org.egualpam.services.hotelmanagement.application.shared.Query;
 import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.domain.hotels.exception.PriceRangeValuesSwapped;
-import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidIdentifier;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.infrastructure.configuration.InfrastructureConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ class HotelControllerShould {
     void returnBadRequest_whenGetHotelIsPerformedWithInvalidHotelId() throws Exception {
         String hotelId = randomAlphanumeric(5);
 
-        doThrow(InvalidIdentifier.class)
+        doThrow(InvalidUniqueId.class)
                 .when(queryBus)
                 .publish(any(Query.class));
 

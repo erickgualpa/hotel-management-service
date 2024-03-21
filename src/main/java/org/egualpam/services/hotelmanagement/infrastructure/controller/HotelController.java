@@ -6,7 +6,7 @@ import org.egualpam.services.hotelmanagement.application.hotels.HotelsView;
 import org.egualpam.services.hotelmanagement.application.shared.Query;
 import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.domain.hotels.exception.PriceRangeValuesSwapped;
-import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidIdentifier;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.FindHotelQuery;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.FindHotelsQuery;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public final class HotelController {
         final HotelView hotelView;
         try {
             hotelView = (HotelView) queryBus.publish(findHotelQuery);
-        } catch (InvalidIdentifier e) {
+        } catch (InvalidUniqueId e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             logger.error(

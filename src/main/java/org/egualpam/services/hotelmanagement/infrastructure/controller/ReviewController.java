@@ -9,7 +9,7 @@ import org.egualpam.services.hotelmanagement.application.shared.Query;
 import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.InvalidRating;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
-import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidIdentifier;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.CreateReviewCommand;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.FindHotelReviewsQuery;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.UpdateReviewCommand;
@@ -82,7 +82,7 @@ public final class ReviewController {
 
         try {
             commandBus.publish(createReviewCommand);
-        } catch (InvalidIdentifier | InvalidRating e) {
+        } catch (InvalidUniqueId | InvalidRating e) {
             return ResponseEntity.badRequest().build();
         } catch (ReviewAlreadyExists e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -111,7 +111,7 @@ public final class ReviewController {
 
         try {
             commandBus.publish(updateReviewCommand);
-        } catch (InvalidIdentifier e) {
+        } catch (InvalidUniqueId e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             logger.error(
