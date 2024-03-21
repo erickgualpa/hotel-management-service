@@ -1,6 +1,5 @@
-package org.egualpam.services.hotelmanagement.application.reviews;
+package org.egualpam.services.hotelmanagement.application.hotels;
 
-import org.egualpam.services.hotelmanagement.application.hotels.HotelView;
 import org.egualpam.services.hotelmanagement.application.shared.InternalQuery;
 import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
 import org.egualpam.services.hotelmanagement.domain.hotels.HotelCriteria;

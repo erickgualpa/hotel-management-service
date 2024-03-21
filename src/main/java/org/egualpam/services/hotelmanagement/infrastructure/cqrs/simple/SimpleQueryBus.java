@@ -1,10 +1,10 @@
 package org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple;
 
 import lombok.RequiredArgsConstructor;
+import org.egualpam.services.hotelmanagement.application.hotels.FindHotel;
 import org.egualpam.services.hotelmanagement.application.hotels.FindHotels;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelView;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelsView;
-import org.egualpam.services.hotelmanagement.application.reviews.FindHotel;
 import org.egualpam.services.hotelmanagement.application.reviews.FindHotelReviews;
 import org.egualpam.services.hotelmanagement.application.reviews.ReviewsView;
 import org.egualpam.services.hotelmanagement.application.shared.InternalQuery;
