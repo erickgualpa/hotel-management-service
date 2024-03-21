@@ -21,15 +21,6 @@ public final class HotelCriteria implements Criteria {
     }
 
     public HotelCriteria(
-            Optional<Location> location,
-            PriceRange priceRange
-    ) {
-        this.location = location;
-        this.priceRange = priceRange;
-        this.hotelId = Optional.empty();
-    }
-
-    public HotelCriteria(
             Optional<String> location,
             Optional<Integer> minPrice,
             Optional<Integer> maxPrice
