@@ -1,17 +1,15 @@
 package org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotelmanagement.application.hotels.FindHotels;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelView;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelsView;
-import org.egualpam.services.hotelmanagement.application.reviews.FindHotel;
-import org.egualpam.services.hotelmanagement.application.reviews.FindHotelReviews;
 import org.egualpam.services.hotelmanagement.application.reviews.ReviewsView;
-import org.egualpam.services.hotelmanagement.application.shared.InternalQuery;
 import org.egualpam.services.hotelmanagement.application.shared.Query;
 import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.application.shared.View;
 import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
+import org.egualpam.services.hotelmanagement.domain.hotels.HotelCriteria;
+import org.egualpam.services.hotelmanagement.domain.reviews.ReviewCriteria;
 
 import java.util.Map;
 
@@ -55,12 +53,10 @@ public final class SimpleQueryBus implements QueryBus {
 
         @Override
         public View handle(Query query) {
-            InternalQuery<ReviewsView> internalQuery =
-                    new FindHotelReviews(
-                            ((FindHotelReviewsQuery) query).getHotelIdentifier(),
-                            reviewsViewSupplier
-                    );
-            return internalQuery.get();
+            String hotelId = ((FindHotelReviewsQuery) query).getHotelIdentifier();
+            return reviewsViewSupplier.get(
+                    new ReviewCriteria(hotelId)
+            );
         }
     }
 
@@ -71,14 +67,13 @@ public final class SimpleQueryBus implements QueryBus {
 
         @Override
         public View handle(Query query) {
-            InternalQuery<HotelsView> internalQuery =
-                    new FindHotels(
+            return hotelsViewSupplier.get(
+                    new HotelCriteria(
                             ((FindHotelsQuery) query).getLocation(),
                             ((FindHotelsQuery) query).getMinPrice(),
-                            ((FindHotelsQuery) query).getMaxPrice(),
-                            hotelsViewSupplier
-                    );
-            return internalQuery.get();
+                            ((FindHotelsQuery) query).getMaxPrice()
+                    )
+            );
         }
     }
 
@@ -89,12 +84,10 @@ public final class SimpleQueryBus implements QueryBus {
 
         @Override
         public View handle(Query query) {
-            InternalQuery<HotelView> internalQuery =
-                    new FindHotel(
-                            ((FindHotelQuery) query).getHotelId(),
-                            hotelViewSupplier
-                    );
-            return internalQuery.get();
+            String hotelId = ((FindHotelQuery) query).getHotelId();
+            return hotelViewSupplier.get(
+                    new HotelCriteria(hotelId)
+            );
         }
     }
 }

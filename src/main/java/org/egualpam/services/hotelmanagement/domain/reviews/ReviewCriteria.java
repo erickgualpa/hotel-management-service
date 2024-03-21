@@ -6,8 +6,8 @@ public final class ReviewCriteria implements Criteria {
 
     private final HotelId hotelId;
 
-    public ReviewCriteria(HotelId hotelId) {
-        this.hotelId = hotelId;
+    public ReviewCriteria(String hotelId) {
+        this.hotelId = new HotelId(hotelId);
     }
 
     public HotelId getHotelId() {

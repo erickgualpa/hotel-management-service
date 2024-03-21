@@ -65,7 +65,6 @@ Check it and try to find the best available hotel in Mars! 👽
         │           └── services
         │               └── hotelmanagement
         │                   ├── application
-        │                   │   ├── hotels
         │                   │   └── reviews
         │                   ├── e2e
         │                   ├── helpers
