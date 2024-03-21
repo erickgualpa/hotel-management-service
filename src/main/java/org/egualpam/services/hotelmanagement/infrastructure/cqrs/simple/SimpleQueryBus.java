@@ -12,7 +12,6 @@ import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.application.shared.View;
 import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
 import org.egualpam.services.hotelmanagement.domain.hotels.HotelCriteria;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 
 import java.util.Map;
 
@@ -92,9 +91,7 @@ public final class SimpleQueryBus implements QueryBus {
         public View handle(Query query) {
             String hotelId = ((FindHotelQuery) query).getHotelId();
             return hotelViewSupplier.get(
-                    new HotelCriteria(
-                            new AggregateId(hotelId)
-                    )
+                    new HotelCriteria(hotelId)
             );
         }
     }

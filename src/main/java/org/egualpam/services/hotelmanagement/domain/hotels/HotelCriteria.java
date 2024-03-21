@@ -11,9 +11,8 @@ public final class HotelCriteria implements Criteria {
     private final Optional<Location> location;
     private final PriceRange priceRange;
 
-    // TODO: Split this into two different Criteria classes to avoid Optional parameters
-    public HotelCriteria(AggregateId hotelId) {
-        this.hotelId = Optional.of(hotelId);
+    public HotelCriteria(String hotelId) {
+        this.hotelId = Optional.of(hotelId).map(AggregateId::new);
         this.location = Optional.empty();
         this.priceRange = new PriceRange(
                 Optional.empty(),
