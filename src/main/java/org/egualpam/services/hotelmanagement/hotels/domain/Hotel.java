@@ -15,26 +15,27 @@ public final class Hotel implements AggregateRoot {
     private final HotelName name;
     private final HotelDescription description;
     private final Location location;
+    // TODO: Rename this into 'pricePerNight'
     private final Price totalPrice;
     private final ImageURL imageURL;
     private final AverageRating averageRating;
 
     public Hotel(
-            AggregateId id,
-            HotelName name,
-            HotelDescription description,
-            Location location,
-            Price totalPrice,
-            ImageURL imageURL,
-            AverageRating averageRating
+            String id,
+            String name,
+            String description,
+            String location,
+            Integer totalPrice,
+            String imageURL,
+            Double averageRating
     ) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.location = location;
-        this.totalPrice = totalPrice;
-        this.imageURL = imageURL;
-        this.averageRating = averageRating;
+        this.id = new AggregateId(id);
+        this.name = new HotelName(name);
+        this.description = new HotelDescription(description);
+        this.location = new Location(location);
+        this.totalPrice = new Price(totalPrice);
+        this.imageURL = new ImageURL(imageURL);
+        this.averageRating = new AverageRating(averageRating);
     }
 
     @Override
@@ -44,7 +45,9 @@ public final class Hotel implements AggregateRoot {
 
     @Override
     public List<DomainEvent> pullDomainEvents() {
-        return this.domainEvents;
+        List<DomainEvent> domainEventsCopy = new ArrayList<>(this.domainEvents);
+        this.domainEvents.clear();
+        return domainEventsCopy;
     }
 
     public HotelName getName() {
