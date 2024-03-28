@@ -49,10 +49,12 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                       ├── configuration
     │   │                       ├── controller
     │   │                       ├── cqrs
-    │   │                       │   └── simple
-    │   │                       ├── events
-    │   │                       │   └── publishers
+    │   │                       │   ├── command
+    │   │                       │   │   └── simple
+    │   │                       │   └── query
     │   │                       │       └── simple
+    │   │                       ├── eventbus
+    │   │                       │   └── simple
     │   │                       └── persistence
     │   │                           └── jpa
     │   └── resources
