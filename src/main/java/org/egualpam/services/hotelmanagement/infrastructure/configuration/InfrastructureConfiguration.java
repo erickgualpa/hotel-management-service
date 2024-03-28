@@ -13,10 +13,10 @@ import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
 import org.egualpam.services.hotelmanagement.domain.hotels.Hotel;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsBus;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.SimpleCommandBus;
 import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.SimpleQueryBus;
-import org.egualpam.services.hotelmanagement.infrastructure.events.publishers.simple.SimpleDomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.infrastructure.events.publishers.simple.SimpleDomainEventsBus;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelViewSupplier;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelsViewSupplier;
@@ -52,18 +52,18 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public DomainEventsPublisher domainEventsPublisher(EntityManager entityManager) {
-        return new SimpleDomainEventsPublisher(entityManager);
+    public DomainEventsBus domainEventsBus(EntityManager entityManager) {
+        return new SimpleDomainEventsBus(entityManager);
     }
 
     @Bean
     public CommandBus commandBus(
             AggregateRepository<Review> reviewRepository,
-            DomainEventsPublisher domainEventsPublisher
+            DomainEventsBus domainEventsBus
     ) {
         return new SimpleCommandBus(
                 reviewRepository,
-                domainEventsPublisher
+                domainEventsBus
         );
     }
 

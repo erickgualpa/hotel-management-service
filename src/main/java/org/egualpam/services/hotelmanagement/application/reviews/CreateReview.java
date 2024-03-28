@@ -8,7 +8,7 @@ import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsBus;
 
 public final class CreateReview implements InternalCommand {
 
@@ -18,7 +18,7 @@ public final class CreateReview implements InternalCommand {
     private final Comment comment;
 
     private final AggregateRepository<Review> reviewRepository;
-    private final DomainEventsPublisher domainEventsPublisher;
+    private final DomainEventsBus domainEventsBus;
 
     public CreateReview(
             String reviewId,
@@ -26,14 +26,14 @@ public final class CreateReview implements InternalCommand {
             Integer rating,
             String comment,
             AggregateRepository<Review> reviewRepository,
-            DomainEventsPublisher domainEventsPublisher
+            DomainEventsBus domainEventsBus
     ) {
         this.reviewId = new AggregateId(reviewId);
         this.hotelIdentifier = new HotelId(hotelIdentifier);
         this.rating = new Rating(rating);
         this.comment = new Comment(comment);
         this.reviewRepository = reviewRepository;
-        this.domainEventsPublisher = domainEventsPublisher;
+        this.domainEventsBus = domainEventsBus;
     }
 
     @Override
@@ -51,6 +51,6 @@ public final class CreateReview implements InternalCommand {
                 comment
         );
         reviewRepository.save(review);
-        domainEventsPublisher.publish(review.pullDomainEvents());
+        domainEventsBus.publish(review.pullDomainEvents());
     }
 }

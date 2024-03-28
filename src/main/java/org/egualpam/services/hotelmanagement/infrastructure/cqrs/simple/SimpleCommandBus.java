@@ -8,7 +8,7 @@ import org.egualpam.services.hotelmanagement.application.shared.CommandBus;
 import org.egualpam.services.hotelmanagement.application.shared.InternalCommand;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsBus;
 
 import java.util.Map;
 
@@ -23,18 +23,18 @@ public final class SimpleCommandBus implements CommandBus {
 
     public SimpleCommandBus(
             AggregateRepository<Review> reviewRepository,
-            DomainEventsPublisher domainEventsPublisher
+            DomainEventsBus domainEventsBus
     ) {
         handlers = Map.of(
                 CreateReviewCommand.class,
                 new CreateReviewCommandHandler(
                         reviewRepository,
-                        domainEventsPublisher
+                        domainEventsBus
                 ),
                 UpdateReviewCommand.class,
                 new UpdateReviewCommandHandler(
                         reviewRepository,
-                        domainEventsPublisher
+                        domainEventsBus
                 )
         );
     }
@@ -52,7 +52,7 @@ public final class SimpleCommandBus implements CommandBus {
     static class CreateReviewCommandHandler implements CommandHandler {
 
         private final AggregateRepository<Review> reviewRepository;
-        private final DomainEventsPublisher domainEventsPublisher;
+        private final DomainEventsBus domainEventsBus;
 
         @Override
         public void handle(Command command) {
@@ -64,7 +64,7 @@ public final class SimpleCommandBus implements CommandBus {
                             createReviewCommand.getRating(),
                             createReviewCommand.getComment(),
                             reviewRepository,
-                            domainEventsPublisher
+                            domainEventsBus
                     );
             internalCommand.execute();
         }
@@ -74,7 +74,7 @@ public final class SimpleCommandBus implements CommandBus {
     static class UpdateReviewCommandHandler implements CommandHandler {
 
         private final AggregateRepository<Review> reviewRepository;
-        private final DomainEventsPublisher domainEventsPublisher;
+        private final DomainEventsBus domainEventsBus;
 
         @Override
         public void handle(Command command) {
@@ -84,7 +84,7 @@ public final class SimpleCommandBus implements CommandBus {
                             updateReviewCommand.getReviewIdentifier(),
                             updateReviewCommand.getComment(),
                             reviewRepository,
-                            domainEventsPublisher);
+                            domainEventsBus);
             internalCommand.execute();
         }
     }

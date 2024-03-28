@@ -9,7 +9,7 @@ import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlre
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsBus;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,7 +46,7 @@ class CreateReviewShould {
     private AggregateRepository<Review> reviewRepository;
 
     @Mock
-    private DomainEventsPublisher domainEventsPublisher;
+    private DomainEventsBus domainEventsBus;
 
     @Test
     void givenReviewShouldBeSaved() {
@@ -61,7 +61,7 @@ class CreateReviewShould {
                 rating,
                 comment,
                 reviewRepository,
-                domainEventsPublisher
+                domainEventsBus
         );
         testee.execute();
 
@@ -77,7 +77,7 @@ class CreateReviewShould {
                         }
                 );
 
-        verify(domainEventsPublisher).publish(domainEventsCaptor.capture());
+        verify(domainEventsBus).publish(domainEventsCaptor.capture());
         assertThat(domainEventsCaptor.getValue())
                 .hasSize(1)
                 .first()
@@ -109,7 +109,7 @@ class CreateReviewShould {
                 nextInt(1, 5),
                 randomAlphabetic(10),
                 reviewRepository,
-                domainEventsPublisher
+                domainEventsBus
         );
 
         assertThrows(ReviewAlreadyExists.class, testee::execute);
@@ -129,7 +129,7 @@ class CreateReviewShould {
                         invalidRating,
                         comment,
                         reviewRepository,
-                        domainEventsPublisher
+                        domainEventsBus
                 )
         );
     }
@@ -148,7 +148,7 @@ class CreateReviewShould {
                         rating,
                         comment,
                         reviewRepository,
-                        domainEventsPublisher
+                        domainEventsBus
                 )
         );
     }
@@ -167,7 +167,7 @@ class CreateReviewShould {
                         rating,
                         comment,
                         reviewRepository,
-                        domainEventsPublisher
+                        domainEventsBus
                 )
         );
     }

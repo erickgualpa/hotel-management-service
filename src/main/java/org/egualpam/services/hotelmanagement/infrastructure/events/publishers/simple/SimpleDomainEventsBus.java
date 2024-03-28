@@ -3,15 +3,15 @@ package org.egualpam.services.hotelmanagement.infrastructure.events.publishers.s
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsBus;
 
 import java.util.List;
 
-public class SimpleDomainEventsPublisher implements DomainEventsPublisher {
+public class SimpleDomainEventsBus implements DomainEventsBus {
 
     private final EntityManager entityManager;
 
-    public SimpleDomainEventsPublisher(EntityManager entityManager) {
+    public SimpleDomainEventsBus(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
