@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.domain.hotels;
+package org.egualpam.services.hotelmanagement.hotels.domain;
 
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;

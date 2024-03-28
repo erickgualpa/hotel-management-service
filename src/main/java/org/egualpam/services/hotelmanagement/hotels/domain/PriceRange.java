@@ -1,6 +1,6 @@
-package org.egualpam.services.hotelmanagement.domain.hotels;
+package org.egualpam.services.hotelmanagement.hotels.domain;
 
-import org.egualpam.services.hotelmanagement.domain.hotels.exception.PriceRangeValuesSwapped;
+import org.egualpam.services.hotelmanagement.hotels.domain.exception.PriceRangeValuesSwapped;
 
 import java.util.Optional;
 

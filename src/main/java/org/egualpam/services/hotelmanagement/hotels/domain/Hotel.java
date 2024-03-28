@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.domain.hotels;
+package org.egualpam.services.hotelmanagement.hotels.domain;
 
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRoot;

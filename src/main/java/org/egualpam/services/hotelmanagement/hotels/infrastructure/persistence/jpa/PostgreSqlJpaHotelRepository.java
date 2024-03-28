@@ -1,13 +1,13 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.domain.hotels.AverageRating;
-import org.egualpam.services.hotelmanagement.domain.hotels.Hotel;
-import org.egualpam.services.hotelmanagement.domain.hotels.HotelDescription;
-import org.egualpam.services.hotelmanagement.domain.hotels.HotelName;
-import org.egualpam.services.hotelmanagement.domain.hotels.ImageURL;
-import org.egualpam.services.hotelmanagement.domain.hotels.Location;
-import org.egualpam.services.hotelmanagement.domain.hotels.Price;
+import org.egualpam.services.hotelmanagement.hotels.domain.AverageRating;
+import org.egualpam.services.hotelmanagement.hotels.domain.Hotel;
+import org.egualpam.services.hotelmanagement.hotels.domain.HotelDescription;
+import org.egualpam.services.hotelmanagement.hotels.domain.HotelName;
+import org.egualpam.services.hotelmanagement.hotels.domain.ImageURL;
+import org.egualpam.services.hotelmanagement.hotels.domain.Location;
+import org.egualpam.services.hotelmanagement.hotels.domain.Price;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
