@@ -3,7 +3,7 @@ package org.egualpam.services.hotelmanagement.application.reviews;
 import org.egualpam.services.hotelmanagement.application.shared.InternalCommand;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsBus;
+import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
 
 public final class CreateReview implements InternalCommand {
 
@@ -13,7 +13,7 @@ public final class CreateReview implements InternalCommand {
     private final String comment;
 
     private final AggregateRepository<Review> reviewRepository;
-    private final DomainEventsBus domainEventsBus;
+    private final PublicEventBus publicEventBus;
 
     public CreateReview(
             String reviewId,
@@ -21,14 +21,14 @@ public final class CreateReview implements InternalCommand {
             Integer rating,
             String comment,
             AggregateRepository<Review> reviewRepository,
-            DomainEventsBus domainEventsBus
+            PublicEventBus publicEventBus
     ) {
         this.reviewId = reviewId;
         this.hotelId = hotelId;
         this.rating = rating;
         this.comment = comment;
         this.reviewRepository = reviewRepository;
-        this.domainEventsBus = domainEventsBus;
+        this.publicEventBus = publicEventBus;
     }
 
     @Override
@@ -41,6 +41,6 @@ public final class CreateReview implements InternalCommand {
                 comment
         );
         reviewRepository.save(review);
-        domainEventsBus.publish(review.pullDomainEvents());
+        publicEventBus.publish(review.pullDomainEvents());
     }
 }

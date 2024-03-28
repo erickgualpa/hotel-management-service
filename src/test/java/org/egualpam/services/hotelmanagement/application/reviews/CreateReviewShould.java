@@ -9,7 +9,7 @@ import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlre
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsBus;
+import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class CreateReviewShould {
     private AggregateRepository<Review> reviewRepository;
 
     @Mock
-    private DomainEventsBus domainEventsBus;
+    private PublicEventBus publicEventBus;
 
     @Test
     void createReview() {
@@ -62,7 +62,7 @@ class CreateReviewShould {
                 rating,
                 comment,
                 reviewRepository,
-                domainEventsBus
+                publicEventBus
         );
         testee.execute();
 
@@ -78,7 +78,7 @@ class CreateReviewShould {
                         }
                 );
 
-        verify(domainEventsBus).publish(domainEventsCaptor.capture());
+        verify(publicEventBus).publish(domainEventsCaptor.capture());
         assertThat(domainEventsCaptor.getValue())
                 .hasSize(1)
                 .first()
@@ -110,7 +110,7 @@ class CreateReviewShould {
                 nextInt(1, 5),
                 randomAlphabetic(10),
                 reviewRepository,
-                domainEventsBus
+                publicEventBus
         );
 
         assertThrows(ReviewAlreadyExists.class, testee::execute);
@@ -129,7 +129,7 @@ class CreateReviewShould {
                 invalidRating,
                 comment,
                 reviewRepository,
-                domainEventsBus
+                publicEventBus
         );
 
         assertThrows(InvalidRating.class, testee::execute);
@@ -148,7 +148,7 @@ class CreateReviewShould {
                 rating,
                 comment,
                 reviewRepository,
-                domainEventsBus
+                publicEventBus
         );
 
         assertThrows(InvalidUniqueId.class, testee::execute);
@@ -167,7 +167,7 @@ class CreateReviewShould {
                 rating,
                 comment,
                 reviewRepository,
-                domainEventsBus
+                publicEventBus
         );
 
         assertThrows(InvalidUniqueId.class, testee::execute);
@@ -186,7 +186,7 @@ class CreateReviewShould {
                 rating,
                 comment,
                 reviewRepository,
-                domainEventsBus
+                publicEventBus
         );
 
         assertThrows(RequiredPropertyIsMissing.class, testee::execute);
@@ -205,7 +205,7 @@ class CreateReviewShould {
                 rating,
                 comment,
                 reviewRepository,
-                domainEventsBus
+                publicEventBus
         );
 
         assertThrows(RequiredPropertyIsMissing.class, testee::execute);
@@ -224,7 +224,7 @@ class CreateReviewShould {
                 rating,
                 comment,
                 reviewRepository,
-                domainEventsBus
+                publicEventBus
         );
 
         assertThrows(RequiredPropertyIsMissing.class, testee::execute);
@@ -243,7 +243,7 @@ class CreateReviewShould {
                 rating,
                 comment,
                 reviewRepository,
-                domainEventsBus
+                publicEventBus
         );
 
         assertThrows(RequiredPropertyIsMissing.class, testee::execute);
