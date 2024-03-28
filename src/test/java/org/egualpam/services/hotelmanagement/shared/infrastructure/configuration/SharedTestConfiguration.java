@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
-public class InfrastructureTestConfiguration {
+public class SharedTestConfiguration {
 
     @Bean
     public HotelTestRepository hotelTestRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {

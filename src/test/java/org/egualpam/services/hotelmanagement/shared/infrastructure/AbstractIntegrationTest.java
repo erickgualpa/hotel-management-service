@@ -1,6 +1,6 @@
 package org.egualpam.services.hotelmanagement.shared.infrastructure;
 
-import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.InfrastructureTestConfiguration;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.SharedTestConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +20,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 )
 @ContextConfiguration(
         initializers = AbstractIntegrationTest.PostgreSqlInitializer.class,
-        classes = {InfrastructureTestConfiguration.class}
+        classes = {SharedTestConfiguration.class}
 )
 public abstract class AbstractIntegrationTest {
 
