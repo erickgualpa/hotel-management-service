@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa;
+package org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
 import org.egualpam.services.hotelmanagement.domain.hotels.Hotel;
