@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.shared.infrastructure.controller;
+package org.egualpam.services.hotelmanagement.hotels.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelView;

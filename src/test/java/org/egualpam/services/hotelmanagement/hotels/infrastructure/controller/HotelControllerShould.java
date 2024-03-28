@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.shared.infrastructure.controller;
+package org.egualpam.services.hotelmanagement.hotels.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelView;
@@ -6,11 +6,13 @@ import org.egualpam.services.hotelmanagement.application.shared.Query;
 import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.domain.hotels.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.HotelManagementServiceApplication;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.InfrastructureConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -25,6 +27,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+@ContextConfiguration(classes = HotelManagementServiceApplication.class)
 @WebMvcTest(HotelController.class)
 class HotelControllerShould {
 

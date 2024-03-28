@@ -6,7 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(
         scanBasePackages = {
                 "org.egualpam.services.hotelmanagement.shared.infrastructure.configuration",
-                "org.egualpam.services.hotelmanagement.shared.infrastructure.controller"
+                "org.egualpam.services.hotelmanagement.shared.infrastructure.controller",
+                "org.egualpam.services.hotelmanagement.hotels.infrastructure.controller"
         }
 )
 public class HotelManagementServiceApplication {
