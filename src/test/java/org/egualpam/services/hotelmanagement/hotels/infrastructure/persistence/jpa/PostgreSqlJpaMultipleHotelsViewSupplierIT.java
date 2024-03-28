@@ -51,7 +51,7 @@ class PostgreSqlJpaMultipleHotelsViewSupplierIT extends AbstractIntegrationTest 
 
     @Test
     void returnHotelsSortedByAverageRating() {
-        final ViewSupplier<MultipleHotelsView> testee = new PostgreSqlJpaHotelsViewSupplier(entityManager);
+        final ViewSupplier<MultipleHotelsView> testee = new PostgreSqlJpaMultipleHotelsViewSupplier(entityManager);
 
         UUID lowRatingHotel = randomUUID();
         UUID intermediateRatingHotel = randomUUID();

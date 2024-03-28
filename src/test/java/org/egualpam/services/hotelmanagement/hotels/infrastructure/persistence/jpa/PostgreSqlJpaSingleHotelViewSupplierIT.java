@@ -20,7 +20,7 @@ class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
 
     @Test
     void returnViewWithEmptyOptional_whenHotelIdNotMatchesAnyHotel() {
-        final ViewSupplier<SingleHotelView> testee = new PostgreSqlJpaHotelViewSupplier(entityManager);
+        final ViewSupplier<SingleHotelView> testee = new PostgreSqlJpaSingleHotelViewSupplier(entityManager);
         String hotelId = randomUUID().toString();
         Criteria criteria = new HotelCriteria(hotelId);
 

@@ -5,8 +5,8 @@ import org.egualpam.services.hotelmanagement.hotels.application.MultipleHotelsVi
 import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.Hotel;
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelViewSupplier;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelsViewSupplier;
+import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaMultipleHotelsViewSupplier;
+import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaSingleHotelViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.application.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.springframework.context.annotation.Bean;
@@ -22,11 +22,11 @@ public class HotelsConfiguration {
 
     @Bean
     public ViewSupplier<SingleHotelView> hotelViewSupplier(EntityManager entityManager) {
-        return new PostgreSqlJpaHotelViewSupplier(entityManager);
+        return new PostgreSqlJpaSingleHotelViewSupplier(entityManager);
     }
 
     @Bean
     public ViewSupplier<MultipleHotelsView> hotelsViewSupplier(EntityManager entityManager) {
-        return new PostgreSqlJpaHotelsViewSupplier(entityManager);
+        return new PostgreSqlJpaMultipleHotelsViewSupplier(entityManager);
     }
 }

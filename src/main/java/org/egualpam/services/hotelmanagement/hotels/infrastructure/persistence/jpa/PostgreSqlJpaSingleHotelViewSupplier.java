@@ -14,12 +14,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class PostgreSqlJpaHotelViewSupplier implements ViewSupplier<SingleHotelView> {
+public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<SingleHotelView> {
 
     private final EntityManager entityManager;
     private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
 
-    public PostgreSqlJpaHotelViewSupplier(EntityManager entityManager) {
+    public PostgreSqlJpaSingleHotelViewSupplier(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
     }

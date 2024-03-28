@@ -19,12 +19,12 @@ import java.util.function.Function;
 
 import static java.util.Comparator.comparingDouble;
 
-public class PostgreSqlJpaHotelsViewSupplier implements ViewSupplier<MultipleHotelsView> {
+public class PostgreSqlJpaMultipleHotelsViewSupplier implements ViewSupplier<MultipleHotelsView> {
 
     private final EntityManager entityManager;
     private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
 
-    public PostgreSqlJpaHotelsViewSupplier(EntityManager entityManager) {
+    public PostgreSqlJpaMultipleHotelsViewSupplier(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
     }
