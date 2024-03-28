@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.shared.infrastructure.controller;
+package org.egualpam.services.hotelmanagement.reviews.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egualpam.services.hotelmanagement.application.shared.Command;
@@ -9,11 +9,13 @@ import org.egualpam.services.hotelmanagement.domain.reviews.exception.InvalidRat
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.HotelManagementServiceApplication;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.InfrastructureConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static java.util.UUID.randomUUID;
@@ -28,6 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ContextConfiguration(classes = HotelManagementServiceApplication.class)
 @WebMvcTest(ReviewController.class)
 class ReviewControllerShould {
 
