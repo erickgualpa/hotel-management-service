@@ -4,9 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
-import org.egualpam.services.hotelmanagement.domain.reviews.Comment;
-import org.egualpam.services.hotelmanagement.domain.reviews.HotelId;
-import org.egualpam.services.hotelmanagement.domain.reviews.Rating;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
@@ -42,10 +39,10 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
         }
 
         Review review = new Review(
-                new AggregateId(persistenceReview.getId()),
-                new HotelId(persistenceReview.getHotelId().toString()),
-                new Rating(persistenceReview.getRating()),
-                new Comment(persistenceReview.getComment())
+                persistenceReview.getId().toString(),
+                persistenceReview.getHotelId().toString(),
+                persistenceReview.getRating(),
+                persistenceReview.getComment()
         );
 
         return Optional.of(review);
@@ -56,7 +53,7 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
     public void save(Review review) {
         PersistenceReview persistenceReview = new PersistenceReview();
         persistenceReview.setId(review.getId().value());
-        persistenceReview.setHotelId(review.getHotelIdentifier().value());
+        persistenceReview.setHotelId(review.getHotelId().value());
         persistenceReview.setRating(review.getRating().value());
         persistenceReview.setComment(review.getComment().value());
 

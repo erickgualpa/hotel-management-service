@@ -13,10 +13,10 @@ import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
 import org.egualpam.services.hotelmanagement.domain.hotels.Hotel;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
-import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.SimpleCommandBus;
-import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.SimpleQueryBus;
-import org.egualpam.services.hotelmanagement.infrastructure.events.publishers.simple.SimpleDomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
+import org.egualpam.services.hotelmanagement.infrastructure.cqrs.command.simple.SimpleCommandBus;
+import org.egualpam.services.hotelmanagement.infrastructure.cqrs.query.simple.SimpleQueryBus;
+import org.egualpam.services.hotelmanagement.infrastructure.eventbus.simple.SimplePublicEventBus;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelViewSupplier;
 import org.egualpam.services.hotelmanagement.infrastructure.persistence.jpa.PostgreSqlJpaHotelsViewSupplier;
@@ -42,28 +42,28 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public AggregateRepository<Hotel> aggregateHotelRepository(EntityManager entityManager) {
+    public AggregateRepository<Hotel> hotelRepository(EntityManager entityManager) {
         return new PostgreSqlJpaHotelRepository(entityManager);
     }
 
     @Bean
-    public AggregateRepository<Review> aggregateReviewRepository(EntityManager entityManager) {
+    public AggregateRepository<Review> reviewRepository(EntityManager entityManager) {
         return new PostgreSqlJpaReviewRepository(entityManager);
     }
 
     @Bean
-    public DomainEventsPublisher domainEventsPublisher(EntityManager entityManager) {
-        return new SimpleDomainEventsPublisher(entityManager);
+    public PublicEventBus publicEventBus(EntityManager entityManager) {
+        return new SimplePublicEventBus(entityManager);
     }
 
     @Bean
     public CommandBus commandBus(
-            AggregateRepository<Review> aggregateReviewRepository,
-            DomainEventsPublisher domainEventsPublisher
+            AggregateRepository<Review> reviewRepository,
+            PublicEventBus publicEventBus
     ) {
         return new SimpleCommandBus(
-                aggregateReviewRepository,
-                domainEventsPublisher
+                reviewRepository,
+                publicEventBus
         );
     }
 

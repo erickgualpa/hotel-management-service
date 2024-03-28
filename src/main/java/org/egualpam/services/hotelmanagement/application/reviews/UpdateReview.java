@@ -5,32 +5,32 @@ import org.egualpam.services.hotelmanagement.domain.reviews.Comment;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
 
 public class UpdateReview implements InternalCommand {
 
     private final AggregateId reviewId;
     private final Comment comment;
-    private final AggregateRepository<Review> aggregateReviewRepository;
-    private final DomainEventsPublisher domainEventsPublisher;
+    private final AggregateRepository<Review> reviewRepository;
+    private final PublicEventBus publicEventBus;
 
     public UpdateReview(
             String reviewId,
             String comment,
-            AggregateRepository<Review> aggregateReviewRepository,
-            DomainEventsPublisher domainEventsPublisher
+            AggregateRepository<Review> reviewRepository,
+            PublicEventBus publicEventBus
     ) {
         this.reviewId = new AggregateId(reviewId);
         this.comment = new Comment(comment);
-        this.aggregateReviewRepository = aggregateReviewRepository;
-        this.domainEventsPublisher = domainEventsPublisher;
+        this.reviewRepository = reviewRepository;
+        this.publicEventBus = publicEventBus;
     }
 
     @Override
     public void execute() {
-        Review review = aggregateReviewRepository.find(reviewId).orElseThrow();
+        Review review = reviewRepository.find(reviewId).orElseThrow();
         review.updateComment(comment);
-        aggregateReviewRepository.save(review);
-        domainEventsPublisher.publish(review.pullDomainEvents());
+        reviewRepository.save(review);
+        publicEventBus.publish(review.pullDomainEvents());
     }
 }

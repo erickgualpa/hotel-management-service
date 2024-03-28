@@ -1,13 +1,10 @@
 package org.egualpam.services.hotelmanagement.application.reviews;
 
-import org.egualpam.services.hotelmanagement.domain.reviews.Comment;
-import org.egualpam.services.hotelmanagement.domain.reviews.HotelId;
-import org.egualpam.services.hotelmanagement.domain.reviews.Rating;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -29,10 +26,10 @@ import static org.mockito.Mockito.when;
 class UpdateReviewShould {
 
     @Mock
-    private AggregateRepository<Review> aggregateReviewRepository;
+    private AggregateRepository<Review> reviewRepository;
 
     @Mock
-    private DomainEventsPublisher domainEventsPublisher;
+    private PublicEventBus publicEventBus;
 
     @Captor
     private ArgumentCaptor<Review> reviewCaptor;
@@ -46,25 +43,25 @@ class UpdateReviewShould {
         String comment = randomAlphabetic(10);
 
         Review review = new Review(
-                new AggregateId(reviewId),
-                new HotelId(randomUUID().toString()),
-                new Rating(nextInt(1, 5)),
-                new Comment(randomAlphabetic(10))
+                reviewId,
+                randomUUID().toString(),
+                nextInt(1, 5),
+                randomAlphabetic(10)
         );
 
-        when(aggregateReviewRepository.find(new AggregateId(reviewId)))
+        when(reviewRepository.find(new AggregateId(reviewId)))
                 .thenReturn(Optional.of(review));
 
         UpdateReview testee = new UpdateReview(
                 reviewId,
                 comment,
-                aggregateReviewRepository,
-                domainEventsPublisher
+                reviewRepository,
+                publicEventBus
         );
 
         testee.execute();
 
-        verify(aggregateReviewRepository).save(reviewCaptor.capture());
+        verify(reviewRepository).save(reviewCaptor.capture());
         assertThat(reviewCaptor.getValue())
                 .isNotNull()
                 .satisfies(
@@ -74,7 +71,7 @@ class UpdateReviewShould {
                         }
                 );
 
-        verify(domainEventsPublisher).publish(domainEventsCaptor.capture());
+        verify(publicEventBus).publish(domainEventsCaptor.capture());
         assertThat(domainEventsCaptor.getValue())
                 .hasSize(1)
                 .first()

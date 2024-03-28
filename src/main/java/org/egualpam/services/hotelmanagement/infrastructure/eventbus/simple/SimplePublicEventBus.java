@@ -1,17 +1,17 @@
-package org.egualpam.services.hotelmanagement.infrastructure.events.publishers.simple;
+package org.egualpam.services.hotelmanagement.infrastructure.eventbus.simple;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
 
 import java.util.List;
 
-public class SimpleDomainEventsPublisher implements DomainEventsPublisher {
+public class SimplePublicEventBus implements PublicEventBus {
 
     private final EntityManager entityManager;
 
-    public SimpleDomainEventsPublisher(EntityManager entityManager) {
+    public SimplePublicEventBus(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 

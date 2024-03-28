@@ -9,8 +9,9 @@ import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlre
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,13 +44,13 @@ class CreateReviewShould {
     private ArgumentCaptor<List<DomainEvent>> domainEventsCaptor;
 
     @Mock
-    private AggregateRepository<Review> aggregateReviewRepository;
+    private AggregateRepository<Review> reviewRepository;
 
     @Mock
-    private DomainEventsPublisher domainEventsPublisher;
+    private PublicEventBus publicEventBus;
 
     @Test
-    void givenReviewShouldBeSaved() {
+    void createReview() {
         String reviewId = randomUUID().toString();
         String hotelIdentifier = randomUUID().toString();
         Integer rating = nextInt(1, 5);
@@ -60,24 +61,24 @@ class CreateReviewShould {
                 hotelIdentifier,
                 rating,
                 comment,
-                aggregateReviewRepository,
-                domainEventsPublisher
+                reviewRepository,
+                publicEventBus
         );
         testee.execute();
 
-        verify(aggregateReviewRepository).save(reviewCaptor.capture());
+        verify(reviewRepository).save(reviewCaptor.capture());
         assertThat(reviewCaptor.getValue())
                 .satisfies(
                         result -> {
                             assertThat(result.getId()).isEqualTo(new AggregateId(reviewId));
-                            assertThat(result.getHotelIdentifier()).isEqualTo(new HotelId(hotelIdentifier));
+                            assertThat(result.getHotelId()).isEqualTo(new HotelId(hotelIdentifier));
                             assertThat(result.getRating()).isEqualTo(new Rating(rating));
                             assertThat(result.getComment()).isEqualTo(new Comment(comment));
                             assertThat(result.pullDomainEvents()).isEmpty();
                         }
                 );
 
-        verify(domainEventsPublisher).publish(domainEventsCaptor.capture());
+        verify(publicEventBus).publish(domainEventsCaptor.capture());
         assertThat(domainEventsCaptor.getValue())
                 .hasSize(1)
                 .first()
@@ -95,21 +96,21 @@ class CreateReviewShould {
         String reviewId = randomUUID().toString();
 
         Review review = new Review(
-                new AggregateId(reviewId),
-                new HotelId(randomUUID().toString()),
-                new Rating(nextInt(1, 5)),
-                new Comment(randomAlphabetic(10))
+                reviewId,
+                randomUUID().toString(),
+                nextInt(1, 5),
+                randomAlphabetic(10)
         );
 
-        when(aggregateReviewRepository.find(any(AggregateId.class))).thenReturn(Optional.of(review));
+        when(reviewRepository.find(any(AggregateId.class))).thenReturn(Optional.of(review));
 
         CreateReview testee = new CreateReview(
                 reviewId,
                 randomUUID().toString(),
                 nextInt(1, 5),
                 randomAlphabetic(10),
-                aggregateReviewRepository,
-                domainEventsPublisher
+                reviewRepository,
+                publicEventBus
         );
 
         assertThrows(ReviewAlreadyExists.class, testee::execute);
@@ -117,58 +118,134 @@ class CreateReviewShould {
 
     @ValueSource(ints = {0, 6})
     @ParameterizedTest
-    void domainExceptionShouldBeThrown_whenRatingValueIsOutOfAllowedBounds(Integer invalidRating) {
+    void throwDomainExceptionWhenRatingValueIsOutOfAllowedBounds(Integer invalidRating) {
         String reviewId = randomUUID().toString();
         String hotelIdentifier = randomUUID().toString();
         String comment = randomAlphabetic(10);
-        assertThrows(
-                InvalidRating.class,
-                () -> new CreateReview(
-                        reviewId,
-                        hotelIdentifier,
-                        invalidRating,
-                        comment,
-                        aggregateReviewRepository,
-                        domainEventsPublisher
-                )
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                hotelIdentifier,
+                invalidRating,
+                comment,
+                reviewRepository,
+                publicEventBus
         );
+
+        assertThrows(InvalidRating.class, testee::execute);
     }
 
     @Test
-    void domainExceptionShouldBeThrown_whenReviewIdHasInvalidFormat() {
+    void throwDomainExceptionWhenReviewIdHasInvalidFormat() {
         String invalidIdentifier = randomAlphanumeric(10);
         String hotelIdentifier = randomUUID().toString();
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
-        assertThrows(
-                InvalidUniqueId.class,
-                () -> new CreateReview(
-                        invalidIdentifier,
-                        hotelIdentifier,
-                        rating,
-                        comment,
-                        aggregateReviewRepository,
-                        domainEventsPublisher
-                )
+
+        CreateReview testee = new CreateReview(
+                invalidIdentifier,
+                hotelIdentifier,
+                rating,
+                comment,
+                reviewRepository,
+                publicEventBus
         );
+
+        assertThrows(InvalidUniqueId.class, testee::execute);
     }
 
     @Test
-    void domainExceptionShouldBeThrown_whenHotelIdentifierHasInvalidFormat() {
+    void throwDomainExceptionWhenHotelIdHasInvalidFormat() {
         String invalidIdentifier = randomAlphanumeric(10);
         String reviewId = randomUUID().toString();
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
-        assertThrows(
-                InvalidUniqueId.class,
-                () -> new CreateReview(
-                        reviewId,
-                        invalidIdentifier,
-                        rating,
-                        comment,
-                        aggregateReviewRepository,
-                        domainEventsPublisher
-                )
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                invalidIdentifier,
+                rating,
+                comment,
+                reviewRepository,
+                publicEventBus
         );
+
+        assertThrows(InvalidUniqueId.class, testee::execute);
+    }
+
+    @Test
+    void throwDomainExceptionWhenReviewIdIsMissing() {
+        String reviewId = null;
+        String hotelId = randomUUID().toString();
+        int rating = nextInt(1, 5);
+        String comment = randomAlphabetic(10);
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                hotelId,
+                rating,
+                comment,
+                reviewRepository,
+                publicEventBus
+        );
+
+        assertThrows(RequiredPropertyIsMissing.class, testee::execute);
+    }
+
+    @Test
+    void throwDomainExceptionWhenHotelIdIsMissing() {
+        String reviewId = randomUUID().toString();
+        String hotelId = null;
+        int rating = nextInt(1, 5);
+        String comment = randomAlphabetic(10);
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                hotelId,
+                rating,
+                comment,
+                reviewRepository,
+                publicEventBus
+        );
+
+        assertThrows(RequiredPropertyIsMissing.class, testee::execute);
+    }
+
+    @Test
+    void throwDomainExceptionWhenRatingIsMissing() {
+        String reviewId = randomUUID().toString();
+        String hotelId = randomUUID().toString();
+        Integer rating = null;
+        String comment = randomAlphabetic(10);
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                hotelId,
+                rating,
+                comment,
+                reviewRepository,
+                publicEventBus
+        );
+
+        assertThrows(RequiredPropertyIsMissing.class, testee::execute);
+    }
+
+    @Test
+    void throwDomainExceptionWhenCommentIsMissing() {
+        String reviewId = randomUUID().toString();
+        String hotelId = randomUUID().toString();
+        Integer rating = nextInt(1, 5);
+        String comment = null;
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                hotelId,
+                rating,
+                comment,
+                reviewRepository,
+                publicEventBus
+        );
+
+        assertThrows(RequiredPropertyIsMissing.class, testee::execute);
     }
 }

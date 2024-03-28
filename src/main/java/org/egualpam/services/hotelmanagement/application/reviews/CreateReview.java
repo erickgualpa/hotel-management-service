@@ -1,56 +1,46 @@
 package org.egualpam.services.hotelmanagement.application.reviews;
 
 import org.egualpam.services.hotelmanagement.application.shared.InternalCommand;
-import org.egualpam.services.hotelmanagement.domain.reviews.Comment;
-import org.egualpam.services.hotelmanagement.domain.reviews.HotelId;
-import org.egualpam.services.hotelmanagement.domain.reviews.Rating;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
-import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsPublisher;
+import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
 
 public final class CreateReview implements InternalCommand {
 
-    private final AggregateId reviewId;
-    private final HotelId hotelIdentifier;
-    private final Rating rating;
-    private final Comment comment;
+    private final String reviewId;
+    private final String hotelId;
+    private final Integer rating;
+    private final String comment;
 
-    private final AggregateRepository<Review> aggregateReviewRepository;
-    private final DomainEventsPublisher domainEventsPublisher;
+    private final AggregateRepository<Review> reviewRepository;
+    private final PublicEventBus publicEventBus;
 
     public CreateReview(
             String reviewId,
-            String hotelIdentifier,
+            String hotelId,
             Integer rating,
             String comment,
-            AggregateRepository<Review> aggregateReviewRepository,
-            DomainEventsPublisher domainEventsPublisher
+            AggregateRepository<Review> reviewRepository,
+            PublicEventBus publicEventBus
     ) {
-        this.reviewId = new AggregateId(reviewId);
-        this.hotelIdentifier = new HotelId(hotelIdentifier);
-        this.rating = new Rating(rating);
-        this.comment = new Comment(comment);
-        this.aggregateReviewRepository = aggregateReviewRepository;
-        this.domainEventsPublisher = domainEventsPublisher;
+        this.reviewId = reviewId;
+        this.hotelId = hotelId;
+        this.rating = rating;
+        this.comment = comment;
+        this.reviewRepository = reviewRepository;
+        this.publicEventBus = publicEventBus;
     }
 
     @Override
     public void execute() {
-        aggregateReviewRepository.find(reviewId)
-                .ifPresent(
-                        review -> {
-                            throw new ReviewAlreadyExists();
-                        }
-                );
         Review review = Review.create(
+                reviewRepository,
                 reviewId,
-                hotelIdentifier,
+                hotelId,
                 rating,
                 comment
         );
-        aggregateReviewRepository.save(review);
-        domainEventsPublisher.publish(review.pullDomainEvents());
+        reviewRepository.save(review);
+        publicEventBus.publish(review.pullDomainEvents());
     }
 }

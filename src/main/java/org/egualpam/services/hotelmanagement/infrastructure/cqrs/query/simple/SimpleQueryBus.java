@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple;
+package org.egualpam.services.hotelmanagement.infrastructure.cqrs.query.simple;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelView;
@@ -53,9 +53,11 @@ public final class SimpleQueryBus implements QueryBus {
 
         @Override
         public View handle(Query query) {
-            String hotelId = ((FindHotelReviewsQuery) query).getHotelIdentifier();
+            final FindHotelReviewsQuery findHotelReviewsQuery = (FindHotelReviewsQuery) query;
             return reviewsViewSupplier.get(
-                    new ReviewCriteria(hotelId)
+                    new ReviewCriteria(
+                            findHotelReviewsQuery.getHotelIdentifier()
+                    )
             );
         }
     }
@@ -67,11 +69,12 @@ public final class SimpleQueryBus implements QueryBus {
 
         @Override
         public View handle(Query query) {
+            final FindHotelsQuery findHotelsQuery = (FindHotelsQuery) query;
             return hotelsViewSupplier.get(
                     new HotelCriteria(
-                            ((FindHotelsQuery) query).getLocation(),
-                            ((FindHotelsQuery) query).getMinPrice(),
-                            ((FindHotelsQuery) query).getMaxPrice()
+                            findHotelsQuery.getLocation(),
+                            findHotelsQuery.getMinPrice(),
+                            findHotelsQuery.getMaxPrice()
                     )
             );
         }
@@ -84,9 +87,11 @@ public final class SimpleQueryBus implements QueryBus {
 
         @Override
         public View handle(Query query) {
-            String hotelId = ((FindHotelQuery) query).getHotelId();
+            final FindHotelQuery findHotelQuery = (FindHotelQuery) query;
             return hotelViewSupplier.get(
-                    new HotelCriteria(hotelId)
+                    new HotelCriteria(
+                            findHotelQuery.getHotelId()
+                    )
             );
         }
     }

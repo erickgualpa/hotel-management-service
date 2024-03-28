@@ -10,9 +10,10 @@ import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.InvalidRating;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
-import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.CreateReviewCommand;
-import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.FindHotelReviewsQuery;
-import org.egualpam.services.hotelmanagement.infrastructure.cqrs.simple.UpdateReviewCommand;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
+import org.egualpam.services.hotelmanagement.infrastructure.cqrs.command.simple.CreateReviewCommand;
+import org.egualpam.services.hotelmanagement.infrastructure.cqrs.command.simple.UpdateReviewCommand;
+import org.egualpam.services.hotelmanagement.infrastructure.cqrs.query.simple.FindHotelReviewsQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -82,7 +83,7 @@ public final class ReviewController {
 
         try {
             commandBus.publish(createReviewCommand);
-        } catch (InvalidUniqueId | InvalidRating e) {
+        } catch (RequiredPropertyIsMissing | InvalidUniqueId | InvalidRating e) {
             return ResponseEntity.badRequest().build();
         } catch (ReviewAlreadyExists e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
