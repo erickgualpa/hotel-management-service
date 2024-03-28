@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.simple.simple;
+package org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.simple;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
