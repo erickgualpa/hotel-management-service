@@ -45,12 +45,12 @@ class ReviewControllerShould {
     @Test
     void returnBadRequest_whenPostReviewsIsPerformedWithMissingProperties() throws Exception {
         String reviewId = randomUUID().toString();
-        String hotelIdentifier = null;
+        String hotelId = null;
         String comment = null;
         Integer invalidRating = null;
 
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
-                hotelIdentifier,
+                hotelId,
                 invalidRating,
                 comment
         );
@@ -70,13 +70,13 @@ class ReviewControllerShould {
 
     @Test
     void returnBadRequest_whenPostReviewsIsPerformedWithInvalidRating() throws Exception {
-        String hotelIdentifier = randomUUID().toString();
-        String reviewIdentifier = randomUUID().toString();
+        String hotelId = randomUUID().toString();
+        String reviewId = randomUUID().toString();
         String comment = randomAlphabetic(10);
         Integer invalidRating = nextInt(6, 10);
 
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
-                hotelIdentifier,
+                hotelId,
                 invalidRating,
                 comment
         );
@@ -88,7 +88,7 @@ class ReviewControllerShould {
                 .publish(any(Command.class));
 
         mockMvc.perform(
-                        post("/v1/reviews/{reviewIdentifier}", reviewIdentifier)
+                        post("/v1/reviews/{reviewId}", reviewId)
                                 .contentType(APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isBadRequest());
@@ -96,13 +96,13 @@ class ReviewControllerShould {
 
     @Test
     void returnBadRequest_whenPostReviewsIsPerformedWithInvalidReviewId() throws Exception {
-        String invalidHotelIdentifier = randomAlphanumeric(10);
-        String invalidReviewIdentifier = randomAlphanumeric(10);
+        String invalidHotelId = randomAlphanumeric(10);
+        String invalidReviewId = randomAlphanumeric(10);
         String comment = randomAlphabetic(10);
         Integer rating = nextInt(1, 5);
 
         CreateReviewRequest createReviewRequest = new CreateReviewRequest(
-                invalidHotelIdentifier,
+                invalidHotelId,
                 rating,
                 comment
         );
@@ -114,7 +114,7 @@ class ReviewControllerShould {
                 .publish(any(Command.class));
 
         mockMvc.perform(
-                        post("/v1/reviews/{reviewIdentifier}", invalidReviewIdentifier)
+                        post("/v1/reviews/{reviewId}", invalidReviewId)
                                 .contentType(APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isBadRequest());
@@ -133,7 +133,7 @@ class ReviewControllerShould {
                 .publish(any(Command.class));
 
         mockMvc.perform(
-                        put("/v1/reviews/{reviewIdentifier}", invalidReviewId)
+                        put("/v1/reviews/{reviewId}", invalidReviewId)
                                 .contentType(APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isBadRequest());
@@ -154,7 +154,7 @@ class ReviewControllerShould {
                 .publish(any(Command.class));
 
         mockMvc.perform(
-                        post("/v1/reviews/{reviewIdentifier}", randomUUID().toString())
+                        post("/v1/reviews/{reviewId}", randomUUID().toString())
                                 .contentType(APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isConflict());
@@ -187,7 +187,7 @@ class ReviewControllerShould {
                 .publish(any(Command.class));
 
         mockMvc.perform(
-                        post("/v1/reviews/{reviewIdentifier}", randomUUID().toString())
+                        post("/v1/reviews/{reviewId}", randomUUID().toString())
                                 .contentType(APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isInternalServerError());
@@ -204,7 +204,7 @@ class ReviewControllerShould {
                 .publish(any(Command.class));
 
         mockMvc.perform(
-                        put("/v1/reviews/{reviewIdentifier}", randomUUID().toString())
+                        put("/v1/reviews/{reviewId}", randomUUID().toString())
                                 .contentType(APPLICATION_JSON)
                                 .content(request))
                 .andExpect(status().isInternalServerError());
