@@ -31,14 +31,15 @@ public class PostgreSqlJpaMultipleHotelsViewSupplier implements ViewSupplier<Mul
 
     @Override
     public MultipleHotelsView get(Criteria criteria) {
-        PriceRange priceRange = ((HotelCriteria) criteria).getPriceRange();
-        Optional<String> location = ((HotelCriteria) criteria).getLocation().map(Location::value);
+        HotelCriteria hotelCriteria = (HotelCriteria) criteria;
+        Optional<String> location = hotelCriteria.getLocation().map(Location::value);
+        Optional<PriceRange> priceRange = hotelCriteria.getPriceRange();
 
         CriteriaQuery<PersistenceHotel> criteriaQuery =
                 new HotelCriteriaQueryBuilder(entityManager)
                         .withLocation(location)
-                        .withMinPrice(priceRange.minPrice().map(Price::value))
-                        .withMaxPrice(priceRange.maxPrice().map(Price::value))
+                        .withMinPrice(priceRange.flatMap(PriceRange::minPrice).map(Price::value))
+                        .withMaxPrice(priceRange.flatMap(PriceRange::maxPrice).map(Price::value))
                         .build();
 
         List<MultipleHotelsView.Hotel> hotels = entityManager
