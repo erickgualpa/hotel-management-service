@@ -6,7 +6,7 @@ import io.swagger.v3.oas.models.info.Info;
 import jakarta.persistence.EntityManager;
 import org.egualpam.services.hotelmanagement.hotels.application.MultipleHotelsView;
 import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
-import org.egualpam.services.hotelmanagement.reviews.application.ReviewsView;
+import org.egualpam.services.hotelmanagement.reviews.application.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.Review;
 import org.egualpam.services.hotelmanagement.shared.application.CommandBus;
 import org.egualpam.services.hotelmanagement.shared.application.QueryBus;
@@ -53,14 +53,14 @@ public class SharedConfiguration {
 
     @Bean
     public QueryBus queryBus(
-            ViewSupplier<SingleHotelView> hotelViewSupplier,
-            ViewSupplier<MultipleHotelsView> hotelsViewSupplier,
-            ViewSupplier<ReviewsView> reviewsViewSupplier
+            ViewSupplier<SingleHotelView> singleHotelViewSupplier,
+            ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier,
+            ViewSupplier<MultipleReviewsView> multipleReviewViewSupplier
     ) {
         return new SimpleQueryBus(
-                hotelViewSupplier,
-                hotelsViewSupplier,
-                reviewsViewSupplier
+                singleHotelViewSupplier,
+                multipleHotelsViewSupplier,
+                multipleReviewViewSupplier
         );
     }
 }
