@@ -2,7 +2,7 @@ package org.egualpam.services.hotelmanagement.reviews.infrastructure.persistence
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
-import org.egualpam.services.hotelmanagement.reviews.application.ReviewsView;
+import org.egualpam.services.hotelmanagement.reviews.application.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.ReviewCriteria;
 import org.egualpam.services.hotelmanagement.shared.application.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
@@ -11,16 +11,16 @@ import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.j
 import java.util.List;
 import java.util.UUID;
 
-public class PostgreSqlJpaReviewsViewSupplier implements ViewSupplier<ReviewsView> {
+public class PostgreSqlJpaMultipleReviewsViewSupplier implements ViewSupplier<MultipleReviewsView> {
 
     private final EntityManager entityManager;
 
-    public PostgreSqlJpaReviewsViewSupplier(EntityManager entityManager) {
+    public PostgreSqlJpaMultipleReviewsViewSupplier(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
     @Override
-    public ReviewsView get(Criteria criteria) {
+    public MultipleReviewsView get(Criteria criteria) {
         UUID hotelId = ((ReviewCriteria) criteria).getHotelId().value();
 
         String sql = """
@@ -36,14 +36,14 @@ public class PostgreSqlJpaReviewsViewSupplier implements ViewSupplier<ReviewsVie
 
         List<PersistenceReview> persistenceReviews = query.getResultList();
 
-        List<ReviewsView.Review> reviews = persistenceReviews.stream()
+        List<MultipleReviewsView.Review> reviews = persistenceReviews.stream()
                 .map(
                         review ->
-                                new ReviewsView.Review(
+                                new MultipleReviewsView.Review(
                                         review.getRating(),
                                         review.getComment()))
                 .toList();
 
-        return new ReviewsView(reviews);
+        return new MultipleReviewsView(reviews);
     }
 }

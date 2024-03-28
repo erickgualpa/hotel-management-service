@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotelmanagement.hotels.application.MultipleHotelsView;
 import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
-import org.egualpam.services.hotelmanagement.reviews.application.ReviewsView;
+import org.egualpam.services.hotelmanagement.reviews.application.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.ReviewCriteria;
 import org.egualpam.services.hotelmanagement.shared.application.Query;
 import org.egualpam.services.hotelmanagement.shared.application.QueryBus;
@@ -25,11 +25,11 @@ public final class SimpleQueryBus implements QueryBus {
     public SimpleQueryBus(
             ViewSupplier<SingleHotelView> singleHotelViewSupplier,
             ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier,
-            ViewSupplier<ReviewsView> reviewsViewSupplier
+            ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier
     ) {
         handlers = Map.of(
                 FindHotelReviewsQuery.class,
-                new FindHotelReviewsQueryHandler(reviewsViewSupplier),
+                new FindHotelReviewsQueryHandler(multipleReviewsViewSupplier),
                 FindHotelsQuery.class,
                 new FindHotelsQueryHandler(multipleHotelsViewSupplier),
                 FindHotelQuery.class,
@@ -49,12 +49,12 @@ public final class SimpleQueryBus implements QueryBus {
     @RequiredArgsConstructor
     static class FindHotelReviewsQueryHandler implements QueryHandler {
 
-        private final ViewSupplier<ReviewsView> reviewsViewSupplier;
+        private final ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier;
 
         @Override
         public View handle(Query query) {
             final FindHotelReviewsQuery findHotelReviewsQuery = (FindHotelReviewsQuery) query;
-            return reviewsViewSupplier.get(
+            return multipleReviewsViewSupplier.get(
                     new ReviewCriteria(
                             findHotelReviewsQuery.getHotelIdentifier()
                     )
