@@ -34,29 +34,40 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │       └── egualpam
     │   │           └── services
     │   │               └── hotelmanagement
-    │   │                   ├── application
-    │   │                   │   ├── hotels
-    │   │                   │   ├── reviews
-    │   │                   │   └── shared
-    │   │                   ├── domain
-    │   │                   │   ├── hotels
+    │   │                   ├── hotels
+    │   │                   │   ├── application
+    │   │                   │   ├── domain
     │   │                   │   │   └── exception
-    │   │                   │   ├── reviews
+    │   │                   │   └── infrastructure
+    │   │                   │       ├── configuration
+    │   │                   │       ├── controller
+    │   │                   │       └── persistence
+    │   │                   │           └── jpa
+    │   │                   ├── reviews
+    │   │                   │   ├── application
+    │   │                   │   ├── domain
     │   │                   │   │   └── exception
-    │   │                   │   └── shared
-    │   │                   │       └── exception
-    │   │                   └── infrastructure
-    │   │                       ├── configuration
-    │   │                       ├── controller
-    │   │                       ├── cqrs
-    │   │                       │   ├── command
-    │   │                       │   │   └── simple
-    │   │                       │   └── query
-    │   │                       │       └── simple
-    │   │                       ├── eventbus
-    │   │                       │   └── simple
-    │   │                       └── persistence
-    │   │                           └── jpa
+    │   │                   │   └── infrastructure
+    │   │                   │       ├── configuration
+    │   │                   │       ├── controller
+    │   │                   │       └── persistence
+    │   │                   │           └── jpa
+    │   │                   └── shared
+    │   │                       ├── application
+    │   │                       ├── domain
+    │   │                       │   └── exception
+    │   │                       └── infrastructure
+    │   │                           ├── configuration
+    │   │                           ├── cqrs
+    │   │                           │   ├── command
+    │   │                           │   │   └── simple
+    │   │                           │   └── query
+    │   │                           │       └── simple
+    │   │                           ├── eventbus
+    │   │                           │   └── simple
+    │   │                           │       └── simple
+    │   │                           └── persistence
+    │   │                               └── jpa
     │   └── resources
     │       └── db
     │           └── migration
@@ -66,14 +77,21 @@ Check it and try to find the best available hotel in Mars! 👽
         │       └── egualpam
         │           └── services
         │               └── hotelmanagement
-        │                   ├── application
-        │                   │   └── reviews
         │                   ├── e2e
-        │                   ├── helpers
-        │                   └── infrastructure
-        │                       ├── configuration
-        │                       ├── controller
-        │                       └── persistence
-        │                           └── jpa
+        │                   ├── hotels
+        │                   │   └── infrastructure
+        │                   │       ├── controller
+        │                   │       └── persistence
+        │                   │           └── jpa
+        │                   ├── reviews
+        │                   │   ├── application
+        │                   │   └── infrastructure
+        │                   │       ├── controller
+        │                   │       └── persistence
+        │                   │           └── jpa
+        │                   └── shared
+        │                       └── infrastructure
+        │                           ├── configuration
+        │                           └── helpers
         └── resources
 ```
