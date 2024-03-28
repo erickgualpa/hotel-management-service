@@ -1,8 +1,8 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.configuration;
 
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelView;
 import org.egualpam.services.hotelmanagement.hotels.application.HotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.Hotel;
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelViewSupplier;
@@ -21,7 +21,7 @@ public class HotelsConfiguration {
     }
 
     @Bean
-    public ViewSupplier<HotelView> hotelViewSupplier(EntityManager entityManager) {
+    public ViewSupplier<SingleHotelView> hotelViewSupplier(EntityManager entityManager) {
         return new PostgreSqlJpaHotelViewSupplier(entityManager);
     }
 

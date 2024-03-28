@@ -1,8 +1,8 @@
 package org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelView;
 import org.egualpam.services.hotelmanagement.hotels.application.HotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
 import org.egualpam.services.hotelmanagement.reviews.application.ReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.ReviewCriteria;
@@ -23,7 +23,7 @@ public final class SimpleQueryBus implements QueryBus {
     private final Map<Class<? extends Query>, QueryHandler> handlers;
 
     public SimpleQueryBus(
-            ViewSupplier<HotelView> hotelViewSupplier,
+            ViewSupplier<SingleHotelView> hotelViewSupplier,
             ViewSupplier<HotelsView> hotelsViewSupplier,
             ViewSupplier<ReviewsView> reviewsViewSupplier
     ) {
@@ -83,7 +83,7 @@ public final class SimpleQueryBus implements QueryBus {
     @RequiredArgsConstructor
     static class FindHotelQueryHandler implements QueryHandler {
 
-        private final ViewSupplier<HotelView> hotelViewSupplier;
+        private final ViewSupplier<SingleHotelView> hotelViewSupplier;
 
         @Override
         public View handle(Query query) {

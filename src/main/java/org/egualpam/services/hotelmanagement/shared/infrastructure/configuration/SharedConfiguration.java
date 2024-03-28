@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelView;
 import org.egualpam.services.hotelmanagement.hotels.application.HotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.reviews.application.ReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.Review;
 import org.egualpam.services.hotelmanagement.shared.application.CommandBus;
@@ -53,7 +53,7 @@ public class SharedConfiguration {
 
     @Bean
     public QueryBus queryBus(
-            ViewSupplier<HotelView> hotelViewSupplier,
+            ViewSupplier<SingleHotelView> hotelViewSupplier,
             ViewSupplier<HotelsView> hotelsViewSupplier,
             ViewSupplier<ReviewsView> reviewsViewSupplier
     ) {

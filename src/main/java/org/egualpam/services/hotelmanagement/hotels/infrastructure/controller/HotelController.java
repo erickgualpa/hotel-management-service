@@ -1,8 +1,8 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelView;
 import org.egualpam.services.hotelmanagement.hotels.application.HotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotelmanagement.shared.application.Query;
 import org.egualpam.services.hotelmanagement.shared.application.QueryBus;
@@ -35,9 +35,9 @@ public final class HotelController {
     public ResponseEntity<GetHotelResponse> getHotel(@PathVariable String hotelId) {
         Query findHotelQuery = new FindHotelQuery(hotelId);
 
-        final HotelView hotelView;
+        final SingleHotelView singleHotelView;
         try {
-            hotelView = (HotelView) queryBus.publish(findHotelQuery);
+            singleHotelView = (SingleHotelView) queryBus.publish(findHotelQuery);
         } catch (InvalidUniqueId e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -48,12 +48,12 @@ public final class HotelController {
             return ResponseEntity.internalServerError().build();
         }
 
-        return hotelView.hotel()
+        return singleHotelView.hotel()
                 .map(hotel -> ResponseEntity.ok(mapIntoResponse(hotel)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    private GetHotelResponse mapIntoResponse(HotelView.Hotel viewHotel) {
+    private GetHotelResponse mapIntoResponse(SingleHotelView.Hotel viewHotel) {
         return new GetHotelResponse(
                 new GetHotelResponse.Hotel(
                         viewHotel.identifier(),
