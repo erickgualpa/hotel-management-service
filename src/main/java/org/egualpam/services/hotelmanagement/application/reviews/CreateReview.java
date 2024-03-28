@@ -17,7 +17,7 @@ public final class CreateReview implements InternalCommand {
     private final Rating rating;
     private final Comment comment;
 
-    private final AggregateRepository<Review> aggregateReviewRepository;
+    private final AggregateRepository<Review> reviewRepository;
     private final DomainEventsPublisher domainEventsPublisher;
 
     public CreateReview(
@@ -25,20 +25,20 @@ public final class CreateReview implements InternalCommand {
             String hotelIdentifier,
             Integer rating,
             String comment,
-            AggregateRepository<Review> aggregateReviewRepository,
+            AggregateRepository<Review> reviewRepository,
             DomainEventsPublisher domainEventsPublisher
     ) {
         this.reviewId = new AggregateId(reviewId);
         this.hotelIdentifier = new HotelId(hotelIdentifier);
         this.rating = new Rating(rating);
         this.comment = new Comment(comment);
-        this.aggregateReviewRepository = aggregateReviewRepository;
+        this.reviewRepository = reviewRepository;
         this.domainEventsPublisher = domainEventsPublisher;
     }
 
     @Override
     public void execute() {
-        aggregateReviewRepository.find(reviewId)
+        reviewRepository.find(reviewId)
                 .ifPresent(
                         review -> {
                             throw new ReviewAlreadyExists();
@@ -50,7 +50,7 @@ public final class CreateReview implements InternalCommand {
                 rating,
                 comment
         );
-        aggregateReviewRepository.save(review);
+        reviewRepository.save(review);
         domainEventsPublisher.publish(review.pullDomainEvents());
     }
 }

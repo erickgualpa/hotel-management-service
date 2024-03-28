@@ -47,7 +47,7 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public AggregateRepository<Review> aggregateReviewRepository(EntityManager entityManager) {
+    public AggregateRepository<Review> reviewRepository(EntityManager entityManager) {
         return new PostgreSqlJpaReviewRepository(entityManager);
     }
 
@@ -58,11 +58,11 @@ public class InfrastructureConfiguration {
 
     @Bean
     public CommandBus commandBus(
-            AggregateRepository<Review> aggregateReviewRepository,
+            AggregateRepository<Review> reviewRepository,
             DomainEventsPublisher domainEventsPublisher
     ) {
         return new SimpleCommandBus(
-                aggregateReviewRepository,
+                reviewRepository,
                 domainEventsPublisher
         );
     }

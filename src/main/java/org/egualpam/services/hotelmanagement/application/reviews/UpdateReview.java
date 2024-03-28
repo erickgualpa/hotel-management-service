@@ -11,26 +11,26 @@ public class UpdateReview implements InternalCommand {
 
     private final AggregateId reviewId;
     private final Comment comment;
-    private final AggregateRepository<Review> aggregateReviewRepository;
+    private final AggregateRepository<Review> reviewRepository;
     private final DomainEventsPublisher domainEventsPublisher;
 
     public UpdateReview(
             String reviewId,
             String comment,
-            AggregateRepository<Review> aggregateReviewRepository,
+            AggregateRepository<Review> reviewRepository,
             DomainEventsPublisher domainEventsPublisher
     ) {
         this.reviewId = new AggregateId(reviewId);
         this.comment = new Comment(comment);
-        this.aggregateReviewRepository = aggregateReviewRepository;
+        this.reviewRepository = reviewRepository;
         this.domainEventsPublisher = domainEventsPublisher;
     }
 
     @Override
     public void execute() {
-        Review review = aggregateReviewRepository.find(reviewId).orElseThrow();
+        Review review = reviewRepository.find(reviewId).orElseThrow();
         review.updateComment(comment);
-        aggregateReviewRepository.save(review);
+        reviewRepository.save(review);
         domainEventsPublisher.publish(review.pullDomainEvents());
     }
 }

@@ -43,7 +43,7 @@ class CreateReviewShould {
     private ArgumentCaptor<List<DomainEvent>> domainEventsCaptor;
 
     @Mock
-    private AggregateRepository<Review> aggregateReviewRepository;
+    private AggregateRepository<Review> reviewRepository;
 
     @Mock
     private DomainEventsPublisher domainEventsPublisher;
@@ -60,12 +60,12 @@ class CreateReviewShould {
                 hotelIdentifier,
                 rating,
                 comment,
-                aggregateReviewRepository,
+                reviewRepository,
                 domainEventsPublisher
         );
         testee.execute();
 
-        verify(aggregateReviewRepository).save(reviewCaptor.capture());
+        verify(reviewRepository).save(reviewCaptor.capture());
         assertThat(reviewCaptor.getValue())
                 .satisfies(
                         result -> {
@@ -101,14 +101,14 @@ class CreateReviewShould {
                 new Comment(randomAlphabetic(10))
         );
 
-        when(aggregateReviewRepository.find(any(AggregateId.class))).thenReturn(Optional.of(review));
+        when(reviewRepository.find(any(AggregateId.class))).thenReturn(Optional.of(review));
 
         CreateReview testee = new CreateReview(
                 reviewId,
                 randomUUID().toString(),
                 nextInt(1, 5),
                 randomAlphabetic(10),
-                aggregateReviewRepository,
+                reviewRepository,
                 domainEventsPublisher
         );
 
@@ -128,7 +128,7 @@ class CreateReviewShould {
                         hotelIdentifier,
                         invalidRating,
                         comment,
-                        aggregateReviewRepository,
+                        reviewRepository,
                         domainEventsPublisher
                 )
         );
@@ -147,7 +147,7 @@ class CreateReviewShould {
                         hotelIdentifier,
                         rating,
                         comment,
-                        aggregateReviewRepository,
+                        reviewRepository,
                         domainEventsPublisher
                 )
         );
@@ -166,7 +166,7 @@ class CreateReviewShould {
                         invalidIdentifier,
                         rating,
                         comment,
-                        aggregateReviewRepository,
+                        reviewRepository,
                         domainEventsPublisher
                 )
         );

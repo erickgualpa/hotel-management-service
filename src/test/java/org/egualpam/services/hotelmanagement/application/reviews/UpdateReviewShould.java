@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 class UpdateReviewShould {
 
     @Mock
-    private AggregateRepository<Review> aggregateReviewRepository;
+    private AggregateRepository<Review> reviewRepository;
 
     @Mock
     private DomainEventsPublisher domainEventsPublisher;
@@ -52,19 +52,19 @@ class UpdateReviewShould {
                 new Comment(randomAlphabetic(10))
         );
 
-        when(aggregateReviewRepository.find(new AggregateId(reviewId)))
+        when(reviewRepository.find(new AggregateId(reviewId)))
                 .thenReturn(Optional.of(review));
 
         UpdateReview testee = new UpdateReview(
                 reviewId,
                 comment,
-                aggregateReviewRepository,
+                reviewRepository,
                 domainEventsPublisher
         );
 
         testee.execute();
 
-        verify(aggregateReviewRepository).save(reviewCaptor.capture());
+        verify(reviewRepository).save(reviewCaptor.capture());
         assertThat(reviewCaptor.getValue())
                 .isNotNull()
                 .satisfies(

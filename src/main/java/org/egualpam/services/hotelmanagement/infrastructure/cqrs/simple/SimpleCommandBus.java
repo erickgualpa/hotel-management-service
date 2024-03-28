@@ -22,18 +22,18 @@ public final class SimpleCommandBus implements CommandBus {
     private final Map<Class<? extends Command>, CommandHandler> handlers;
 
     public SimpleCommandBus(
-            AggregateRepository<Review> aggregateReviewRepository,
+            AggregateRepository<Review> reviewRepository,
             DomainEventsPublisher domainEventsPublisher
     ) {
         handlers = Map.of(
                 CreateReviewCommand.class,
                 new CreateReviewCommandHandler(
-                        aggregateReviewRepository,
+                        reviewRepository,
                         domainEventsPublisher
                 ),
                 UpdateReviewCommand.class,
                 new UpdateReviewCommandHandler(
-                        aggregateReviewRepository,
+                        reviewRepository,
                         domainEventsPublisher
                 )
         );
@@ -51,7 +51,7 @@ public final class SimpleCommandBus implements CommandBus {
     @RequiredArgsConstructor
     static class CreateReviewCommandHandler implements CommandHandler {
 
-        private final AggregateRepository<Review> aggregateReviewRepository;
+        private final AggregateRepository<Review> reviewRepository;
         private final DomainEventsPublisher domainEventsPublisher;
 
         @Override
@@ -63,7 +63,7 @@ public final class SimpleCommandBus implements CommandBus {
                             createReviewCommand.getHotelIdentifier(),
                             createReviewCommand.getRating(),
                             createReviewCommand.getComment(),
-                            aggregateReviewRepository,
+                            reviewRepository,
                             domainEventsPublisher
                     );
             internalCommand.execute();
@@ -73,7 +73,7 @@ public final class SimpleCommandBus implements CommandBus {
     @RequiredArgsConstructor
     static class UpdateReviewCommandHandler implements CommandHandler {
 
-        private final AggregateRepository<Review> aggregateReviewRepository;
+        private final AggregateRepository<Review> reviewRepository;
         private final DomainEventsPublisher domainEventsPublisher;
 
         @Override
@@ -83,7 +83,7 @@ public final class SimpleCommandBus implements CommandBus {
                     new UpdateReview(
                             updateReviewCommand.getReviewIdentifier(),
                             updateReviewCommand.getComment(),
-                            aggregateReviewRepository,
+                            reviewRepository,
                             domainEventsPublisher);
             internalCommand.execute();
         }
