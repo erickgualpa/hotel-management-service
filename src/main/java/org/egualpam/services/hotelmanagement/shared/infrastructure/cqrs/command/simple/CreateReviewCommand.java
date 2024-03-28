@@ -1,6 +1,6 @@
 package org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple;
 
-import org.egualpam.services.hotelmanagement.shared.application.Command;
+import org.egualpam.services.hotelmanagement.shared.application.command.Command;
 
 public final class CreateReviewCommand implements Command {
 

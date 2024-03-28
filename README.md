@@ -36,6 +36,7 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │               └── hotelmanagement
     │   │                   ├── hotels
     │   │                   │   ├── application
+    │   │                   │   │   └── query
     │   │                   │   ├── domain
     │   │                   │   │   └── exception
     │   │                   │   └── infrastructure
@@ -45,6 +46,8 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │           └── jpa
     │   │                   ├── reviews
     │   │                   │   ├── application
+    │   │                   │   │   ├── command
+    │   │                   │   │   └── query
     │   │                   │   ├── domain
     │   │                   │   │   └── exception
     │   │                   │   └── infrastructure
@@ -54,6 +57,8 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │           └── jpa
     │   │                   └── shared
     │   │                       ├── application
+    │   │                       │   ├── command
+    │   │                       │   └── query
     │   │                       ├── domain
     │   │                       │   └── exception
     │   │                       └── infrastructure
@@ -85,6 +90,7 @@ Check it and try to find the best available hotel in Mars! 👽
         │                   │           └── jpa
         │                   ├── reviews
         │                   │   ├── application
+        │                   │   │   └── command
         │                   │   └── infrastructure
         │                   │       ├── controller
         │                   │       └── persistence

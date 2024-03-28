@@ -2,13 +2,13 @@ package org.egualpam.services.hotelmanagement.reviews.infrastructure.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotelmanagement.reviews.application.MultipleReviewsView;
+import org.egualpam.services.hotelmanagement.reviews.application.query.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.exception.InvalidRating;
 import org.egualpam.services.hotelmanagement.reviews.domain.exception.ReviewAlreadyExists;
-import org.egualpam.services.hotelmanagement.shared.application.Command;
-import org.egualpam.services.hotelmanagement.shared.application.CommandBus;
-import org.egualpam.services.hotelmanagement.shared.application.Query;
-import org.egualpam.services.hotelmanagement.shared.application.QueryBus;
+import org.egualpam.services.hotelmanagement.shared.application.command.Command;
+import org.egualpam.services.hotelmanagement.shared.application.command.CommandBus;
+import org.egualpam.services.hotelmanagement.shared.application.query.Query;
+import org.egualpam.services.hotelmanagement.shared.application.query.QueryBus;
 import org.egualpam.services.hotelmanagement.shared.domain.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.CreateReviewCommand;

@@ -1,10 +1,10 @@
-package org.egualpam.services.hotelmanagement.hotels.application;
+package org.egualpam.services.hotelmanagement.hotels.application.query;
 
-import org.egualpam.services.hotelmanagement.shared.application.View;
+import org.egualpam.services.hotelmanagement.shared.application.query.View;
 
-import java.util.Optional;
+import java.util.List;
 
-public record SingleHotelView(Optional<Hotel> hotel) implements View {
+public record MultipleHotelsView(List<Hotel> hotels) implements View {
     public record Hotel(
             String identifier,
             String name,

@@ -1,10 +1,10 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
+import org.egualpam.services.hotelmanagement.hotels.application.query.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.exception.PriceRangeValuesSwapped;
-import org.egualpam.services.hotelmanagement.shared.application.Query;
-import org.egualpam.services.hotelmanagement.shared.application.QueryBus;
+import org.egualpam.services.hotelmanagement.shared.application.query.Query;
+import org.egualpam.services.hotelmanagement.shared.application.query.QueryBus;
 import org.egualpam.services.hotelmanagement.shared.domain.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.HotelManagementServiceApplication;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.SharedConfiguration;

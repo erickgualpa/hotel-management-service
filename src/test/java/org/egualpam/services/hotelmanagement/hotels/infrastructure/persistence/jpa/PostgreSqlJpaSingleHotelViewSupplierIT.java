@@ -1,9 +1,9 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
+import org.egualpam.services.hotelmanagement.hotels.application.query.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
-import org.egualpam.services.hotelmanagement.shared.application.ViewSupplier;
+import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;

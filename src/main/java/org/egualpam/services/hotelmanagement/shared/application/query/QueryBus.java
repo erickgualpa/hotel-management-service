@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.shared.application;
+package org.egualpam.services.hotelmanagement.shared.application.query;
 
 @FunctionalInterface
 public interface QueryBus {
