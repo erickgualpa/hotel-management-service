@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.domain.reviews;
+package org.egualpam.services.hotelmanagement.reviews.domain;
 
 import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;
 

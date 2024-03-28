@@ -1,11 +1,11 @@
 package org.egualpam.services.hotelmanagement.reviews.application;
 
-import org.egualpam.services.hotelmanagement.domain.reviews.Comment;
-import org.egualpam.services.hotelmanagement.domain.reviews.HotelId;
-import org.egualpam.services.hotelmanagement.domain.reviews.Rating;
-import org.egualpam.services.hotelmanagement.domain.reviews.Review;
-import org.egualpam.services.hotelmanagement.domain.reviews.exception.InvalidRating;
-import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
+import org.egualpam.services.hotelmanagement.reviews.domain.Comment;
+import org.egualpam.services.hotelmanagement.reviews.domain.HotelId;
+import org.egualpam.services.hotelmanagement.reviews.domain.Rating;
+import org.egualpam.services.hotelmanagement.reviews.domain.Review;
+import org.egualpam.services.hotelmanagement.reviews.domain.exception.InvalidRating;
+import org.egualpam.services.hotelmanagement.reviews.domain.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;

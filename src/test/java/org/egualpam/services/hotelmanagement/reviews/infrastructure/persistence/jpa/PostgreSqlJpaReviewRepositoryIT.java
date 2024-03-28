@@ -1,7 +1,7 @@
 package org.egualpam.services.hotelmanagement.reviews.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.domain.reviews.Review;
+import org.egualpam.services.hotelmanagement.reviews.domain.Review;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;

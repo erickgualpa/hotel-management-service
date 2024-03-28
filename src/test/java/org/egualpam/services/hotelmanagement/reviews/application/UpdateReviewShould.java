@@ -1,6 +1,6 @@
 package org.egualpam.services.hotelmanagement.reviews.application;
 
-import org.egualpam.services.hotelmanagement.domain.reviews.Review;
+import org.egualpam.services.hotelmanagement.reviews.domain.Review;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;

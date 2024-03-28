@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.domain.reviews;
+package org.egualpam.services.hotelmanagement.reviews.domain;
 
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
@@ -6,15 +6,15 @@ import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 import java.time.Instant;
 import java.util.UUID;
 
-public final class ReviewUpdated implements DomainEvent {
+public final class ReviewCreated implements DomainEvent {
 
     private final UUID id;
     private final AggregateId aggregateId;
     private final Instant occurredOn;
 
-    public ReviewUpdated(AggregateId aggregateId, Instant occurredOn) {
+    public ReviewCreated(AggregateId id, Instant occurredOn) {
         this.id = UUID.randomUUID();
-        this.aggregateId = aggregateId;
+        this.aggregateId = id;
         this.occurredOn = occurredOn;
     }
 
@@ -35,6 +35,6 @@ public final class ReviewUpdated implements DomainEvent {
 
     @Override
     public String getType() {
-        return "domain.review.updated.v1.0";
+        return "domain.review.created.v1.0";
     }
 }

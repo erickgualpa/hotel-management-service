@@ -1,6 +1,6 @@
-package org.egualpam.services.hotelmanagement.domain.reviews;
+package org.egualpam.services.hotelmanagement.reviews.domain;
 
-import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
+import org.egualpam.services.hotelmanagement.reviews.domain.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRoot;
