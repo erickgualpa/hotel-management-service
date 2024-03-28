@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.infrastructure.cqrs.command.simple;
+package org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.cqrs.command.simple;
 
 import org.egualpam.services.hotelmanagement.application.shared.Command;
 

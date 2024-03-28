@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.infrastructure.cqrs.query.simple;
+package org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.cqrs.query.simple;
 
 import org.egualpam.services.hotelmanagement.application.shared.Query;
 

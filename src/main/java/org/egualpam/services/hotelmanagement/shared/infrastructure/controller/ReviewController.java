@@ -11,9 +11,9 @@ import org.egualpam.services.hotelmanagement.domain.reviews.exception.InvalidRat
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
-import org.egualpam.services.hotelmanagement.infrastructure.cqrs.command.simple.CreateReviewCommand;
-import org.egualpam.services.hotelmanagement.infrastructure.cqrs.command.simple.UpdateReviewCommand;
-import org.egualpam.services.hotelmanagement.infrastructure.cqrs.query.simple.FindHotelReviewsQuery;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.cqrs.command.simple.CreateReviewCommand;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.cqrs.command.simple.UpdateReviewCommand;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.cqrs.query.simple.FindHotelReviewsQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
