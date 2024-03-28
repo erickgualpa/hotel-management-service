@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                 "org.egualpam.services.hotelmanagement.shared.infrastructure.configuration",
                 "org.egualpam.services.hotelmanagement.hotels.infrastructure.configuration",
                 "org.egualpam.services.hotelmanagement.hotels.infrastructure.controller",
+                "org.egualpam.services.hotelmanagement.reviews.infrastructure.configuration",
                 "org.egualpam.services.hotelmanagement.reviews.infrastructure.controller"
         }
 )

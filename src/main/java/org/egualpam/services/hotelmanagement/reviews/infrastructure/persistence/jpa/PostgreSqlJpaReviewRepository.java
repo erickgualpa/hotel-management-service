@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa;
+package org.egualpam.services.hotelmanagement.reviews.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
 import java.util.Optional;
 

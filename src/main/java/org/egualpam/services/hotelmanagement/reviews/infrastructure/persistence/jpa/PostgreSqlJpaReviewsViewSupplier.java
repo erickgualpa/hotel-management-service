@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa;
+package org.egualpam.services.hotelmanagement.reviews.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -6,6 +6,7 @@ import org.egualpam.services.hotelmanagement.application.reviews.ReviewsView;
 import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
 import org.egualpam.services.hotelmanagement.domain.reviews.ReviewCriteria;
 import org.egualpam.services.hotelmanagement.domain.shared.Criteria;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
 import java.util.List;
 import java.util.UUID;
