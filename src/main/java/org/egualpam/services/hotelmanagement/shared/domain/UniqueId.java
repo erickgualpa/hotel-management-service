@@ -1,6 +1,6 @@
-package org.egualpam.services.hotelmanagement.domain.shared;
+package org.egualpam.services.hotelmanagement.shared.domain;
 
-import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
+import org.egualpam.services.hotelmanagement.shared.domain.exception.InvalidUniqueId;
 
 import java.util.UUID;
 

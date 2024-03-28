@@ -1,7 +1,7 @@
 package org.egualpam.services.hotelmanagement.domain.reviews;
 
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
+import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 
 import java.time.Instant;
 import java.util.UUID;

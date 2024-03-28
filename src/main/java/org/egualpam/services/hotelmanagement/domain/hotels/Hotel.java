@@ -1,8 +1,8 @@
 package org.egualpam.services.hotelmanagement.domain.hotels;
 
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateRoot;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateRoot;
+import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 
 import java.util.ArrayList;
 import java.util.List;

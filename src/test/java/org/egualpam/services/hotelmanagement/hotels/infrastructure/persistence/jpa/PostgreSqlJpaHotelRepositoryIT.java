@@ -2,8 +2,8 @@ package org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.
 
 import jakarta.persistence.EntityManager;
 import org.egualpam.services.hotelmanagement.domain.hotels.Hotel;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

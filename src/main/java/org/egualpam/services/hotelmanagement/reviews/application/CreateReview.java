@@ -1,9 +1,9 @@
 package org.egualpam.services.hotelmanagement.reviews.application;
 
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
 import org.egualpam.services.hotelmanagement.shared.application.InternalCommand;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
+import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
 
 public final class CreateReview implements InternalCommand {
 

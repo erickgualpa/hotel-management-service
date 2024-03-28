@@ -1,10 +1,10 @@
 package org.egualpam.services.hotelmanagement.reviews.application;
 
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
-import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
+import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
+import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;

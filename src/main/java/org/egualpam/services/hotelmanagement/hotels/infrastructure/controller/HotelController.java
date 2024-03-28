@@ -2,11 +2,11 @@ package org.egualpam.services.hotelmanagement.hotels.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotelmanagement.domain.hotels.exception.PriceRangeValuesSwapped;
-import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.hotels.application.HotelView;
 import org.egualpam.services.hotelmanagement.hotels.application.HotelsView;
 import org.egualpam.services.hotelmanagement.shared.application.Query;
 import org.egualpam.services.hotelmanagement.shared.application.QueryBus;
+import org.egualpam.services.hotelmanagement.shared.domain.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelQuery;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelsQuery;
 import org.slf4j.Logger;

@@ -1,6 +1,6 @@
 package org.egualpam.services.hotelmanagement.domain.reviews;
 
-import org.egualpam.services.hotelmanagement.domain.shared.UniqueId;
+import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;
 
 import java.util.UUID;
 

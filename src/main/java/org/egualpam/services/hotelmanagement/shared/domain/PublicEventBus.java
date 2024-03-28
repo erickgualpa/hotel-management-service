@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.domain.shared;
+package org.egualpam.services.hotelmanagement.shared.domain;
 
 import java.util.List;
 

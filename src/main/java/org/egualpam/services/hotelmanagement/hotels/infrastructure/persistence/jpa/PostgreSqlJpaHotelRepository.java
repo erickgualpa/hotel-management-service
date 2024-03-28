@@ -8,8 +8,8 @@ import org.egualpam.services.hotelmanagement.domain.hotels.HotelName;
 import org.egualpam.services.hotelmanagement.domain.hotels.ImageURL;
 import org.egualpam.services.hotelmanagement.domain.hotels.Location;
 import org.egualpam.services.hotelmanagement.domain.hotels.Price;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 

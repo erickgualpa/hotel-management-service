@@ -1,6 +1,6 @@
 package org.egualpam.services.hotelmanagement.domain.reviews;
 
-import org.egualpam.services.hotelmanagement.domain.shared.Criteria;
+import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
 
 public final class ReviewCriteria implements Criteria {
 

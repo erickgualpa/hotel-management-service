@@ -1,11 +1,11 @@
 package org.egualpam.services.hotelmanagement.domain.reviews;
 
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateRoot;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
-import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
+import org.egualpam.services.hotelmanagement.shared.domain.AggregateRoot;
+import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
+import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
 
 import java.time.Instant;
 import java.util.ArrayList;

@@ -2,8 +2,8 @@ package org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.sim
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
-import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
+import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
 
 import java.util.List;
 

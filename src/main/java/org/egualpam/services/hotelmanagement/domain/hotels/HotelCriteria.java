@@ -1,7 +1,7 @@
 package org.egualpam.services.hotelmanagement.domain.hotels;
 
-import org.egualpam.services.hotelmanagement.domain.shared.Criteria;
-import org.egualpam.services.hotelmanagement.domain.shared.UniqueId;
+import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
+import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;
 
 import java.util.Optional;
 
