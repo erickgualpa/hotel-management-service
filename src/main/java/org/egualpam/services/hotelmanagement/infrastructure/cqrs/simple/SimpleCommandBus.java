@@ -56,12 +56,13 @@ public final class SimpleCommandBus implements CommandBus {
 
         @Override
         public void handle(Command command) {
+            final CreateReviewCommand createReviewCommand = (CreateReviewCommand) command;
             InternalCommand internalCommand =
                     new CreateReview(
-                            ((CreateReviewCommand) command).getReviewIdentifier(),
-                            ((CreateReviewCommand) command).getHotelIdentifier(),
-                            ((CreateReviewCommand) command).getRating(),
-                            ((CreateReviewCommand) command).getComment(),
+                            createReviewCommand.getReviewIdentifier(),
+                            createReviewCommand.getHotelIdentifier(),
+                            createReviewCommand.getRating(),
+                            createReviewCommand.getComment(),
                             aggregateReviewRepository,
                             domainEventsPublisher
                     );
@@ -77,10 +78,11 @@ public final class SimpleCommandBus implements CommandBus {
 
         @Override
         public void handle(Command command) {
+            final UpdateReviewCommand updateReviewCommand = (UpdateReviewCommand) command;
             InternalCommand internalCommand =
                     new UpdateReview(
-                            ((UpdateReviewCommand) command).getReviewIdentifier(),
-                            ((UpdateReviewCommand) command).getComment(),
+                            updateReviewCommand.getReviewIdentifier(),
+                            updateReviewCommand.getComment(),
                             aggregateReviewRepository,
                             domainEventsPublisher);
             internalCommand.execute();
