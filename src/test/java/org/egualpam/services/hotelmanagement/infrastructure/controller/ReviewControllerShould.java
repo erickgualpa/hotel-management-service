@@ -8,6 +8,7 @@ import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.InvalidRating;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.infrastructure.configuration.InfrastructureConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,32 @@ class ReviewControllerShould {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Test
+    void returnBadRequest_whenPostReviewsIsPerformedWithMissingProperties() throws Exception {
+        String reviewId = randomUUID().toString();
+        String hotelIdentifier = null;
+        String comment = null;
+        Integer invalidRating = null;
+
+        CreateReviewRequest createReviewRequest = new CreateReviewRequest(
+                hotelIdentifier,
+                invalidRating,
+                comment
+        );
+
+        String request = objectMapper.writeValueAsString(createReviewRequest);
+
+        doThrow(RequiredPropertyIsMissing.class)
+                .when(commandBus)
+                .publish(any(Command.class));
+
+        mockMvc.perform(
+                        post("/v1/reviews/{reviewId}", reviewId)
+                                .contentType(APPLICATION_JSON)
+                                .content(request))
+                .andExpect(status().isBadRequest());
+    }
 
     @Test
     void returnBadRequest_whenPostReviewsIsPerformedWithInvalidRating() throws Exception {
