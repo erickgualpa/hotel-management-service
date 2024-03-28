@@ -2,12 +2,8 @@ package org.egualpam.services.hotelmanagement.application.reviews;
 
 import org.egualpam.services.hotelmanagement.application.shared.InternalCommand;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
-import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsBus;
-
-import java.util.Optional;
 
 public final class CreateReview implements InternalCommand {
 
@@ -37,15 +33,13 @@ public final class CreateReview implements InternalCommand {
 
     @Override
     public void execute() {
-        Optional.of(reviewId)
-                .map(AggregateId::new)
-                .flatMap(reviewRepository::find)
-                .ifPresent(
-                        review -> {
-                            throw new ReviewAlreadyExists();
-                        }
-                );
-        Review review = Review.create(reviewId, hotelId, rating, comment);
+        Review review = Review.create(
+                reviewRepository,
+                reviewId,
+                hotelId,
+                rating,
+                comment
+        );
         reviewRepository.save(review);
         domainEventsBus.publish(review.pullDomainEvents());
     }

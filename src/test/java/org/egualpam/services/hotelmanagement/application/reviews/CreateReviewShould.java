@@ -11,6 +11,7 @@ import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEventsBus;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -49,7 +50,7 @@ class CreateReviewShould {
     private DomainEventsBus domainEventsBus;
 
     @Test
-    void givenReviewShouldBeSaved() {
+    void createReview() {
         String reviewId = randomUUID().toString();
         String hotelIdentifier = randomUUID().toString();
         Integer rating = nextInt(1, 5);
@@ -117,7 +118,7 @@ class CreateReviewShould {
 
     @ValueSource(ints = {0, 6})
     @ParameterizedTest
-    void domainExceptionShouldBeThrown_whenRatingValueIsOutOfAllowedBounds(Integer invalidRating) {
+    void throwDomainExceptionWhenRatingValueIsOutOfAllowedBounds(Integer invalidRating) {
         String reviewId = randomUUID().toString();
         String hotelIdentifier = randomUUID().toString();
         String comment = randomAlphabetic(10);
@@ -135,7 +136,7 @@ class CreateReviewShould {
     }
 
     @Test
-    void domainExceptionShouldBeThrown_whenReviewIdHasInvalidFormat() {
+    void throwDomainExceptionWhenReviewIdHasInvalidFormat() {
         String invalidIdentifier = randomAlphanumeric(10);
         String hotelIdentifier = randomUUID().toString();
         int rating = nextInt(1, 5);
@@ -154,7 +155,7 @@ class CreateReviewShould {
     }
 
     @Test
-    void domainExceptionShouldBeThrown_whenHotelIdentifierHasInvalidFormat() {
+    void throwDomainExceptionWhenHotelIdHasInvalidFormat() {
         String invalidIdentifier = randomAlphanumeric(10);
         String reviewId = randomUUID().toString();
         int rating = nextInt(1, 5);
@@ -170,5 +171,81 @@ class CreateReviewShould {
         );
 
         assertThrows(InvalidUniqueId.class, testee::execute);
+    }
+
+    @Test
+    void throwDomainExceptionWhenReviewIdIsMissing() {
+        String reviewId = null;
+        String hotelId = randomUUID().toString();
+        int rating = nextInt(1, 5);
+        String comment = randomAlphabetic(10);
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                hotelId,
+                rating,
+                comment,
+                reviewRepository,
+                domainEventsBus
+        );
+
+        assertThrows(RequiredPropertyIsMissing.class, testee::execute);
+    }
+
+    @Test
+    void throwDomainExceptionWhenHotelIdIsMissing() {
+        String reviewId = randomUUID().toString();
+        String hotelId = null;
+        int rating = nextInt(1, 5);
+        String comment = randomAlphabetic(10);
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                hotelId,
+                rating,
+                comment,
+                reviewRepository,
+                domainEventsBus
+        );
+
+        assertThrows(RequiredPropertyIsMissing.class, testee::execute);
+    }
+
+    @Test
+    void throwDomainExceptionWhenRatingIsMissing() {
+        String reviewId = randomUUID().toString();
+        String hotelId = randomUUID().toString();
+        Integer rating = null;
+        String comment = randomAlphabetic(10);
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                hotelId,
+                rating,
+                comment,
+                reviewRepository,
+                domainEventsBus
+        );
+
+        assertThrows(RequiredPropertyIsMissing.class, testee::execute);
+    }
+
+    @Test
+    void throwDomainExceptionWhenCommentIsMissing() {
+        String reviewId = randomUUID().toString();
+        String hotelId = randomUUID().toString();
+        Integer rating = nextInt(1, 5);
+        String comment = null;
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                hotelId,
+                rating,
+                comment,
+                reviewRepository,
+                domainEventsBus
+        );
+
+        assertThrows(RequiredPropertyIsMissing.class, testee::execute);
     }
 }

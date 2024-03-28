@@ -1,20 +1,26 @@
 package org.egualpam.services.hotelmanagement.domain.reviews;
 
+import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
+import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRoot;
 import org.egualpam.services.hotelmanagement.domain.shared.DomainEvent;
+import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import static java.util.Objects.isNull;
 
 public final class Review implements AggregateRoot {
-
-    private final List<DomainEvent> domainEvents = new ArrayList<>();
 
     private final AggregateId id;
     private final HotelId hotelId;
     private final Rating rating;
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
+
     private Comment comment;
 
     public Review(
@@ -30,17 +36,32 @@ public final class Review implements AggregateRoot {
     }
 
     public static Review create(
+            AggregateRepository<Review> reviewRepository,
             String id,
             String hotelId,
             Integer rating,
             String comment
     ) {
+        if (isNull(id) || isNull(hotelId) || isNull(rating) || isNull(comment)) {
+            throw new RequiredPropertyIsMissing();
+        }
+
+        Optional.of(id)
+                .map(AggregateId::new)
+                .flatMap(reviewRepository::find)
+                .ifPresent(
+                        review -> {
+                            throw new ReviewAlreadyExists();
+                        }
+                );
+
         Review review = new Review(
                 id,
                 hotelId,
                 rating,
                 comment
         );
+
         review.domainEvents.add(new ReviewCreated(review.id, Instant.now()));
         return review;
     }
