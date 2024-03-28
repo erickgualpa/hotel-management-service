@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.reviews.application;
+package org.egualpam.services.hotelmanagement.reviews.application.command;
 
 import org.egualpam.services.hotelmanagement.reviews.domain.Comment;
 import org.egualpam.services.hotelmanagement.reviews.domain.Review;

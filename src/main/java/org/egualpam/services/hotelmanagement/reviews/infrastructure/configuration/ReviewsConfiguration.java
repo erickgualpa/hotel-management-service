@@ -1,7 +1,7 @@
 package org.egualpam.services.hotelmanagement.reviews.infrastructure.configuration;
 
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.reviews.application.MultipleReviewsView;
+import org.egualpam.services.hotelmanagement.reviews.application.query.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.Review;
 import org.egualpam.services.hotelmanagement.reviews.infrastructure.persistence.jpa.PostgreSqlJpaMultipleReviewsViewSupplier;
 import org.egualpam.services.hotelmanagement.reviews.infrastructure.persistence.jpa.PostgreSqlJpaReviewRepository;

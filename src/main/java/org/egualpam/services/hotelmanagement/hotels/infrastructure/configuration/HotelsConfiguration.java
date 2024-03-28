@@ -1,8 +1,8 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.configuration;
 
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.hotels.application.MultipleHotelsView;
-import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
+import org.egualpam.services.hotelmanagement.hotels.application.query.MultipleHotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.query.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.Hotel;
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaMultipleHotelsViewSupplier;

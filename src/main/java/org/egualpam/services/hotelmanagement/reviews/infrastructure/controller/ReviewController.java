@@ -2,7 +2,7 @@ package org.egualpam.services.hotelmanagement.reviews.infrastructure.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotelmanagement.reviews.application.MultipleReviewsView;
+import org.egualpam.services.hotelmanagement.reviews.application.query.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.exception.InvalidRating;
 import org.egualpam.services.hotelmanagement.reviews.domain.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.shared.application.command.Command;

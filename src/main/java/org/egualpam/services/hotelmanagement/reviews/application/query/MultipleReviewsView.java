@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.reviews.application;
+package org.egualpam.services.hotelmanagement.reviews.application.query;
 
 import org.egualpam.services.hotelmanagement.shared.application.query.View;
 
