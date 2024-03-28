@@ -42,7 +42,7 @@ public class InfrastructureConfiguration {
     }
 
     @Bean
-    public AggregateRepository<Hotel> aggregateHotelRepository(EntityManager entityManager) {
+    public AggregateRepository<Hotel> hotelRepository(EntityManager entityManager) {
         return new PostgreSqlJpaHotelRepository(entityManager);
     }
 
