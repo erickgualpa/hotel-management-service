@@ -2,7 +2,7 @@ package org.egualpam.services.hotelmanagement.reviews.application;
 
 import org.egualpam.services.hotelmanagement.reviews.domain.Comment;
 import org.egualpam.services.hotelmanagement.reviews.domain.Review;
-import org.egualpam.services.hotelmanagement.shared.application.InternalCommand;
+import org.egualpam.services.hotelmanagement.shared.application.command.InternalCommand;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;

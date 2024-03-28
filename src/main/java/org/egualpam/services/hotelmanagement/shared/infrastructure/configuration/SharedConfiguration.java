@@ -8,9 +8,9 @@ import org.egualpam.services.hotelmanagement.hotels.application.MultipleHotelsVi
 import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.reviews.application.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.Review;
-import org.egualpam.services.hotelmanagement.shared.application.CommandBus;
-import org.egualpam.services.hotelmanagement.shared.application.QueryBus;
-import org.egualpam.services.hotelmanagement.shared.application.ViewSupplier;
+import org.egualpam.services.hotelmanagement.shared.application.command.CommandBus;
+import org.egualpam.services.hotelmanagement.shared.application.query.QueryBus;
+import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBus;

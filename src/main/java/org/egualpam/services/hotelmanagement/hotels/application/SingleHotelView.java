@@ -1,6 +1,6 @@
 package org.egualpam.services.hotelmanagement.hotels.application;
 
-import org.egualpam.services.hotelmanagement.shared.application.View;
+import org.egualpam.services.hotelmanagement.shared.application.query.View;
 
 import java.util.Optional;
 

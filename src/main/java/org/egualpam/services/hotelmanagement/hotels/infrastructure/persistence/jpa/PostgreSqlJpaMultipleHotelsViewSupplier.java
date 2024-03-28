@@ -7,7 +7,7 @@ import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
 import org.egualpam.services.hotelmanagement.hotels.domain.Location;
 import org.egualpam.services.hotelmanagement.hotels.domain.Price;
 import org.egualpam.services.hotelmanagement.hotels.domain.PriceRange;
-import org.egualpam.services.hotelmanagement.shared.application.ViewSupplier;
+import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
