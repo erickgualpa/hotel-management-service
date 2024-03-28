@@ -1,6 +1,6 @@
 package org.egualpam.services.hotelmanagement.application.reviews;
 
-import org.egualpam.services.hotelmanagement.application.shared.View;
+import org.egualpam.services.hotelmanagement.shared.application.View;
 
 import java.util.List;
 

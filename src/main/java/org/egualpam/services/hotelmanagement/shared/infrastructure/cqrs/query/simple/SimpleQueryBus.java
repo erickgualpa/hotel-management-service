@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelView;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelsView;
 import org.egualpam.services.hotelmanagement.application.reviews.ReviewsView;
-import org.egualpam.services.hotelmanagement.application.shared.Query;
-import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
-import org.egualpam.services.hotelmanagement.application.shared.View;
-import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
 import org.egualpam.services.hotelmanagement.domain.hotels.HotelCriteria;
 import org.egualpam.services.hotelmanagement.domain.reviews.ReviewCriteria;
+import org.egualpam.services.hotelmanagement.shared.application.Query;
+import org.egualpam.services.hotelmanagement.shared.application.QueryBus;
+import org.egualpam.services.hotelmanagement.shared.application.View;
+import org.egualpam.services.hotelmanagement.shared.application.ViewSupplier;
 
 import java.util.Map;
 

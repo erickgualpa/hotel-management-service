@@ -3,12 +3,12 @@ package org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotelmanagement.application.reviews.CreateReview;
 import org.egualpam.services.hotelmanagement.application.reviews.UpdateReview;
-import org.egualpam.services.hotelmanagement.application.shared.Command;
-import org.egualpam.services.hotelmanagement.application.shared.CommandBus;
-import org.egualpam.services.hotelmanagement.application.shared.InternalCommand;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.application.Command;
+import org.egualpam.services.hotelmanagement.shared.application.CommandBus;
+import org.egualpam.services.hotelmanagement.shared.application.InternalCommand;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.application.shared;
+package org.egualpam.services.hotelmanagement.shared.application;
 
 import org.egualpam.services.hotelmanagement.domain.shared.Criteria;
 

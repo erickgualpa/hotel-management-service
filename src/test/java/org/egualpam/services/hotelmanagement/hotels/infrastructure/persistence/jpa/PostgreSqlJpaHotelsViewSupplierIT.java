@@ -3,9 +3,9 @@ package org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotelmanagement.application.hotels.HotelsView;
-import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
 import org.egualpam.services.hotelmanagement.domain.hotels.HotelCriteria;
 import org.egualpam.services.hotelmanagement.domain.shared.Criteria;
+import org.egualpam.services.hotelmanagement.shared.application.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
