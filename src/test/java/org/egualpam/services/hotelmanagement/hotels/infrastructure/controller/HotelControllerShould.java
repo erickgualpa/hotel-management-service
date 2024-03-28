@@ -7,7 +7,7 @@ import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.domain.hotels.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.HotelManagementServiceApplication;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.InfrastructureConfiguration;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.SharedConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(HotelController.class)
 class HotelControllerShould {
 
-    private final ObjectMapper objectMapper = new InfrastructureConfiguration().objectMapper();
+    private final ObjectMapper objectMapper = new SharedConfiguration().objectMapper();
 
     @MockBean
     private QueryBus queryBus;

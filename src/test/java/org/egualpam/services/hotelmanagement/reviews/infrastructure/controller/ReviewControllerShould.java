@@ -10,7 +10,7 @@ import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlre
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.HotelManagementServiceApplication;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.InfrastructureConfiguration;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.SharedConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ReviewController.class)
 class ReviewControllerShould {
 
-    private final ObjectMapper objectMapper = new InfrastructureConfiguration().objectMapper();
+    private final ObjectMapper objectMapper = new SharedConfiguration().objectMapper();
 
     @MockBean
     private CommandBus commandBus;

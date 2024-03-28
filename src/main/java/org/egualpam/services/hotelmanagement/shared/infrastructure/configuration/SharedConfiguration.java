@@ -10,13 +10,9 @@ import org.egualpam.services.hotelmanagement.application.reviews.ReviewsView;
 import org.egualpam.services.hotelmanagement.application.shared.CommandBus;
 import org.egualpam.services.hotelmanagement.application.shared.QueryBus;
 import org.egualpam.services.hotelmanagement.application.shared.ViewSupplier;
-import org.egualpam.services.hotelmanagement.domain.hotels.Hotel;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelViewSupplier;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelsViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.cqrs.command.simple.SimpleCommandBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.cqrs.query.simple.SimpleQueryBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.simple.simple.SimplePublicEventBus;
@@ -26,7 +22,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class InfrastructureConfiguration {
+public class SharedConfiguration {
 
     @Bean
     public OpenAPI openAPI() {
@@ -39,11 +35,6 @@ public class InfrastructureConfiguration {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
-    }
-
-    @Bean
-    public AggregateRepository<Hotel> hotelRepository(EntityManager entityManager) {
-        return new PostgreSqlJpaHotelRepository(entityManager);
     }
 
     @Bean
@@ -65,16 +56,6 @@ public class InfrastructureConfiguration {
                 reviewRepository,
                 publicEventBus
         );
-    }
-
-    @Bean
-    public ViewSupplier<HotelView> hotelViewSupplier(EntityManager entityManager) {
-        return new PostgreSqlJpaHotelViewSupplier(entityManager);
-    }
-
-    @Bean
-    public ViewSupplier<HotelsView> hotelsViewSupplier(EntityManager entityManager) {
-        return new PostgreSqlJpaHotelsViewSupplier(entityManager);
     }
 
     @Bean
