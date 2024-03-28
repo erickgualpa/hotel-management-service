@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.cqrs.command.simple;
+package org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.services.hotelmanagement.application.reviews.CreateReview;
