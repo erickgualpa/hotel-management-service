@@ -21,12 +21,12 @@ public class HotelsConfiguration {
     }
 
     @Bean
-    public ViewSupplier<SingleHotelView> hotelViewSupplier(EntityManager entityManager) {
+    public ViewSupplier<SingleHotelView> singleHotelViewSupplier(EntityManager entityManager) {
         return new PostgreSqlJpaSingleHotelViewSupplier(entityManager);
     }
 
     @Bean
-    public ViewSupplier<MultipleHotelsView> hotelsViewSupplier(EntityManager entityManager) {
+    public ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier(EntityManager entityManager) {
         return new PostgreSqlJpaMultipleHotelsViewSupplier(entityManager);
     }
 }

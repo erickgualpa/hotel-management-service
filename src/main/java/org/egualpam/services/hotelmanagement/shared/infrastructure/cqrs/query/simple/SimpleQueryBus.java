@@ -23,17 +23,17 @@ public final class SimpleQueryBus implements QueryBus {
     private final Map<Class<? extends Query>, QueryHandler> handlers;
 
     public SimpleQueryBus(
-            ViewSupplier<SingleHotelView> hotelViewSupplier,
-            ViewSupplier<MultipleHotelsView> hotelsViewSupplier,
+            ViewSupplier<SingleHotelView> singleHotelViewSupplier,
+            ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier,
             ViewSupplier<ReviewsView> reviewsViewSupplier
     ) {
         handlers = Map.of(
                 FindHotelReviewsQuery.class,
                 new FindHotelReviewsQueryHandler(reviewsViewSupplier),
                 FindHotelsQuery.class,
-                new FindHotelsQueryHandler(hotelsViewSupplier),
+                new FindHotelsQueryHandler(multipleHotelsViewSupplier),
                 FindHotelQuery.class,
-                new FindHotelQueryHandler(hotelViewSupplier)
+                new FindHotelQueryHandler(singleHotelViewSupplier)
         );
     }
 
@@ -65,12 +65,12 @@ public final class SimpleQueryBus implements QueryBus {
     @RequiredArgsConstructor
     static class FindHotelsQueryHandler implements QueryHandler {
 
-        private final ViewSupplier<MultipleHotelsView> hotelsViewSupplier;
+        private final ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier;
 
         @Override
         public View handle(Query query) {
             final FindHotelsQuery findHotelsQuery = (FindHotelsQuery) query;
-            return hotelsViewSupplier.get(
+            return multipleHotelsViewSupplier.get(
                     new HotelCriteria(
                             findHotelsQuery.getLocation(),
                             findHotelsQuery.getMinPrice(),
@@ -83,12 +83,12 @@ public final class SimpleQueryBus implements QueryBus {
     @RequiredArgsConstructor
     static class FindHotelQueryHandler implements QueryHandler {
 
-        private final ViewSupplier<SingleHotelView> hotelViewSupplier;
+        private final ViewSupplier<SingleHotelView> singleHotelViewSupplier;
 
         @Override
         public View handle(Query query) {
             final FindHotelQuery findHotelQuery = (FindHotelQuery) query;
-            return hotelViewSupplier.get(
+            return singleHotelViewSupplier.get(
                     new HotelCriteria(
                             findHotelQuery.getHotelId()
                     )
