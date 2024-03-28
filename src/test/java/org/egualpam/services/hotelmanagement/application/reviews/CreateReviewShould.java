@@ -70,7 +70,7 @@ class CreateReviewShould {
                 .satisfies(
                         result -> {
                             assertThat(result.getId()).isEqualTo(new AggregateId(reviewId));
-                            assertThat(result.getHotelIdentifier()).isEqualTo(new HotelId(hotelIdentifier));
+                            assertThat(result.getHotelId()).isEqualTo(new HotelId(hotelIdentifier));
                             assertThat(result.getRating()).isEqualTo(new Rating(rating));
                             assertThat(result.getComment()).isEqualTo(new Comment(comment));
                             assertThat(result.pullDomainEvents()).isEmpty();
@@ -95,10 +95,10 @@ class CreateReviewShould {
         String reviewId = randomUUID().toString();
 
         Review review = new Review(
-                new AggregateId(reviewId),
-                new HotelId(randomUUID().toString()),
-                new Rating(nextInt(1, 5)),
-                new Comment(randomAlphabetic(10))
+                reviewId,
+                randomUUID().toString(),
+                nextInt(1, 5),
+                randomAlphabetic(10)
         );
 
         when(reviewRepository.find(any(AggregateId.class))).thenReturn(Optional.of(review));
@@ -121,17 +121,17 @@ class CreateReviewShould {
         String reviewId = randomUUID().toString();
         String hotelIdentifier = randomUUID().toString();
         String comment = randomAlphabetic(10);
-        assertThrows(
-                InvalidRating.class,
-                () -> new CreateReview(
-                        reviewId,
-                        hotelIdentifier,
-                        invalidRating,
-                        comment,
-                        reviewRepository,
-                        domainEventsBus
-                )
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                hotelIdentifier,
+                invalidRating,
+                comment,
+                reviewRepository,
+                domainEventsBus
         );
+
+        assertThrows(InvalidRating.class, testee::execute);
     }
 
     @Test
@@ -140,17 +140,17 @@ class CreateReviewShould {
         String hotelIdentifier = randomUUID().toString();
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
-        assertThrows(
-                InvalidUniqueId.class,
-                () -> new CreateReview(
-                        invalidIdentifier,
-                        hotelIdentifier,
-                        rating,
-                        comment,
-                        reviewRepository,
-                        domainEventsBus
-                )
+
+        CreateReview testee = new CreateReview(
+                invalidIdentifier,
+                hotelIdentifier,
+                rating,
+                comment,
+                reviewRepository,
+                domainEventsBus
         );
+
+        assertThrows(InvalidUniqueId.class, testee::execute);
     }
 
     @Test
@@ -159,16 +159,16 @@ class CreateReviewShould {
         String reviewId = randomUUID().toString();
         int rating = nextInt(1, 5);
         String comment = randomAlphabetic(10);
-        assertThrows(
-                InvalidUniqueId.class,
-                () -> new CreateReview(
-                        reviewId,
-                        invalidIdentifier,
-                        rating,
-                        comment,
-                        reviewRepository,
-                        domainEventsBus
-                )
+
+        CreateReview testee = new CreateReview(
+                reviewId,
+                invalidIdentifier,
+                rating,
+                comment,
+                reviewRepository,
+                domainEventsBus
         );
+
+        assertThrows(InvalidUniqueId.class, testee::execute);
     }
 }

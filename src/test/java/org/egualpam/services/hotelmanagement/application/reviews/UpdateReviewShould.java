@@ -1,8 +1,5 @@
 package org.egualpam.services.hotelmanagement.application.reviews;
 
-import org.egualpam.services.hotelmanagement.domain.reviews.Comment;
-import org.egualpam.services.hotelmanagement.domain.reviews.HotelId;
-import org.egualpam.services.hotelmanagement.domain.reviews.Rating;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
@@ -46,10 +43,10 @@ class UpdateReviewShould {
         String comment = randomAlphabetic(10);
 
         Review review = new Review(
-                new AggregateId(reviewId),
-                new HotelId(randomUUID().toString()),
-                new Rating(nextInt(1, 5)),
-                new Comment(randomAlphabetic(10))
+                reviewId,
+                randomUUID().toString(),
+                nextInt(1, 5),
+                randomAlphabetic(10)
         );
 
         when(reviewRepository.find(new AggregateId(reviewId)))
