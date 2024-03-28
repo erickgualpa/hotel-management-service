@@ -1,12 +1,12 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.configuration;
 
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelView;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.MultipleHotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.Hotel;
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelViewSupplier;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelsViewSupplier;
+import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaMultipleHotelsViewSupplier;
+import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaSingleHotelViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.application.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.springframework.context.annotation.Bean;
@@ -21,12 +21,12 @@ public class HotelsConfiguration {
     }
 
     @Bean
-    public ViewSupplier<HotelView> hotelViewSupplier(EntityManager entityManager) {
-        return new PostgreSqlJpaHotelViewSupplier(entityManager);
+    public ViewSupplier<SingleHotelView> singleHotelViewSupplier(EntityManager entityManager) {
+        return new PostgreSqlJpaSingleHotelViewSupplier(entityManager);
     }
 
     @Bean
-    public ViewSupplier<HotelsView> hotelsViewSupplier(EntityManager entityManager) {
-        return new PostgreSqlJpaHotelsViewSupplier(entityManager);
+    public ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier(EntityManager entityManager) {
+        return new PostgreSqlJpaMultipleHotelsViewSupplier(entityManager);
     }
 }

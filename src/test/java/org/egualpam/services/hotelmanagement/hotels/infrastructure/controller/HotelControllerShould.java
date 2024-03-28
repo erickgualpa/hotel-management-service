@@ -1,7 +1,7 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelView;
+import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotelmanagement.shared.application.Query;
 import org.egualpam.services.hotelmanagement.shared.application.QueryBus;
@@ -76,7 +76,7 @@ class HotelControllerShould {
     void returnNotFound_whenGetHotelIsPerformedWithNonMatchingHotelId() throws Exception {
         String hotelId = randomUUID().toString();
 
-        when(queryBus.publish(any(Query.class))).thenReturn(new HotelView(Optional.empty()));
+        when(queryBus.publish(any(Query.class))).thenReturn(new SingleHotelView(Optional.empty()));
 
         mockMvc.perform(get("/v1/hotels/{hotelId}", hotelId))
                 .andExpect(status().isNotFound());

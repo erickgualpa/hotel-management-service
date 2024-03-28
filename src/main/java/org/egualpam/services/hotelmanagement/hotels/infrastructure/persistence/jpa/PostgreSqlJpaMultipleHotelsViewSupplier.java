@@ -2,7 +2,7 @@ package org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.MultipleHotelsView;
 import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
 import org.egualpam.services.hotelmanagement.hotels.domain.Location;
 import org.egualpam.services.hotelmanagement.hotels.domain.Price;
@@ -19,40 +19,41 @@ import java.util.function.Function;
 
 import static java.util.Comparator.comparingDouble;
 
-public class PostgreSqlJpaHotelsViewSupplier implements ViewSupplier<HotelsView> {
+public class PostgreSqlJpaMultipleHotelsViewSupplier implements ViewSupplier<MultipleHotelsView> {
 
     private final EntityManager entityManager;
     private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
 
-    public PostgreSqlJpaHotelsViewSupplier(EntityManager entityManager) {
+    public PostgreSqlJpaMultipleHotelsViewSupplier(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
     }
 
     @Override
-    public HotelsView get(Criteria criteria) {
-        PriceRange priceRange = ((HotelCriteria) criteria).getPriceRange();
-        Optional<String> location = ((HotelCriteria) criteria).getLocation().map(Location::value);
+    public MultipleHotelsView get(Criteria criteria) {
+        HotelCriteria hotelCriteria = (HotelCriteria) criteria;
+        Optional<String> location = hotelCriteria.getLocation().map(Location::value);
+        Optional<PriceRange> priceRange = hotelCriteria.getPriceRange();
 
         CriteriaQuery<PersistenceHotel> criteriaQuery =
                 new HotelCriteriaQueryBuilder(entityManager)
                         .withLocation(location)
-                        .withMinPrice(priceRange.minPrice().map(Price::value))
-                        .withMaxPrice(priceRange.maxPrice().map(Price::value))
+                        .withMinPrice(priceRange.flatMap(PriceRange::minPrice).map(Price::value))
+                        .withMaxPrice(priceRange.flatMap(PriceRange::maxPrice).map(Price::value))
                         .build();
 
-        List<HotelsView.Hotel> hotels = entityManager
+        List<MultipleHotelsView.Hotel> hotels = entityManager
                 .createQuery(criteriaQuery)
                 .getResultList()
                 .stream()
                 .map(this::mapIntoViewHotel)
-                .sorted(comparingDouble(HotelsView.Hotel::averageRating).reversed())
+                .sorted(comparingDouble(MultipleHotelsView.Hotel::averageRating).reversed())
                 .toList();
 
-        return new HotelsView(hotels);
+        return new MultipleHotelsView(hotels);
     }
 
-    private HotelsView.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
+    private MultipleHotelsView.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
         double averageRating = findReviewsByHotel
                 .apply(persistenceHotel)
                 .stream()
@@ -60,7 +61,7 @@ public class PostgreSqlJpaHotelsViewSupplier implements ViewSupplier<HotelsView>
                 .filter(Objects::nonNull)
                 .average()
                 .orElse(0.0);
-        return new HotelsView.Hotel(
+        return new MultipleHotelsView.Hotel(
                 persistenceHotel.getId().toString(),
                 persistenceHotel.getName(),
                 persistenceHotel.getDescription(),

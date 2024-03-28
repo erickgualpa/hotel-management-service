@@ -1,7 +1,7 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelView;
+import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
 import org.egualpam.services.hotelmanagement.shared.application.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
@@ -14,26 +14,26 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class PostgreSqlJpaHotelViewSupplier implements ViewSupplier<HotelView> {
+public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<SingleHotelView> {
 
     private final EntityManager entityManager;
     private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
 
-    public PostgreSqlJpaHotelViewSupplier(EntityManager entityManager) {
+    public PostgreSqlJpaSingleHotelViewSupplier(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
     }
 
     @Override
-    public HotelView get(Criteria criteria) {
-        // TODO: Avoid having optional access to the hotelId
-        UniqueId hotelId = ((HotelCriteria) criteria).getHotelId().orElseThrow();
+    public SingleHotelView get(Criteria criteria) {
+        HotelCriteria hotelCriteria = (HotelCriteria) criteria;
+        UniqueId hotelId = hotelCriteria.getHotelId();
         PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, hotelId.value());
-        Optional<HotelView.Hotel> hotel = Optional.ofNullable(persistenceHotel).map(this::mapIntoViewHotel);
-        return new HotelView(hotel);
+        Optional<SingleHotelView.Hotel> hotel = Optional.ofNullable(persistenceHotel).map(this::mapIntoViewHotel);
+        return new SingleHotelView(hotel);
     }
 
-    private HotelView.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
+    private SingleHotelView.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
         double averageRating = findReviewsByHotel
                 .apply(persistenceHotel)
                 .stream()
@@ -41,7 +41,7 @@ public class PostgreSqlJpaHotelViewSupplier implements ViewSupplier<HotelView> {
                 .filter(Objects::nonNull)
                 .average()
                 .orElse(0.0);
-        return new HotelView.Hotel(
+        return new SingleHotelView.Hotel(
                 persistenceHotel.getId().toString(),
                 persistenceHotel.getName(),
                 persistenceHotel.getDescription(),

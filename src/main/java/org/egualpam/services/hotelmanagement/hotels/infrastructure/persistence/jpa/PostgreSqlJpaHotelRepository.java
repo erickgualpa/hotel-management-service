@@ -1,13 +1,7 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa;
 
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.hotels.domain.AverageRating;
 import org.egualpam.services.hotelmanagement.hotels.domain.Hotel;
-import org.egualpam.services.hotelmanagement.hotels.domain.HotelDescription;
-import org.egualpam.services.hotelmanagement.hotels.domain.HotelName;
-import org.egualpam.services.hotelmanagement.hotels.domain.ImageURL;
-import org.egualpam.services.hotelmanagement.hotels.domain.Location;
-import org.egualpam.services.hotelmanagement.hotels.domain.Price;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
@@ -41,22 +35,21 @@ public final class PostgreSqlJpaHotelRepository implements AggregateRepository<H
         String location = persistenceHotel.getLocation();
         Integer totalPrice = persistenceHotel.getTotalPrice();
         String imageURL = persistenceHotel.getImageURL();
-        AverageRating averageRating = new AverageRating(
+        Double averageRating =
                 findReviewsByHotel
                         .apply(persistenceHotel)
                         .stream()
                         .mapToDouble(PersistenceReview::getRating)
                         .filter(Objects::nonNull)
                         .average()
-                        .orElse(0.0)
-        );
+                        .orElse(0.0);
         return new Hotel(
-                new AggregateId(persistenceHotel.getId()),
-                new HotelName(name),
-                new HotelDescription(description),
-                new Location(location),
-                new Price(totalPrice),
-                new ImageURL(imageURL),
+                persistenceHotel.getId().toString(),
+                name,
+                description,
+                location,
+                totalPrice,
+                imageURL,
                 averageRating
         );
     }

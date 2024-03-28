@@ -1,8 +1,8 @@
 package org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelView;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.MultipleHotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
 import org.egualpam.services.hotelmanagement.reviews.application.ReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.ReviewCriteria;
@@ -23,17 +23,17 @@ public final class SimpleQueryBus implements QueryBus {
     private final Map<Class<? extends Query>, QueryHandler> handlers;
 
     public SimpleQueryBus(
-            ViewSupplier<HotelView> hotelViewSupplier,
-            ViewSupplier<HotelsView> hotelsViewSupplier,
+            ViewSupplier<SingleHotelView> singleHotelViewSupplier,
+            ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier,
             ViewSupplier<ReviewsView> reviewsViewSupplier
     ) {
         handlers = Map.of(
                 FindHotelReviewsQuery.class,
                 new FindHotelReviewsQueryHandler(reviewsViewSupplier),
                 FindHotelsQuery.class,
-                new FindHotelsQueryHandler(hotelsViewSupplier),
+                new FindHotelsQueryHandler(multipleHotelsViewSupplier),
                 FindHotelQuery.class,
-                new FindHotelQueryHandler(hotelViewSupplier)
+                new FindHotelQueryHandler(singleHotelViewSupplier)
         );
     }
 
@@ -65,12 +65,12 @@ public final class SimpleQueryBus implements QueryBus {
     @RequiredArgsConstructor
     static class FindHotelsQueryHandler implements QueryHandler {
 
-        private final ViewSupplier<HotelsView> hotelsViewSupplier;
+        private final ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier;
 
         @Override
         public View handle(Query query) {
             final FindHotelsQuery findHotelsQuery = (FindHotelsQuery) query;
-            return hotelsViewSupplier.get(
+            return multipleHotelsViewSupplier.get(
                     new HotelCriteria(
                             findHotelsQuery.getLocation(),
                             findHotelsQuery.getMinPrice(),
@@ -83,12 +83,12 @@ public final class SimpleQueryBus implements QueryBus {
     @RequiredArgsConstructor
     static class FindHotelQueryHandler implements QueryHandler {
 
-        private final ViewSupplier<HotelView> hotelViewSupplier;
+        private final ViewSupplier<SingleHotelView> singleHotelViewSupplier;
 
         @Override
         public View handle(Query query) {
             final FindHotelQuery findHotelQuery = (FindHotelQuery) query;
-            return hotelViewSupplier.get(
+            return singleHotelViewSupplier.get(
                     new HotelCriteria(
                             findHotelQuery.getHotelId()
                     )

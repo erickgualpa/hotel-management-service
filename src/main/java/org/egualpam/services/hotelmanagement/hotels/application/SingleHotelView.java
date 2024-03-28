@@ -4,7 +4,7 @@ import org.egualpam.services.hotelmanagement.shared.application.View;
 
 import java.util.Optional;
 
-public record HotelView(Optional<Hotel> hotel) implements View {
+public record SingleHotelView(Optional<Hotel> hotel) implements View {
     public record Hotel(
             String identifier,
             String name,
