@@ -1,4 +1,4 @@
-package org.egualpam.services.hotelmanagement.helpers;
+package org.egualpam.services.hotelmanagement.shared.infrastructure.helpers;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
