@@ -2,11 +2,11 @@ package org.egualpam.services.hotelmanagement.reviews.infrastructure.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotelmanagement.application.reviews.ReviewsView;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.InvalidRating;
 import org.egualpam.services.hotelmanagement.domain.reviews.exception.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.domain.shared.exception.RequiredPropertyIsMissing;
+import org.egualpam.services.hotelmanagement.reviews.application.ReviewsView;
 import org.egualpam.services.hotelmanagement.shared.application.Command;
 import org.egualpam.services.hotelmanagement.shared.application.CommandBus;
 import org.egualpam.services.hotelmanagement.shared.application.Query;

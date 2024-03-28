@@ -1,35 +1,45 @@
-package org.egualpam.services.hotelmanagement.application.reviews;
+package org.egualpam.services.hotelmanagement.reviews.application;
 
-import org.egualpam.services.hotelmanagement.domain.reviews.Comment;
 import org.egualpam.services.hotelmanagement.domain.reviews.Review;
-import org.egualpam.services.hotelmanagement.domain.shared.AggregateId;
 import org.egualpam.services.hotelmanagement.domain.shared.AggregateRepository;
 import org.egualpam.services.hotelmanagement.domain.shared.PublicEventBus;
 import org.egualpam.services.hotelmanagement.shared.application.InternalCommand;
 
-public class UpdateReview implements InternalCommand {
+public final class CreateReview implements InternalCommand {
 
-    private final AggregateId reviewId;
-    private final Comment comment;
+    private final String reviewId;
+    private final String hotelId;
+    private final Integer rating;
+    private final String comment;
+
     private final AggregateRepository<Review> reviewRepository;
     private final PublicEventBus publicEventBus;
 
-    public UpdateReview(
+    public CreateReview(
             String reviewId,
+            String hotelId,
+            Integer rating,
             String comment,
             AggregateRepository<Review> reviewRepository,
             PublicEventBus publicEventBus
     ) {
-        this.reviewId = new AggregateId(reviewId);
-        this.comment = new Comment(comment);
+        this.reviewId = reviewId;
+        this.hotelId = hotelId;
+        this.rating = rating;
+        this.comment = comment;
         this.reviewRepository = reviewRepository;
         this.publicEventBus = publicEventBus;
     }
 
     @Override
     public void execute() {
-        Review review = reviewRepository.find(reviewId).orElseThrow();
-        review.updateComment(comment);
+        Review review = Review.create(
+                reviewRepository,
+                reviewId,
+                hotelId,
+                rating,
+                comment
+        );
         reviewRepository.save(review);
         publicEventBus.publish(review.pullDomainEvents());
     }
