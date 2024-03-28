@@ -1,7 +1,7 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.MultipleHotelsView;
 import org.egualpam.services.hotelmanagement.hotels.application.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotelmanagement.shared.application.Query;
@@ -83,9 +83,9 @@ public final class HotelController {
                 maxPrice
         );
 
-        final HotelsView hotelsView;
+        final MultipleHotelsView multipleHotelsView;
         try {
-            hotelsView = (HotelsView) queryBus.publish(findHotelsQuery);
+            multipleHotelsView = (MultipleHotelsView) queryBus.publish(findHotelsQuery);
         } catch (PriceRangeValuesSwapped e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -97,10 +97,10 @@ public final class HotelController {
                     .internalServerError()
                     .build();
         }
-        return ResponseEntity.ok(mapIntoResponse(hotelsView.hotels()));
+        return ResponseEntity.ok(mapIntoResponse(multipleHotelsView.hotels()));
     }
 
-    private QueryHotelResponse mapIntoResponse(List<HotelsView.Hotel> hotels) {
+    private QueryHotelResponse mapIntoResponse(List<MultipleHotelsView.Hotel> hotels) {
         return new QueryHotelResponse(hotels.stream()
                 .map(
                         h -> new QueryHotelResponse.Hotel(

@@ -2,7 +2,7 @@ package org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import org.egualpam.services.hotelmanagement.hotels.application.HotelsView;
+import org.egualpam.services.hotelmanagement.hotels.application.MultipleHotelsView;
 import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
 import org.egualpam.services.hotelmanagement.shared.application.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
@@ -31,7 +31,7 @@ import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUti
 
 @Transactional
 @AutoConfigureTestEntityManager
-class PostgreSqlJpaHotelsViewSupplierIT extends AbstractIntegrationTest {
+class PostgreSqlJpaMultipleHotelsViewSupplierIT extends AbstractIntegrationTest {
 
     @Autowired
     private EntityManager entityManager;
@@ -51,7 +51,7 @@ class PostgreSqlJpaHotelsViewSupplierIT extends AbstractIntegrationTest {
 
     @Test
     void returnHotelsSortedByAverageRating() {
-        final ViewSupplier<HotelsView> testee = new PostgreSqlJpaHotelsViewSupplier(entityManager);
+        final ViewSupplier<MultipleHotelsView> testee = new PostgreSqlJpaHotelsViewSupplier(entityManager);
 
         UUID lowRatingHotel = randomUUID();
         UUID intermediateRatingHotel = randomUUID();
@@ -83,7 +83,7 @@ class PostgreSqlJpaHotelsViewSupplierIT extends AbstractIntegrationTest {
                 Optional.empty()
         );
 
-        HotelsView result = testee.get(criteria);
+        MultipleHotelsView result = testee.get(criteria);
 
         assertNotNull(result);
         assertThat(result.hotels())

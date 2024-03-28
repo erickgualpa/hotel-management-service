@@ -4,7 +4,7 @@ import org.egualpam.services.hotelmanagement.shared.application.View;
 
 import java.util.List;
 
-public record HotelsView(List<Hotel> hotels) implements View {
+public record MultipleHotelsView(List<Hotel> hotels) implements View {
     public record Hotel(
             String identifier,
             String name,
