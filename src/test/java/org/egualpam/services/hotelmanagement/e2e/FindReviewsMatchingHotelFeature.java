@@ -2,7 +2,7 @@ package org.egualpam.services.hotelmanagement.e2e;
 
 import org.egualpam.services.hotelmanagement.helpers.HotelTestRepository;
 import org.egualpam.services.hotelmanagement.helpers.ReviewTestRepository;
-import org.egualpam.services.hotelmanagement.infrastructure.AbstractIntegrationTest;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
