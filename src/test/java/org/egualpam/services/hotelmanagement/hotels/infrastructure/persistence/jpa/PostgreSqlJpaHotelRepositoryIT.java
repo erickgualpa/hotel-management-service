@@ -21,7 +21,7 @@ class PostgreSqlJpaHotelRepositoryIT extends AbstractIntegrationTest {
     @Test
     void returnEmptyOptional_whenNoHotelMatchesId() {
         final AggregateRepository<Hotel> testee = new PostgreSqlJpaHotelRepository(entityManager);
-        AggregateId hotelId = new AggregateId(randomUUID());
+        AggregateId hotelId = new AggregateId(randomUUID().toString());
         Optional<Hotel> result = testee.find(hotelId);
         assertThat(result).isEmpty();
     }

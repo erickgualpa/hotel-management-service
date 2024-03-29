@@ -11,6 +11,7 @@ import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.j
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Function;
 
 public final class PostgreSqlJpaHotelRepository implements AggregateRepository<Hotel> {
@@ -25,7 +26,7 @@ public final class PostgreSqlJpaHotelRepository implements AggregateRepository<H
 
     @Override
     public Optional<Hotel> find(AggregateId id) {
-        PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, id.value());
+        PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, UUID.fromString(id.value()));
         return Optional.ofNullable(persistenceHotel)
                 .map(this::mapResultIntoHotel);
     }

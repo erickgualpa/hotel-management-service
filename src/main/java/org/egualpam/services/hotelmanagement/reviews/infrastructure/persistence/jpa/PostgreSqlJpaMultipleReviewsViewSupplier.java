@@ -21,7 +21,8 @@ public class PostgreSqlJpaMultipleReviewsViewSupplier implements ViewSupplier<Mu
 
     @Override
     public MultipleReviewsView get(Criteria criteria) {
-        UUID hotelId = ((ReviewCriteria) criteria).getHotelId().value();
+        ReviewCriteria reviewCriteria = (ReviewCriteria) criteria;
+        String hotelId = reviewCriteria.getHotelId().value();
 
         String sql = """
                 SELECT r.id, r.rating, r.comment, r.hotel_id
@@ -32,7 +33,7 @@ public class PostgreSqlJpaMultipleReviewsViewSupplier implements ViewSupplier<Mu
         Query query =
                 entityManager
                         .createNativeQuery(sql, PersistenceReview.class)
-                        .setParameter("hotel_id", hotelId);
+                        .setParameter("hotel_id", UUID.fromString(hotelId));
 
         List<PersistenceReview> persistenceReviews = query.getResultList();
 

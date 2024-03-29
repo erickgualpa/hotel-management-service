@@ -21,7 +21,7 @@ class PostgreSqlJpaReviewRepositoryIT extends AbstractIntegrationTest {
     @Test
     void returnEmptyOptional_whenNoReviewMatchesId() {
         final AggregateRepository<Review> testee = new PostgreSqlJpaReviewRepository(entityManager);
-        AggregateId reviewId = new AggregateId(randomUUID());
+        AggregateId reviewId = new AggregateId(randomUUID().toString());
         Optional<Review> result = testee.find(reviewId);
         assertThat(result).isEmpty();
     }
