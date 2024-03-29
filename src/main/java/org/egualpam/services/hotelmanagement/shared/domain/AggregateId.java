@@ -1,10 +1,29 @@
 package org.egualpam.services.hotelmanagement.shared.domain;
 
-import java.util.UUID;
+import java.util.Objects;
 
-// TODO: Avoid having UUID at this level
-public record AggregateId(UUID value) {
+public final class AggregateId {
+
+    private final UniqueId value;
+
     public AggregateId(String value) {
-        this(new UniqueId(value).value());
+        this.value = new UniqueId(value);
+    }
+
+    public String value() {
+        return value.value().toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AggregateId that = (AggregateId) o;
+        return Objects.equals(value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

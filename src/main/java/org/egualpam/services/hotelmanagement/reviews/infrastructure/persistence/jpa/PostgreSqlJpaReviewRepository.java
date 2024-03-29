@@ -10,6 +10,7 @@ import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review> {
 
@@ -30,7 +31,7 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
         Query query =
                 entityManager
                         .createNativeQuery(sql, PersistenceReview.class)
-                        .setParameter("id", id.value());
+                        .setParameter("id", UUID.fromString(id.value()));
 
         final PersistenceReview persistenceReview;
         try {
@@ -53,8 +54,8 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
     @Transactional
     public void save(Review review) {
         PersistenceReview persistenceReview = new PersistenceReview();
-        persistenceReview.setId(review.getId().value());
-        persistenceReview.setHotelId(review.getHotelId().value());
+        persistenceReview.setId(UUID.fromString(review.getId().value()));
+        persistenceReview.setHotelId(UUID.fromString(review.getHotelId().value()));
         persistenceReview.setRating(review.getRating().value());
         persistenceReview.setComment(review.getComment().value());
 

@@ -6,6 +6,7 @@ import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
 
 import java.util.List;
+import java.util.UUID;
 
 public class SimplePublicEventBus implements PublicEventBus {
 
@@ -24,7 +25,7 @@ public class SimplePublicEventBus implements PublicEventBus {
                 """;
         events.forEach(
                 e -> entityManager.createNativeQuery(sql)
-                        .setParameter("aggregateId", e.getAggregateId().value())
+                        .setParameter("aggregateId", UUID.fromString(e.getAggregateId().value()))
                         .setParameter("occurredOn", e.getOccurredOn())
                         .setParameter("eventType", e.getType())
                         .executeUpdate()
