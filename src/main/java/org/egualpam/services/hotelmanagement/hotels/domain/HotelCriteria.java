@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public final class HotelCriteria implements Criteria {
 
+    // TODO: Amend use of optionals
     private final Optional<UniqueId> hotelId;
     private final Optional<Location> location;
     private final Optional<PriceRange> priceRange;
