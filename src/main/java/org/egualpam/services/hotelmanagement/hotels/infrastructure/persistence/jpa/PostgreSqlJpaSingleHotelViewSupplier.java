@@ -6,6 +6,7 @@ import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
@@ -27,7 +28,7 @@ public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<Single
     @Override
     public SingleHotelView get(Criteria criteria) {
         HotelCriteria hotelCriteria = (HotelCriteria) criteria;
-        UniqueId hotelId = hotelCriteria.getHotelId();
+        UniqueId hotelId = hotelCriteria.getHotelId().orElseThrow(RequiredPropertyIsMissing::new);
         PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, hotelId.value());
         Optional<SingleHotelView.Hotel> hotel = Optional.ofNullable(persistenceHotel).map(this::mapIntoViewHotel);
         return new SingleHotelView(hotel);
