@@ -6,7 +6,6 @@ import org.egualpam.services.hotelmanagement.hotels.application.query.MultipleHo
 import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
 import org.egualpam.services.hotelmanagement.hotels.domain.Location;
 import org.egualpam.services.hotelmanagement.hotels.domain.Price;
-import org.egualpam.services.hotelmanagement.hotels.domain.PriceRange;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
@@ -14,7 +13,6 @@ import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.j
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 
 import static java.util.Comparator.comparingDouble;
@@ -32,14 +30,12 @@ public class PostgreSqlJpaMultipleHotelsViewSupplier implements ViewSupplier<Mul
     @Override
     public MultipleHotelsView get(Criteria criteria) {
         HotelCriteria hotelCriteria = (HotelCriteria) criteria;
-        Optional<String> location = hotelCriteria.getLocation().map(Location::value);
-        Optional<PriceRange> priceRange = hotelCriteria.getPriceRange();
 
         CriteriaQuery<PersistenceHotel> criteriaQuery =
                 new HotelCriteriaQueryBuilder(entityManager)
-                        .withLocation(location)
-                        .withMinPrice(priceRange.flatMap(PriceRange::minPrice).map(Price::value))
-                        .withMaxPrice(priceRange.flatMap(PriceRange::maxPrice).map(Price::value))
+                        .withLocation(hotelCriteria.getLocation().map(Location::value))
+                        .withMinPrice(hotelCriteria.getMinPrice().map(Price::value))
+                        .withMaxPrice(hotelCriteria.getMaxPrice().map(Price::value))
                         .build();
 
         List<MultipleHotelsView.Hotel> hotels = entityManager

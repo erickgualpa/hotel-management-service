@@ -85,6 +85,9 @@ Check it and try to find the best available hotel in Mars! 👽
         │                   ├── hotels
         │                   │   └── infrastructure
         │                   │       ├── controller
+        │                   │       ├── cqrs
+        │                   │       │   └── query
+        │                   │       │       └── simple
         │                   │       └── persistence
         │                   │           └── jpa
         │                   ├── reviews

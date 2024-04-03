@@ -5,28 +5,28 @@ import org.egualpam.services.hotelmanagement.shared.application.query.Query;
 import java.util.Optional;
 
 public final class FindHotelsQuery implements Query {
-    private final Optional<String> location;
-    private final Optional<Integer> minPrice;
-    private final Optional<Integer> maxPrice;
+    private final String location;
+    private final Integer minPrice;
+    private final Integer maxPrice;
 
     public FindHotelsQuery(
-            Optional<String> location,
-            Optional<Integer> minPriceFilter,
-            Optional<Integer> maxPrice) {
+            String location,
+            Integer minPrice,
+            Integer maxPrice) {
         this.location = location;
-        this.minPrice = minPriceFilter;
+        this.minPrice = minPrice;
         this.maxPrice = maxPrice;
     }
 
     public Optional<String> getLocation() {
-        return location;
+        return Optional.ofNullable(location);
     }
 
     public Optional<Integer> getMinPrice() {
-        return minPrice;
+        return Optional.ofNullable(minPrice);
     }
 
     public Optional<Integer> getMaxPrice() {
-        return maxPrice;
+        return Optional.ofNullable(maxPrice);
     }
 }

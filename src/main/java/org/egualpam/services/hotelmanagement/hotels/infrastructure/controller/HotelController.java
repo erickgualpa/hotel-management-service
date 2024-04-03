@@ -69,18 +69,10 @@ public final class HotelController {
 
     @PostMapping(value = "/query")
     public ResponseEntity<QueryHotelResponse> queryHotels(@RequestBody QueryHotelRequest request) {
-        Optional<String> location = Optional.ofNullable(request.location());
-        Optional<Integer> minPrice =
-                Optional.ofNullable(request.priceRange())
-                        .map(QueryHotelRequest.PriceRange::begin);
-        Optional<Integer> maxPrice =
-                Optional.ofNullable(request.priceRange())
-                        .map(QueryHotelRequest.PriceRange::end);
-
         Query findHotelsQuery = new FindHotelsQuery(
-                location,
-                minPrice,
-                maxPrice
+                request.location(),
+                Optional.ofNullable(request.priceRange()).map(QueryHotelRequest.PriceRange::begin).orElse(null),
+                Optional.ofNullable(request.priceRange()).map(QueryHotelRequest.PriceRange::end).orElse(null)
         );
 
         final MultipleHotelsView multipleHotelsView;

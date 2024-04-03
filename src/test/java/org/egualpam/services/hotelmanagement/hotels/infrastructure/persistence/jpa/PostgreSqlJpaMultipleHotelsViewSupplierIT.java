@@ -17,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -77,11 +76,7 @@ class PostgreSqlJpaMultipleHotelsViewSupplierIT extends AbstractIntegrationTest 
         stubReviewsWithRatingRange(intermediateRatingHotel, intermediateRatingRange);
         stubReviewsWithRatingRange(highRatingHotel, highRatingRange);
 
-        Criteria criteria = new HotelCriteria(
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty()
-        );
+        Criteria criteria = new HotelCriteria(null, null, null);
 
         MultipleHotelsView result = testee.get(criteria);
 

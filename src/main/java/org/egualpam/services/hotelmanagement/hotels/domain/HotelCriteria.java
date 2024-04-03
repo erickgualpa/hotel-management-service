@@ -1,45 +1,55 @@
 package org.egualpam.services.hotelmanagement.hotels.domain;
 
+import org.egualpam.services.hotelmanagement.hotels.domain.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;
-import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
 
 import java.util.Optional;
 
+import static java.util.Objects.nonNull;
+
 public final class HotelCriteria implements Criteria {
 
-    // TODO: Amend use of optionals
-    private final Optional<UniqueId> hotelId;
-    private final Optional<Location> location;
-    private final Optional<PriceRange> priceRange;
+    private final UniqueId hotelId;
+    private final Location location;
+    private final Price minPrice;
+    private final Price maxPrice;
 
     public HotelCriteria(String hotelId) {
-        this.hotelId = Optional.ofNullable(hotelId).map(UniqueId::new);
-        this.location = Optional.empty();
-        this.priceRange = Optional.empty();
+        this.hotelId = nonNull(hotelId) ? new UniqueId(hotelId) : null;
+        this.location = null;
+        this.minPrice = null;
+        this.maxPrice = null;
     }
 
     public HotelCriteria(
-            Optional<String> location,
-            Optional<Integer> minPrice,
-            Optional<Integer> maxPrice
+            String location,
+            Integer minPrice,
+            Integer maxPrice
     ) {
-        this.hotelId = Optional.empty();
-        this.location = location.map(Location::new);
-        this.priceRange = minPrice.isPresent() || maxPrice.isPresent()
-                ? Optional.of(new PriceRange(minPrice.map(Price::new), maxPrice.map(Price::new)))
-                : Optional.empty();
+        this.hotelId = null;
+        this.location = nonNull(location) ? new Location(location) : null;
+
+        if (nonNull(minPrice) && nonNull(maxPrice) && minPrice > maxPrice) {
+            throw new PriceRangeValuesSwapped();
+        }
+        this.minPrice = nonNull(minPrice) ? new Price(minPrice) : null;
+        this.maxPrice = nonNull(maxPrice) ? new Price(maxPrice) : null;
     }
 
-    public UniqueId getHotelId() {
-        return hotelId.orElseThrow(RequiredPropertyIsMissing::new);
+    public Optional<UniqueId> getHotelId() {
+        return Optional.ofNullable(hotelId);
     }
 
     public Optional<Location> getLocation() {
-        return location;
+        return Optional.ofNullable(location);
     }
 
-    public Optional<PriceRange> getPriceRange() {
-        return priceRange;
+    public Optional<Price> getMinPrice() {
+        return Optional.ofNullable(minPrice);
+    }
+
+    public Optional<Price> getMaxPrice() {
+        return Optional.ofNullable(maxPrice);
     }
 }

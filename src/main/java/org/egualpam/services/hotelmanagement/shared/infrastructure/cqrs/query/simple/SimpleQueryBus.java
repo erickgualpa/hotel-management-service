@@ -27,6 +27,7 @@ public final class SimpleQueryBus implements QueryBus {
             ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier,
             ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier
     ) {
+        // TODO: Move this configuration to 'SharedConfiguration'
         handlers = Map.of(
                 FindHotelReviewsQuery.class,
                 new FindHotelReviewsQueryHandler(multipleReviewsViewSupplier),
@@ -72,9 +73,9 @@ public final class SimpleQueryBus implements QueryBus {
             final FindHotelsQuery findHotelsQuery = (FindHotelsQuery) query;
             return multipleHotelsViewSupplier.get(
                     new HotelCriteria(
-                            findHotelsQuery.getLocation(),
-                            findHotelsQuery.getMinPrice(),
-                            findHotelsQuery.getMaxPrice()
+                            findHotelsQuery.getLocation().orElse(null),
+                            findHotelsQuery.getMinPrice().orElse(null),
+                            findHotelsQuery.getMaxPrice().orElse(null)
                     )
             );
         }
