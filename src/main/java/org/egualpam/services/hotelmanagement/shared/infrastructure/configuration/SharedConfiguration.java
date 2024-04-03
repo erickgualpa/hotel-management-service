@@ -14,10 +14,18 @@ import org.egualpam.services.hotelmanagement.shared.application.query.ViewSuppli
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBus;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelQuery;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelQueryHandler;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelReviewsQuery;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelReviewsQueryHandler;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelsQuery;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.simple.SimplePublicEventBus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Map;
 
 @Configuration
 public class SharedConfiguration {
@@ -55,12 +63,17 @@ public class SharedConfiguration {
     public QueryBus queryBus(
             ViewSupplier<SingleHotelView> singleHotelViewSupplier,
             ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier,
-            ViewSupplier<MultipleReviewsView> multipleReviewViewSupplier
+            ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier
     ) {
         return new SimpleQueryBus(
-                singleHotelViewSupplier,
-                multipleHotelsViewSupplier,
-                multipleReviewViewSupplier
+                Map.of(
+                        FindHotelQuery.class,
+                        new FindHotelQueryHandler(singleHotelViewSupplier),
+                        FindHotelsQuery.class,
+                        new FindHotelsQueryHandler(multipleHotelsViewSupplier),
+                        FindHotelReviewsQuery.class,
+                        new FindHotelReviewsQueryHandler(multipleReviewsViewSupplier)
+                )
         );
     }
 }
