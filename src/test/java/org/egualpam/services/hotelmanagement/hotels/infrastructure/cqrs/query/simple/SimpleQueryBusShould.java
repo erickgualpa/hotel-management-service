@@ -21,8 +21,10 @@ class SimpleQueryBusShould {
 
     @Mock
     ViewSupplier<SingleHotelView> singleHotelViewSupplier;
+
     @Mock
     ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier;
+
     @Mock
     ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier;
 
