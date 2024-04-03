@@ -2,34 +2,27 @@ package org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.s
 
 import org.egualpam.services.hotelmanagement.hotels.application.query.MultipleHotelsView;
 import org.egualpam.services.hotelmanagement.hotels.domain.exception.PriceRangeValuesSwapped;
-import org.egualpam.services.hotelmanagement.shared.application.query.QueryBus;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelsQuery;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBus;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
-class SimpleQueryBusShould {
+class FindHotelsQueryHandlerShould {
 
     @Mock
     ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier;
 
-    private QueryBus testee;
+    private QueryHandler testee;
 
     @BeforeEach
     void setUp() {
-        testee = new SimpleQueryBus(
-                Map.of(FindHotelsQuery.class, new FindHotelsQueryHandler(multipleHotelsViewSupplier))
-        );
+        testee = new FindHotelsQueryHandler(multipleHotelsViewSupplier);
     }
 
     @Test
@@ -43,6 +36,6 @@ class SimpleQueryBusShould {
                 maxPrice
         );
 
-        assertThrows(PriceRangeValuesSwapped.class, () -> testee.publish(query));
+        assertThrows(PriceRangeValuesSwapped.class, () -> testee.handle(query));
     }
 }
