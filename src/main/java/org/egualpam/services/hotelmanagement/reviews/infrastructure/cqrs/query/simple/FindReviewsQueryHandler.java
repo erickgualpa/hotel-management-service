@@ -18,7 +18,7 @@ public class FindReviewsQueryHandler implements QueryHandler {
     public View handle(Query query) {
         FindReviewsQuery findReviewsQuery = (FindReviewsQuery) query;
         return multipleReviewsViewSupplier.get(
-                new ReviewCriteria(findReviewsQuery.getHotelIdentifier())
+                new ReviewCriteria(findReviewsQuery.getHotelId())
         );
     }
 }

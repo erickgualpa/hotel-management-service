@@ -4,13 +4,13 @@ import org.egualpam.services.hotelmanagement.shared.application.query.Query;
 
 public final class FindReviewsQuery implements Query {
 
-    private final String hotelIdentifier;
+    private final String hotelId;
 
-    public FindReviewsQuery(String hotelIdentifier) {
-        this.hotelIdentifier = hotelIdentifier;
+    public FindReviewsQuery(String hotelId) {
+        this.hotelId = hotelId;
     }
 
-    public String getHotelIdentifier() {
-        return hotelIdentifier;
+    public String getHotelId() {
+        return hotelId;
     }
 }
