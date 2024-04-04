@@ -68,7 +68,7 @@ public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<Single
 
     private Optional<String> getImageURL(UUID hotelId) {
         ImageServiceResponse response = imageServiceClient.get()
-                .uri("v1/images/hotels/" + hotelId)
+                .uri("/v1/images/hotels/" + hotelId)
                 .retrieve()
                 .bodyToMono(ImageServiceResponse.class)
                 .block();
