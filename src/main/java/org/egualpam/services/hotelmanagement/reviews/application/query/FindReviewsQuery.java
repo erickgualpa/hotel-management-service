@@ -1,12 +1,12 @@
-package org.egualpam.services.hotelmanagement.reviews.infrastructure.cqrs.query.simple;
+package org.egualpam.services.hotelmanagement.reviews.application.query;
 
 import org.egualpam.services.hotelmanagement.shared.application.query.Query;
 
-public final class FindHotelReviewsQuery implements Query {
+public final class FindReviewsQuery implements Query {
 
     private final String hotelIdentifier;
 
-    public FindHotelReviewsQuery(String hotelIdentifier) {
+    public FindReviewsQuery(String hotelIdentifier) {
         this.hotelIdentifier = hotelIdentifier;
     }
 

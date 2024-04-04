@@ -1,5 +1,6 @@
 package org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.simple;
 
+import org.egualpam.services.hotelmanagement.hotels.application.query.FindHotelsQuery;
 import org.egualpam.services.hotelmanagement.hotels.application.query.MultipleHotelsView;
 import org.egualpam.services.hotelmanagement.hotels.domain.exception.PriceRangeValuesSwapped;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;

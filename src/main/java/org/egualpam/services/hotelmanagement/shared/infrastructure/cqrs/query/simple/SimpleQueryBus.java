@@ -5,21 +5,20 @@ import org.egualpam.services.hotelmanagement.shared.application.query.QueryBus;
 import org.egualpam.services.hotelmanagement.shared.application.query.View;
 
 import java.util.Map;
+import java.util.Optional;
 
 public final class SimpleQueryBus implements QueryBus {
 
-    private final Map<Class<? extends Query>, QueryHandler> handlers;
+    private final Map<Class<? extends Query>, QueryHandler> queryHandlers;
 
-    public SimpleQueryBus(Map<Class<? extends Query>, QueryHandler> handlers) {
-        this.handlers = handlers;
+    public SimpleQueryBus(Map<Class<? extends Query>, QueryHandler> queryHandlers) {
+        this.queryHandlers = queryHandlers;
     }
 
     @Override
     public View publish(Query query) {
-        QueryHandler queryHandler = handlers.get(query.getClass());
-        if (queryHandler == null) {
-            throw new QueryHandlerNotFound();
-        }
-        return queryHandler.handle(query);
+        return Optional.ofNullable(queryHandlers.get(query.getClass()))
+                .orElseThrow(QueryHandlerNotFound::new)
+                .handle(query);
     }
 }

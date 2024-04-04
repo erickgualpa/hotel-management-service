@@ -2,10 +2,10 @@ package org.egualpam.services.hotelmanagement.reviews.infrastructure.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.egualpam.services.hotelmanagement.reviews.application.query.FindReviewsQuery;
 import org.egualpam.services.hotelmanagement.reviews.application.query.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.exception.InvalidRating;
 import org.egualpam.services.hotelmanagement.reviews.domain.exception.ReviewAlreadyExists;
-import org.egualpam.services.hotelmanagement.reviews.infrastructure.cqrs.query.simple.FindHotelReviewsQuery;
 import org.egualpam.services.hotelmanagement.shared.application.command.Command;
 import org.egualpam.services.hotelmanagement.shared.application.command.CommandBus;
 import org.egualpam.services.hotelmanagement.shared.application.query.Query;
@@ -41,11 +41,11 @@ public final class ReviewController {
 
     @GetMapping
     public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelId) {
-        Query findHotelReviewsQuery = new FindHotelReviewsQuery(hotelId);
+        Query findReviewsQuery = new FindReviewsQuery(hotelId);
 
         final MultipleReviewsView multipleReviewsView;
         try {
-            multipleReviewsView = (MultipleReviewsView) queryBus.publish(findHotelReviewsQuery);
+            multipleReviewsView = (MultipleReviewsView) queryBus.publish(findReviewsQuery);
         } catch (Exception e) {
             logger.error(
                     String.format(

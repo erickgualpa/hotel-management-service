@@ -4,28 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.hotels.application.query.MultipleHotelsView;
-import org.egualpam.services.hotelmanagement.hotels.application.query.SingleHotelView;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.simple.FindHotelQuery;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.simple.FindHotelQueryHandler;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.simple.FindHotelsQuery;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
-import org.egualpam.services.hotelmanagement.reviews.application.query.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.Review;
-import org.egualpam.services.hotelmanagement.reviews.infrastructure.cqrs.query.simple.FindHotelReviewsQuery;
-import org.egualpam.services.hotelmanagement.reviews.infrastructure.cqrs.query.simple.FindHotelReviewsQueryHandler;
 import org.egualpam.services.hotelmanagement.shared.application.command.CommandBus;
 import org.egualpam.services.hotelmanagement.shared.application.query.QueryBus;
-import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBus;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.simple.SimplePublicEventBus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Map;
+import java.util.List;
+
+import static java.util.stream.Collectors.toMap;
 
 @Configuration
 public class SharedConfiguration {
@@ -60,20 +53,9 @@ public class SharedConfiguration {
     }
 
     @Bean
-    public QueryBus queryBus(
-            ViewSupplier<SingleHotelView> singleHotelViewSupplier,
-            ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier,
-            ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier
-    ) {
+    public QueryBus queryBus(List<QueryHandler> queryHandlers) {
         return new SimpleQueryBus(
-                Map.of(
-                        FindHotelQuery.class,
-                        new FindHotelQueryHandler(singleHotelViewSupplier),
-                        FindHotelsQuery.class,
-                        new FindHotelsQueryHandler(multipleHotelsViewSupplier),
-                        FindHotelReviewsQuery.class,
-                        new FindHotelReviewsQueryHandler(multipleReviewsViewSupplier)
-                )
+                queryHandlers.stream().collect(toMap(QueryHandler::type, h -> h))
         );
     }
 }

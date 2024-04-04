@@ -3,7 +3,8 @@ package org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.s
 import org.egualpam.services.hotelmanagement.shared.application.query.Query;
 import org.egualpam.services.hotelmanagement.shared.application.query.View;
 
-@FunctionalInterface
-public interface QueryHandler<T extends Query> {
-    View handle(T query);
+public interface QueryHandler {
+    View handle(Query query);
+
+    Class<? extends Query> type();
 }

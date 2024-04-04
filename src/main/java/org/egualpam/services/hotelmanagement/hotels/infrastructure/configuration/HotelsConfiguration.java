@@ -4,9 +4,7 @@ import jakarta.persistence.EntityManager;
 import org.egualpam.services.hotelmanagement.hotels.application.query.MultipleHotelsView;
 import org.egualpam.services.hotelmanagement.hotels.application.query.SingleHotelView;
 import org.egualpam.services.hotelmanagement.hotels.domain.Hotel;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.simple.FindHotelQuery;
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.simple.FindHotelQueryHandler;
-import org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.simple.FindHotelsQuery;
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaMultipleHotelsViewSupplier;
@@ -36,14 +34,12 @@ public class HotelsConfiguration {
     }
 
     @Bean
-    public QueryHandler<FindHotelQuery> findHotelQueryHandler(
-            ViewSupplier<SingleHotelView> singleHotelViewSupplier) {
+    public QueryHandler findHotelQueryHandler(ViewSupplier<SingleHotelView> singleHotelViewSupplier) {
         return new FindHotelQueryHandler(singleHotelViewSupplier);
     }
 
     @Bean
-    public QueryHandler<FindHotelsQuery> findHotelsQueryHandler(
-            ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier) {
+    public QueryHandler findHotelsQueryHandler(ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier) {
         return new FindHotelsQueryHandler(multipleHotelsViewSupplier);
     }
 }
