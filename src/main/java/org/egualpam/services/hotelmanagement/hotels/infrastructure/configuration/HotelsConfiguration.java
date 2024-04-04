@@ -14,11 +14,19 @@ import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.j
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class HotelsConfiguration {
+
+    // TODO: Amend this bean to make it available also on application statup
+    @Bean
+    public WebClient imageServiceClient(@Value("${clients.image-service.host}") String host) {
+        return WebClient.create(host);
+    }
 
     @Bean
     public AggregateRepository<Hotel> hotelRepository(
@@ -29,9 +37,10 @@ public class HotelsConfiguration {
 
     @Bean
     public ViewSupplier<SingleHotelView> singleHotelViewSupplier(
-            EntityManager entityManager
+            EntityManager entityManager,
+            WebClient imageServiceClient
     ) {
-        return new PostgreSqlJpaSingleHotelViewSupplier(entityManager);
+        return new PostgreSqlJpaSingleHotelViewSupplier(entityManager, imageServiceClient);
     }
 
     @Bean

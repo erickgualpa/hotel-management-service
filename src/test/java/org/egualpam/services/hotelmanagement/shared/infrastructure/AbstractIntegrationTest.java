@@ -1,5 +1,6 @@
 package org.egualpam.services.hotelmanagement.shared.infrastructure;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.SharedTestConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,10 +25,13 @@ import org.testcontainers.containers.PostgreSQLContainer;
 )
 public abstract class AbstractIntegrationTest {
 
+    protected static final WireMockServer wireMockServer = new WireMockServer(8081);
+
     private static final PostgreSQLContainer<?> postgreSQLContainer =
             new PostgreSQLContainer<>("postgres:latest");
 
     static {
+        wireMockServer.start();
         postgreSQLContainer.start();
     }
 
