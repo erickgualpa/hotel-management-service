@@ -2,7 +2,9 @@
 
 ![CI/CD status](https://github.com/erickgualpa/hotel-management-service/actions/workflows/maven.yml/badge.svg)
 
-Using wrapped maven included in this repository, you can:
+🎮 This is a **playground** project that replicates a hotel management backend service
+
+#### Using wrapped maven included in this repository, you can:
 
 🚀 Build and deploy service as container! 🐳
 <br>
