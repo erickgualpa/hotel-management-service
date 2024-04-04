@@ -25,9 +25,4 @@ public class FindHotelsQueryHandler implements QueryHandler {
                 )
         );
     }
-
-    @Override
-    public Class<? extends Query> type() {
-        return FindHotelsQuery.class;
-    }
 }

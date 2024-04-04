@@ -21,9 +21,4 @@ public class FindHotelQueryHandler implements QueryHandler {
                 new HotelCriteria(findHotelQuery.getHotelId())
         );
     }
-
-    @Override
-    public Class<? extends Query> type() {
-        return FindHotelQuery.class;
-    }
 }

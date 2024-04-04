@@ -21,9 +21,4 @@ public class FindReviewsQueryHandler implements QueryHandler {
                 new ReviewCriteria(findReviewsQuery.getHotelIdentifier())
         );
     }
-
-    @Override
-    public Class<? extends Query> type() {
-        return FindReviewsQuery.class;
-    }
 }
