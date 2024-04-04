@@ -9,15 +9,15 @@ import java.util.Optional;
 
 public final class SimpleQueryBus implements QueryBus {
 
-    private final Map<Class<? extends Query>, QueryHandler> queryHandlers;
+    private final Map<Class<? extends Query>, QueryHandler> handlers;
 
-    public SimpleQueryBus(Map<Class<? extends Query>, QueryHandler> queryHandlers) {
-        this.queryHandlers = queryHandlers;
+    public SimpleQueryBus(Map<Class<? extends Query>, QueryHandler> handlers) {
+        this.handlers = handlers;
     }
 
     @Override
     public View publish(Query query) {
-        return Optional.ofNullable(queryHandlers.get(query.getClass()))
+        return Optional.ofNullable(handlers.get(query.getClass()))
                 .orElseThrow(QueryHandlerNotFound::new)
                 .handle(query);
     }
