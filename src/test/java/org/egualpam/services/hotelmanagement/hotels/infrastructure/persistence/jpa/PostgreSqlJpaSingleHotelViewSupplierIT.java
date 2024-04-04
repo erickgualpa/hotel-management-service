@@ -90,6 +90,7 @@ class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
         wireMockServer.stubFor(
                 WireMock.get(urlEqualTo("/v1/images/hotels/" + hotelId))
                         .willReturn(aResponse()
+                                .withStatus(200)
                                 .withHeader("Content-Type", "application/json")
                                 .withBody(IMAGE_SERVICE_RESPONSE.formatted(imageURL))
                         )
