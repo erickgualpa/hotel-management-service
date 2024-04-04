@@ -9,6 +9,8 @@ import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.CommandHandler;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class UpdateReviewCommandHandler implements CommandHandler {
 
@@ -17,12 +19,17 @@ public class UpdateReviewCommandHandler implements CommandHandler {
 
     @Override
     public void handle(Command command) {
-        final UpdateReviewCommand updateReviewCommand = (UpdateReviewCommand) command;
-        new UpdateReview(
-                updateReviewCommand.getReviewIdentifier(),
-                updateReviewCommand.getComment(),
-                reviewRepository,
-                publicEventBus
-        ).execute();
+        Optional.of(command)
+                .filter(UpdateReviewCommand.class::isInstance)
+                .map(UpdateReviewCommand.class::cast)
+                .map(
+                        cmd -> new UpdateReview(
+                                cmd.getReviewIdentifier(),
+                                cmd.getComment(),
+                                reviewRepository,
+                                publicEventBus
+                        )
+                )
+                .ifPresent(UpdateReview::execute);
     }
 }
