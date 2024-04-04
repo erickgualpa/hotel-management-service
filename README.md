@@ -44,6 +44,9 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │   └── infrastructure
     │   │                   │       ├── configuration
     │   │                   │       ├── controller
+    │   │                   │       ├── cqrs
+    │   │                   │       │   └── query
+    │   │                   │       │       └── simple
     │   │                   │       └── persistence
     │   │                   │           └── jpa
     │   │                   ├── reviews
@@ -55,6 +58,9 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │   └── infrastructure
     │   │                   │       ├── configuration
     │   │                   │       ├── controller
+    │   │                   │       ├── cqrs
+    │   │                   │       │   └── query
+    │   │                   │       │       └── simple
     │   │                   │       └── persistence
     │   │                   │           └── jpa
     │   │                   └── shared
@@ -102,6 +108,9 @@ Check it and try to find the best available hotel in Mars! 👽
         │                   └── shared
         │                       └── infrastructure
         │                           ├── configuration
+        │                           ├── cqrs
+        │                           │   └── query
+        │                           │       └── simple
         │                           └── helpers
         └── resources
 ```

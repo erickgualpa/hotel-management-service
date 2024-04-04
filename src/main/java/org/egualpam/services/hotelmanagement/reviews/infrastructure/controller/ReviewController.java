@@ -2,6 +2,7 @@ package org.egualpam.services.hotelmanagement.reviews.infrastructure.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.egualpam.services.hotelmanagement.reviews.application.query.FindReviewsQuery;
 import org.egualpam.services.hotelmanagement.reviews.application.query.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.exception.InvalidRating;
 import org.egualpam.services.hotelmanagement.reviews.domain.exception.ReviewAlreadyExists;
@@ -13,7 +14,6 @@ import org.egualpam.services.hotelmanagement.shared.domain.exception.InvalidUniq
 import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.CreateReviewCommand;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.UpdateReviewCommand;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.FindHotelReviewsQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -41,11 +41,11 @@ public final class ReviewController {
 
     @GetMapping
     public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelId) {
-        Query findHotelReviewsQuery = new FindHotelReviewsQuery(hotelId);
+        Query findReviewsQuery = new FindReviewsQuery(hotelId);
 
         final MultipleReviewsView multipleReviewsView;
         try {
-            multipleReviewsView = (MultipleReviewsView) queryBus.publish(findHotelReviewsQuery);
+            multipleReviewsView = (MultipleReviewsView) queryBus.publish(findReviewsQuery);
         } catch (Exception e) {
             logger.error(
                     String.format(
