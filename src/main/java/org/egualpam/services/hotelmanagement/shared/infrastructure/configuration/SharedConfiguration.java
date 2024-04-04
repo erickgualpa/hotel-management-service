@@ -4,14 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import jakarta.persistence.EntityManager;
-import org.egualpam.services.hotelmanagement.reviews.domain.Review;
 import org.egualpam.services.hotelmanagement.shared.application.command.CommandBus;
-import org.egualpam.services.hotelmanagement.shared.application.query.Query;
 import org.egualpam.services.hotelmanagement.shared.application.query.QueryBus;
-import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBus;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.simple.SimplePublicEventBus;
@@ -45,24 +42,22 @@ public class SharedConfiguration {
     }
 
     @Bean
-    public CommandBus commandBus(
-            AggregateRepository<Review> reviewRepository,
-            PublicEventBus publicEventBus
-    ) {
+    public CommandBus commandBus(List<SimpleCommandBusConfiguration> configurations) {
         return new SimpleCommandBus(
-                reviewRepository,
-                publicEventBus
+                configurations.stream()
+                        .map(SimpleCommandBusConfiguration::getHandlers)
+                        .flatMap(m -> m.entrySet().stream())
+                        .collect(toMap(Map.Entry::getKey, Map.Entry::getValue))
         );
     }
 
     @Bean
     public QueryBus queryBus(List<SimpleQueryBusConfiguration> configurations) {
-        Map<Class<? extends Query>, QueryHandler> handlers =
+        return new SimpleQueryBus(
                 configurations.stream()
                         .map(SimpleQueryBusConfiguration::getHandlers)
                         .flatMap(m -> m.entrySet().stream())
-                        .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-        return new SimpleQueryBus(handlers);
+                        .collect(toMap(Map.Entry::getKey, Map.Entry::getValue))
+        );
     }
 }

@@ -2,6 +2,8 @@ package org.egualpam.services.hotelmanagement.reviews.infrastructure.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.egualpam.services.hotelmanagement.reviews.application.command.CreateReviewCommand;
+import org.egualpam.services.hotelmanagement.reviews.application.command.UpdateReviewCommand;
 import org.egualpam.services.hotelmanagement.reviews.application.query.FindReviewsQuery;
 import org.egualpam.services.hotelmanagement.reviews.application.query.MultipleReviewsView;
 import org.egualpam.services.hotelmanagement.reviews.domain.exception.InvalidRating;
@@ -12,8 +14,6 @@ import org.egualpam.services.hotelmanagement.shared.application.query.Query;
 import org.egualpam.services.hotelmanagement.shared.application.query.QueryBus;
 import org.egualpam.services.hotelmanagement.shared.domain.exception.InvalidUniqueId;
 import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.CreateReviewCommand;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.UpdateReviewCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

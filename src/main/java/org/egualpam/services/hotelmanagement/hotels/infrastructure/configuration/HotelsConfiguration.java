@@ -13,7 +13,6 @@ import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.j
 import org.egualpam.services.hotelmanagement.hotels.infrastructure.persistence.jpa.PostgreSqlJpaSingleHotelViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,26 +42,12 @@ public class HotelsConfiguration {
     }
 
     @Bean
-    public QueryHandler findHotelQueryHandler(
-            ViewSupplier<SingleHotelView> singleHotelViewSupplier
-    ) {
-        return new FindHotelQueryHandler(singleHotelViewSupplier);
-    }
-
-    @Bean
-    public QueryHandler findHotelsQueryHandler(
+    public SimpleQueryBusConfiguration hotelsSimpleQueryBusConfiguration(
+            ViewSupplier<SingleHotelView> singleHotelViewSupplier,
             ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier
     ) {
-        return new FindHotelsQueryHandler(multipleHotelsViewSupplier);
-    }
-
-    @Bean
-    public SimpleQueryBusConfiguration hotelsSimpleQueryBusConfiguration(
-            QueryHandler findHotelQueryHandler,
-            QueryHandler findHotelsQueryHandler
-    ) {
         return new SimpleQueryBusConfiguration()
-                .withHandler(FindHotelQuery.class, findHotelQueryHandler)
-                .withHandler(FindHotelsQuery.class, findHotelsQueryHandler);
+                .withHandler(FindHotelQuery.class, new FindHotelQueryHandler(singleHotelViewSupplier))
+                .withHandler(FindHotelsQuery.class, new FindHotelsQueryHandler(multipleHotelsViewSupplier));
     }
 }

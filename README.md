@@ -59,6 +59,8 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │       ├── configuration
     │   │                   │       ├── controller
     │   │                   │       ├── cqrs
+    │   │                   │       │   ├── command
+    │   │                   │       │   │   └── simple
     │   │                   │       │   └── query
     │   │                   │       │       └── simple
     │   │                   │       └── persistence
@@ -109,6 +111,8 @@ Check it and try to find the best available hotel in Mars! 👽
         │                       └── infrastructure
         │                           ├── configuration
         │                           ├── cqrs
+        │                           │   ├── command
+        │                           │   │   └── simple
         │                           │   └── query
         │                           │       └── simple
         │                           └── helpers
