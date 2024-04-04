@@ -3,9 +3,11 @@ package org.egualpam.services.hotelmanagement.reviews.infrastructure.persistence
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import org.egualpam.services.hotelmanagement.reviews.application.query.MultipleReviewsView;
+import org.egualpam.services.hotelmanagement.reviews.domain.HotelId;
 import org.egualpam.services.hotelmanagement.reviews.domain.ReviewCriteria;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
+import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
 import java.util.List;
@@ -22,7 +24,7 @@ public class PostgreSqlJpaMultipleReviewsViewSupplier implements ViewSupplier<Mu
     @Override
     public MultipleReviewsView get(Criteria criteria) {
         ReviewCriteria reviewCriteria = (ReviewCriteria) criteria;
-        String hotelId = reviewCriteria.getHotelId().value();
+        HotelId hotelId = reviewCriteria.getHotelId().orElseThrow(RequiredPropertyIsMissing::new);
 
         String sql = """
                 SELECT r.id, r.rating, r.comment, r.hotel_id
@@ -33,7 +35,7 @@ public class PostgreSqlJpaMultipleReviewsViewSupplier implements ViewSupplier<Mu
         Query query =
                 entityManager
                         .createNativeQuery(sql, PersistenceReview.class)
-                        .setParameter("hotel_id", UUID.fromString(hotelId));
+                        .setParameter("hotel_id", UUID.fromString(hotelId.value()));
 
         List<PersistenceReview> persistenceReviews = query.getResultList();
 
