@@ -9,6 +9,8 @@ import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -22,6 +24,8 @@ public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<Single
     private final EntityManager entityManager;
     private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
     private final WebClient imageServiceClient;
+
+    private static final Logger logger = LoggerFactory.getLogger(PostgreSqlJpaSingleHotelViewSupplier.class);
 
     public PostgreSqlJpaSingleHotelViewSupplier(
             EntityManager entityManager,
@@ -42,7 +46,7 @@ public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<Single
     }
 
     private SingleHotelView.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
-        double averageRating = findReviewsByHotel
+        Double averageRating = findReviewsByHotel
                 .apply(persistenceHotel)
                 .stream()
                 .mapToDouble(PersistenceReview::getRating)
@@ -52,7 +56,7 @@ public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<Single
 
         String imageURL = Optional.ofNullable(persistenceHotel.getImageURL())
                 .orElseGet(
-                        () -> getImageURL(persistenceHotel.getId()).orElse(null)
+                        () -> retrieveImageURL(persistenceHotel.getId()).orElse(null)
                 );
 
         return new SingleHotelView.Hotel(
@@ -66,12 +70,17 @@ public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<Single
         );
     }
 
-    private Optional<String> getImageURL(UUID hotelId) {
-        ImageServiceResponse response = imageServiceClient.get()
-                .uri("/v1/images/hotels/" + hotelId)
-                .retrieve()
-                .bodyToMono(ImageServiceResponse.class)
-                .block();
+    private Optional<String> retrieveImageURL(UUID hotelId) {
+        ImageServiceResponse response = null;
+        try {
+            response = imageServiceClient.get()
+                    .uri("/v1/images/hotels/" + hotelId)
+                    .retrieve()
+                    .bodyToMono(ImageServiceResponse.class)
+                    .block();
+        } catch (Exception e) {
+            logger.warn(String.format("Unable to retrieve imageURL given hotelId [%s]", hotelId), e);
+        }
 
         return Optional.ofNullable(response).map(ImageServiceResponse::imageURL);
     }

@@ -26,8 +26,10 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+// TODO: Review this tests requiring '@Transactional' and '@AutoConfigureTestEntityManager' that are increasing the duration of the build
 @Transactional
 @AutoConfigureTestEntityManager
 class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
@@ -100,5 +102,30 @@ class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
 
         assertThat(singleHotelView.hotel()).isNotEmpty();
         assertThat(singleHotelView.hotel().get().imageURL()).isEqualTo(imageURL);
+    }
+
+    @Test
+    void returnViewWithNoImageURL_whenIsNotPresentInDatabaseAndImageServiceFails() {
+        UUID hotelId = randomUUID();
+
+        PersistenceHotel persistenceHotelWithMissingImageURL = new PersistenceHotel(
+                hotelId,
+                randomAlphabetic(5),
+                randomAlphabetic(5),
+                randomAlphabetic(5),
+                nextInt(100, 200),
+                null
+        );
+        testEntityManager.persistAndFlush(persistenceHotelWithMissingImageURL);
+
+        wireMockServer.stubFor(
+                WireMock.get(urlEqualTo("/v1/images/hotels/" + hotelId))
+                        .willReturn(aResponse().withStatus(404))
+        );
+
+        SingleHotelView singleHotelView = testee.get(new HotelCriteria(hotelId.toString()));
+
+        assertThat(singleHotelView.hotel()).isNotEmpty();
+        assertNull(singleHotelView.hotel().get().imageURL());
     }
 }

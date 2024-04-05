@@ -15,7 +15,6 @@
     <artifactId>hotel-management-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>hotel-management-service</name>
-    <description>Hotel Review Search and Sorting</description>
 
     <properties>
         <java.version>17</java.version>

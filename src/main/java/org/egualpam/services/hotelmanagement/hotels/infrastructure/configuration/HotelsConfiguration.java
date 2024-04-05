@@ -22,7 +22,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class HotelsConfiguration {
 
-    // TODO: Amend this bean to make it available also on application statup
     @Bean
     public WebClient imageServiceClient(@Value("${clients.image-service.host}") String host) {
         return WebClient.create(host);
