@@ -8,6 +8,13 @@
 
 #### Using wrapped maven included in this repository, you can:
 
+🧪 Run tests
+<br>
+
+```shell script
+./mvnw clean verify
+```
+
 🚀 Build and deploy service as container! 🐳
 <br>
 
