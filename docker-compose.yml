@@ -8,6 +8,7 @@ services:
       - 5432:5432
     networks:
       - hotel-management-service-network
+  # TODO: Add the rabbitmq service
   spring-boot-app:
     build:
       dockerfile: Dockerfile

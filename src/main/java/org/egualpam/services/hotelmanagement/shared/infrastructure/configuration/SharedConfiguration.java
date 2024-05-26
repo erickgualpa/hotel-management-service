@@ -16,6 +16,7 @@ import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.simp
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.List;
 import java.util.Map;
@@ -40,20 +41,19 @@ public class SharedConfiguration {
 
     // TODO: Rename this bean into 'simplePublicEventBus'
     @Bean
-    public PublicEventBus publicEventBus(EntityManager entityManager) {
+    public PublicEventBus simplePublicEventBus(EntityManager entityManager) {
         return new SimplePublicEventBus(entityManager);
     }
 
+    @Primary
     @Bean
-    public PublicEventBus rabbitMqEventBus(
-            EntityManager entityManager,
+    public PublicEventBus rabbitMqPublicEventBus(
             @Value("${message-broker.rabbitmq.host}") String rabbitMqHost,
             @Value("${message-broker.rabbitmq.amqp-port}") int rabbitMqAmqpPort,
             @Value("${message-broker.rabbitmq.admin-username}") String rabbitMqAdminUsername,
             @Value("${message-broker.rabbitmq.admin-password}") String rabbitMqAdminPassword
     ) {
         return new RabbitMqPublicEventBus(
-                entityManager,
                 rabbitMqHost,
                 rabbitMqAmqpPort,
                 rabbitMqAdminUsername,
