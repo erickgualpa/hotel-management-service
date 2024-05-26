@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.RabbitMQContainer;
 
 @AutoConfigureMockMvc
 @ActiveProfiles("integration-test")
@@ -30,9 +31,16 @@ public abstract class AbstractIntegrationTest {
     private static final PostgreSQLContainer<?> postgreSQLContainer =
             new PostgreSQLContainer<>("postgres:latest");
 
+    // TODO: Make this private
+    protected static final RabbitMQContainer rabbitMqContainer =
+            // TODO: Check if the version is the latest
+            new RabbitMQContainer("rabbitmq:3.7.25-management-alpine")
+                    .withExposedPorts(5672, 15672);
+
     static {
         wireMockServer.start();
         postgreSQLContainer.start();
+        rabbitMqContainer.start();
     }
 
     @Autowired
@@ -43,10 +51,17 @@ public abstract class AbstractIntegrationTest {
         @Override
         public void initialize(ConfigurableApplicationContext applicationContext) {
             TestPropertyValues.of(
+                    // PostgreSQL properties
                     "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
                     "spring.datasource.username= " + postgreSQLContainer.getUsername(),
                     "spring.datasource.password=" + postgreSQLContainer.getPassword(),
-                    "spring.datasource.driver-class-name=" + postgreSQLContainer.getDriverClassName()
+                    "spring.datasource.driver-class-name=" + postgreSQLContainer.getDriverClassName(),
+
+                    // RabbitMQ properties
+                    "message-broker.rabbitmq.host=" + rabbitMqContainer.getHost(),
+                    "message-broker.rabbitmq.amqp-port= " + rabbitMqContainer.getAmqpPort(),
+                    "message-broker.rabbitmq.admin-username=" + rabbitMqContainer.getAdminUsername(),
+                    "message-broker.rabbitmq.admin-password=" + rabbitMqContainer.getAdminPassword()
             ).applyTo(applicationContext.getEnvironment());
         }
     }

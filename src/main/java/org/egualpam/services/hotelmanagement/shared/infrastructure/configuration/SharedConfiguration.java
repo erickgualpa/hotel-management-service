@@ -11,7 +11,9 @@ import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.rabbitmq.RabbitMqPublicEventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.simple.SimplePublicEventBus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,9 +38,27 @@ public class SharedConfiguration {
         return new ObjectMapper();
     }
 
+    // TODO: Rename this bean into 'simplePublicEventBus'
     @Bean
     public PublicEventBus publicEventBus(EntityManager entityManager) {
         return new SimplePublicEventBus(entityManager);
+    }
+
+    @Bean
+    public PublicEventBus rabbitMqEventBus(
+            EntityManager entityManager,
+            @Value("${message-broker.rabbitmq.host}") String rabbitMqHost,
+            @Value("${message-broker.rabbitmq.amqp-port}") int rabbitMqAmqpPort,
+            @Value("${message-broker.rabbitmq.admin-username}") String rabbitMqAdminUsername,
+            @Value("${message-broker.rabbitmq.admin-password}") String rabbitMqAdminPassword
+    ) {
+        return new RabbitMqPublicEventBus(
+                entityManager,
+                rabbitMqHost,
+                rabbitMqAmqpPort,
+                rabbitMqAdminUsername,
+                rabbitMqAdminPassword
+        );
     }
 
     @Bean
