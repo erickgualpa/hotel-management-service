@@ -2,7 +2,7 @@
 
 ![CI/CD status](https://github.com/erickgualpa/hotel-management-service/actions/workflows/maven.yml/badge.svg)
 [![](https://img.shields.io/badge/Spring%20Boot%20Version-3.1.4-blue)](/pom.xml)
-[![](https://img.shields.io/badge/Java%20Version-17-blue)](/pom.xml)
+[![](https://img.shields.io/badge/Java%20Version-21-blue)](/pom.xml)
 
 🎮 This is a **playground** project that replicates simple features from a hotel management backend service.
 <br>
