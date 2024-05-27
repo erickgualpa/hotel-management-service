@@ -1,8 +1,10 @@
 package org.egualpam.services.hotelmanagement.e2e;
 
+import org.egualpam.services.hotelmanagement.e2e.models.PublicEventResult;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.EventStoreTestRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.RabbitMqConsumerForTest;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,6 +38,9 @@ class UpdateReviewCommentFeature extends AbstractIntegrationTest {
 
     @Autowired
     private EventStoreTestRepository eventStoreTestRepository;
+
+    @Autowired
+    private RabbitMqConsumerForTest rabbitMqConsumerForTest;
 
     @Test
     void reviewCommentShouldBeUpdatedGivenReviewId() throws Exception {
@@ -71,6 +77,12 @@ class UpdateReviewCommentFeature extends AbstractIntegrationTest {
                         }
                 );
 
-        assertTrue(eventStoreTestRepository.domainEventExists(reviewId, "domain.review.updated.v1.0"));
+        // Enable the following assertion if 'PublicEventBus' is implemented by 'SimplePublicEventBus'
+        // assertTrue(eventStoreTestRepository.domainEventExists(reviewId, "domain.review.updated.v1.0"));
+
+        await().atMost(10, SECONDS).untilAsserted(() -> {
+            PublicEventResult publicEventResult = rabbitMqConsumerForTest.consumeFromQueue("hotelmanagement.reviews");
+            assertThat(publicEventResult.type()).isEqualTo("domain.review.updated.v1.0");
+        });
     }
 }

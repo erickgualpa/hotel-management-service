@@ -9,53 +9,42 @@ import com.rabbitmq.client.ConnectionFactory;
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.properties.eventbus.RabbitMqProperties;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+// TODO: Refactor this whole class
 public class RabbitMqPublicEventBus implements PublicEventBus {
 
+    private final Connection rabbitMqConnection;
     private final ObjectMapper objectMapper;
-    private final String rabbitMqHost;
-    private final int rabbitMqAmqpPort;
-    private final String rabbitMqAdminUsername;
-    private final String rabbitMqAdminPassword;
 
     public RabbitMqPublicEventBus(
-            ObjectMapper objectMapper,
-            String rabbitMqHost,
-            int rabbitMqAmqpPort,
-            String rabbitMqAdminUsername,
-            String rabbitMqAdminPassword
+            RabbitMqProperties rabbitMqProperties,
+            ObjectMapper objectMapper
     ) {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost(rabbitMqProperties.getHost());
+        factory.setPort(rabbitMqProperties.getAmqpPort());
+        factory.setUsername(rabbitMqProperties.getAdminUsername());
+        factory.setPassword(rabbitMqProperties.getAdminPassword());
+        try {
+            // TODO: Consider using a connection pool
+            this.rabbitMqConnection = factory.newConnection();
+        } catch (IOException | TimeoutException e) {
+            throw new RuntimeException("Connection could not be established", e);
+        }
+
         this.objectMapper = objectMapper;
-        this.rabbitMqHost = rabbitMqHost;
-        this.rabbitMqAmqpPort = rabbitMqAmqpPort;
-        this.rabbitMqAdminUsername = rabbitMqAdminUsername;
-        this.rabbitMqAdminPassword = rabbitMqAdminPassword;
     }
 
     @Transactional
     @Override
     public void publish(List<DomainEvent> events) {
-        // TODO: Implement RabbitMQ publish logic
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(rabbitMqHost);
-        factory.setPort(rabbitMqAmqpPort);
-        factory.setUsername(rabbitMqAdminUsername);
-        factory.setPassword(rabbitMqAdminPassword);
-
-        Connection connection;
-        try {
-            connection = factory.newConnection();
-        } catch (IOException | TimeoutException e) {
-            throw new RuntimeException(e);
-        }
-
-        // TODO: Consider using a connection pool
-        try (Channel channel = connection.createChannel()) {
+        try (Channel channel = rabbitMqConnection.createChannel()) {
             // TODO: Queues should be already configured
             channel.queueDeclare("hotelmanagement.reviews", false, false, false, null);
             events.forEach(e -> publishEvent(e, channel));
