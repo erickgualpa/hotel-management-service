@@ -60,14 +60,13 @@ public final class RabbitMqPublicEventBus implements PublicEventBus {
     }
 
     private void publishEvent(DomainEvent domainEvent, Channel channel) {
+        PublicEvent publicEvent = new PublicEvent(
+                domainEvent.getId().toString(),
+                domainEvent.getType(),
+                domainEvent.getAggregateId().value(),
+                domainEvent.getOccurredOn()
+        );
         try {
-            PublicEvent publicEvent = new PublicEvent(
-                    domainEvent.getId().toString(),
-                    domainEvent.getType(),
-                    domainEvent.getAggregateId().value(),
-                    // TODO: Check if this is the correct way to convert Instant to OffsetDateTime
-                    domainEvent.getOccurredOn()
-            );
             byte[] serializedEvent = objectMapper.writeValueAsBytes(publicEvent);
             channel.basicPublish("", "hotelmanagement.reviews", null, serializedEvent);
             logger.info("Event {} has been published", domainEvent.getType());
