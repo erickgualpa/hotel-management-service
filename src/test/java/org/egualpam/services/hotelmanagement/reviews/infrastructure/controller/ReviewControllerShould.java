@@ -1,14 +1,14 @@
 package org.egualpam.services.hotelmanagement.reviews.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.egualpam.services.hotelmanagement.reviews.domain.exception.InvalidRating;
-import org.egualpam.services.hotelmanagement.reviews.domain.exception.ReviewAlreadyExists;
+import org.egualpam.services.hotelmanagement.reviews.domain.exceptions.InvalidRating;
+import org.egualpam.services.hotelmanagement.reviews.domain.exceptions.ReviewAlreadyExists;
 import org.egualpam.services.hotelmanagement.shared.application.command.Command;
 import org.egualpam.services.hotelmanagement.shared.application.command.CommandBus;
 import org.egualpam.services.hotelmanagement.shared.application.query.Query;
 import org.egualpam.services.hotelmanagement.shared.application.query.QueryBus;
-import org.egualpam.services.hotelmanagement.shared.domain.exception.InvalidUniqueId;
-import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
+import org.egualpam.services.hotelmanagement.shared.domain.exceptions.InvalidUniqueId;
+import org.egualpam.services.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.HotelManagementServiceApplication;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.SharedConfiguration;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package org.egualpam.services.hotelmanagement.hotels.domain;
 
-import org.egualpam.services.hotelmanagement.hotels.domain.exception.PriceRangeValuesSwapped;
+import org.egualpam.services.hotelmanagement.hotels.domain.exceptions.PriceRangeValuesSwapped;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;
 

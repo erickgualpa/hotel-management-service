@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import org.egualpam.services.hotelmanagement.hotels.domain.Hotel;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.services.hotelmanagement.shared.domain.exception.ActionNotYetImplemented;
+import org.egualpam.services.hotelmanagement.shared.domain.exceptions.ActionNotYetImplemented;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 

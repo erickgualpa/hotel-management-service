@@ -2,7 +2,7 @@ package org.egualpam.services.hotelmanagement.hotels.infrastructure.cqrs.query.s
 
 import org.egualpam.services.hotelmanagement.hotels.application.query.FindHotelsQuery;
 import org.egualpam.services.hotelmanagement.hotels.application.query.MultipleHotelsView;
-import org.egualpam.services.hotelmanagement.hotels.domain.exception.PriceRangeValuesSwapped;
+import org.egualpam.services.hotelmanagement.hotels.domain.exceptions.PriceRangeValuesSwapped;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 import org.junit.jupiter.api.BeforeEach;
