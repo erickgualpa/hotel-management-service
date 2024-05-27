@@ -8,7 +8,21 @@ services:
       - 5432:5432
     networks:
       - hotel-management-service-network
-  # TODO: Add the rabbitmq service
+  rabbitmq:
+    image: rabbitmq:3.7.25-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: test-rabbitmq-user
+      RABBITMQ_DEFAULT_PASS: test-rabbitmq-password
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    networks:
+      - hotel-management-service-network
   spring-boot-app:
     build:
       dockerfile: Dockerfile
@@ -16,11 +30,12 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - postgres
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_started
     networks:
       - hotel-management-service-network
 networks:
   hotel-management-service-network:
     driver: bridge
-
-
