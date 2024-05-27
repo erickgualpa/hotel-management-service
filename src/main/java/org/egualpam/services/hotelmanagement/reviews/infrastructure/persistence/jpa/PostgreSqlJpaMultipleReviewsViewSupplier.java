@@ -7,7 +7,7 @@ import org.egualpam.services.hotelmanagement.reviews.domain.HotelId;
 import org.egualpam.services.hotelmanagement.reviews.domain.ReviewCriteria;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
-import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
+import org.egualpam.services.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
 import java.util.List;

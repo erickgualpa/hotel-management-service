@@ -7,7 +7,7 @@ import org.egualpam.services.hotelmanagement.hotels.application.query.SingleHote
 import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
-import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
+import org.egualpam.services.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.junit.jupiter.api.BeforeEach;

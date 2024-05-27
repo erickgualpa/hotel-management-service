@@ -6,7 +6,7 @@ import org.egualpam.services.hotelmanagement.hotels.domain.HotelCriteria;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;
-import org.egualpam.services.hotelmanagement.shared.domain.exception.RequiredPropertyIsMissing;
+import org.egualpam.services.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 import org.slf4j.Logger;
@@ -21,11 +21,10 @@ import java.util.function.Function;
 
 public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<SingleHotelView> {
 
+    private static final Logger logger = LoggerFactory.getLogger(PostgreSqlJpaSingleHotelViewSupplier.class);
     private final EntityManager entityManager;
     private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
     private final WebClient imageServiceClient;
-
-    private static final Logger logger = LoggerFactory.getLogger(PostgreSqlJpaSingleHotelViewSupplier.class);
 
     public PostgreSqlJpaSingleHotelViewSupplier(
             EntityManager entityManager,
