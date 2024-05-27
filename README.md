@@ -84,12 +84,15 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                       │   └── exception
     │   │                       └── infrastructure
     │   │                           ├── configuration
+    │   │                           │   └── properties
+    │   │                           │       └── eventbus
     │   │                           ├── cqrs
     │   │                           │   ├── command
     │   │                           │   │   └── simple
     │   │                           │   └── query
     │   │                           │       └── simple
     │   │                           ├── eventbus
+    │   │                           │   ├── rabbitmq
     │   │                           │   └── simple
     │   │                           └── persistence
     │   │                               └── jpa
@@ -103,6 +106,7 @@ Check it and try to find the best available hotel in Mars! 👽
         │           └── services
         │               └── hotelmanagement
         │                   ├── e2e
+        │                   │   └── models
         │                   ├── hotels
         │                   │   └── infrastructure
         │                   │       ├── controller
