@@ -5,7 +5,7 @@ import org.egualpam.services.hotelmanagement.e2e.models.PublicEventResult;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.EventStoreTestRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.RabbitMqConsumerForTest;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
     private EventStoreTestRepository eventStoreTestRepository;
 
     @Autowired
-    private RabbitMqConsumerForTest rabbitMqConsumerForTest;
+    private RabbitMqTestConsumer rabbitMqTestConsumer;
 
     @Test
     void reviewShouldBeCreated() throws Exception {
@@ -80,7 +80,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
         // assertTrue(eventStoreTestRepository.domainEventExists(reviewId, "domain.review.created.v1.0"));
 
         await().atMost(10, SECONDS).untilAsserted(() -> {
-            PublicEventResult publicEventResult = rabbitMqConsumerForTest.consumeFromQueue("hotelmanagement.reviews");
+            PublicEventResult publicEventResult = rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.reviews");
             assertThat(publicEventResult.type()).isEqualTo("domain.review.created.v1.0");
         });
     }

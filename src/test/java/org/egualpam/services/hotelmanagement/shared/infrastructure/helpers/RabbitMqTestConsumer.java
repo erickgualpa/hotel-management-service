@@ -11,12 +11,12 @@ import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RabbitMqConsumerForTest {
+public final class RabbitMqTestConsumer {
 
     private final Connection connection;
     private final ObjectMapper objectMapper;
 
-    public RabbitMqConsumerForTest(Connection connection, ObjectMapper objectMapper) {
+    public RabbitMqTestConsumer(Connection connection, ObjectMapper objectMapper) {
         this.connection = connection;
         this.objectMapper = objectMapper;
     }

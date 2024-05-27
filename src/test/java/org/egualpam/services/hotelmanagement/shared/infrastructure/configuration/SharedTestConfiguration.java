@@ -6,7 +6,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.properties.eventbus.RabbitMqProperties;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.EventStoreTestRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.RabbitMqConsumerForTest;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +34,7 @@ public class SharedTestConfiguration {
     }
 
     @Bean
-    public RabbitMqConsumerForTest rabbitMqConsumerForTest(
+    public RabbitMqTestConsumer rabbitMqConsumerForTest(
             RabbitMqProperties rabbitMqProperties, ObjectMapper objectMapper
     ) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
@@ -44,7 +44,7 @@ public class SharedTestConfiguration {
         factory.setPassword(rabbitMqProperties.getAdminPassword());
 
         Connection connection = factory.newConnection();
-        return new RabbitMqConsumerForTest(connection, objectMapper);
+        return new RabbitMqTestConsumer(connection, objectMapper);
     }
 }
 
