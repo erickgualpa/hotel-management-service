@@ -36,8 +36,7 @@ public abstract class AbstractIntegrationTest {
 
     private static final RabbitMQContainer rabbitMqContainer =
             // TODO: Check if the version is the latest
-            new RabbitMQContainer("rabbitmq:3.7.25-management-alpine")
-                    .withExposedPorts(5672, 15672);
+            new RabbitMQContainer("rabbitmq:3.7.25-management-alpine");
 
     static {
         wireMockServer.start();
