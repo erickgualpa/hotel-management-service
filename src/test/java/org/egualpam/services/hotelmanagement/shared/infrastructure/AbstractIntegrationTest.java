@@ -21,7 +21,10 @@ import org.testcontainers.containers.RabbitMQContainer;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ContextConfiguration(
-        initializers = AbstractIntegrationTest.PostgreSqlInitializer.class,
+        initializers = {
+                AbstractIntegrationTest.PostgreSqlInitializer.class,
+                AbstractIntegrationTest.RabbitMqInitializer.class
+        },
         classes = {SharedTestConfiguration.class}
 )
 public abstract class AbstractIntegrationTest {
@@ -31,8 +34,7 @@ public abstract class AbstractIntegrationTest {
     private static final PostgreSQLContainer<?> postgreSQLContainer =
             new PostgreSQLContainer<>("postgres:latest");
 
-    // TODO: Make this private
-    protected static final RabbitMQContainer rabbitMqContainer =
+    private static final RabbitMQContainer rabbitMqContainer =
             // TODO: Check if the version is the latest
             new RabbitMQContainer("rabbitmq:3.7.25-management-alpine")
                     .withExposedPorts(5672, 15672);
@@ -51,15 +53,21 @@ public abstract class AbstractIntegrationTest {
         @Override
         public void initialize(ConfigurableApplicationContext applicationContext) {
             TestPropertyValues.of(
-                    // PostgreSQL properties
                     "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
                     "spring.datasource.username= " + postgreSQLContainer.getUsername(),
                     "spring.datasource.password=" + postgreSQLContainer.getPassword(),
-                    "spring.datasource.driver-class-name=" + postgreSQLContainer.getDriverClassName(),
+                    "spring.datasource.driver-class-name=" + postgreSQLContainer.getDriverClassName()
+            ).applyTo(applicationContext.getEnvironment());
+        }
+    }
 
-                    // RabbitMQ properties
+    static class RabbitMqInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+        @Override
+        public void initialize(ConfigurableApplicationContext applicationContext) {
+            TestPropertyValues.of(
                     "message-broker.rabbitmq.host=" + rabbitMqContainer.getHost(),
-                    "message-broker.rabbitmq.amqp-port= " + rabbitMqContainer.getAmqpPort(),
+                    "message-broker.rabbitmq.amqp-port=" + rabbitMqContainer.getAmqpPort(),
                     "message-broker.rabbitmq.admin-username=" + rabbitMqContainer.getAdminUsername(),
                     "message-broker.rabbitmq.admin-password=" + rabbitMqContainer.getAdminPassword()
             ).applyTo(applicationContext.getEnvironment());

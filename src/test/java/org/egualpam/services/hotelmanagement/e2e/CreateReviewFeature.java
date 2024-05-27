@@ -1,11 +1,11 @@
 package org.egualpam.services.hotelmanagement.e2e;
 
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.GetResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.egualpam.services.hotelmanagement.e2e.models.PublicEventResult;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.EventStoreTestRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.RabbitMqConsumerForTest;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +34,19 @@ class CreateReviewFeature extends AbstractIntegrationTest {
             """;
 
     @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
     private HotelTestRepository hotelTestRepository;
 
     @Autowired
     private ReviewTestRepository reviewTestRepository;
+
+    @Autowired
+    private EventStoreTestRepository eventStoreTestRepository;
+
+    @Autowired
+    private RabbitMqConsumerForTest rabbitMqConsumerForTest;
 
     @Test
     void reviewShouldBeCreated() throws Exception {
@@ -67,24 +76,12 @@ class CreateReviewFeature extends AbstractIntegrationTest {
 
         assertTrue(reviewTestRepository.reviewExists(reviewId));
 
-        // TODO: Create a new RabbitMQ consumer for test
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost(rabbitMqContainer.getHost());
-        factory.setPort(rabbitMqContainer.getAmqpPort());
-        factory.setUsername(rabbitMqContainer.getAdminUsername());
-        factory.setPassword(rabbitMqContainer.getAdminPassword());
+        // Enable the following assertion if 'PublicEventBus' is implemented by 'SimplePublicEventBus'
+        // assertTrue(eventStoreTestRepository.domainEventExists(reviewId, "domain.review.created.v1.0"));
 
-        Connection connection = factory.newConnection();
-
-        Channel channel = connection.createChannel();
-        channel.queueDeclare("hotelmanagement.reviews", false, false, false, null);
-
-        boolean autoAck = false;
         await().atMost(10, SECONDS).untilAsserted(() -> {
-            // TODO: Check if there is a message in the queue
-            GetResponse getResponse = channel.basicGet("hotelmanagement.reviews", autoAck);
-            String eventBody = new String(getResponse.getBody());
-            assertThat(eventBody).isEqualTo("Hello, World!");
+            PublicEventResult publicEventResult = rabbitMqConsumerForTest.consumeFromQueue("hotelmanagement.reviews");
+            assertThat(publicEventResult.type()).isEqualTo("domain.review.created.v1.0");
         });
     }
 }
