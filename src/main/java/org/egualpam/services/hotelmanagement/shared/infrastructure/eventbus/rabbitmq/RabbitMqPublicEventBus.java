@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 // TODO: Refactor this whole class
-public class RabbitMqPublicEventBus implements PublicEventBus {
+public final class RabbitMqPublicEventBus implements PublicEventBus {
 
     private final Logger logger = LoggerFactory.getLogger(RabbitMqPublicEventBus.class);
 
