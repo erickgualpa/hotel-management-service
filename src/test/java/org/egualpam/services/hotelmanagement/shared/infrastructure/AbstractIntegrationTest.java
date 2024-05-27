@@ -35,8 +35,7 @@ public abstract class AbstractIntegrationTest {
             new PostgreSQLContainer<>("postgres:latest");
 
     private static final RabbitMQContainer rabbitMqContainer =
-            // TODO: Check if the version is the latest
-            new RabbitMQContainer("rabbitmq:3.7.25-management-alpine");
+            new RabbitMQContainer("rabbitmq:3.13.2-management-alpine");
 
     static {
         wireMockServer.start();
