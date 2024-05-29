@@ -17,7 +17,6 @@ import java.util.Optional;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
-// TODO: Check this deprecated dependency
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -80,7 +79,6 @@ class UpdateReviewShould {
                         result -> {
                             assertThat(result.getAggregateId()).isEqualTo(new AggregateId(reviewId));
                             assertThat(result.getOccurredOn()).isNotNull();
-                            assertThat(result.getType()).isEqualTo("hotelmanagement.reviews.updated.v1.0");
                         }
                 );
     }

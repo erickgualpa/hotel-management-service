@@ -84,7 +84,7 @@ public final class RabbitMqPublicEventBus implements PublicEventBus {
         try {
             byte[] serializedEvent = objectMapper.writeValueAsBytes(publicEvent);
             channel.basicPublish("", "hotelmanagement.reviews", null, serializedEvent);
-            logger.info("Event {} has been published", domainEvent.getType());
+            logger.info("Event {} has been published", publicEvent.getType());
         } catch (JsonProcessingException ex) {
             // TODO: Consider using a custom exception
             throw new RuntimeException("Domain event could not be serialized", ex);
