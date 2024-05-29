@@ -32,9 +32,4 @@ public final class ReviewCreated implements DomainEvent {
     public Instant getOccurredOn() {
         return this.occurredOn;
     }
-
-    @Override
-    public String getType() {
-        return "domain.review.created.v1.0";
-    }
 }

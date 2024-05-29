@@ -86,7 +86,6 @@ class CreateReviewShould {
                         result -> {
                             assertThat(result.getAggregateId()).isEqualTo(new AggregateId(reviewId));
                             assertThat(result.getOccurredOn()).isNotNull();
-                            assertThat(result.getType()).isEqualTo("domain.review.created.v1.0");
                         }
                 );
     }

@@ -4,11 +4,18 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events.PublicEventFactory;
 
 import java.util.List;
 import java.util.UUID;
 
 public class SimplePublicEventBus implements PublicEventBus {
+
+    private static final String INSERT_INTO_EVENT_STORE = """
+                INSERT INTO event_store(id, aggregate_id, occurred_on, event_type)
+                VALUES (:id, :aggregateId, :occurredOn, :eventType)
+            """;
 
     private final EntityManager entityManager;
 
@@ -19,16 +26,16 @@ public class SimplePublicEventBus implements PublicEventBus {
     @Transactional
     @Override
     public void publish(List<DomainEvent> events) {
-        String sql = """
-                    INSERT INTO event_store(aggregate_id, occurred_on, event_type)
-                    VALUES (:aggregateId, :occurredOn, :eventType)
-                """;
-        events.forEach(
-                e -> entityManager.createNativeQuery(sql)
-                        .setParameter("aggregateId", UUID.fromString(e.getAggregateId().value()))
-                        .setParameter("occurredOn", e.getOccurredOn())
-                        .setParameter("eventType", e.getType())
-                        .executeUpdate()
-        );
+        events.forEach(this::persistEvent);
+    }
+
+    private void persistEvent(DomainEvent domainEvent) {
+        PublicEvent publicEvent = PublicEventFactory.from(domainEvent);
+        entityManager.createNativeQuery(INSERT_INTO_EVENT_STORE)
+                .setParameter("id", UUID.fromString(publicEvent.getId()))
+                .setParameter("aggregateId", UUID.fromString(publicEvent.getAggregateId()))
+                .setParameter("occurredOn", publicEvent.getOccurredOn())
+                .setParameter("eventType", publicEvent.getType())
+                .executeUpdate();
     }
 }
