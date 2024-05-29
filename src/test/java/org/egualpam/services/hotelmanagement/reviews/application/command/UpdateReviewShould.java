@@ -79,7 +79,7 @@ class UpdateReviewShould {
                         result -> {
                             assertThat(result.getAggregateId()).isEqualTo(new AggregateId(reviewId));
                             assertThat(result.getOccurredOn()).isNotNull();
-                            assertThat(result.getType()).isEqualTo("domain.review.updated.v1.0");
+                            assertThat(result.getType()).isEqualTo("hotelmanagement.reviews.updated.v1.0");
                         }
                 );
     }

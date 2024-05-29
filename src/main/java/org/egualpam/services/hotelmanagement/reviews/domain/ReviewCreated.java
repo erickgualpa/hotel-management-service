@@ -35,6 +35,6 @@ public final class ReviewCreated implements DomainEvent {
 
     @Override
     public String getType() {
-        return "domain.review.created.v1.0";
+        return "hotelmanagement.reviews.created.v1.0";
     }
 }

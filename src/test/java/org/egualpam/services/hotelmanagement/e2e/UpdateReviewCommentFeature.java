@@ -78,11 +78,11 @@ class UpdateReviewCommentFeature extends AbstractIntegrationTest {
                 );
 
         // Enable the following assertion if 'PublicEventBus' is implemented by 'SimplePublicEventBus'
-        // assertTrue(eventStoreTestRepository.domainEventExists(reviewId, "domain.review.updated.v1.0"));
+        // assertTrue(eventStoreTestRepository.domainEventExists(reviewId, "hotelmanagement.reviews.updated.v1.0"));
 
         await().atMost(10, SECONDS).untilAsserted(() -> {
             PublicEventResult publicEventResult = rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.reviews");
-            assertThat(publicEventResult.type()).isEqualTo("domain.review.updated.v1.0");
+            assertThat(publicEventResult.type()).isEqualTo("hotelmanagement.reviews.updated.v1.0");
         });
     }
 }
