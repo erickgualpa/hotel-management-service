@@ -2,7 +2,6 @@ package org.egualpam.services.hotelmanagement.e2e;
 
 import org.egualpam.services.hotelmanagement.e2e.models.PublicEventResult;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.EventStoreTestRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
@@ -35,9 +34,6 @@ class UpdateReviewCommentFeature extends AbstractIntegrationTest {
 
     @Autowired
     private ReviewTestRepository reviewTestRepository;
-
-    @Autowired
-    private EventStoreTestRepository eventStoreTestRepository;
 
     @Autowired
     private RabbitMqTestConsumer rabbitMqTestConsumer;
@@ -77,12 +73,13 @@ class UpdateReviewCommentFeature extends AbstractIntegrationTest {
                         }
                 );
 
-        // Enable the following assertion if 'EventBus' is implemented by 'SimpleEventBus'
-        // assertTrue(eventStoreTestRepository.domainEventExists(reviewId, "hotelmanagement.reviews.updated.v1.0"));
-
         await().atMost(10, SECONDS).untilAsserted(() -> {
             PublicEventResult publicEventResult = rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.reviews");
-            assertThat(publicEventResult.type()).isEqualTo("hotelmanagement.reviews.updated.v1.0");
+            assertThat(publicEventResult).satisfies(r -> {
+                assertThat(r.type()).isEqualTo("hotelmanagement.reviews.updated.v1.0");
+                assertThat(r.aggregateId()).isEqualTo(reviewId.toString());
+                assertNotNull(r.occurredOn());
+            });
         });
     }
 }

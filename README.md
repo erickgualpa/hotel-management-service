@@ -132,6 +132,9 @@ Check it and try to find the best available hotel in Mars! 👽
         │                           │   │   └── simple
         │                           │   └── query
         │                           │       └── simple
+        │                           ├── eventbus
+        │                           │   ├── rabbitmq
+        │                           │   └── simple
         │                           └── helpers
         └── resources
 ```

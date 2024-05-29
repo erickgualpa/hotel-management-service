@@ -1,11 +1,10 @@
 package org.egualpam.services.hotelmanagement.shared.infrastructure.helpers;
 
+import org.egualpam.services.hotelmanagement.e2e.models.PublicEventResult;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.UUID;
-
-import static java.util.Objects.nonNull;
 
 public class EventStoreTestRepository {
 
@@ -15,23 +14,24 @@ public class EventStoreTestRepository {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
-    public boolean domainEventExists(UUID aggregateId, String eventType) {
+    public PublicEventResult findEvent(String eventId) {
         String sql = """
-                SELECT COUNT(*)
+                SELECT event_type, aggregate_id, occurred_on
                 FROM event_store
-                WHERE aggregate_id = :aggregateId AND event_type = :eventType
+                WHERE id = :eventId
                 """;
 
         MapSqlParameterSource queryParameters = new MapSqlParameterSource();
-        queryParameters.addValue("aggregateId", aggregateId);
-        queryParameters.addValue("eventType", eventType);
+        queryParameters.addValue("eventId", UUID.fromString(eventId));
 
-        Integer count = namedParameterJdbcTemplate.queryForObject(
+        return namedParameterJdbcTemplate.queryForObject(
                 sql,
                 queryParameters,
-                Integer.class
+                (rs, rowNum) -> new PublicEventResult(
+                        rs.getString("event_type"),
+                        rs.getString("aggregate_id"),
+                        rs.getTimestamp("occurred_on").toInstant()
+                )
         );
-
-        return nonNull(count) && count == 1;
     }
 }
