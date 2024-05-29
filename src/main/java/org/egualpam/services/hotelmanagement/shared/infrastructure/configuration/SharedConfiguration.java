@@ -7,14 +7,14 @@ import io.swagger.v3.oas.models.info.Info;
 import jakarta.persistence.EntityManager;
 import org.egualpam.services.hotelmanagement.shared.application.command.CommandBus;
 import org.egualpam.services.hotelmanagement.shared.application.query.QueryBus;
-import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.properties.eventbus.RabbitMqProperties;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.rabbitmq.RabbitMqPublicEventBus;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.simple.SimplePublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.rabbitmq.RabbitMqEventBus;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.simple.SimpleEventBus;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,14 +47,14 @@ public class SharedConfiguration {
     }
 
     @Bean
-    public PublicEventBus simplePublicEventBus(EntityManager entityManager) {
-        return new SimplePublicEventBus(entityManager);
+    public EventBus simpleEventBus(EntityManager entityManager) {
+        return new SimpleEventBus(entityManager);
     }
 
     @Primary
     @Bean
-    public PublicEventBus rabbitMqPublicEventBus(RabbitMqProperties rabbitMqProperties, ObjectMapper objectMapper) {
-        return new RabbitMqPublicEventBus(rabbitMqProperties, objectMapper);
+    public EventBus rabbitMqEventBus(RabbitMqProperties rabbitMqProperties, ObjectMapper objectMapper) {
+        return new RabbitMqEventBus(rabbitMqProperties, objectMapper);
     }
 
     @Bean

@@ -5,25 +5,25 @@ import org.egualpam.services.hotelmanagement.reviews.domain.Review;
 import org.egualpam.services.hotelmanagement.shared.application.command.InternalCommand;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.domain.EventBus;
 
 public class UpdateReview implements InternalCommand {
 
     private final AggregateId reviewId;
     private final Comment comment;
     private final AggregateRepository<Review> reviewRepository;
-    private final PublicEventBus publicEventBus;
+    private final EventBus eventBus;
 
     public UpdateReview(
             String reviewId,
             String comment,
             AggregateRepository<Review> reviewRepository,
-            PublicEventBus publicEventBus
+            EventBus eventBus
     ) {
         this.reviewId = new AggregateId(reviewId);
         this.comment = new Comment(comment);
         this.reviewRepository = reviewRepository;
-        this.publicEventBus = publicEventBus;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -31,6 +31,6 @@ public class UpdateReview implements InternalCommand {
         Review review = reviewRepository.find(reviewId).orElseThrow();
         review.updateComment(comment);
         reviewRepository.save(review);
-        publicEventBus.publish(review.pullDomainEvents());
+        eventBus.publish(review.pullDomainEvents());
     }
 }

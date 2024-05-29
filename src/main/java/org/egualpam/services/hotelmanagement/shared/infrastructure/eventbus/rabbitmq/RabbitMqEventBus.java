@@ -6,7 +6,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
-import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.properties.eventbus.RabbitMqProperties;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events.PublicEventFactory;
@@ -18,14 +18,14 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 // TODO: Refactor this whole class
-public final class RabbitMqPublicEventBus implements PublicEventBus {
+public final class RabbitMqEventBus implements EventBus {
 
-    private final Logger logger = LoggerFactory.getLogger(RabbitMqPublicEventBus.class);
+    private final Logger logger = LoggerFactory.getLogger(RabbitMqEventBus.class);
 
     private final Connection rabbitMqConnection;
     private final ObjectMapper objectMapper;
 
-    public RabbitMqPublicEventBus(
+    public RabbitMqEventBus(
             RabbitMqProperties rabbitMqProperties,
             ObjectMapper objectMapper
     ) {
