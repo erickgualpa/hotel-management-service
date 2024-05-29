@@ -6,7 +6,7 @@ import org.egualpam.services.hotelmanagement.reviews.application.command.UpdateR
 import org.egualpam.services.hotelmanagement.reviews.domain.Review;
 import org.egualpam.services.hotelmanagement.shared.application.command.Command;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.CommandHandler;
 
 import java.util.Optional;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class UpdateReviewCommandHandler implements CommandHandler {
 
     private final AggregateRepository<Review> reviewRepository;
-    private final PublicEventBus publicEventBus;
+    private final EventBus eventBus;
 
     @Override
     public void handle(Command command) {
@@ -27,7 +27,7 @@ public class UpdateReviewCommandHandler implements CommandHandler {
                                 cmd.getReviewIdentifier(),
                                 cmd.getComment(),
                                 reviewRepository,
-                                publicEventBus
+                                eventBus
                         )
                 )
                 .ifPresent(UpdateReview::execute);

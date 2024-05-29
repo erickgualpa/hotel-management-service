@@ -6,7 +6,7 @@ import org.egualpam.services.hotelmanagement.reviews.application.command.CreateR
 import org.egualpam.services.hotelmanagement.reviews.domain.Review;
 import org.egualpam.services.hotelmanagement.shared.application.command.Command;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.CommandHandler;
 
 import java.util.Optional;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class CreateReviewCommandHandler implements CommandHandler {
 
     private final AggregateRepository<Review> reviewRepository;
-    private final PublicEventBus publicEventBus;
+    private final EventBus eventBus;
 
     @Override
     public void handle(Command command) {
@@ -29,7 +29,7 @@ public class CreateReviewCommandHandler implements CommandHandler {
                                 cmd.getRating(),
                                 cmd.getComment(),
                                 reviewRepository,
-                                publicEventBus
+                                eventBus
                         )
                 )
                 .ifPresent(CreateReview::execute);

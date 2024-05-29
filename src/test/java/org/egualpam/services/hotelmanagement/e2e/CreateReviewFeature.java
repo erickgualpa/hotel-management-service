@@ -76,7 +76,7 @@ class CreateReviewFeature extends AbstractIntegrationTest {
 
         assertTrue(reviewTestRepository.reviewExists(reviewId));
 
-        // Enable the following assertion if 'PublicEventBus' is implemented by 'SimplePublicEventBus'
+        // Enable the following assertion if 'EventBus' is implemented by 'SimpleEventBus'
         // assertTrue(eventStoreTestRepository.domainEventExists(reviewId, "hotelmanagement.reviews.created.v1.0"));
 
         await().atMost(10, SECONDS).untilAsserted(() -> {

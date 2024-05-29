@@ -4,7 +4,7 @@ import org.egualpam.services.hotelmanagement.reviews.domain.Review;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
-import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.domain.EventBus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -29,7 +29,7 @@ class UpdateReviewShould {
     private AggregateRepository<Review> reviewRepository;
 
     @Mock
-    private PublicEventBus publicEventBus;
+    private EventBus eventBus;
 
     @Captor
     private ArgumentCaptor<Review> reviewCaptor;
@@ -56,7 +56,7 @@ class UpdateReviewShould {
                 reviewId,
                 comment,
                 reviewRepository,
-                publicEventBus
+                eventBus
         );
 
         testee.execute();
@@ -71,7 +71,7 @@ class UpdateReviewShould {
                         }
                 );
 
-        verify(publicEventBus).publish(domainEventsCaptor.capture());
+        verify(eventBus).publish(domainEventsCaptor.capture());
         assertThat(domainEventsCaptor.getValue())
                 .hasSize(1)
                 .first()

@@ -13,7 +13,7 @@ import org.egualpam.services.hotelmanagement.reviews.infrastructure.persistence.
 import org.egualpam.services.hotelmanagement.reviews.infrastructure.persistence.jpa.PostgreSqlJpaReviewRepository;
 import org.egualpam.services.hotelmanagement.shared.application.query.ViewSupplier;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
+import org.egualpam.services.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -39,15 +39,15 @@ public class ReviewsConfiguration {
     @Bean
     public SimpleCommandBusConfiguration reviewsSimpleCommandBusConfiguration(
             AggregateRepository<Review> reviewRepository,
-            PublicEventBus publicEventBus
+            EventBus eventBus
     ) {
         return new SimpleCommandBusConfiguration()
                 .withHandler(
                         CreateReviewCommand.class,
-                        new CreateReviewCommandHandler(reviewRepository, publicEventBus))
+                        new CreateReviewCommandHandler(reviewRepository, eventBus))
                 .withHandler(
                         UpdateReviewCommand.class,
-                        new UpdateReviewCommandHandler(reviewRepository, publicEventBus));
+                        new UpdateReviewCommandHandler(reviewRepository, eventBus));
     }
 
     @Bean
