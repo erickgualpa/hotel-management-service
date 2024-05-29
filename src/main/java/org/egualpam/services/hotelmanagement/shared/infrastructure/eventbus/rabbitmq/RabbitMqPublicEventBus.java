@@ -5,14 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import org.egualpam.services.hotelmanagement.reviews.domain.ReviewCreated;
-import org.egualpam.services.hotelmanagement.reviews.domain.ReviewUpdated;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.services.hotelmanagement.shared.domain.PublicEventBus;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.properties.eventbus.RabbitMqProperties;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events.ReviewCreatedPublicEvent;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events.ReviewUpdatedPublicEvent;
+import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events.PublicEventFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,24 +60,7 @@ public final class RabbitMqPublicEventBus implements PublicEventBus {
     }
 
     private void publishEvent(DomainEvent domainEvent, Channel channel) {
-        PublicEvent publicEvent;
-        if (domainEvent instanceof ReviewCreated) {
-            publicEvent = new ReviewCreatedPublicEvent(
-                    domainEvent.getId().toString(),
-                    domainEvent.getAggregateId().value(),
-                    domainEvent.getOccurredOn()
-            );
-        } else if (domainEvent instanceof ReviewUpdated) {
-            publicEvent = new ReviewUpdatedPublicEvent(
-                    domainEvent.getId().toString(),
-                    domainEvent.getAggregateId().value(),
-                    domainEvent.getOccurredOn()
-            );
-        } else {
-            // TODO: Consider using a custom exception
-            throw new RuntimeException("Unsupported domain event getType");
-        }
-
+        PublicEvent publicEvent = PublicEventFactory.from(domainEvent);
         try {
             byte[] serializedEvent = objectMapper.writeValueAsBytes(publicEvent);
             channel.basicPublish("", "hotelmanagement.reviews", null, serializedEvent);
