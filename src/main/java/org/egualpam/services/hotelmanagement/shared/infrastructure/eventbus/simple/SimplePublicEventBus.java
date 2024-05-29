@@ -8,12 +8,13 @@ import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.even
 import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events.PublicEventFactory;
 
 import java.util.List;
+import java.util.UUID;
 
 public class SimplePublicEventBus implements PublicEventBus {
 
     private static final String INSERT_INTO_EVENT_STORE = """
-                INSERT INTO event_store(aggregate_id, occurred_on, event_type)
-                VALUES (:aggregateId, :occurredOn, :eventType)
+                INSERT INTO event_store(id, aggregate_id, occurred_on, event_type)
+                VALUES (:id, :aggregateId, :occurredOn, :eventType)
             """;
 
     private final EntityManager entityManager;
@@ -31,8 +32,8 @@ public class SimplePublicEventBus implements PublicEventBus {
     private void persistEvent(DomainEvent domainEvent) {
         PublicEvent publicEvent = PublicEventFactory.from(domainEvent);
         entityManager.createNativeQuery(INSERT_INTO_EVENT_STORE)
-                // TODO: Add missing 'id' parameter
-                .setParameter("aggregateId", publicEvent.getAggregateId())
+                .setParameter("id", UUID.fromString(publicEvent.getId()))
+                .setParameter("aggregateId", UUID.fromString(publicEvent.getAggregateId()))
                 .setParameter("occurredOn", publicEvent.getOccurredOn())
                 .setParameter("eventType", publicEvent.getType())
                 .executeUpdate();
