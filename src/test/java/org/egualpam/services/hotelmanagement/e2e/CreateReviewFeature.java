@@ -1,9 +1,7 @@
 package org.egualpam.services.hotelmanagement.e2e;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.egualpam.services.hotelmanagement.e2e.models.PublicEventResult;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.EventStoreTestRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
@@ -17,6 +15,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,16 +33,10 @@ class CreateReviewFeature extends AbstractIntegrationTest {
             """;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
     private HotelTestRepository hotelTestRepository;
 
     @Autowired
     private ReviewTestRepository reviewTestRepository;
-
-    @Autowired
-    private EventStoreTestRepository eventStoreTestRepository;
 
     @Autowired
     private RabbitMqTestConsumer rabbitMqTestConsumer;
@@ -76,12 +69,13 @@ class CreateReviewFeature extends AbstractIntegrationTest {
 
         assertTrue(reviewTestRepository.reviewExists(reviewId));
 
-        // Enable the following assertion if 'EventBus' is implemented by 'SimpleEventBus'
-        // assertTrue(eventStoreTestRepository.domainEventExists(reviewId, "hotelmanagement.reviews.created.v1.0"));
-
         await().atMost(10, SECONDS).untilAsserted(() -> {
             PublicEventResult publicEventResult = rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.reviews");
-            assertThat(publicEventResult.type()).isEqualTo("hotelmanagement.reviews.created.v1.0");
+            assertThat(publicEventResult).satisfies(r -> {
+                assertThat(r.type()).isEqualTo("hotelmanagement.reviews.created.v1.0");
+                assertThat(r.aggregateId()).isEqualTo(reviewId.toString());
+                assertNotNull(r.occurredOn());
+            });
         });
     }
 }
