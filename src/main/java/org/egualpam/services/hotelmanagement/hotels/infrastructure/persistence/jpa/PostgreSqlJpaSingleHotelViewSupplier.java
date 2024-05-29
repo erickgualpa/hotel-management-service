@@ -39,7 +39,10 @@ public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<Single
     public SingleHotelView get(Criteria criteria) {
         HotelCriteria hotelCriteria = (HotelCriteria) criteria;
         UniqueId hotelId = hotelCriteria.getHotelId().orElseThrow(RequiredPropertyIsMissing::new);
-        PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, hotelId.value());
+        PersistenceHotel persistenceHotel = entityManager.find(
+                PersistenceHotel.class,
+                UUID.fromString(hotelId.value())
+        );
         Optional<SingleHotelView.Hotel> hotel = Optional.ofNullable(persistenceHotel).map(this::mapIntoViewHotel);
         return new SingleHotelView(hotel);
     }

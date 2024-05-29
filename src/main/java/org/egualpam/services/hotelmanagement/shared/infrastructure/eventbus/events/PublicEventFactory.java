@@ -5,10 +5,14 @@ import org.egualpam.services.hotelmanagement.reviews.domain.ReviewUpdated;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 
 public final class PublicEventFactory {
+
+    private PublicEventFactory() {
+    }
+
     public static PublicEvent from(DomainEvent domainEvent) {
         if (domainEvent instanceof ReviewCreated) {
             return new ReviewCreatedPublicEvent(
-                    domainEvent.getId().toString(),
+                    domainEvent.getId().value(),
                     domainEvent.getAggregateId().value(),
                     domainEvent.getOccurredOn()
             );

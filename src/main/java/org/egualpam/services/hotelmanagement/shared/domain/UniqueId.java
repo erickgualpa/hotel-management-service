@@ -2,12 +2,15 @@ package org.egualpam.services.hotelmanagement.shared.domain;
 
 import org.egualpam.services.hotelmanagement.shared.domain.exceptions.InvalidUniqueId;
 
+import java.util.Objects;
 import java.util.UUID;
 
-public record UniqueId(UUID value) {
+public final class UniqueId {
+
+    private final String value;
 
     public UniqueId(String value) {
-        this(valid(value));
+        this.value = valid(value).toString();
     }
 
     private static UUID valid(String value) {
@@ -16,5 +19,26 @@ public record UniqueId(UUID value) {
         } catch (Exception e) {
             throw new InvalidUniqueId(e);
         }
+    }
+
+    public static UniqueId get() {
+        return new UniqueId(UUID.randomUUID().toString());
+    }
+
+    public String value() {
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UniqueId uniqueId = (UniqueId) o;
+        return Objects.equals(value, uniqueId.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

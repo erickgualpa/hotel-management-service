@@ -2,24 +2,24 @@ package org.egualpam.services.hotelmanagement.reviews.domain;
 
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
+import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;
 
 import java.time.Instant;
-import java.util.UUID;
 
 public final class ReviewCreated implements DomainEvent {
 
-    private final UUID id;
+    private final UniqueId id;
     private final AggregateId aggregateId;
     private final Instant occurredOn;
 
     public ReviewCreated(AggregateId id, Instant occurredOn) {
-        this.id = UUID.randomUUID();
+        this.id = UniqueId.get();
         this.aggregateId = id;
         this.occurredOn = occurredOn;
     }
 
     @Override
-    public UUID getId() {
+    public UniqueId getId() {
         return id;
     }
 
