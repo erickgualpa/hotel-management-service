@@ -11,7 +11,7 @@ public final class AggregateId {
     }
 
     public String value() {
-        return value.value().toString();
+        return value.value();
     }
 
     @Override
