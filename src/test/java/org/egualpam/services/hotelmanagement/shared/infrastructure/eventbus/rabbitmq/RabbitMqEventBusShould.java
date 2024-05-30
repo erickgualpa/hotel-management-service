@@ -1,16 +1,17 @@
 package org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.rabbitmq;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.Connection;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.services.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.services.hotelmanagement.shared.domain.UniqueId;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
-import org.egualpam.services.hotelmanagement.shared.infrastructure.configuration.properties.eventbus.RabbitMqProperties;
 import org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events.UnsupportedDomainEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.util.List;
@@ -18,19 +19,20 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class RabbitMqEventBusShould extends AbstractIntegrationTest {
+@ExtendWith(MockitoExtension.class)
+class RabbitMqEventBusShould {
 
-    @Autowired
-    private RabbitMqProperties rabbitMqProperties;
+    @Mock
+    private Connection connection;
 
-    @Autowired
+    @Mock
     private ObjectMapper objectMapper;
 
     private EventBus eventBus;
 
     @BeforeEach
     void setUp() {
-        eventBus = new RabbitMqEventBus(rabbitMqProperties, objectMapper);
+        eventBus = new RabbitMqEventBus(connection, objectMapper);
     }
 
     @Test
