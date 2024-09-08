@@ -1,7 +1,7 @@
 package org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.events;
 
-import org.egualpam.services.hotelmanagement.reviews.domain.ReviewCreated;
-import org.egualpam.services.hotelmanagement.reviews.domain.ReviewUpdated;
+import org.egualpam.services.hotelmanagement.review.domain.ReviewCreated;
+import org.egualpam.services.hotelmanagement.review.domain.ReviewUpdated;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 
 public final class PublicEventFactory {

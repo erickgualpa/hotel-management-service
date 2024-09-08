@@ -3,7 +3,7 @@ package org.egualpam.services.hotelmanagement.shared.infrastructure.eventbus.sim
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.egualpam.services.hotelmanagement.e2e.models.PublicEventResult;
-import org.egualpam.services.hotelmanagement.reviews.domain.ReviewCreated;
+import org.egualpam.services.hotelmanagement.review.domain.ReviewCreated;
 import org.egualpam.services.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.services.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.services.hotelmanagement.shared.domain.EventBus;
