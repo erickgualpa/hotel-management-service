@@ -14,8 +14,7 @@ public final class Hotel implements AggregateRoot {
   private final HotelName name;
   private final HotelDescription description;
   private final Location location;
-  // TODO: Rename this into 'pricePerNight'
-  private final Price totalPrice;
+  private final Price price;
   private final ImageURL imageURL;
   private final AverageRating averageRating;
 
@@ -24,14 +23,14 @@ public final class Hotel implements AggregateRoot {
       String name,
       String description,
       String location,
-      Integer totalPrice,
+      Integer price,
       String imageURL,
       Double averageRating) {
     this.id = new AggregateId(id);
     this.name = new HotelName(name);
     this.description = new HotelDescription(description);
     this.location = new Location(location);
-    this.totalPrice = new Price(totalPrice);
+    this.price = new Price(price);
     this.imageURL = new ImageURL(imageURL);
     this.averageRating = new AverageRating(averageRating);
   }
@@ -60,8 +59,8 @@ public final class Hotel implements AggregateRoot {
     return location;
   }
 
-  public Price getTotalPrice() {
-    return totalPrice;
+  public Price getPrice() {
+    return price;
   }
 
   public ImageURL getImageURL() {

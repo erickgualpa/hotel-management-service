@@ -16,7 +16,7 @@ public final class HotelCriteriaQueryBuilder {
   private static final String NAME = "name";
   private static final String DESCRIPTION = "description";
   private static final String LOCATION = "location";
-  private static final String TOTAL_PRICE = "totalPrice";
+  private static final String PRICE = "price";
   private static final String IMAGE_URL = "imageURL";
 
   private final CriteriaBuilder criteriaBuilder;
@@ -35,7 +35,7 @@ public final class HotelCriteriaQueryBuilder {
             root.get(NAME),
             root.get(DESCRIPTION),
             root.get(LOCATION),
-            root.get(TOTAL_PRICE),
+            root.get(PRICE),
             root.get(IMAGE_URL)));
   }
 
@@ -48,15 +48,14 @@ public final class HotelCriteriaQueryBuilder {
   public HotelCriteriaQueryBuilder withMinPrice(Optional<Integer> minPrice) {
     minPrice.ifPresent(
         targetMinPrice ->
-            filters.add(
-                criteriaBuilder.greaterThanOrEqualTo(root.get(TOTAL_PRICE), targetMinPrice)));
+            filters.add(criteriaBuilder.greaterThanOrEqualTo(root.get(PRICE), targetMinPrice)));
     return this;
   }
 
   public HotelCriteriaQueryBuilder withMaxPrice(Optional<Integer> maxPrice) {
     maxPrice.ifPresent(
         targetMaxPrice ->
-            filters.add(criteriaBuilder.lessThanOrEqualTo(root.get(TOTAL_PRICE), targetMaxPrice)));
+            filters.add(criteriaBuilder.lessThanOrEqualTo(root.get(PRICE), targetMaxPrice)));
     return this;
   }
 

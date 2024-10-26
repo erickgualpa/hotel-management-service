@@ -9,7 +9,7 @@ public record SingleHotelView(Optional<Hotel> hotel) implements View {
       String name,
       String description,
       String location,
-      Integer totalPrice,
+      Integer price,
       String imageURL,
       Double averageRating) {}
 }

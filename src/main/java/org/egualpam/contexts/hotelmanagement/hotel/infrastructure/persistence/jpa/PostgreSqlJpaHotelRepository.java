@@ -34,7 +34,7 @@ public final class PostgreSqlJpaHotelRepository implements AggregateRepository<H
     String name = persistenceHotel.getName();
     String description = persistenceHotel.getDescription();
     String location = persistenceHotel.getLocation();
-    Integer totalPrice = persistenceHotel.getTotalPrice();
+    Integer price = persistenceHotel.getPrice();
     String imageURL = persistenceHotel.getImageURL();
     Double averageRating =
         findReviewsByHotel.apply(persistenceHotel).stream()
@@ -47,7 +47,7 @@ public final class PostgreSqlJpaHotelRepository implements AggregateRepository<H
         name,
         description,
         location,
-        totalPrice,
+        price,
         imageURL,
         averageRating);
   }

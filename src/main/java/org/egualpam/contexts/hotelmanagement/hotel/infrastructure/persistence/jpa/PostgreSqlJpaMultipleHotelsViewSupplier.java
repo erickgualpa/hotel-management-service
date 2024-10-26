@@ -58,7 +58,7 @@ public class PostgreSqlJpaMultipleHotelsViewSupplier implements ViewSupplier<Mul
         persistenceHotel.getName(),
         persistenceHotel.getDescription(),
         persistenceHotel.getLocation(),
-        persistenceHotel.getTotalPrice(),
+        persistenceHotel.getPrice(),
         persistenceHotel.getImageURL(),
         averageRating);
   }

@@ -15,8 +15,8 @@ public class PersistenceHotel {
   private String description;
   private String location;
 
-  @Column(name = "total_price")
-  private Integer totalPrice;
+  @Column(name = "price")
+  private Integer price;
 
   @Column(name = "image_url")
   private String imageURL;
@@ -24,17 +24,12 @@ public class PersistenceHotel {
   public PersistenceHotel() {}
 
   public PersistenceHotel(
-      UUID id,
-      String name,
-      String description,
-      String location,
-      Integer totalPrice,
-      String imageURL) {
+      UUID id, String name, String description, String location, Integer price, String imageURL) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.location = location;
-    this.totalPrice = totalPrice;
+    this.price = price;
     this.imageURL = imageURL;
   }
 
@@ -70,12 +65,12 @@ public class PersistenceHotel {
     this.location = location;
   }
 
-  public Integer getTotalPrice() {
-    return totalPrice;
+  public Integer getPrice() {
+    return price;
   }
 
-  public void setTotalPrice(Integer totalPrice) {
-    this.totalPrice = totalPrice;
+  public void setPrice(Integer price) {
+    this.price = price;
   }
 
   public String getImageURL() {

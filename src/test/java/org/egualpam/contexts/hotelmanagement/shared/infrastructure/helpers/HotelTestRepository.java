@@ -17,13 +17,13 @@ public final class HotelTestRepository {
       String hotelName,
       String hotelDescription,
       String hotelLocation,
-      Integer totalPrice,
+      Integer price,
       String imageURL) {
     String query =
         """
-                INSERT INTO hotels(id, name, description, location, total_price, image_url)
+                INSERT INTO hotels(id, name, description, location, price, image_url)
                 VALUES
-                    (:hotelIdentifier, :hotelName, :hotelDescription, :hotelLocation, :totalPrice, :imageURL)
+                    (:hotelIdentifier, :hotelName, :hotelDescription, :hotelLocation, :price, :imageURL)
                 """;
 
     MapSqlParameterSource queryParameters = new MapSqlParameterSource();
@@ -31,7 +31,7 @@ public final class HotelTestRepository {
     queryParameters.addValue("hotelName", hotelName);
     queryParameters.addValue("hotelDescription", hotelDescription);
     queryParameters.addValue("hotelLocation", hotelLocation);
-    queryParameters.addValue("totalPrice", totalPrice);
+    queryParameters.addValue("price", price);
     queryParameters.addValue("imageURL", imageURL);
 
     namedParameterJdbcTemplate.update(query, queryParameters);

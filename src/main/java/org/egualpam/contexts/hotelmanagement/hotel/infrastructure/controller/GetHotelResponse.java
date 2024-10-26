@@ -10,7 +10,7 @@ public record GetHotelResponse(Hotel hotel) {
       String name,
       String description,
       String location,
-      Integer totalPrice,
+      Integer price,
       String imageURL,
       @JsonFormat(shape = JsonFormat.Shape.NUMBER_FLOAT, pattern = "#.##") Double averageRating) {}
 }

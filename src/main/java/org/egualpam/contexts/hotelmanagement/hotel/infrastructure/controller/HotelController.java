@@ -53,7 +53,7 @@ public final class HotelController {
             viewHotel.name(),
             viewHotel.description(),
             viewHotel.location(),
-            viewHotel.totalPrice(),
+            viewHotel.price(),
             viewHotel.imageURL(),
             viewHotel.averageRating()));
   }
@@ -93,7 +93,7 @@ public final class HotelController {
                         h.name(),
                         h.description(),
                         h.location(),
-                        h.totalPrice(),
+                        h.price(),
                         h.imageURL(),
                         h.averageRating()))
             .toList());

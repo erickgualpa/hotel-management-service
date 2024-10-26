@@ -9,7 +9,7 @@ public record MultipleHotelsView(List<Hotel> hotels) implements View {
       String name,
       String description,
       String location,
-      Integer totalPrice,
+      Integer price,
       String imageURL,
       Double averageRating) {}
 }

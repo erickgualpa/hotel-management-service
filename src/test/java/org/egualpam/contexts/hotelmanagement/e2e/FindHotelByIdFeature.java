@@ -23,7 +23,7 @@ class FindHotelByIdFeature extends AbstractIntegrationTest {
                   "name": "%s",
                   "description": "%s",
                   "location": "%s",
-                  "totalPrice": %d,
+                  "price": %d,
                   "imageURL": "%s",
                   "averageRating": %.2f
                 }

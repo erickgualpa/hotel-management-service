@@ -61,7 +61,7 @@ public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<Single
         persistenceHotel.getName(),
         persistenceHotel.getDescription(),
         persistenceHotel.getLocation(),
-        persistenceHotel.getTotalPrice(),
+        persistenceHotel.getPrice(),
         imageURL,
         averageRating);
   }
