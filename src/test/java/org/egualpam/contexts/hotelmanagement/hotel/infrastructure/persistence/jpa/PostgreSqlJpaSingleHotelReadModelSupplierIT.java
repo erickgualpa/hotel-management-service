@@ -14,7 +14,7 @@ import jakarta.transaction.Transactional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.SingleHotelView;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
@@ -30,7 +30,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 // increasing the duration of the build
 @Transactional
 @AutoConfigureTestEntityManager
-class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
+class PostgreSqlJpaSingleHotelReadModelSupplierIT extends AbstractIntegrationTest {
 
   private static final String IMAGE_SERVICE_RESPONSE =
       """
@@ -45,11 +45,11 @@ class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
 
   @Autowired private WebClient imageServiceClient;
 
-  private ViewSupplier<SingleHotelView> testee;
+  private ReadModelSupplier<SingleHotelView> testee;
 
   @BeforeEach
   void setUp() {
-    testee = new PostgreSqlJpaSingleHotelViewSupplier(entityManager, imageServiceClient);
+    testee = new PostgreSqlJpaSingleHotelReadModelSupplier(entityManager, imageServiceClient);
   }
 
   @Test

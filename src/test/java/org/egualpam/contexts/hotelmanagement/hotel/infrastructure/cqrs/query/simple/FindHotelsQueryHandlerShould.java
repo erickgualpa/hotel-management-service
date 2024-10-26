@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelsQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.MultipleHotelsView;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.exceptions.PriceRangeValuesSwapped;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,13 +16,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class FindHotelsQueryHandlerShould {
 
-  @Mock ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier;
+  @Mock
+  ReadModelSupplier<MultipleHotelsView> multipleHotelsReadModelSupplier;
 
   private QueryHandler testee;
 
   @BeforeEach
   void setUp() {
-    testee = new FindHotelsQueryHandler(multipleHotelsViewSupplier);
+    testee = new FindHotelsQueryHandler(multipleHotelsReadModelSupplier);
   }
 
   @Test

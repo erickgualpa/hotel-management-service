@@ -11,17 +11,17 @@ import org.egualpam.contexts.hotelmanagement.hotel.application.query.MultipleHot
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Location;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Price;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
-public class PostgreSqlJpaMultipleHotelsViewSupplier implements ViewSupplier<MultipleHotelsView> {
+public class PostgreSqlJpaMultipleHotelsReadModelSupplier implements ReadModelSupplier<MultipleHotelsView> {
 
   private final EntityManager entityManager;
   private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
 
-  public PostgreSqlJpaMultipleHotelsViewSupplier(EntityManager entityManager) {
+  public PostgreSqlJpaMultipleHotelsReadModelSupplier(EntityManager entityManager) {
     this.entityManager = entityManager;
     this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
   }

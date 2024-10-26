@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.MultipleHotelsView;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
@@ -29,7 +29,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @Transactional
 @AutoConfigureTestEntityManager
-class PostgreSqlJpaMultipleHotelsViewSupplierIT extends AbstractIntegrationTest {
+class PostgreSqlJpaMultipleHotelsReadModelSupplierIT extends AbstractIntegrationTest {
 
   @Autowired private EntityManager entityManager;
 
@@ -48,8 +48,8 @@ class PostgreSqlJpaMultipleHotelsViewSupplierIT extends AbstractIntegrationTest 
 
   @Test
   void returnHotelsSortedByAverageRating() {
-    final ViewSupplier<MultipleHotelsView> testee =
-        new PostgreSqlJpaMultipleHotelsViewSupplier(entityManager);
+    final ReadModelSupplier<MultipleHotelsView> testee =
+        new PostgreSqlJpaMultipleHotelsReadModelSupplier(entityManager);
 
     UUID lowRatingHotel = randomUUID();
     UUID intermediateRatingHotel = randomUUID();

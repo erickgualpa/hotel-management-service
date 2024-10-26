@@ -9,9 +9,9 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.persistence.jpa.PostgreSqlJpaHotelRepository;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.persistence.jpa.PostgreSqlJpaMultipleHotelsViewSupplier;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.persistence.jpa.PostgreSqlJpaSingleHotelViewSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.persistence.jpa.PostgreSqlJpaMultipleHotelsReadModelSupplier;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.persistence.jpa.PostgreSqlJpaSingleHotelReadModelSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,22 +33,22 @@ public class HotelsConfiguration {
   }
 
   @Bean
-  public ViewSupplier<SingleHotelView> singleHotelViewSupplier(
+  public ReadModelSupplier<SingleHotelView> singleHotelReadModelSupplier(
       EntityManager entityManager, WebClient imageServiceClient) {
-    return new PostgreSqlJpaSingleHotelViewSupplier(entityManager, imageServiceClient);
+    return new PostgreSqlJpaSingleHotelReadModelSupplier(entityManager, imageServiceClient);
   }
 
   @Bean
-  public ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier(EntityManager entityManager) {
-    return new PostgreSqlJpaMultipleHotelsViewSupplier(entityManager);
+  public ReadModelSupplier<MultipleHotelsView> multipleHotelsReadModelSupplier(EntityManager entityManager) {
+    return new PostgreSqlJpaMultipleHotelsReadModelSupplier(entityManager);
   }
 
   @Bean
   public SimpleQueryBusConfiguration hotelsSimpleQueryBusConfiguration(
-      ViewSupplier<SingleHotelView> singleHotelViewSupplier,
-      ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier) {
+      ReadModelSupplier<SingleHotelView> singleHotelReadModelSupplier,
+      ReadModelSupplier<MultipleHotelsView> multipleHotelsReadModelSupplier) {
     return new SimpleQueryBusConfiguration()
-        .withHandler(FindHotelQuery.class, new FindHotelQueryHandler(singleHotelViewSupplier))
-        .withHandler(FindHotelsQuery.class, new FindHotelsQueryHandler(multipleHotelsViewSupplier));
+        .withHandler(FindHotelQuery.class, new FindHotelQueryHandler(singleHotelReadModelSupplier))
+        .withHandler(FindHotelsQuery.class, new FindHotelsQueryHandler(multipleHotelsReadModelSupplier));
   }
 }

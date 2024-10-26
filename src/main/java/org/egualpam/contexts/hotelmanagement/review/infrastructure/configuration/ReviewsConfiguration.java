@@ -9,9 +9,9 @@ import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.CreateReviewCommandHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.UpdateReviewCommandHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.simple.FindReviewsQueryHandler;
-import org.egualpam.contexts.hotelmanagement.review.infrastructure.persistence.jpa.PostgreSqlJpaMultipleReviewsViewSupplier;
+import org.egualpam.contexts.hotelmanagement.review.infrastructure.persistence.jpa.PostgreSqlJpaMultipleReviewsReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.persistence.jpa.PostgreSqlJpaReviewRepository;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
@@ -28,9 +28,9 @@ public class ReviewsConfiguration {
   }
 
   @Bean
-  public ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier(
+  public ReadModelSupplier<MultipleReviewsView> multipleReviewsReadModelSupplier(
       EntityManager entityManager) {
-    return new PostgreSqlJpaMultipleReviewsViewSupplier(entityManager);
+    return new PostgreSqlJpaMultipleReviewsReadModelSupplier(entityManager);
   }
 
   @Bean
@@ -45,9 +45,9 @@ public class ReviewsConfiguration {
 
   @Bean
   public SimpleQueryBusConfiguration reviewsSimpleQueryBusConfiguration(
-      ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier) {
+      ReadModelSupplier<MultipleReviewsView> multipleReviewsReadModelSupplier) {
     return new SimpleQueryBusConfiguration()
         .withHandler(
-            FindReviewsQuery.class, new FindReviewsQueryHandler(multipleReviewsViewSupplier));
+            FindReviewsQuery.class, new FindReviewsQueryHandler(multipleReviewsReadModelSupplier));
   }
 }

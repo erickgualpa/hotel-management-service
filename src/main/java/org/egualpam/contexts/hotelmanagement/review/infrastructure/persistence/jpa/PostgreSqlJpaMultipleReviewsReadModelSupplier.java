@@ -7,16 +7,16 @@ import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.review.application.query.MultipleReviewsView;
 import org.egualpam.contexts.hotelmanagement.review.domain.HotelId;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
-public class PostgreSqlJpaMultipleReviewsViewSupplier implements ViewSupplier<MultipleReviewsView> {
+public class PostgreSqlJpaMultipleReviewsReadModelSupplier implements ReadModelSupplier<MultipleReviewsView> {
 
   private final EntityManager entityManager;
 
-  public PostgreSqlJpaMultipleReviewsViewSupplier(EntityManager entityManager) {
+  public PostgreSqlJpaMultipleReviewsReadModelSupplier(EntityManager entityManager) {
     this.entityManager = entityManager;
   }
 

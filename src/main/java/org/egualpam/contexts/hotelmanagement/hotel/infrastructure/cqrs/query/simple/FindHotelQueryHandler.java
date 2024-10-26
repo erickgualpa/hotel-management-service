@@ -6,17 +6,17 @@ import org.egualpam.contexts.hotelmanagement.hotel.application.query.SingleHotel
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.View;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 
 @RequiredArgsConstructor
 public class FindHotelQueryHandler implements QueryHandler {
 
-  private final ViewSupplier<SingleHotelView> singleHotelViewSupplier;
+  private final ReadModelSupplier<SingleHotelView> singleHotelReadModelSupplier;
 
   @Override
   public View handle(Query query) {
     FindHotelQuery findHotelQuery = (FindHotelQuery) query;
-    return singleHotelViewSupplier.get(new HotelCriteria(findHotelQuery.getHotelId()));
+    return singleHotelReadModelSupplier.get(new HotelCriteria(findHotelQuery.getHotelId()));
   }
 }

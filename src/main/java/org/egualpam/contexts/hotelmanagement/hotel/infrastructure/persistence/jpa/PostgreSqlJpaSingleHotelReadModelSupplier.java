@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.SingleHotelView;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
@@ -18,15 +18,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<SingleHotelView> {
+public class PostgreSqlJpaSingleHotelReadModelSupplier implements ReadModelSupplier<SingleHotelView> {
 
   private static final Logger logger =
-      LoggerFactory.getLogger(PostgreSqlJpaSingleHotelViewSupplier.class);
+      LoggerFactory.getLogger(PostgreSqlJpaSingleHotelReadModelSupplier.class);
   private final EntityManager entityManager;
   private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
   private final WebClient imageServiceClient;
 
-  public PostgreSqlJpaSingleHotelViewSupplier(
+  public PostgreSqlJpaSingleHotelReadModelSupplier(
       EntityManager entityManager, WebClient imageServiceClient) {
     this.entityManager = entityManager;
     this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
