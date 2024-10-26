@@ -12,17 +12,15 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.si
 @RequiredArgsConstructor
 public class FindHotelsQueryHandler implements QueryHandler {
 
-    private final ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier;
+  private final ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier;
 
-    @Override
-    public View handle(Query query) {
-        FindHotelsQuery findHotelsQuery = (FindHotelsQuery) query;
-        return multipleHotelsViewSupplier.get(
-                new HotelCriteria(
-                        findHotelsQuery.getLocation().orElse(null),
-                        findHotelsQuery.getMinPrice().orElse(null),
-                        findHotelsQuery.getMaxPrice().orElse(null)
-                )
-        );
-    }
+  @Override
+  public View handle(Query query) {
+    FindHotelsQuery findHotelsQuery = (FindHotelsQuery) query;
+    return multipleHotelsViewSupplier.get(
+        new HotelCriteria(
+            findHotelsQuery.getLocation().orElse(null),
+            findHotelsQuery.getMinPrice().orElse(null),
+            findHotelsQuery.getMaxPrice().orElse(null)));
+  }
 }

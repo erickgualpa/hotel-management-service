@@ -12,13 +12,11 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.si
 @RequiredArgsConstructor
 public class FindReviewsQueryHandler implements QueryHandler {
 
-    private final ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier;
+  private final ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier;
 
-    @Override
-    public View handle(Query query) {
-        FindReviewsQuery findReviewsQuery = (FindReviewsQuery) query;
-        return multipleReviewsViewSupplier.get(
-                new ReviewCriteria(findReviewsQuery.getHotelId())
-        );
-    }
+  @Override
+  public View handle(Query query) {
+    FindReviewsQuery findReviewsQuery = (FindReviewsQuery) query;
+    return multipleReviewsViewSupplier.get(new ReviewCriteria(findReviewsQuery.getHotelId()));
+  }
 }

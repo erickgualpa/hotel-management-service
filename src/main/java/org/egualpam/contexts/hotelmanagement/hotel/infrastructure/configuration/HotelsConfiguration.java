@@ -22,40 +22,33 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class HotelsConfiguration {
 
-    @Bean
-    public WebClient imageServiceClient(@Value("${clients.image-service.host}") String host) {
-        return WebClient.create(host);
-    }
+  @Bean
+  public WebClient imageServiceClient(@Value("${clients.image-service.host}") String host) {
+    return WebClient.create(host);
+  }
 
-    @Bean
-    public AggregateRepository<Hotel> hotelRepository(
-            EntityManager entityManager
-    ) {
-        return new PostgreSqlJpaHotelRepository(entityManager);
-    }
+  @Bean
+  public AggregateRepository<Hotel> hotelRepository(EntityManager entityManager) {
+    return new PostgreSqlJpaHotelRepository(entityManager);
+  }
 
-    @Bean
-    public ViewSupplier<SingleHotelView> singleHotelViewSupplier(
-            EntityManager entityManager,
-            WebClient imageServiceClient
-    ) {
-        return new PostgreSqlJpaSingleHotelViewSupplier(entityManager, imageServiceClient);
-    }
+  @Bean
+  public ViewSupplier<SingleHotelView> singleHotelViewSupplier(
+      EntityManager entityManager, WebClient imageServiceClient) {
+    return new PostgreSqlJpaSingleHotelViewSupplier(entityManager, imageServiceClient);
+  }
 
-    @Bean
-    public ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier(
-            EntityManager entityManager
-    ) {
-        return new PostgreSqlJpaMultipleHotelsViewSupplier(entityManager);
-    }
+  @Bean
+  public ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier(EntityManager entityManager) {
+    return new PostgreSqlJpaMultipleHotelsViewSupplier(entityManager);
+  }
 
-    @Bean
-    public SimpleQueryBusConfiguration hotelsSimpleQueryBusConfiguration(
-            ViewSupplier<SingleHotelView> singleHotelViewSupplier,
-            ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier
-    ) {
-        return new SimpleQueryBusConfiguration()
-                .withHandler(FindHotelQuery.class, new FindHotelQueryHandler(singleHotelViewSupplier))
-                .withHandler(FindHotelsQuery.class, new FindHotelsQueryHandler(multipleHotelsViewSupplier));
-    }
+  @Bean
+  public SimpleQueryBusConfiguration hotelsSimpleQueryBusConfiguration(
+      ViewSupplier<SingleHotelView> singleHotelViewSupplier,
+      ViewSupplier<MultipleHotelsView> multipleHotelsViewSupplier) {
+    return new SimpleQueryBusConfiguration()
+        .withHandler(FindHotelQuery.class, new FindHotelQueryHandler(singleHotelViewSupplier))
+        .withHandler(FindHotelsQuery.class, new FindHotelsQueryHandler(multipleHotelsViewSupplier));
+  }
 }

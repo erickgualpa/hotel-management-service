@@ -3,9 +3,9 @@ package org.egualpam.contexts.hotelmanagement.shared.domain;
 import java.time.Instant;
 
 public interface DomainEvent {
-    UniqueId getId();
+  UniqueId getId();
 
-    AggregateId getAggregateId();
+  AggregateId getAggregateId();
 
-    Instant getOccurredOn();
+  Instant getOccurredOn();
 }

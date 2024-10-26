@@ -4,59 +4,57 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import java.util.UUID;
 
 @Entity
 @Table(name = "reviews")
 public class PersistenceReview {
 
-    @Id
-    private UUID id;
-    private Integer rating;
-    private String comment;
-    @Column(name = "hotel_id")
-    private UUID hotelId;
+  @Id private UUID id;
+  private Integer rating;
+  private String comment;
 
-    public PersistenceReview() {
-    }
+  @Column(name = "hotel_id")
+  private UUID hotelId;
 
-    public PersistenceReview(UUID id, Integer rating, String comment, UUID hotelId) {
-        this.id = id;
-        this.rating = rating;
-        this.comment = comment;
-        this.hotelId = hotelId;
-    }
+  public PersistenceReview() {}
 
-    public UUID getId() {
-        return id;
-    }
+  public PersistenceReview(UUID id, Integer rating, String comment, UUID hotelId) {
+    this.id = id;
+    this.rating = rating;
+    this.comment = comment;
+    this.hotelId = hotelId;
+  }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+  public UUID getId() {
+    return id;
+  }
 
-    public Integer getRating() {
-        return rating;
-    }
+  public void setId(UUID id) {
+    this.id = id;
+  }
 
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
+  public Integer getRating() {
+    return rating;
+  }
 
-    public String getComment() {
-        return comment;
-    }
+  public void setRating(Integer rating) {
+    this.rating = rating;
+  }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+  public String getComment() {
+    return comment;
+  }
 
-    public UUID getHotelId() {
-        return hotelId;
-    }
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
 
-    public void setHotelId(UUID hotelId) {
-        this.hotelId = hotelId;
-    }
+  public UUID getHotelId() {
+    return hotelId;
+  }
+
+  public void setHotelId(UUID hotelId) {
+    this.hotelId = hotelId;
+  }
 }

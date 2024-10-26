@@ -3,11 +3,11 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.eve
 import java.time.Instant;
 
 public interface PublicEvent {
-    String getId();
+  String getId();
 
-    String getType();
+  String getType();
 
-    String getAggregateId();
+  String getAggregateId();
 
-    Instant getOccurredOn();
+  Instant getOccurredOn();
 }

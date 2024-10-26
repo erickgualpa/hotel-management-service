@@ -5,5 +5,5 @@ import org.egualpam.contexts.hotelmanagement.shared.application.query.View;
 
 @FunctionalInterface
 public interface QueryHandler {
-    View handle(Query query);
+  View handle(Query query);
 }

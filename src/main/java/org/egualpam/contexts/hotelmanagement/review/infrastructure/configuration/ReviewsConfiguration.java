@@ -22,39 +22,32 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ReviewsConfiguration {
 
-    @Bean
-    public AggregateRepository<Review> reviewRepository(
-            EntityManager entityManager
-    ) {
-        return new PostgreSqlJpaReviewRepository(entityManager);
-    }
+  @Bean
+  public AggregateRepository<Review> reviewRepository(EntityManager entityManager) {
+    return new PostgreSqlJpaReviewRepository(entityManager);
+  }
 
-    @Bean
-    public ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier(
-            EntityManager entityManager
-    ) {
-        return new PostgreSqlJpaMultipleReviewsViewSupplier(entityManager);
-    }
+  @Bean
+  public ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier(
+      EntityManager entityManager) {
+    return new PostgreSqlJpaMultipleReviewsViewSupplier(entityManager);
+  }
 
-    @Bean
-    public SimpleCommandBusConfiguration reviewsSimpleCommandBusConfiguration(
-            AggregateRepository<Review> reviewRepository,
-            EventBus eventBus
-    ) {
-        return new SimpleCommandBusConfiguration()
-                .withHandler(
-                        CreateReviewCommand.class,
-                        new CreateReviewCommandHandler(reviewRepository, eventBus))
-                .withHandler(
-                        UpdateReviewCommand.class,
-                        new UpdateReviewCommandHandler(reviewRepository, eventBus));
-    }
+  @Bean
+  public SimpleCommandBusConfiguration reviewsSimpleCommandBusConfiguration(
+      AggregateRepository<Review> reviewRepository, EventBus eventBus) {
+    return new SimpleCommandBusConfiguration()
+        .withHandler(
+            CreateReviewCommand.class, new CreateReviewCommandHandler(reviewRepository, eventBus))
+        .withHandler(
+            UpdateReviewCommand.class, new UpdateReviewCommandHandler(reviewRepository, eventBus));
+  }
 
-    @Bean
-    public SimpleQueryBusConfiguration reviewsSimpleQueryBusConfiguration(
-            ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier
-    ) {
-        return new SimpleQueryBusConfiguration()
-                .withHandler(FindReviewsQuery.class, new FindReviewsQueryHandler(multipleReviewsViewSupplier));
-    }
+  @Bean
+  public SimpleQueryBusConfiguration reviewsSimpleQueryBusConfiguration(
+      ViewSupplier<MultipleReviewsView> multipleReviewsViewSupplier) {
+    return new SimpleQueryBusConfiguration()
+        .withHandler(
+            FindReviewsQuery.class, new FindReviewsQueryHandler(multipleReviewsViewSupplier));
+  }
 }

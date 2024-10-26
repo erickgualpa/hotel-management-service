@@ -1,5 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.review.infrastructure.persistence.jpa;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import jakarta.persistence.EntityManager;
 import org.egualpam.contexts.hotelmanagement.review.application.query.MultipleReviewsView;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
@@ -12,24 +14,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 @ExtendWith(MockitoExtension.class)
 class PostgreSqlJpaMultipleReviewsViewSupplierShould {
 
-    @Mock
-    private EntityManager entityManager;
+  @Mock private EntityManager entityManager;
 
-    private ViewSupplier<MultipleReviewsView> testee;
+  private ViewSupplier<MultipleReviewsView> testee;
 
-    @BeforeEach
-    void setUp() {
-        testee = new PostgreSqlJpaMultipleReviewsViewSupplier(entityManager);
-    }
+  @BeforeEach
+  void setUp() {
+    testee = new PostgreSqlJpaMultipleReviewsViewSupplier(entityManager);
+  }
 
-    @Test
-    void throwDomainException_whenHotelIdIsMissingInCriteria() {
-        Criteria reviewCriteria = new ReviewCriteria(null);
-        assertThrows(RequiredPropertyIsMissing.class, () -> testee.get(reviewCriteria));
-    }
+  @Test
+  void throwDomainException_whenHotelIdIsMissingInCriteria() {
+    Criteria reviewCriteria = new ReviewCriteria(null);
+    assertThrows(RequiredPropertyIsMissing.class, () -> testee.get(reviewCriteria));
+  }
 }

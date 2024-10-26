@@ -3,7 +3,7 @@ package org.egualpam.contexts.hotelmanagement.shared.domain;
 import java.util.List;
 
 public interface AggregateRoot {
-    AggregateId getId();
+  AggregateId getId();
 
-    List<DomainEvent> pullDomainEvents();
+  List<DomainEvent> pullDomainEvents();
 }
