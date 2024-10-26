@@ -11,7 +11,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>org.egualpam.services</groupId>
+    <groupId>org.egualpam.contexts</groupId>
     <artifactId>hotel-management-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>hotel-management-service</name>

@@ -46,9 +46,9 @@ Check it and try to find the best available hotel in Mars! 👽
     │   ├── java
     │   │   └── org
     │   │       └── egualpam
-    │   │           └── services
+    │   │           └── contexts
     │   │               └── hotelmanagement
-    │   │                   ├── hotels
+    │   │                   ├── hotel
     │   │                   │   ├── application
     │   │                   │   │   └── query
     │   │                   │   ├── domain
@@ -61,7 +61,7 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │       │       └── simple
     │   │                   │       └── persistence
     │   │                   │           └── jpa
-    │   │                   ├── reviews
+    │   │                   ├── review
     │   │                   │   ├── application
     │   │                   │   │   ├── command
     │   │                   │   │   └── query
@@ -105,11 +105,11 @@ Check it and try to find the best available hotel in Mars! 👽
         ├── java
         │   └── org
         │       └── egualpam
-        │           └── services
+        │           └── contexts
         │               └── hotelmanagement
         │                   ├── e2e
         │                   │   └── models
-        │                   ├── hotels
+        │                   ├── hotel
         │                   │   └── infrastructure
         │                   │       ├── controller
         │                   │       ├── cqrs
@@ -117,7 +117,7 @@ Check it and try to find the best available hotel in Mars! 👽
         │                   │       │       └── simple
         │                   │       └── persistence
         │                   │           └── jpa
-        │                   ├── reviews
+        │                   ├── review
         │                   │   ├── application
         │                   │   │   └── command
         │                   │   └── infrastructure
