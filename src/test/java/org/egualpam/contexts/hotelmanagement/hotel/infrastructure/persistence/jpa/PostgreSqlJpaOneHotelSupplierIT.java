@@ -12,9 +12,9 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.util.UUID;
-import org.egualpam.contexts.hotelmanagement.hotel.application.query.SingleHotelView;
+import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
@@ -30,7 +30,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 // increasing the duration of the build
 @Transactional
 @AutoConfigureTestEntityManager
-class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
+class PostgreSqlJpaOneHotelSupplierIT extends AbstractIntegrationTest {
 
   private static final String IMAGE_SERVICE_RESPONSE =
       """
@@ -45,11 +45,11 @@ class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
 
   @Autowired private WebClient imageServiceClient;
 
-  private ViewSupplier<SingleHotelView> testee;
+  private ReadModelSupplier<OneHotel> testee;
 
   @BeforeEach
   void setUp() {
-    testee = new PostgreSqlJpaSingleHotelViewSupplier(entityManager, imageServiceClient);
+    testee = new PostgreSqlJpaOneHotelReadModelSupplier(entityManager, imageServiceClient);
   }
 
   @Test
@@ -57,7 +57,7 @@ class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
     String hotelId = randomUUID().toString();
     Criteria criteria = new HotelCriteria(hotelId);
 
-    SingleHotelView result = testee.get(criteria);
+    OneHotel result = testee.get(criteria);
 
     assertNotNull(result);
     assertThat(result.hotel()).isEmpty();
@@ -93,10 +93,10 @@ class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
                     .withHeader("Content-Type", "application/json")
                     .withBody(IMAGE_SERVICE_RESPONSE.formatted(imageURL))));
 
-    SingleHotelView singleHotelView = testee.get(new HotelCriteria(hotelId.toString()));
+    OneHotel result = testee.get(new HotelCriteria(hotelId.toString()));
 
-    assertThat(singleHotelView.hotel()).isNotEmpty();
-    assertThat(singleHotelView.hotel().get().imageURL()).isEqualTo(imageURL);
+    assertThat(result.hotel()).isNotEmpty();
+    assertThat(result.hotel().get().imageURL()).isEqualTo(imageURL);
   }
 
   @Test
@@ -117,9 +117,9 @@ class PostgreSqlJpaSingleHotelViewSupplierIT extends AbstractIntegrationTest {
         WireMock.get(urlEqualTo("/v1/images/hotels/" + hotelId))
             .willReturn(aResponse().withStatus(404)));
 
-    SingleHotelView singleHotelView = testee.get(new HotelCriteria(hotelId.toString()));
+    OneHotel result = testee.get(new HotelCriteria(hotelId.toString()));
 
-    assertThat(singleHotelView.hotel()).isNotEmpty();
-    assertNull(singleHotelView.hotel().get().imageURL());
+    assertThat(result.hotel()).isNotEmpty();
+    assertNull(result.hotel().get().imageURL());
   }
 }

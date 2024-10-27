@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.egualpam.contexts.hotelmanagement.review.application.command.CreateReviewCommand;
 import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateReviewCommand;
 import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviewsQuery;
-import org.egualpam.contexts.hotelmanagement.review.application.query.MultipleReviewsView;
+import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
 import org.egualpam.contexts.hotelmanagement.review.domain.exceptions.InvalidRating;
 import org.egualpam.contexts.hotelmanagement.review.domain.exceptions.ReviewAlreadyExists;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
@@ -41,9 +41,9 @@ public final class ReviewController {
   public ResponseEntity<GetReviewsResponse> findReviews(@RequestParam String hotelId) {
     Query findReviewsQuery = new FindReviewsQuery(hotelId);
 
-    final MultipleReviewsView multipleReviewsView;
+    final ManyReviews manyReviews;
     try {
-      multipleReviewsView = (MultipleReviewsView) queryBus.publish(findReviewsQuery);
+      manyReviews = (ManyReviews) queryBus.publish(findReviewsQuery);
     } catch (Exception e) {
       logger.error(
           String.format(
@@ -52,10 +52,10 @@ public final class ReviewController {
       return ResponseEntity.internalServerError().build();
     }
 
-    return ResponseEntity.ok(mapIntoResponse(multipleReviewsView.reviews()));
+    return ResponseEntity.ok(mapIntoResponse(manyReviews.reviews()));
   }
 
-  private GetReviewsResponse mapIntoResponse(List<MultipleReviewsView.Review> reviews) {
+  private GetReviewsResponse mapIntoResponse(List<ManyReviews.Review> reviews) {
     return new GetReviewsResponse(
         reviews.stream().map(r -> new GetReviewsResponse.Review(r.rating(), r.comment())).toList());
   }

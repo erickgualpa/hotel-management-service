@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
-import org.egualpam.contexts.hotelmanagement.hotel.application.query.SingleHotelView;
+import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.exceptions.PriceRangeValuesSwapped;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
@@ -65,7 +65,7 @@ class HotelControllerShould {
   void returnNotFound_whenGetHotelIsPerformedWithNonMatchingHotelId() throws Exception {
     String hotelId = randomUUID().toString();
 
-    when(queryBus.publish(any(Query.class))).thenReturn(new SingleHotelView(Optional.empty()));
+    when(queryBus.publish(any(Query.class))).thenReturn(new OneHotel(Optional.empty()));
 
     mockMvc.perform(get("/v1/hotels/{hotelId}", hotelId)).andExpect(status().isNotFound());
   }

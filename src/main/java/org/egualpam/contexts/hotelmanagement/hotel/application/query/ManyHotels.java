@@ -1,9 +1,9 @@
 package org.egualpam.contexts.hotelmanagement.hotel.application.query;
 
-import java.util.Optional;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.View;
+import java.util.List;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModel;
 
-public record SingleHotelView(Optional<Hotel> hotel) implements View {
+public record ManyHotels(List<Hotel> hotels) implements ReadModel {
   public record Hotel(
       String identifier,
       String name,

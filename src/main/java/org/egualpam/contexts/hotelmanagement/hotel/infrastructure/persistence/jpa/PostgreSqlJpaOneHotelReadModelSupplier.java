@@ -6,9 +6,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
-import org.egualpam.contexts.hotelmanagement.hotel.application.query.SingleHotelView;
+import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ViewSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
@@ -18,15 +18,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<SingleHotelView> {
+public class PostgreSqlJpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel> {
 
   private static final Logger logger =
-      LoggerFactory.getLogger(PostgreSqlJpaSingleHotelViewSupplier.class);
+      LoggerFactory.getLogger(PostgreSqlJpaOneHotelReadModelSupplier.class);
   private final EntityManager entityManager;
   private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
   private final WebClient imageServiceClient;
 
-  public PostgreSqlJpaSingleHotelViewSupplier(
+  public PostgreSqlJpaOneHotelReadModelSupplier(
       EntityManager entityManager, WebClient imageServiceClient) {
     this.entityManager = entityManager;
     this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
@@ -34,17 +34,17 @@ public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<Single
   }
 
   @Override
-  public SingleHotelView get(Criteria criteria) {
+  public OneHotel get(Criteria criteria) {
     HotelCriteria hotelCriteria = (HotelCriteria) criteria;
     UniqueId hotelId = hotelCriteria.getHotelId().orElseThrow(RequiredPropertyIsMissing::new);
     PersistenceHotel persistenceHotel =
         entityManager.find(PersistenceHotel.class, UUID.fromString(hotelId.value()));
-    Optional<SingleHotelView.Hotel> hotel =
+    Optional<OneHotel.Hotel> hotel =
         Optional.ofNullable(persistenceHotel).map(this::mapIntoViewHotel);
-    return new SingleHotelView(hotel);
+    return new OneHotel(hotel);
   }
 
-  private SingleHotelView.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
+  private OneHotel.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
     Double averageRating =
         findReviewsByHotel.apply(persistenceHotel).stream()
             .mapToDouble(PersistenceReview::getRating)
@@ -56,7 +56,7 @@ public class PostgreSqlJpaSingleHotelViewSupplier implements ViewSupplier<Single
         Optional.ofNullable(persistenceHotel.getImageURL())
             .orElseGet(() -> retrieveImageURL(persistenceHotel.getId()).orElse(null));
 
-    return new SingleHotelView.Hotel(
+    return new OneHotel.Hotel(
         persistenceHotel.getId().toString(),
         persistenceHotel.getName(),
         persistenceHotel.getDescription(),

@@ -5,8 +5,8 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelsQuery;
-import org.egualpam.contexts.hotelmanagement.hotel.application.query.MultipleHotelsView;
-import org.egualpam.contexts.hotelmanagement.hotel.application.query.SingleHotelView;
+import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
+import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.exceptions.PriceRangeValuesSwapped;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
@@ -29,9 +29,9 @@ public final class HotelController {
   public ResponseEntity<GetHotelResponse> getHotel(@PathVariable String hotelId) {
     Query findHotelQuery = new FindHotelQuery(hotelId);
 
-    final SingleHotelView singleHotelView;
+    final OneHotel oneHotel;
     try {
-      singleHotelView = (SingleHotelView) queryBus.publish(findHotelQuery);
+      oneHotel = (OneHotel) queryBus.publish(findHotelQuery);
     } catch (InvalidUniqueId e) {
       return ResponseEntity.badRequest().build();
     } catch (Exception e) {
@@ -40,22 +40,22 @@ public final class HotelController {
       return ResponseEntity.internalServerError().build();
     }
 
-    return singleHotelView
+    return oneHotel
         .hotel()
         .map(hotel -> ResponseEntity.ok(mapIntoResponse(hotel)))
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  private GetHotelResponse mapIntoResponse(SingleHotelView.Hotel viewHotel) {
+  private GetHotelResponse mapIntoResponse(OneHotel.Hotel hotel) {
     return new GetHotelResponse(
         new GetHotelResponse.Hotel(
-            viewHotel.identifier(),
-            viewHotel.name(),
-            viewHotel.description(),
-            viewHotel.location(),
-            viewHotel.price(),
-            viewHotel.imageURL(),
-            viewHotel.averageRating()));
+            hotel.identifier(),
+            hotel.name(),
+            hotel.description(),
+            hotel.location(),
+            hotel.price(),
+            hotel.imageURL(),
+            hotel.averageRating()));
   }
 
   @PostMapping(value = "/query")
@@ -70,9 +70,9 @@ public final class HotelController {
                 .map(QueryHotelRequest.PriceRange::end)
                 .orElse(null));
 
-    final MultipleHotelsView multipleHotelsView;
+    final ManyHotels manyHotels;
     try {
-      multipleHotelsView = (MultipleHotelsView) queryBus.publish(findHotelsQuery);
+      manyHotels = (ManyHotels) queryBus.publish(findHotelsQuery);
     } catch (PriceRangeValuesSwapped e) {
       return ResponseEntity.badRequest().build();
     } catch (Exception e) {
@@ -80,10 +80,10 @@ public final class HotelController {
           String.format("An error occurred while processing the request [%s]", request), e);
       return ResponseEntity.internalServerError().build();
     }
-    return ResponseEntity.ok(mapIntoResponse(multipleHotelsView.hotels()));
+    return ResponseEntity.ok(mapIntoResponse(manyHotels.hotels()));
   }
 
-  private QueryHotelResponse mapIntoResponse(List<MultipleHotelsView.Hotel> hotels) {
+  private QueryHotelResponse mapIntoResponse(List<ManyHotels.Hotel> hotels) {
     return new QueryHotelResponse(
         hotels.stream()
             .map(

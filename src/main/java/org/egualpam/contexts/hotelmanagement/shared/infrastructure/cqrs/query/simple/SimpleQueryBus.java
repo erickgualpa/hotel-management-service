@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.View;
+import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModel;
 
 public final class SimpleQueryBus implements QueryBus {
 
@@ -15,7 +15,7 @@ public final class SimpleQueryBus implements QueryBus {
   }
 
   @Override
-  public View publish(Query query) {
+  public ReadModel publish(Query query) {
     return Optional.ofNullable(handlers.get(query.getClass()))
         .orElseThrow(QueryHandlerNotFound::new)
         .handle(query);
