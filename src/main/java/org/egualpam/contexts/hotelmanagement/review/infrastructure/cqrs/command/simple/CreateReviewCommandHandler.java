@@ -24,10 +24,10 @@ public class CreateReviewCommandHandler implements CommandHandler {
         .map(
             cmd ->
                 new CreateReview(
-                    cmd.getReviewIdentifier(),
-                    cmd.getHotelIdentifier(),
-                    cmd.getRating(),
-                    cmd.getComment(),
+                    cmd.reviewIdentifier(),
+                    cmd.hotelIdentifier(),
+                    cmd.rating(),
+                    cmd.comment(),
                     reviewRepository,
                     eventBus))
         .ifPresent(CreateReview::execute);
