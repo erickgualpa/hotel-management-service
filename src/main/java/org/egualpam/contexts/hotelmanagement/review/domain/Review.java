@@ -55,15 +55,15 @@ public final class Review extends AggregateRoot {
     domainEvents().add(new ReviewUpdated(this.id(), Instant.now()));
   }
 
-  public HotelId getHotelId() {
+  public HotelId hotelId() {
     return hotelId;
   }
 
-  public Rating getRating() {
+  public Rating rating() {
     return rating;
   }
 
-  public Comment getComment() {
+  public Comment comment() {
     return comment;
   }
 }

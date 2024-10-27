@@ -60,9 +60,9 @@ class CreateReviewShould {
         .satisfies(
             result -> {
               assertThat(result.id()).isEqualTo(new AggregateId(reviewId));
-              assertThat(result.getHotelId()).isEqualTo(new HotelId(hotelIdentifier));
-              assertThat(result.getRating()).isEqualTo(new Rating(rating));
-              assertThat(result.getComment()).isEqualTo(new Comment(comment));
+              assertThat(result.hotelId()).isEqualTo(new HotelId(hotelIdentifier));
+              assertThat(result.rating()).isEqualTo(new Rating(rating));
+              assertThat(result.comment()).isEqualTo(new Comment(comment));
               assertThat(result.pullDomainEvents()).isEmpty();
             });
 
