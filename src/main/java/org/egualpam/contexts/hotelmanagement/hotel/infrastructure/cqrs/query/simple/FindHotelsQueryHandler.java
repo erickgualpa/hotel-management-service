@@ -19,8 +19,6 @@ public class FindHotelsQueryHandler implements QueryHandler {
     FindHotelsQuery findHotelsQuery = (FindHotelsQuery) query;
     return readModelSupplier.get(
         new HotelCriteria(
-            findHotelsQuery.getLocation().orElse(null),
-            findHotelsQuery.getMinPrice().orElse(null),
-            findHotelsQuery.getMaxPrice().orElse(null)));
+            findHotelsQuery.location(), findHotelsQuery.minPrice(), findHotelsQuery.maxPrice()));
   }
 }

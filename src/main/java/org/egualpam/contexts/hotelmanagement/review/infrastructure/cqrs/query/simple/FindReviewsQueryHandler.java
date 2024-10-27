@@ -17,6 +17,6 @@ public class FindReviewsQueryHandler implements QueryHandler {
   @Override
   public ReadModel handle(Query query) {
     FindReviewsQuery findReviewsQuery = (FindReviewsQuery) query;
-    return readModelSupplier.get(new ReviewCriteria(findReviewsQuery.getHotelId()));
+    return readModelSupplier.get(new ReviewCriteria(findReviewsQuery.hotelId()));
   }
 }

@@ -17,6 +17,6 @@ public class FindHotelQueryHandler implements QueryHandler {
   @Override
   public ReadModel handle(Query query) {
     FindHotelQuery findHotelQuery = (FindHotelQuery) query;
-    return readModelSupplier.get(new HotelCriteria(findHotelQuery.getHotelId()));
+    return readModelSupplier.get(new HotelCriteria(findHotelQuery.hotelId()));
   }
 }
