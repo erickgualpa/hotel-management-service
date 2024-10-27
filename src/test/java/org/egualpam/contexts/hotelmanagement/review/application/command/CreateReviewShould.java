@@ -59,7 +59,7 @@ class CreateReviewShould {
     assertThat(reviewCaptor.getValue())
         .satisfies(
             result -> {
-              assertThat(result.getId()).isEqualTo(new AggregateId(reviewId));
+              assertThat(result.id()).isEqualTo(new AggregateId(reviewId));
               assertThat(result.getHotelId()).isEqualTo(new HotelId(hotelIdentifier));
               assertThat(result.getRating()).isEqualTo(new Rating(rating));
               assertThat(result.getComment()).isEqualTo(new Comment(comment));

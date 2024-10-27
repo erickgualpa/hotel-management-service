@@ -1,16 +1,10 @@
 package org.egualpam.contexts.hotelmanagement.hotel.domain;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
-import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 
-public final class Hotel implements AggregateRoot {
+public final class Hotel extends AggregateRoot {
 
-  private final List<DomainEvent> domainEvents = new ArrayList<>();
-
-  private final AggregateId id;
   private final HotelName name;
   private final HotelDescription description;
   private final Location location;
@@ -26,25 +20,13 @@ public final class Hotel implements AggregateRoot {
       Integer price,
       String imageURL,
       Double averageRating) {
-    this.id = new AggregateId(id);
+    super(new AggregateId(id));
     this.name = new HotelName(name);
     this.description = new HotelDescription(description);
     this.location = new Location(location);
     this.price = new Price(price);
     this.imageURL = new ImageURL(imageURL);
     this.averageRating = new AverageRating(averageRating);
-  }
-
-  @Override
-  public AggregateId getId() {
-    return id;
-  }
-
-  @Override
-  public List<DomainEvent> pullDomainEvents() {
-    List<DomainEvent> domainEventsCopy = new ArrayList<>(this.domainEvents);
-    this.domainEvents.clear();
-    return domainEventsCopy;
   }
 
   public HotelName getName() {

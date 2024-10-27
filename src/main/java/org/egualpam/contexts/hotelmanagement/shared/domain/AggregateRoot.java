@@ -1,9 +1,42 @@
 package org.egualpam.contexts.hotelmanagement.shared.domain;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public interface AggregateRoot {
-  AggregateId getId();
+public abstract class AggregateRoot {
 
-  List<DomainEvent> pullDomainEvents();
+  private final AggregateId id;
+  private final List<DomainEvent> domainEvents = new ArrayList<>();
+
+  public AggregateRoot(AggregateId id) {
+    this.id = id;
+  }
+
+  public final AggregateId id() {
+    return id;
+  }
+
+  protected List<DomainEvent> domainEvents() {
+    return domainEvents;
+  }
+
+  public final List<DomainEvent> pullDomainEvents() {
+    List<DomainEvent> domainEventsCopy = new ArrayList<>(domainEvents);
+    domainEvents.clear();
+    return domainEventsCopy;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    AggregateRoot that = (AggregateRoot) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
+  }
 }
