@@ -2,12 +2,12 @@ package org.egualpam.contexts.hotelmanagement.review.application.command;
 
 import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.InternalCommand;
+import org.egualpam.contexts.hotelmanagement.shared.application.command.UseCase;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 
-public class UpdateReview implements InternalCommand {
+public class UpdateReview implements UseCase {
 
   private final String reviewId;
   private final String comment;

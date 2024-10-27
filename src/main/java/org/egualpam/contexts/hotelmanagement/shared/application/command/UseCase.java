@@ -1,6 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.shared.application.command;
 
 @FunctionalInterface
-public interface InternalCommand {
+public interface UseCase {
   void execute();
 }
