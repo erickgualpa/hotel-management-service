@@ -38,28 +38,4 @@ public final class Hotel extends AggregateRoot {
     this.imageURL = new ImageURL(imageURL);
     this.averageRating = new AverageRating(averageRating);
   }
-
-  public HotelName getName() {
-    return name;
-  }
-
-  public HotelDescription getDescription() {
-    return description;
-  }
-
-  public Location getLocation() {
-    return location;
-  }
-
-  public Price getPrice() {
-    return price;
-  }
-
-  public ImageURL getImageURL() {
-    return imageURL;
-  }
-
-  public AverageRating getAverageRating() {
-    return averageRating;
-  }
 }
