@@ -11,14 +11,10 @@ public final class PublicEventFactory {
   public static PublicEvent from(DomainEvent domainEvent) {
     if (domainEvent instanceof ReviewCreated) {
       return new ReviewCreatedPublicEvent(
-          domainEvent.getId().value(),
-          domainEvent.getAggregateId().value(),
-          domainEvent.getOccurredOn());
+          domainEvent.id().value(), domainEvent.aggregateId().value(), domainEvent.occurredOn());
     } else if (domainEvent instanceof ReviewUpdated) {
       return new ReviewUpdatedPublicEvent(
-          domainEvent.getId().toString(),
-          domainEvent.getAggregateId().value(),
-          domainEvent.getOccurredOn());
+          domainEvent.id().toString(), domainEvent.aggregateId().value(), domainEvent.occurredOn());
     } else {
       throw new UnsupportedDomainEvent(domainEvent);
     }

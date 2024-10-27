@@ -41,7 +41,7 @@ class SimpleEventBusIT extends AbstractIntegrationTest {
 
     eventBus.publish(List.of(domainEvent));
 
-    PublicEventResult result = eventStoreTestRepository.findEvent(domainEvent.getId().value());
+    PublicEventResult result = eventStoreTestRepository.findEvent(domainEvent.id().value());
     assertThat(result)
         .satisfies(
             r -> {

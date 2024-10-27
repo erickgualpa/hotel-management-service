@@ -18,17 +18,17 @@ public final class ReviewCreated implements DomainEvent {
   }
 
   @Override
-  public UniqueId getId() {
+  public UniqueId id() {
     return id;
   }
 
   @Override
-  public AggregateId getAggregateId() {
+  public AggregateId aggregateId() {
     return this.aggregateId;
   }
 
   @Override
-  public Instant getOccurredOn() {
+  public Instant occurredOn() {
     return this.occurredOn;
   }
 }

@@ -37,17 +37,17 @@ class RabbitMqEventBusShould {
     DomainEvent domainEvent =
         new DomainEvent() {
           @Override
-          public UniqueId getId() {
+          public UniqueId id() {
             return UniqueId.get();
           }
 
           @Override
-          public AggregateId getAggregateId() {
+          public AggregateId aggregateId() {
             return new AggregateId(UUID.randomUUID().toString());
           }
 
           @Override
-          public Instant getOccurredOn() {
+          public Instant occurredOn() {
             return Instant.now();
           }
         };

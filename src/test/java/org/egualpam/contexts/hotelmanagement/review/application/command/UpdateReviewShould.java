@@ -61,8 +61,8 @@ class UpdateReviewShould {
         .first()
         .satisfies(
             result -> {
-              assertThat(result.getAggregateId()).isEqualTo(new AggregateId(reviewId));
-              assertThat(result.getOccurredOn()).isNotNull();
+              assertThat(result.aggregateId()).isEqualTo(new AggregateId(reviewId));
+              assertThat(result.occurredOn()).isNotNull();
             });
   }
 }
