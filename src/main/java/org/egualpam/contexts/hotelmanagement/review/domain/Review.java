@@ -50,8 +50,8 @@ public final class Review extends AggregateRoot {
     return review;
   }
 
-  public void updateComment(Comment comment) {
-    this.comment = comment;
+  public void updateComment(String comment) {
+    this.comment = new Comment(comment);
     domainEvents().add(new ReviewUpdated(this.id(), Instant.now()));
   }
 

@@ -1,6 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.review.application.command;
 
-import org.egualpam.contexts.hotelmanagement.review.domain.Comment;
+import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.InternalCommand;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
@@ -9,8 +9,8 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 
 public class UpdateReview implements InternalCommand {
 
-  private final AggregateId reviewId;
-  private final Comment comment;
+  private final String reviewId;
+  private final String comment;
   private final AggregateRepository<Review> reviewRepository;
   private final EventBus eventBus;
 
@@ -19,15 +19,16 @@ public class UpdateReview implements InternalCommand {
       String comment,
       AggregateRepository<Review> reviewRepository,
       EventBus eventBus) {
-    this.reviewId = new AggregateId(reviewId);
-    this.comment = new Comment(comment);
+    this.reviewId = reviewId;
+    this.comment = comment;
     this.reviewRepository = reviewRepository;
     this.eventBus = eventBus;
   }
 
   @Override
   public void execute() {
-    Review review = reviewRepository.find(reviewId).orElseThrow();
+    Review review =
+        Optional.of(reviewId).map(AggregateId::new).flatMap(reviewRepository::find).orElseThrow();
     review.updateComment(comment);
     reviewRepository.save(review);
     eventBus.publish(review.pullDomainEvents());
