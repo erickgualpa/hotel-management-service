@@ -24,6 +24,7 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,6 +45,13 @@ class CreateReviewShould {
 
   @Mock private EventBus eventBus;
 
+  private CreateReview testee;
+
+  @BeforeEach
+  void setUp() {
+    testee = new CreateReview(reviewRepository, eventBus);
+  }
+
   @Test
   void createReview() {
     String reviewId = randomUUID().toString();
@@ -51,9 +59,10 @@ class CreateReviewShould {
     Integer rating = nextInt(1, 5);
     String comment = randomAlphabetic(10);
 
-    CreateReview testee =
-        new CreateReview(reviewId, hotelIdentifier, rating, comment, reviewRepository, eventBus);
-    testee.execute();
+    CreateReviewCommand command =
+        new CreateReviewCommand(reviewId, hotelIdentifier, rating, comment);
+
+    testee.execute(command);
 
     verify(reviewRepository).save(reviewCaptor.capture());
     assertThat(reviewCaptor.getValue())
@@ -86,16 +95,11 @@ class CreateReviewShould {
 
     when(reviewRepository.find(any(AggregateId.class))).thenReturn(Optional.of(review));
 
-    CreateReview testee =
-        new CreateReview(
-            reviewId,
-            randomUUID().toString(),
-            nextInt(1, 5),
-            randomAlphabetic(10),
-            reviewRepository,
-            eventBus);
+    CreateReviewCommand command =
+        new CreateReviewCommand(
+            reviewId, randomUUID().toString(), nextInt(1, 5), randomAlphabetic(10));
 
-    assertThrows(ReviewAlreadyExists.class, testee::execute);
+    assertThrows(ReviewAlreadyExists.class, () -> testee.execute(command));
   }
 
   @ValueSource(ints = {0, 6})
@@ -105,11 +109,10 @@ class CreateReviewShould {
     String hotelIdentifier = randomUUID().toString();
     String comment = randomAlphabetic(10);
 
-    CreateReview testee =
-        new CreateReview(
-            reviewId, hotelIdentifier, invalidRating, comment, reviewRepository, eventBus);
+    CreateReviewCommand command =
+        new CreateReviewCommand(reviewId, hotelIdentifier, invalidRating, comment);
 
-    assertThrows(InvalidRating.class, testee::execute);
+    assertThrows(InvalidRating.class, () -> testee.execute(command));
   }
 
   @Test
@@ -119,11 +122,10 @@ class CreateReviewShould {
     int rating = nextInt(1, 5);
     String comment = randomAlphabetic(10);
 
-    CreateReview testee =
-        new CreateReview(
-            invalidIdentifier, hotelIdentifier, rating, comment, reviewRepository, eventBus);
+    CreateReviewCommand command =
+        new CreateReviewCommand(invalidIdentifier, hotelIdentifier, rating, comment);
 
-    assertThrows(InvalidUniqueId.class, testee::execute);
+    assertThrows(InvalidUniqueId.class, () -> testee.execute(command));
   }
 
   @Test
@@ -133,10 +135,10 @@ class CreateReviewShould {
     int rating = nextInt(1, 5);
     String comment = randomAlphabetic(10);
 
-    CreateReview testee =
-        new CreateReview(reviewId, invalidIdentifier, rating, comment, reviewRepository, eventBus);
+    CreateReviewCommand command =
+        new CreateReviewCommand(reviewId, invalidIdentifier, rating, comment);
 
-    assertThrows(InvalidUniqueId.class, testee::execute);
+    assertThrows(InvalidUniqueId.class, () -> testee.execute(command));
   }
 
   @Test
@@ -146,10 +148,9 @@ class CreateReviewShould {
     int rating = nextInt(1, 5);
     String comment = randomAlphabetic(10);
 
-    CreateReview testee =
-        new CreateReview(reviewId, hotelId, rating, comment, reviewRepository, eventBus);
+    CreateReviewCommand command = new CreateReviewCommand(reviewId, hotelId, rating, comment);
 
-    assertThrows(RequiredPropertyIsMissing.class, testee::execute);
+    assertThrows(RequiredPropertyIsMissing.class, () -> testee.execute(command));
   }
 
   @Test
@@ -159,10 +160,9 @@ class CreateReviewShould {
     int rating = nextInt(1, 5);
     String comment = randomAlphabetic(10);
 
-    CreateReview testee =
-        new CreateReview(reviewId, hotelId, rating, comment, reviewRepository, eventBus);
+    CreateReviewCommand command = new CreateReviewCommand(reviewId, hotelId, rating, comment);
 
-    assertThrows(RequiredPropertyIsMissing.class, testee::execute);
+    assertThrows(RequiredPropertyIsMissing.class, () -> testee.execute(command));
   }
 
   @Test
@@ -172,10 +172,9 @@ class CreateReviewShould {
     Integer rating = null;
     String comment = randomAlphabetic(10);
 
-    CreateReview testee =
-        new CreateReview(reviewId, hotelId, rating, comment, reviewRepository, eventBus);
+    CreateReviewCommand command = new CreateReviewCommand(reviewId, hotelId, rating, comment);
 
-    assertThrows(RequiredPropertyIsMissing.class, testee::execute);
+    assertThrows(RequiredPropertyIsMissing.class, () -> testee.execute(command));
   }
 
   @Test
@@ -185,9 +184,8 @@ class CreateReviewShould {
     Integer rating = nextInt(1, 5);
     String comment = null;
 
-    CreateReview testee =
-        new CreateReview(reviewId, hotelId, rating, comment, reviewRepository, eventBus);
+    CreateReviewCommand command = new CreateReviewCommand(reviewId, hotelId, rating, comment);
 
-    assertThrows(RequiredPropertyIsMissing.class, testee::execute);
+    assertThrows(RequiredPropertyIsMissing.class, () -> testee.execute(command));
   }
 }
