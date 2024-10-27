@@ -3,6 +3,7 @@ package org.egualpam.contexts.hotelmanagement.review.infrastructure.configuratio
 import jakarta.persistence.EntityManager;
 import org.egualpam.contexts.hotelmanagement.review.application.command.CreateReview;
 import org.egualpam.contexts.hotelmanagement.review.application.command.CreateReviewCommand;
+import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateReview;
 import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateReviewCommand;
 import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviewsQuery;
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
@@ -37,10 +38,10 @@ public class ReviewsConfiguration {
   public SimpleCommandBusConfiguration reviewsSimpleCommandBusConfiguration(
       AggregateRepository<Review> reviewRepository, EventBus eventBus) {
     CreateReview createReview = new CreateReview(reviewRepository, eventBus);
+    UpdateReview updateReview = new UpdateReview(reviewRepository, eventBus);
     return new SimpleCommandBusConfiguration()
         .withHandler(CreateReviewCommand.class, new CreateReviewCommandHandler(createReview))
-        .withHandler(
-            UpdateReviewCommand.class, new UpdateReviewCommandHandler(reviewRepository, eventBus));
+        .withHandler(UpdateReviewCommand.class, new UpdateReviewCommandHandler(updateReview));
   }
 
   @Bean

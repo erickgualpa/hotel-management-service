@@ -50,8 +50,15 @@ public final class Review extends AggregateRoot {
   }
 
   public void updateComment(String comment) {
-    this.comment = new Comment(comment);
-    domainEvents().add(new ReviewUpdated(this.id()));
+    Optional.ofNullable(comment)
+        .map(Comment::new)
+        .filter(c -> !c.equals(this.comment))
+        .ifPresent(
+            c -> {
+              this.comment = c;
+              ReviewUpdated reviewUpdated = new ReviewUpdated(this.id());
+              domainEvents().add(reviewUpdated);
+            });
   }
 
   public HotelId hotelId() {

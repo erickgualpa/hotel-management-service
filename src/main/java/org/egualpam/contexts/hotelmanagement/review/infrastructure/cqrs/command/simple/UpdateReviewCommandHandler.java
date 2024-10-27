@@ -4,27 +4,19 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateReview;
 import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateReviewCommand;
-import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.CommandHandler;
 
 @RequiredArgsConstructor
 public class UpdateReviewCommandHandler implements CommandHandler {
 
-  private final AggregateRepository<Review> reviewRepository;
-  private final EventBus eventBus;
+  private final UpdateReview updateReview;
 
   @Override
   public void handle(Command command) {
     Optional.of(command)
         .filter(UpdateReviewCommand.class::isInstance)
         .map(UpdateReviewCommand.class::cast)
-        .map(
-            cmd ->
-                new UpdateReview(
-                    cmd.reviewIdentifier(), cmd.comment(), reviewRepository, eventBus))
-        .ifPresent(UpdateReview::execute);
+        .ifPresent(updateReview::execute);
   }
 }
