@@ -1,7 +1,9 @@
 package org.egualpam.contexts.hotelmanagement.hotel.domain;
 
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
+import static java.util.Objects.isNull;
+
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
+import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 
 public final class Hotel extends AggregateRoot {
 
@@ -20,7 +22,15 @@ public final class Hotel extends AggregateRoot {
       Integer price,
       String imageURL,
       Double averageRating) {
-    super(new AggregateId(id));
+    super(id);
+    if (isNull(name)
+        || isNull(description)
+        || isNull(location)
+        || isNull(price)
+        || isNull(imageURL)
+        || isNull(averageRating)) {
+      throw new RequiredPropertyIsMissing();
+    }
     this.name = new HotelName(name);
     this.description = new HotelDescription(description);
     this.location = new Location(location);

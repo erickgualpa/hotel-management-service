@@ -17,7 +17,10 @@ public final class Review extends AggregateRoot {
   private Comment comment;
 
   public Review(String id, String hotelId, Integer rating, String comment) {
-    super(new AggregateId(id));
+    super(id);
+    if (isNull(hotelId) || isNull(rating) || isNull(comment)) {
+      throw new RequiredPropertyIsMissing();
+    }
     this.hotelId = new HotelId(hotelId);
     this.rating = new Rating(rating);
     this.comment = new Comment(comment);
@@ -29,7 +32,7 @@ public final class Review extends AggregateRoot {
       String hotelId,
       Integer rating,
       String comment) {
-    if (isNull(id) || isNull(hotelId) || isNull(rating) || isNull(comment)) {
+    if (isNull(id)) {
       throw new RequiredPropertyIsMissing();
     }
 
