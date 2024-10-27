@@ -24,7 +24,7 @@ public class UpdateReviewCommandHandler implements CommandHandler {
         .map(
             cmd ->
                 new UpdateReview(
-                    cmd.getReviewIdentifier(), cmd.getComment(), reviewRepository, eventBus))
+                    cmd.reviewIdentifier(), cmd.comment(), reviewRepository, eventBus))
         .ifPresent(UpdateReview::execute);
   }
 }
