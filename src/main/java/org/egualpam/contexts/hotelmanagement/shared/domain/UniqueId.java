@@ -2,7 +2,6 @@ package org.egualpam.contexts.hotelmanagement.shared.domain;
 
 import java.util.Objects;
 import java.util.UUID;
-import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.InvalidUniqueId;
 
 public final class UniqueId {
 

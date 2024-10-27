@@ -13,10 +13,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
-import org.egualpam.contexts.hotelmanagement.hotel.domain.exceptions.PriceRangeValuesSwapped;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.PriceRangeValuesSwapped;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
-import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.InvalidUniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.HotelManagementServiceApplication;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.SharedConfiguration;
 import org.junit.jupiter.api.Test;

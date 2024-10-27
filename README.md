@@ -6,7 +6,8 @@
 
 🎮 This is a **playground** project that replicates simple features from a hotel management backend service.
 <br>
-🤔 Main goal of this is achieve a flexible architecture considering popular concepts like DDD, Hexagonal Architecture or
+🤔 Main goal of this is to achieve a flexible architecture considering popular concepts like DDD, Hexagonal Architecture
+or
 SOLID among others.
 
 #### Using wrapped maven included in this repository, you can:
@@ -52,7 +53,6 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │   ├── application
     │   │                   │   │   └── query
     │   │                   │   ├── domain
-    │   │                   │   │   └── exceptions
     │   │                   │   └── infrastructure
     │   │                   │       ├── configuration
     │   │                   │       ├── controller
@@ -66,7 +66,6 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │   │   ├── command
     │   │                   │   │   └── query
     │   │                   │   ├── domain
-    │   │                   │   │   └── exceptions
     │   │                   │   └── infrastructure
     │   │                   │       ├── configuration
     │   │                   │       ├── controller
@@ -82,7 +81,6 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                       │   ├── command
     │   │                       │   └── query
     │   │                       ├── domain
-    │   │                       │   └── exceptions
     │   │                       └── infrastructure
     │   │                           ├── configuration
     │   │                           │   └── properties

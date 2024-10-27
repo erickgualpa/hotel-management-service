@@ -6,12 +6,11 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.egualpam.contexts.hotelmanagement.review.domain.exceptions.ReviewAlreadyExists;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
-import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 
 public final class Review implements AggregateRoot {
 

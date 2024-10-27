@@ -7,10 +7,10 @@ import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelQu
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelsQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
-import org.egualpam.contexts.hotelmanagement.hotel.domain.exceptions.PriceRangeValuesSwapped;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.PriceRangeValuesSwapped;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
-import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.InvalidUniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelsQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
-import org.egualpam.contexts.hotelmanagement.hotel.domain.exceptions.PriceRangeValuesSwapped;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.PriceRangeValuesSwapped;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 import org.junit.jupiter.api.BeforeEach;

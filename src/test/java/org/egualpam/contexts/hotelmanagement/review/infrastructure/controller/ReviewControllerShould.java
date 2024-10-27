@@ -13,14 +13,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.egualpam.contexts.hotelmanagement.review.domain.exceptions.InvalidRating;
-import org.egualpam.contexts.hotelmanagement.review.domain.exceptions.ReviewAlreadyExists;
+import org.egualpam.contexts.hotelmanagement.review.domain.InvalidRating;
+import org.egualpam.contexts.hotelmanagement.review.domain.ReviewAlreadyExists;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
-import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.InvalidUniqueId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.exceptions.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.HotelManagementServiceApplication;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.SharedConfiguration;
 import org.junit.jupiter.api.Test;

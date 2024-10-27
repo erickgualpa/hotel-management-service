@@ -3,7 +3,6 @@ package org.egualpam.contexts.hotelmanagement.hotel.domain;
 import static java.util.Objects.nonNull;
 
 import java.util.Optional;
-import org.egualpam.contexts.hotelmanagement.hotel.domain.exceptions.PriceRangeValuesSwapped;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
