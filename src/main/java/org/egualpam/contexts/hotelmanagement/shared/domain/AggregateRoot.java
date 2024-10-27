@@ -9,7 +9,7 @@ public abstract class AggregateRoot {
   private final AggregateId id;
   private final List<DomainEvent> domainEvents = new ArrayList<>();
 
-  public AggregateRoot(AggregateId id) {
+  protected AggregateRoot(AggregateId id) {
     this.id = id;
   }
 
@@ -17,7 +17,7 @@ public abstract class AggregateRoot {
     return id;
   }
 
-  protected List<DomainEvent> domainEvents() {
+  protected final List<DomainEvent> domainEvents() {
     return domainEvents;
   }
 
