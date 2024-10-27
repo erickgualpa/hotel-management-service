@@ -2,7 +2,6 @@ package org.egualpam.contexts.hotelmanagement.review.domain;
 
 import static java.util.Objects.isNull;
 
-import java.time.Instant;
 import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
@@ -46,13 +45,13 @@ public final class Review extends AggregateRoot {
 
     Review review = new Review(id, hotelId, rating, comment);
 
-    review.domainEvents().add(new ReviewCreated(review.id(), Instant.now()));
+    review.domainEvents().add(new ReviewCreated(review.id()));
     return review;
   }
 
   public void updateComment(String comment) {
     this.comment = new Comment(comment);
-    domainEvents().add(new ReviewUpdated(this.id(), Instant.now()));
+    domainEvents().add(new ReviewUpdated(this.id()));
   }
 
   public HotelId hotelId() {

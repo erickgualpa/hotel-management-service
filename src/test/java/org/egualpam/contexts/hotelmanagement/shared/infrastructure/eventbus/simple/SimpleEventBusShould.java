@@ -3,9 +3,7 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.sim
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import jakarta.persistence.EntityManager;
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
@@ -31,24 +29,8 @@ class SimpleEventBusShould {
 
   @Test
   void throwException_whenDomainEventIsUnsupported() {
-    DomainEvent domainEvent =
-        new DomainEvent() {
-          @Override
-          public UniqueId id() {
-            return UniqueId.get();
-          }
-
-          @Override
-          public AggregateId aggregateId() {
-            return new AggregateId(UUID.randomUUID().toString());
-          }
-
-          @Override
-          public Instant occurredOn() {
-            return Instant.now();
-          }
-        };
-
+    AggregateId aggregateId = new AggregateId(UniqueId.get().value());
+    DomainEvent domainEvent = new DomainEvent(aggregateId) {};
     List<DomainEvent> events = List.of(domainEvent);
     assertThrows(UnsupportedDomainEvent.class, () -> eventBus.publish(events));
   }

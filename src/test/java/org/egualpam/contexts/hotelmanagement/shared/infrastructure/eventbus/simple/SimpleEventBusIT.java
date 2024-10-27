@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.e2e.models.PublicEventResult;
@@ -36,8 +35,7 @@ class SimpleEventBusIT extends AbstractIntegrationTest {
   @Test
   void publishDomainEvents() {
     String aggregateId = UUID.randomUUID().toString();
-    Instant occurredOn = Instant.now();
-    DomainEvent domainEvent = new ReviewCreated(new AggregateId(aggregateId), occurredOn);
+    DomainEvent domainEvent = new ReviewCreated(new AggregateId(aggregateId));
 
     eventBus.publish(List.of(domainEvent));
 
