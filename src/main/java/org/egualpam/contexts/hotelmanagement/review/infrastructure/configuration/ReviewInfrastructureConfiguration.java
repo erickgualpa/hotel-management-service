@@ -43,9 +43,7 @@ public class ReviewInfrastructureConfiguration {
   }
 
   @Bean
-  public SimpleQueryBusConfiguration reviewsSimpleQueryBusConfiguration(
-      ReadModelSupplier<ManyReviews> manyReviewsReadModelSupplier) {
-    FindReviews findReviews = new FindReviews(manyReviewsReadModelSupplier);
+  public SimpleQueryBusConfiguration reviewsSimpleQueryBusConfiguration(FindReviews findReviews) {
     return new SimpleQueryBusConfiguration()
         .withHandler(FindReviewsQuery.class, new FindReviewsQueryHandler(findReviews));
   }
