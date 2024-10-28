@@ -30,7 +30,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 // increasing the duration of the build
 @Transactional
 @AutoConfigureTestEntityManager
-class JpaOneHotelSupplierIT extends AbstractIntegrationTest {
+class JpaOneHotelReadModelSupplierIT extends AbstractIntegrationTest {
 
   private static final String IMAGE_SERVICE_RESPONSE =
       """

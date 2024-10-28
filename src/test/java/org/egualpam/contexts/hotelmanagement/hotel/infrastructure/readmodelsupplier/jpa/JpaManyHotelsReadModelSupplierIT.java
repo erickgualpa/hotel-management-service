@@ -29,7 +29,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @Transactional
 @AutoConfigureTestEntityManager
-class JpaManyHotelsSupplierIT extends AbstractIntegrationTest {
+class JpaManyHotelsReadModelSupplierIT extends AbstractIntegrationTest {
 
   @Autowired private EntityManager entityManager;
 
