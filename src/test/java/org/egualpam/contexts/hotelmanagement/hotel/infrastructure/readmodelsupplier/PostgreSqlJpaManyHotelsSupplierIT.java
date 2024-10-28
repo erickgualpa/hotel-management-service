@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.persistence.jpa;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier;
 
 import static java.util.Collections.shuffle;
 import static java.util.UUID.randomUUID;
@@ -49,7 +49,8 @@ class PostgreSqlJpaManyHotelsSupplierIT extends AbstractIntegrationTest {
   @Test
   void returnHotelsSortedByAverageRating() {
     final ReadModelSupplier<ManyHotels> testee =
-        new PostgreSqlJpaManyHotelsReadModelSupplier(entityManager);
+        new org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier
+            .PostgreSqlJpaManyHotelsReadModelSupplier(entityManager);
 
     UUID lowRatingHotel = randomUUID();
     UUID intermediateRatingHotel = randomUUID();

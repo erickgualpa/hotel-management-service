@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.persistence.jpa;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;

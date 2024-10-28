@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.persistence.jpa;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier;
 
 import static java.util.Comparator.comparingDouble;
 
