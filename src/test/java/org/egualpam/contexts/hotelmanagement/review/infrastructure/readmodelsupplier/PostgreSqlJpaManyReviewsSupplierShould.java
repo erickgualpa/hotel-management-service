@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.review.infrastructure.persistence.jpa;
+package org.egualpam.contexts.hotelmanagement.review.infrastructure.readmodelsupplier;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

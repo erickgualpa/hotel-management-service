@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.review.infrastructure.persistence.jpa;
+package org.egualpam.contexts.hotelmanagement.review.infrastructure.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
