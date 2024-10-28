@@ -1,7 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers;
 
 import java.util.UUID;
-import org.egualpam.contexts.hotelmanagement.e2e.models.PublicEventResult;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 

@@ -13,9 +13,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils.nextInt;
 
 import java.util.UUID;
-import org.egualpam.contexts.hotelmanagement.e2e.models.PublicEventResult;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.PublicEventResult;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;

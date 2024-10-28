@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.e2e.models;
+package org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.Instant;

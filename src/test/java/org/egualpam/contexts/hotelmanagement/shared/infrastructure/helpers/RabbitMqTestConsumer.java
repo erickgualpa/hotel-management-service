@@ -8,7 +8,6 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.GetResponse;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
-import org.egualpam.contexts.hotelmanagement.e2e.models.PublicEventResult;
 
 public final class RabbitMqTestConsumer {
 
