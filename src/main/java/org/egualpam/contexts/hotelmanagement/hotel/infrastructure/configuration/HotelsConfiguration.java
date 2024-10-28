@@ -2,6 +2,7 @@ package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.configuration
 
 import jakarta.persistence.EntityManager;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelQuery;
+import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelsQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
@@ -47,9 +48,9 @@ public class HotelsConfiguration {
   public SimpleQueryBusConfiguration hotelsSimpleQueryBusConfiguration(
       ReadModelSupplier<OneHotel> oneHotelReadModelSupplier,
       ReadModelSupplier<ManyHotels> manyHotelsReadModelSupplier) {
+    FindHotels findHotels = new FindHotels(manyHotelsReadModelSupplier);
     return new SimpleQueryBusConfiguration()
         .withHandler(FindHotelQuery.class, new FindHotelQueryHandler(oneHotelReadModelSupplier))
-        .withHandler(
-            FindHotelsQuery.class, new FindHotelsQueryHandler(manyHotelsReadModelSupplier));
+        .withHandler(FindHotelsQuery.class, new FindHotelsQueryHandler(findHotels));
   }
 }
