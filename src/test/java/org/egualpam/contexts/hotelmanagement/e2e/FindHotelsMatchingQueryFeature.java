@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -47,15 +46,12 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
 
   @Autowired private HotelTestRepository hotelTestRepository;
 
-  @Autowired private ReviewTestRepository reviewTestRepository;
-
   @Test
   void hotelsMatchingQueryShouldBeReturned() throws Exception {
     UUID hotelIdentifier = randomUUID();
     String hotelName = randomAlphabetic(5);
     String hotelDescription = randomAlphabetic(10);
     String hotelLocation = randomAlphabetic(5);
-    String comment = randomAlphabetic(10);
     String imageURL = "www." + randomAlphabetic(5) + ".com";
 
     int minPrice = 50;
@@ -66,7 +62,7 @@ class FindHotelsMatchingQueryFeature extends AbstractIntegrationTest {
     hotelTestRepository.insertHotel(
         hotelIdentifier, hotelName, hotelDescription, hotelLocation, price, imageURL);
 
-    reviewTestRepository.insertReview(randomUUID(), rating, comment, hotelIdentifier);
+    hotelTestRepository.insertHotelAverageRating(hotelIdentifier, (double) rating);
 
     String request = String.format(QUERY_HOTEL_REQUEST, hotelLocation, minPrice, maxPrice);
 

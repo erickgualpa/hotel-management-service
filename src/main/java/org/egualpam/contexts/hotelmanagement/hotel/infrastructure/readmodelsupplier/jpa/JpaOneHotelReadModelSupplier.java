@@ -1,8 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
@@ -21,10 +19,12 @@ public class JpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel>
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   private final EntityManager entityManager;
+  private final GetHotelAverageRating getHotelAverageRating;
   private final WebClient imageServiceClient;
 
   public JpaOneHotelReadModelSupplier(EntityManager entityManager, WebClient imageServiceClient) {
     this.entityManager = entityManager;
+    this.getHotelAverageRating = new GetHotelAverageRating(entityManager);
     this.imageServiceClient = imageServiceClient;
   }
 
@@ -32,45 +32,33 @@ public class JpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel>
   public OneHotel get(Criteria criteria) {
     HotelCriteria hotelCriteria = (HotelCriteria) criteria;
     UniqueId hotelId = hotelCriteria.getHotelId().orElseThrow(RequiredPropertyIsMissing::new);
+
     PersistenceHotel persistenceHotel =
         entityManager.find(PersistenceHotel.class, UUID.fromString(hotelId.value()));
+
     Optional<OneHotel.Hotel> hotel =
         Optional.ofNullable(persistenceHotel).map(this::mapIntoViewHotel);
+
     return new OneHotel(hotel);
   }
 
   private OneHotel.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
+    UUID hotelId = persistenceHotel.getId();
+
     String imageURL =
         Optional.ofNullable(persistenceHotel.getImageURL())
-            .orElseGet(() -> retrieveImageURL(persistenceHotel.getId()).orElse(null));
+            .orElseGet(() -> retrieveImageURL(hotelId).orElse(null));
 
-    String query =
-        """
-        SELECT avg_value
-        FROM hotel_average_rating
-        WHERE hotel_id=:hotelId
-        """;
-
-    BigDecimal hotelAverageRating;
-    try {
-      hotelAverageRating =
-          (BigDecimal)
-              entityManager
-                  .createNativeQuery(query)
-                  .setParameter("hotelId", persistenceHotel.getId())
-                  .getSingleResult();
-    } catch (NoResultException e) {
-      hotelAverageRating = BigDecimal.ZERO;
-    }
+    HotelAverageRating hotelAverageRating = getHotelAverageRating.using(hotelId);
 
     return new OneHotel.Hotel(
-        persistenceHotel.getId().toString(),
+        hotelId.toString(),
         persistenceHotel.getName(),
         persistenceHotel.getDescription(),
         persistenceHotel.getLocation(),
         persistenceHotel.getPrice(),
         imageURL,
-        hotelAverageRating.doubleValue());
+        hotelAverageRating.value());
   }
 
   private Optional<String> retrieveImageURL(UUID hotelId) {
@@ -91,6 +79,4 @@ public class JpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel>
   }
 
   public record ImageServiceResponse(String imageURL) {}
-
-  public record HotelAverageRating(Double averageRating) {}
 }

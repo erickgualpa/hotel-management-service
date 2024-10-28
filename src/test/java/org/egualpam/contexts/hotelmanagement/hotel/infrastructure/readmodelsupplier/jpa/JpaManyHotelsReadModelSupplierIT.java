@@ -2,7 +2,6 @@ package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupp
 
 import static java.util.Collections.shuffle;
 import static java.util.UUID.randomUUID;
-import static java.util.stream.LongStream.range;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,8 +18,7 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +32,8 @@ class JpaManyHotelsReadModelSupplierIT extends AbstractIntegrationTest {
   @Autowired private EntityManager entityManager;
 
   @Autowired private TestEntityManager testEntityManager;
+
+  @Autowired private HotelTestRepository hotelTestRepository;
 
   @BeforeEach
   void setUp() {
@@ -61,13 +61,9 @@ class JpaManyHotelsReadModelSupplierIT extends AbstractIntegrationTest {
 
     hotelIds.forEach(this::stubHotel);
 
-    List<Integer> lowRatingRange = List.of(1, 3);
-    List<Integer> intermediateRatingRange = List.of(2, 4);
-    List<Integer> highRatingRange = List.of(3, 5);
-
-    stubReviewsWithRatingRange(lowRatingHotel, lowRatingRange);
-    stubReviewsWithRatingRange(intermediateRatingHotel, intermediateRatingRange);
-    stubReviewsWithRatingRange(highRatingHotel, highRatingRange);
+    hotelTestRepository.insertHotelAverageRating(lowRatingHotel, 1.0);
+    hotelTestRepository.insertHotelAverageRating(intermediateRatingHotel, 3.0);
+    hotelTestRepository.insertHotelAverageRating(highRatingHotel, 5.0);
 
     Criteria criteria = new HotelCriteria(null, null, null);
 
@@ -83,26 +79,12 @@ class JpaManyHotelsReadModelSupplierIT extends AbstractIntegrationTest {
   }
 
   private void stubHotel(UUID hotelId) {
-    PersistenceHotel persistenceHotel =
-        new PersistenceHotel(
-            hotelId,
-            randomAlphabetic(5),
-            randomAlphabetic(5),
-            randomAlphabetic(5),
-            nextInt(100, 200),
-            randomAlphabetic(5));
-    testEntityManager.persistAndFlush(persistenceHotel);
-  }
-
-  private void stubReviewsWithRatingRange(UUID hotelId, List<Integer> ratingRange) {
-    range(0, 20)
-        .forEach(
-            i ->
-                testEntityManager.persistAndFlush(
-                    new PersistenceReview(
-                        randomUUID(),
-                        nextInt(ratingRange.get(0), ratingRange.get(1)),
-                        randomAlphabetic(5),
-                        hotelId)));
+    hotelTestRepository.insertHotel(
+        hotelId,
+        randomAlphabetic(5),
+        randomAlphabetic(5),
+        randomAlphabetic(5),
+        nextInt(100, 200),
+        randomAlphabetic(5));
   }
 }

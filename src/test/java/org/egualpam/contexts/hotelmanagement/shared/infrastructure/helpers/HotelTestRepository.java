@@ -36,4 +36,21 @@ public final class HotelTestRepository {
 
     namedParameterJdbcTemplate.update(query, queryParameters);
   }
+
+  public void insertHotelAverageRating(UUID hotelId, Double averageRating) {
+    String query =
+        """
+        INSERT INTO hotel_average_rating(hotel_id, rating_sum, review_count, avg_value)
+        VALUES
+            (:hotelId, :ratingSum, :reviewCount, :averageValue)
+        """;
+
+    MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+    queryParameters.addValue("hotelId", hotelId);
+    queryParameters.addValue("ratingSum", averageRating);
+    queryParameters.addValue("reviewCount", 1);
+    queryParameters.addValue("averageValue", averageRating);
+
+    namedParameterJdbcTemplate.update(query, queryParameters);
+  }
 }

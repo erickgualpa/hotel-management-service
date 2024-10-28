@@ -5,8 +5,7 @@ import static java.util.Comparator.comparingDouble;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaQuery;
 import java.util.List;
-import java.util.Objects;
-import java.util.function.Function;
+import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Location;
@@ -14,16 +13,15 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.Price;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
 public class JpaManyHotelsReadModelSupplier implements ReadModelSupplier<ManyHotels> {
 
   private final EntityManager entityManager;
-  private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
+  private final GetHotelAverageRating getHotelAverageRating;
 
   public JpaManyHotelsReadModelSupplier(EntityManager entityManager) {
     this.entityManager = entityManager;
-    this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
+    this.getHotelAverageRating = new GetHotelAverageRating(entityManager);
   }
 
   @Override
@@ -47,19 +45,15 @@ public class JpaManyHotelsReadModelSupplier implements ReadModelSupplier<ManyHot
   }
 
   private ManyHotels.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
-    double averageRating =
-        findReviewsByHotel.apply(persistenceHotel).stream()
-            .mapToDouble(PersistenceReview::getRating)
-            .filter(Objects::nonNull)
-            .average()
-            .orElse(0.0);
+    UUID hotelId = persistenceHotel.getId();
+    HotelAverageRating hotelAverageRating = getHotelAverageRating.using(hotelId);
     return new ManyHotels.Hotel(
-        persistenceHotel.getId().toString(),
+        hotelId.toString(),
         persistenceHotel.getName(),
         persistenceHotel.getDescription(),
         persistenceHotel.getLocation(),
         persistenceHotel.getPrice(),
         persistenceHotel.getImageURL(),
-        averageRating);
+        hotelAverageRating.value());
   }
 }
