@@ -18,7 +18,7 @@ import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.HotelManagementServiceApplication;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.SharedConfiguration;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.ObjectMapperConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(HotelController.class)
 class HotelControllerShould {
 
-  private final ObjectMapper objectMapper = new SharedConfiguration().objectMapper();
+  private final ObjectMapper objectMapper = new ObjectMapperConfiguration().objectMapper();
 
   @MockBean private QueryBus queryBus;
 
