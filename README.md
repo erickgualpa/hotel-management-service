@@ -55,12 +55,15 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │   ├── domain
     │   │                   │   └── infrastructure
     │   │                   │       ├── configuration
+    │   │                   │       ├── consumer
     │   │                   │       ├── controller
     │   │                   │       ├── cqrs
     │   │                   │       │   └── query
     │   │                   │       │       └── simple
     │   │                   │       ├── readmodelsupplier
+    │   │                   │       │   └── jpa
     │   │                   │       └── repository
+    │   │                   │           └── jpa
     │   │                   ├── review
     │   │                   │   ├── application
     │   │                   │   │   ├── command
@@ -92,6 +95,8 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                           │   ├── events
     │   │                           │   ├── rabbitmq
     │   │                           │   └── simple
+    │   │                           ├── internaleventbus
+    │   │                           │   └── spring
     │   │                           └── persistence
     │   │                               └── jpa
     │   └── resources
@@ -111,7 +116,10 @@ Check it and try to find the best available hotel in Mars! 👽
         │                   │   └── infrastructure
         │                   │       ├── controller
         │                   │       ├── readmodelsupplier
+        │                   │       │   └── jpa
         │                   │       └── repository
+        │                   │           └── jpa
+        │                   ├── journey
         │                   ├── review
         │                   │   ├── application
         │                   │   │   ├── command

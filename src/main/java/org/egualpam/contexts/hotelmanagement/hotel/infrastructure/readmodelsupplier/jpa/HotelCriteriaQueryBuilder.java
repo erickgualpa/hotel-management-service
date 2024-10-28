@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;

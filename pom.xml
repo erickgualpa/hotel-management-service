@@ -149,6 +149,7 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
                     <includes>
+                        <include>**/*JourneyTest</include>
                         <include>**/*Feature</include>
                         <include>**/*IT</include>
                     </includes>

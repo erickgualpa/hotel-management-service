@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,13 +12,13 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractInteg
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class PostgreSqlJpaHotelRepositoryIT extends AbstractIntegrationTest {
+class JpaHotelRepositoryIT extends AbstractIntegrationTest {
 
   @Autowired private EntityManager entityManager;
 
   @Test
   void returnEmptyOptional_whenNoHotelMatchesId() {
-    final AggregateRepository<Hotel> testee = new PostgreSqlJpaHotelRepository(entityManager);
+    final AggregateRepository<Hotel> testee = new JpaHotelRepository(entityManager);
     AggregateId hotelId = new AggregateId(randomUUID().toString());
     Optional<Hotel> result = testee.find(hotelId);
     assertThat(result).isEmpty();

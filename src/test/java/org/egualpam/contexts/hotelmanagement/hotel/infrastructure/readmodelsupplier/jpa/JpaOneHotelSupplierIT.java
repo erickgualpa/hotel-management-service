@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
@@ -30,7 +30,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 // increasing the duration of the build
 @Transactional
 @AutoConfigureTestEntityManager
-class PostgreSqlJpaOneHotelSupplierIT extends AbstractIntegrationTest {
+class JpaOneHotelSupplierIT extends AbstractIntegrationTest {
 
   private static final String IMAGE_SERVICE_RESPONSE =
       """
@@ -49,7 +49,7 @@ class PostgreSqlJpaOneHotelSupplierIT extends AbstractIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    testee = new PostgreSqlJpaOneHotelReadModelSupplier(entityManager, imageServiceClient);
+    testee = new JpaOneHotelReadModelSupplier(entityManager, imageServiceClient);
   }
 
   @Test

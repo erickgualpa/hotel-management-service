@@ -1,11 +1,10 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa;
 
 import jakarta.persistence.EntityManager;
-import java.util.List;
-import java.util.Objects;
+import jakarta.persistence.NoResultException;
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Function;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
@@ -13,23 +12,19 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class PostgreSqlJpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel> {
+public class JpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel> {
 
-  private static final Logger logger =
-      LoggerFactory.getLogger(PostgreSqlJpaOneHotelReadModelSupplier.class);
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
   private final EntityManager entityManager;
-  private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
   private final WebClient imageServiceClient;
 
-  public PostgreSqlJpaOneHotelReadModelSupplier(
-      EntityManager entityManager, WebClient imageServiceClient) {
+  public JpaOneHotelReadModelSupplier(EntityManager entityManager, WebClient imageServiceClient) {
     this.entityManager = entityManager;
-    this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
     this.imageServiceClient = imageServiceClient;
   }
 
@@ -45,16 +40,28 @@ public class PostgreSqlJpaOneHotelReadModelSupplier implements ReadModelSupplier
   }
 
   private OneHotel.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
-    Double averageRating =
-        findReviewsByHotel.apply(persistenceHotel).stream()
-            .mapToDouble(PersistenceReview::getRating)
-            .filter(Objects::nonNull)
-            .average()
-            .orElse(0.0);
-
     String imageURL =
         Optional.ofNullable(persistenceHotel.getImageURL())
             .orElseGet(() -> retrieveImageURL(persistenceHotel.getId()).orElse(null));
+
+    String query =
+        """
+        SELECT avg_value
+        FROM hotel_average_rating
+        WHERE hotel_id=:hotelId
+        """;
+
+    BigDecimal hotelAverageRating;
+    try {
+      hotelAverageRating =
+          (BigDecimal)
+              entityManager
+                  .createNativeQuery(query)
+                  .setParameter("hotelId", persistenceHotel.getId())
+                  .getSingleResult();
+    } catch (NoResultException e) {
+      hotelAverageRating = BigDecimal.ZERO;
+    }
 
     return new OneHotel.Hotel(
         persistenceHotel.getId().toString(),
@@ -63,7 +70,7 @@ public class PostgreSqlJpaOneHotelReadModelSupplier implements ReadModelSupplier
         persistenceHotel.getLocation(),
         persistenceHotel.getPrice(),
         imageURL,
-        averageRating);
+        hotelAverageRating.doubleValue());
   }
 
   private Optional<String> retrieveImageURL(UUID hotelId) {
@@ -84,4 +91,6 @@ public class PostgreSqlJpaOneHotelReadModelSupplier implements ReadModelSupplier
   }
 
   public record ImageServiceResponse(String imageURL) {}
+
+  public record HotelAverageRating(Double averageRating) {}
 }

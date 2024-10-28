@@ -5,6 +5,7 @@ import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateRe
 import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviews;
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
+import org.egualpam.contexts.hotelmanagement.shared.application.command.InternalEventBus;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
@@ -16,8 +17,10 @@ public class ReviewApplicationConfiguration {
 
   @Bean
   public CreateReview createReview(
-      AggregateRepository<Review> reviewRepository, EventBus eventBus) {
-    return new CreateReview(reviewRepository, eventBus);
+      AggregateRepository<Review> reviewRepository,
+      InternalEventBus internalEventBus,
+      EventBus eventBus) {
+    return new CreateReview(reviewRepository, internalEventBus, eventBus);
   }
 
   @Bean

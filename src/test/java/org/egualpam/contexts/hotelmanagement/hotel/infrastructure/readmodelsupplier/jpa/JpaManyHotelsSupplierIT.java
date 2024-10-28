@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa;
 
 import static java.util.Collections.shuffle;
 import static java.util.UUID.randomUUID;
@@ -29,7 +29,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @Transactional
 @AutoConfigureTestEntityManager
-class PostgreSqlJpaManyHotelsSupplierIT extends AbstractIntegrationTest {
+class JpaManyHotelsSupplierIT extends AbstractIntegrationTest {
 
   @Autowired private EntityManager entityManager;
 
@@ -48,9 +48,7 @@ class PostgreSqlJpaManyHotelsSupplierIT extends AbstractIntegrationTest {
 
   @Test
   void returnHotelsSortedByAverageRating() {
-    final ReadModelSupplier<ManyHotels> testee =
-        new org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier
-            .PostgreSqlJpaManyHotelsReadModelSupplier(entityManager);
+    final ReadModelSupplier<ManyHotels> testee = new JpaManyHotelsReadModelSupplier(entityManager);
 
     UUID lowRatingHotel = randomUUID();
     UUID intermediateRatingHotel = randomUUID();

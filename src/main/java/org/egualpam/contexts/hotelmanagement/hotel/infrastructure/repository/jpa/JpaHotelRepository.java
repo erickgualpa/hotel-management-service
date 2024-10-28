@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa;
 
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -7,19 +7,19 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.FindReviewsByHotel;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.FindReviewsByHotel;
 import org.egualpam.contexts.hotelmanagement.shared.domain.ActionNotYetImplemented;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
-public final class PostgreSqlJpaHotelRepository implements AggregateRepository<Hotel> {
+public final class JpaHotelRepository implements AggregateRepository<Hotel> {
 
   private final EntityManager entityManager;
   private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
 
-  public PostgreSqlJpaHotelRepository(EntityManager entityManager) {
+  public JpaHotelRepository(EntityManager entityManager) {
     this.entityManager = entityManager;
     this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
   }

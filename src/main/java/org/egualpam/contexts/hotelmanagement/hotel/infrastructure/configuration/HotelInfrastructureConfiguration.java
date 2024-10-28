@@ -8,17 +8,21 @@ import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelsQ
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedInternalEventConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.PostgreSqlJpaManyHotelsReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.PostgreSqlJpaOneHotelReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.PostgreSqlJpaHotelRepository;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaManyHotelsReadModelSupplier;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaOneHotelReadModelSupplier;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa.JpaHotelRepository;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.internaleventbus.spring.ReviewCreatedEvent;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -31,18 +35,18 @@ public class HotelInfrastructureConfiguration {
 
   @Bean
   public AggregateRepository<Hotel> hotelRepository(EntityManager entityManager) {
-    return new PostgreSqlJpaHotelRepository(entityManager);
+    return new JpaHotelRepository(entityManager);
   }
 
   @Bean
   public ReadModelSupplier<OneHotel> oneHotelReadModelSupplier(
       EntityManager entityManager, WebClient imageServiceClient) {
-    return new PostgreSqlJpaOneHotelReadModelSupplier(entityManager, imageServiceClient);
+    return new JpaOneHotelReadModelSupplier(entityManager, imageServiceClient);
   }
 
   @Bean
   public ReadModelSupplier<ManyHotels> manyHotelsReadModelSupplier(EntityManager entityManager) {
-    return new PostgreSqlJpaManyHotelsReadModelSupplier(entityManager);
+    return new JpaManyHotelsReadModelSupplier(entityManager);
   }
 
   @Bean
@@ -51,5 +55,11 @@ public class HotelInfrastructureConfiguration {
     return new SimpleQueryBusConfiguration()
         .withHandler(FindHotelQuery.class, new FindHotelQueryHandler(findHotel))
         .withHandler(FindHotelsQuery.class, new FindHotelsQueryHandler(findHotels));
+  }
+
+  @Bean
+  public ApplicationListener<ReviewCreatedEvent> reviewCreatedInternalEventConsumer(
+      NamedParameterJdbcTemplate jdbcTemplate) {
+    return new ReviewCreatedInternalEventConsumer(jdbcTemplate);
   }
 }

@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa;
 
 import static java.util.Comparator.comparingDouble;
 
@@ -16,12 +16,12 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
-public class PostgreSqlJpaManyHotelsReadModelSupplier implements ReadModelSupplier<ManyHotels> {
+public class JpaManyHotelsReadModelSupplier implements ReadModelSupplier<ManyHotels> {
 
   private final EntityManager entityManager;
   private final Function<PersistenceHotel, List<PersistenceReview>> findReviewsByHotel;
 
-  public PostgreSqlJpaManyHotelsReadModelSupplier(EntityManager entityManager) {
+  public JpaManyHotelsReadModelSupplier(EntityManager entityManager) {
     this.entityManager = entityManager;
     this.findReviewsByHotel = new FindReviewsByHotel(entityManager);
   }
