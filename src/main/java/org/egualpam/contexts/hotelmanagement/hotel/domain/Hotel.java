@@ -12,23 +12,15 @@ public final class Hotel extends AggregateRoot {
   private final Location location;
   private final Price price;
   private final ImageURL imageURL;
-  private final AverageRating averageRating;
 
   public Hotel(
-      String id,
-      String name,
-      String description,
-      String location,
-      Integer price,
-      String imageURL,
-      Double averageRating) {
+      String id, String name, String description, String location, Integer price, String imageURL) {
     super(id);
     if (isNull(name)
         || isNull(description)
         || isNull(location)
         || isNull(price)
-        || isNull(imageURL)
-        || isNull(averageRating)) {
+        || isNull(imageURL)) {
       throw new RequiredPropertyIsMissing();
     }
     this.name = new HotelName(name);
@@ -36,6 +28,5 @@ public final class Hotel extends AggregateRoot {
     this.location = new Location(location);
     this.price = new Price(price);
     this.imageURL = new ImageURL(imageURL);
-    this.averageRating = new AverageRating(averageRating);
   }
 }
