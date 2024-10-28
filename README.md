@@ -108,16 +108,16 @@ Check it and try to find the best available hotel in Mars! 👽
         │                   ├── e2e
         │                   │   └── models
         │                   ├── hotel
+        │                   │   ├── application
+        │                   │   │   └── query
         │                   │   └── infrastructure
         │                   │       ├── controller
-        │                   │       ├── cqrs
-        │                   │       │   └── query
-        │                   │       │       └── simple
         │                   │       └── persistence
         │                   │           └── jpa
         │                   ├── review
         │                   │   ├── application
-        │                   │   │   └── command
+        │                   │   │   ├── command
+        │                   │   │   └── query
         │                   │   └── infrastructure
         │                   │       ├── controller
         │                   │       └── persistence
