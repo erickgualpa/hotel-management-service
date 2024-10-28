@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
-public class HotelsConfiguration {
+public class HotelInfrastructureConfiguration {
 
   @Bean
   public WebClient imageServiceClient(@Value("${clients.image-service.host}") String host) {
@@ -47,10 +47,7 @@ public class HotelsConfiguration {
 
   @Bean
   public SimpleQueryBusConfiguration hotelsSimpleQueryBusConfiguration(
-      ReadModelSupplier<OneHotel> oneHotelReadModelSupplier,
-      ReadModelSupplier<ManyHotels> manyHotelsReadModelSupplier) {
-    FindHotel findHotel = new FindHotel(oneHotelReadModelSupplier);
-    FindHotels findHotels = new FindHotels(manyHotelsReadModelSupplier);
+      FindHotel findHotel, FindHotels findHotels) {
     return new SimpleQueryBusConfiguration()
         .withHandler(FindHotelQuery.class, new FindHotelQueryHandler(findHotel))
         .withHandler(FindHotelsQuery.class, new FindHotelsQueryHandler(findHotels));
