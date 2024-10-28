@@ -59,6 +59,22 @@ class FindHotelsShould {
   }
 
   @Test
+  void findEmptyWhenNoHotelsFound() {
+    String location = randomAlphabetic(5);
+    Integer minPrice = 50;
+    Integer maxPrice = 100;
+
+    ManyHotels manyHotels = new ManyHotels(List.of());
+    when(readModelSupplier.get(any(Criteria.class))).thenReturn(manyHotels);
+
+    FindHotelsQuery query = new FindHotelsQuery(location, minPrice, maxPrice);
+
+    ManyHotels result = testee.execute(query);
+
+    assertThat(result.hotels()).isEmpty();
+  }
+
+  @Test
   void throwDomainExceptionWhenHotelCriteriaHasPriceRangeValuesSwapped() {
     String location = null;
     Integer minPrice = 100;
