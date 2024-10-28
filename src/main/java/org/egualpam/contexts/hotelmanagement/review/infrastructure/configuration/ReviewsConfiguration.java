@@ -5,6 +5,7 @@ import org.egualpam.contexts.hotelmanagement.review.application.command.CreateRe
 import org.egualpam.contexts.hotelmanagement.review.application.command.CreateReviewCommand;
 import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateReview;
 import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateReviewCommand;
+import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviews;
 import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviewsQuery;
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
@@ -47,8 +48,8 @@ public class ReviewsConfiguration {
   @Bean
   public SimpleQueryBusConfiguration reviewsSimpleQueryBusConfiguration(
       ReadModelSupplier<ManyReviews> manyReviewsReadModelSupplier) {
+    FindReviews findReviews = new FindReviews(manyReviewsReadModelSupplier);
     return new SimpleQueryBusConfiguration()
-        .withHandler(
-            FindReviewsQuery.class, new FindReviewsQueryHandler(manyReviewsReadModelSupplier));
+        .withHandler(FindReviewsQuery.class, new FindReviewsQueryHandler(findReviews));
   }
 }
