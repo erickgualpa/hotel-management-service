@@ -83,8 +83,6 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                       ├── domain
     │   │                       └── infrastructure
     │   │                           ├── configuration
-    │   │                           │   └── properties
-    │   │                           │       └── eventbus
     │   │                           ├── cqrs
     │   │                           │   ├── command
     │   │                           │   │   └── simple

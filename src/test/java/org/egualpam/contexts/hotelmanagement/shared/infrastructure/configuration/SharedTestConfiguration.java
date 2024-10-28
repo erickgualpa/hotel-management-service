@@ -5,7 +5,6 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.properties.eventbus.RabbitMqProperties;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.EventStoreTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;

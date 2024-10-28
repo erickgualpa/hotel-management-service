@@ -17,7 +17,6 @@ import java.util.concurrent.TimeoutException;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.properties.eventbus.RabbitMqProperties;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBus;
