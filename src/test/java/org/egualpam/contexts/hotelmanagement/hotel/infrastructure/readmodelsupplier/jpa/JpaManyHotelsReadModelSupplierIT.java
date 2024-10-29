@@ -22,16 +22,11 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.Hotel
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @Transactional
-@AutoConfigureTestEntityManager
 class JpaManyHotelsReadModelSupplierIT extends AbstractIntegrationTest {
 
   @Autowired private EntityManager entityManager;
-
-  @Autowired private TestEntityManager testEntityManager;
 
   @Autowired private HotelTestRepository hotelTestRepository;
 

@@ -3,11 +3,9 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.util.UUID;
 
-@Entity
-@Table(name = "reviews")
+@Entity(name = "reviews")
 public class PersistenceReview {
 
   @Id private UUID id;
@@ -16,15 +14,6 @@ public class PersistenceReview {
 
   @Column(name = "hotel_id")
   private UUID hotelId;
-
-  public PersistenceReview() {}
-
-  public PersistenceReview(UUID id, Integer rating, String comment, UUID hotelId) {
-    this.id = id;
-    this.rating = rating;
-    this.comment = comment;
-    this.hotelId = hotelId;
-  }
 
   public UUID getId() {
     return id;

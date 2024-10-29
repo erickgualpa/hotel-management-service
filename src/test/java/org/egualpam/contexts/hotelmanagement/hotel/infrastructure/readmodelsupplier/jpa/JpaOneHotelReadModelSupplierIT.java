@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
@@ -18,28 +17,22 @@ import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelS
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.web.reactive.function.client.WebClient;
 
-// TODO: Review this tests requiring '@Transactional' and '@AutoConfigureTestEntityManager' that are
-// increasing the duration of the build
-@Transactional
-@AutoConfigureTestEntityManager
 class JpaOneHotelReadModelSupplierIT extends AbstractIntegrationTest {
 
   private static final String IMAGE_SERVICE_RESPONSE =
       """
-            {
-                "imageURL": "%s"
-            }
-            """;
+      {
+          "imageURL": "%s"
+      }
+      """;
 
-  @Autowired private TestEntityManager testEntityManager;
+  @Autowired private HotelTestRepository hotelTestRepository;
 
   @Autowired private EntityManager entityManager;
 
@@ -75,15 +68,14 @@ class JpaOneHotelReadModelSupplierIT extends AbstractIntegrationTest {
     UUID hotelId = randomUUID();
     String imageURL = "www." + randomAlphabetic(5) + ".com";
 
-    PersistenceHotel persistenceHotelWithMissingImageURL =
-        new PersistenceHotel(
-            hotelId,
-            randomAlphabetic(5),
-            randomAlphabetic(5),
-            randomAlphabetic(5),
-            nextInt(100, 200),
-            null);
-    testEntityManager.persistAndFlush(persistenceHotelWithMissingImageURL);
+    // Hotel with no imageURL
+    hotelTestRepository.insertHotel(
+        hotelId,
+        randomAlphabetic(5),
+        randomAlphabetic(5),
+        randomAlphabetic(5),
+        nextInt(100, 200),
+        null);
 
     wireMockServer.stubFor(
         WireMock.get(urlEqualTo("/v1/images/hotels/" + hotelId))
@@ -103,15 +95,14 @@ class JpaOneHotelReadModelSupplierIT extends AbstractIntegrationTest {
   void returnViewWithNoImageURL_whenIsNotPresentInDatabaseAndImageServiceFails() {
     UUID hotelId = randomUUID();
 
-    PersistenceHotel persistenceHotelWithMissingImageURL =
-        new PersistenceHotel(
-            hotelId,
-            randomAlphabetic(5),
-            randomAlphabetic(5),
-            randomAlphabetic(5),
-            nextInt(100, 200),
-            null);
-    testEntityManager.persistAndFlush(persistenceHotelWithMissingImageURL);
+    // Hotel with no imageURL
+    hotelTestRepository.insertHotel(
+        hotelId,
+        randomAlphabetic(5),
+        randomAlphabetic(5),
+        randomAlphabetic(5),
+        nextInt(100, 200),
+        null);
 
     wireMockServer.stubFor(
         WireMock.get(urlEqualTo("/v1/images/hotels/" + hotelId))
