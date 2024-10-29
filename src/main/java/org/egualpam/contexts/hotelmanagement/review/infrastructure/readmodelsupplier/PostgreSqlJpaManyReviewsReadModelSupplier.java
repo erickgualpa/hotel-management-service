@@ -10,7 +10,6 @@ import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
 public class PostgreSqlJpaManyReviewsReadModelSupplier implements ReadModelSupplier<ManyReviews> {
 
@@ -27,7 +26,7 @@ public class PostgreSqlJpaManyReviewsReadModelSupplier implements ReadModelSuppl
 
     String sql =
         """
-                SELECT r.id, r.rating, r.comment, r.hotel_id
+                SELECT r.rating, r.comment
                 FROM reviews r
                 WHERE r.hotel_id = :hotel_id
                 """;
@@ -41,9 +40,11 @@ public class PostgreSqlJpaManyReviewsReadModelSupplier implements ReadModelSuppl
 
     List<ManyReviews.Review> reviews =
         persistenceReviews.stream()
-            .map(review -> new ManyReviews.Review(review.getRating(), review.getComment()))
+            .map(review -> new ManyReviews.Review(review.rating().intValue(), review.comment()))
             .toList();
 
     return new ManyReviews(reviews);
   }
+
+  record PersistenceReview(Long rating, String comment) {}
 }
