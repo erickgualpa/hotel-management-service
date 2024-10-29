@@ -12,7 +12,7 @@ import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.CreateReviewCommandHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.UpdateReviewCommandHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.simple.FindReviewsQueryHandler;
-import org.egualpam.contexts.hotelmanagement.review.infrastructure.readmodelsupplier.PostgreSqlJpaManyReviewsReadModelSupplier;
+import org.egualpam.contexts.hotelmanagement.review.infrastructure.readmodelsupplier.JpaManyReviewsReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.repository.PostgreSqlJpaReviewRepository;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.InternalEventBus;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
@@ -34,7 +34,7 @@ public class ReviewInfrastructureConfiguration {
 
   @Bean
   public ReadModelSupplier<ManyReviews> manyReviewsReadModelSupplier(EntityManager entityManager) {
-    return new PostgreSqlJpaManyReviewsReadModelSupplier(entityManager);
+    return new JpaManyReviewsReadModelSupplier(entityManager);
   }
 
   @Bean

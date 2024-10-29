@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class PostgreSqlJpaManyReviewsSupplierShould {
+class JpaManyReviewsReadModelSupplierShould {
 
   @Mock private EntityManager entityManager;
 
@@ -23,7 +23,7 @@ class PostgreSqlJpaManyReviewsSupplierShould {
 
   @BeforeEach
   void setUp() {
-    testee = new PostgreSqlJpaManyReviewsReadModelSupplier(entityManager);
+    testee = new JpaManyReviewsReadModelSupplier(entityManager);
   }
 
   @Test

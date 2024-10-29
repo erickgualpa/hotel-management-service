@@ -11,11 +11,11 @@ import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelS
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 
-public class PostgreSqlJpaManyReviewsReadModelSupplier implements ReadModelSupplier<ManyReviews> {
+public class JpaManyReviewsReadModelSupplier implements ReadModelSupplier<ManyReviews> {
 
   private final EntityManager entityManager;
 
-  public PostgreSqlJpaManyReviewsReadModelSupplier(EntityManager entityManager) {
+  public JpaManyReviewsReadModelSupplier(EntityManager entityManager) {
     this.entityManager = entityManager;
   }
 
