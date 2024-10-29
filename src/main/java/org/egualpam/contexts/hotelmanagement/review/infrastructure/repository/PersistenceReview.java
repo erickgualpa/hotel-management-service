@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa;
+package org.egualpam.contexts.hotelmanagement.review.infrastructure.repository;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import java.util.UUID;
 
 @Entity(name = "reviews")
-public class PersistenceReview {
+class PersistenceReview {
 
   @Id private UUID id;
   private Integer rating;
@@ -15,35 +15,35 @@ public class PersistenceReview {
   @Column(name = "hotel_id")
   private UUID hotelId;
 
-  public UUID getId() {
+  UUID getId() {
     return id;
   }
 
-  public void setId(UUID id) {
+  void setId(UUID id) {
     this.id = id;
   }
 
-  public Integer getRating() {
+  Integer getRating() {
     return rating;
   }
 
-  public void setRating(Integer rating) {
+  void setRating(Integer rating) {
     this.rating = rating;
   }
 
-  public String getComment() {
+  String getComment() {
     return comment;
   }
 
-  public void setComment(String comment) {
+  void setComment(String comment) {
     this.comment = comment;
   }
 
-  public UUID getHotelId() {
+  UUID getHotelId() {
     return hotelId;
   }
 
-  public void setHotelId(UUID hotelId) {
+  void setHotelId(UUID hotelId) {
     this.hotelId = hotelId;
   }
 }

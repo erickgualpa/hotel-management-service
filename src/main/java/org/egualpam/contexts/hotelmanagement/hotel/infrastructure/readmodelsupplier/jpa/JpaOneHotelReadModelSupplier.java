@@ -1,6 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
@@ -9,7 +10,6 @@ import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelS
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceHotel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -33,8 +33,24 @@ public class JpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel>
     HotelCriteria hotelCriteria = (HotelCriteria) criteria;
     UniqueId hotelId = hotelCriteria.getHotelId().orElseThrow(RequiredPropertyIsMissing::new);
 
-    PersistenceHotel persistenceHotel =
-        entityManager.find(PersistenceHotel.class, UUID.fromString(hotelId.value()));
+    String sql =
+        """
+        SELECT id, name, description, location, price, image_url
+        FROM hotels
+        WHERE id=:hotelId;
+        """;
+
+    PersistenceHotel persistenceHotel;
+    try {
+      persistenceHotel =
+          (PersistenceHotel)
+              entityManager
+                  .createNativeQuery(sql, PersistenceHotel.class)
+                  .setParameter("hotelId", UUID.fromString(hotelId.value()))
+                  .getSingleResult();
+    } catch (NoResultException e) {
+      persistenceHotel = null;
+    }
 
     Optional<OneHotel.Hotel> hotel =
         Optional.ofNullable(persistenceHotel).map(this::mapIntoViewHotel);
@@ -43,20 +59,20 @@ public class JpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel>
   }
 
   private OneHotel.Hotel mapIntoViewHotel(PersistenceHotel persistenceHotel) {
-    UUID hotelId = persistenceHotel.getId();
+    UUID hotelId = persistenceHotel.id();
 
     String imageURL =
-        Optional.ofNullable(persistenceHotel.getImageURL())
+        Optional.ofNullable(persistenceHotel.imageURL())
             .orElseGet(() -> retrieveImageURL(hotelId).orElse(null));
 
     HotelAverageRating hotelAverageRating = getHotelAverageRating.using(hotelId);
 
     return new OneHotel.Hotel(
         hotelId.toString(),
-        persistenceHotel.getName(),
-        persistenceHotel.getDescription(),
-        persistenceHotel.getLocation(),
-        persistenceHotel.getPrice(),
+        persistenceHotel.name(),
+        persistenceHotel.description(),
+        persistenceHotel.location(),
+        persistenceHotel.price().intValue(),
         imageURL,
         hotelAverageRating.value());
   }
@@ -79,4 +95,7 @@ public class JpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel>
   }
 
   public record ImageServiceResponse(String imageURL) {}
+
+  public record PersistenceHotel(
+      UUID id, String name, String description, String location, Long price, String imageURL) {}
 }

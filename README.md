@@ -62,7 +62,9 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │       │       └── simple
     │   │                   │       ├── readmodelsupplier
     │   │                   │       │   └── jpa
-    │   │                   │       └── repository
+    │   │                   │       ├── repository
+    │   │                   │       │   └── jpa
+    │   │                   │       └── shared
     │   │                   │           └── jpa
     │   │                   ├── review
     │   │                   │   ├── application
@@ -95,10 +97,8 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                           │   ├── events
     │   │                           │   ├── rabbitmq
     │   │                           │   └── simple
-    │   │                           ├── internaleventbus
-    │   │                           │   └── spring
-    │   │                           └── persistence
-    │   │                               └── jpa
+    │   │                           └── internaleventbus
+    │   │                               └── spring
     │   └── resources
     │       └── db
     │           └── migration

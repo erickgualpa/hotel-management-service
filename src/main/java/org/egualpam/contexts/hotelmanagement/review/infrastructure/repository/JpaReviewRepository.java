@@ -9,13 +9,12 @@ import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa.PersistenceReview;
 
-public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review> {
+public class JpaReviewRepository implements AggregateRepository<Review> {
 
   private final EntityManager entityManager;
 
-  public PostgreSqlJpaReviewRepository(EntityManager entityManager) {
+  public JpaReviewRepository(EntityManager entityManager) {
     this.entityManager = entityManager;
   }
 
@@ -30,22 +29,22 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
 
     Query query =
         entityManager
-            .createNativeQuery(sql, PersistenceReview.class)
+            .createNativeQuery(sql, ReadPersistenceReview.class)
             .setParameter("id", UUID.fromString(id.value()));
 
-    final PersistenceReview persistenceReview;
+    final ReadPersistenceReview persistenceReview;
     try {
-      persistenceReview = (PersistenceReview) query.getSingleResult();
+      persistenceReview = (ReadPersistenceReview) query.getSingleResult();
     } catch (NoResultException e) {
       return Optional.empty();
     }
 
     Review review =
         new Review(
-            persistenceReview.getId().toString(),
-            persistenceReview.getHotelId().toString(),
-            persistenceReview.getRating(),
-            persistenceReview.getComment());
+            persistenceReview.id().toString(),
+            persistenceReview.hotelId().toString(),
+            persistenceReview.rating().intValue(),
+            persistenceReview.comment());
 
     return Optional.of(review);
   }
@@ -62,4 +61,6 @@ public class PostgreSqlJpaReviewRepository implements AggregateRepository<Review
     entityManager.merge(persistenceReview);
     entityManager.flush();
   }
+
+  record ReadPersistenceReview(UUID id, Long rating, String comment, UUID hotelId) {}
 }

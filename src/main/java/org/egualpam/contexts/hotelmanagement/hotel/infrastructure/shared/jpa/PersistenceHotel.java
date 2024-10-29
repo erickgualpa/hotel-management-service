@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.shared.infrastructure.persistence.jpa;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,8 +12,6 @@ public class PersistenceHotel {
   private String name;
   private String description;
   private String location;
-
-  @Column(name = "price")
   private Integer price;
 
   @Column(name = "image_url")

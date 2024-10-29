@@ -12,13 +12,13 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractInteg
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class PostgreSqlJpaReviewRepositoryIT extends AbstractIntegrationTest {
+class JpaReviewRepositoryIT extends AbstractIntegrationTest {
 
   @Autowired private EntityManager entityManager;
 
   @Test
   void returnEmptyOptional_whenNoReviewMatchesId() {
-    final AggregateRepository<Review> testee = new PostgreSqlJpaReviewRepository(entityManager);
+    final AggregateRepository<Review> testee = new JpaReviewRepository(entityManager);
     AggregateId reviewId = new AggregateId(randomUUID().toString());
     Optional<Review> result = testee.find(reviewId);
     assertThat(result).isEmpty();
