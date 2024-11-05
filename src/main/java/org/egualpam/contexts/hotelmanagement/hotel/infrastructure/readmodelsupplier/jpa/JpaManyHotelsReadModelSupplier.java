@@ -12,9 +12,9 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.Location;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Price;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.PersistenceHotel;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 
-public class JpaManyHotelsReadModelSupplier implements ReadModelSupplier<ManyHotels> {
+public class JpaManyHotelsReadModelSupplier
+    implements ReadModelSupplier<HotelCriteria, ManyHotels> {
 
   private final EntityManager entityManager;
   private final GetHotelAverageRating getHotelAverageRating;
@@ -25,14 +25,12 @@ public class JpaManyHotelsReadModelSupplier implements ReadModelSupplier<ManyHot
   }
 
   @Override
-  public ManyHotels get(Criteria criteria) {
-    HotelCriteria hotelCriteria = (HotelCriteria) criteria;
-
+  public ManyHotels get(HotelCriteria criteria) {
     CriteriaQuery<PersistenceHotel> criteriaQuery =
         new HotelCriteriaQueryBuilder(entityManager)
-            .withLocation(hotelCriteria.getLocation().map(Location::value))
-            .withMinPrice(hotelCriteria.getMinPrice().map(Price::value))
-            .withMaxPrice(hotelCriteria.getMaxPrice().map(Price::value))
+            .withLocation(criteria.getLocation().map(Location::value))
+            .withMinPrice(criteria.getMinPrice().map(Price::value))
+            .withMaxPrice(criteria.getMaxPrice().map(Price::value))
             .build();
 
     List<ManyHotels.Hotel> hotels =

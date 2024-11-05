@@ -8,6 +8,8 @@ import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelsQ
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedInternalEventConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
@@ -41,13 +43,14 @@ public class HotelInfrastructureConfiguration {
   }
 
   @Bean
-  public ReadModelSupplier<OneHotel> oneHotelReadModelSupplier(
+  public ReadModelSupplier<UniqueHotelCriteria, OneHotel> oneHotelReadModelSupplier(
       EntityManager entityManager, WebClient imageServiceClient) {
     return new JpaOneHotelReadModelSupplier(entityManager, imageServiceClient);
   }
 
   @Bean
-  public ReadModelSupplier<ManyHotels> manyHotelsReadModelSupplier(EntityManager entityManager) {
+  public ReadModelSupplier<HotelCriteria, ManyHotels> manyHotelsReadModelSupplier(
+      EntityManager entityManager) {
     return new JpaManyHotelsReadModelSupplier(entityManager);
   }
 

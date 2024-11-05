@@ -7,13 +7,13 @@ import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.reactive.function.client.WebClient;
 
-public class JpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel> {
+public class JpaOneHotelReadModelSupplier
+    implements ReadModelSupplier<UniqueHotelCriteria, OneHotel> {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -28,9 +28,8 @@ public class JpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel>
   }
 
   @Override
-  public OneHotel get(Criteria criteria) {
-    UniqueHotelCriteria hotelCriteria = (UniqueHotelCriteria) criteria;
-    UniqueId hotelId = hotelCriteria.hotelId();
+  public OneHotel get(UniqueHotelCriteria criteria) {
+    UniqueId hotelId = criteria.hotelId();
 
     String sql =
         """

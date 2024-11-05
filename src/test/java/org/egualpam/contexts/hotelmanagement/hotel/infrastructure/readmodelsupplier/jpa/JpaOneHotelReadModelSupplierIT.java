@@ -14,7 +14,6 @@ import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +36,7 @@ class JpaOneHotelReadModelSupplierIT extends AbstractIntegrationTest {
 
   @Autowired private WebClient imageServiceClient;
 
-  private ReadModelSupplier<OneHotel> testee;
+  private ReadModelSupplier<UniqueHotelCriteria, OneHotel> testee;
 
   @BeforeEach
   void setUp() {
@@ -47,7 +46,7 @@ class JpaOneHotelReadModelSupplierIT extends AbstractIntegrationTest {
   @Test
   void returnViewWithEmptyOptional_whenHotelIdNotMatchesAnyHotel() {
     String hotelId = randomUUID().toString();
-    Criteria criteria = new UniqueHotelCriteria(hotelId);
+    UniqueHotelCriteria criteria = new UniqueHotelCriteria(hotelId);
 
     OneHotel result = testee.get(criteria);
 

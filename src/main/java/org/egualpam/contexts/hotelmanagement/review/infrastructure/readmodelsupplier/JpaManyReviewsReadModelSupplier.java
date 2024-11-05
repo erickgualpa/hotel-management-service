@@ -8,10 +8,10 @@ import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReview
 import org.egualpam.contexts.hotelmanagement.review.domain.HotelId;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 
-public class JpaManyReviewsReadModelSupplier implements ReadModelSupplier<ManyReviews> {
+public class JpaManyReviewsReadModelSupplier
+    implements ReadModelSupplier<ReviewCriteria, ManyReviews> {
 
   private final EntityManager entityManager;
 
@@ -20,9 +20,8 @@ public class JpaManyReviewsReadModelSupplier implements ReadModelSupplier<ManyRe
   }
 
   @Override
-  public ManyReviews get(Criteria criteria) {
-    ReviewCriteria reviewCriteria = (ReviewCriteria) criteria;
-    HotelId hotelId = reviewCriteria.getHotelId().orElseThrow(RequiredPropertyIsMissing::new);
+  public ManyReviews get(ReviewCriteria criteria) {
+    HotelId hotelId = criteria.getHotelId().orElseThrow(RequiredPropertyIsMissing::new);
 
     String sql =
         """

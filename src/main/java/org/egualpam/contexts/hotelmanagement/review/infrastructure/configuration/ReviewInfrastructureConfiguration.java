@@ -9,6 +9,7 @@ import org.egualpam.contexts.hotelmanagement.review.application.query.FindReview
 import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviewsQuery;
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
+import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.CreateReviewCommandHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.UpdateReviewCommandHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.simple.FindReviewsQueryHandler;
@@ -35,7 +36,8 @@ public class ReviewInfrastructureConfiguration {
   }
 
   @Bean
-  public ReadModelSupplier<ManyReviews> manyReviewsReadModelSupplier(EntityManager entityManager) {
+  public ReadModelSupplier<ReviewCriteria, ManyReviews> manyReviewsReadModelSupplier(
+      EntityManager entityManager) {
     return new JpaManyReviewsReadModelSupplier(entityManager);
   }
 

@@ -6,7 +6,6 @@ import jakarta.persistence.EntityManager;
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,7 @@ class JpaManyReviewsReadModelSupplierShould {
 
   @Mock private EntityManager entityManager;
 
-  private ReadModelSupplier<ManyReviews> testee;
+  private ReadModelSupplier<ReviewCriteria, ManyReviews> testee;
 
   @BeforeEach
   void setUp() {
@@ -28,7 +27,7 @@ class JpaManyReviewsReadModelSupplierShould {
 
   @Test
   void throwDomainException_whenHotelIdIsMissingInCriteria() {
-    Criteria reviewCriteria = new ReviewCriteria(null);
+    ReviewCriteria reviewCriteria = new ReviewCriteria(null);
     assertThrows(RequiredPropertyIsMissing.class, () -> testee.get(reviewCriteria));
   }
 }

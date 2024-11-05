@@ -8,9 +8,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.PriceRangeValuesSwapped;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class FindHotelsShould {
 
-  @Mock private ReadModelSupplier<ManyHotels> readModelSupplier;
+  @Mock private ReadModelSupplier<HotelCriteria, ManyHotels> readModelSupplier;
 
   private FindHotels testee;
 
@@ -46,7 +46,7 @@ class FindHotelsShould {
         new ManyHotels.Hotel(
             identifier, name, description, location, price, imageURL, averageRating);
     ManyHotels manyHotels = new ManyHotels(List.of(hotel));
-    when(readModelSupplier.get(any(Criteria.class))).thenReturn(manyHotels);
+    when(readModelSupplier.get(any(HotelCriteria.class))).thenReturn(manyHotels);
 
     FindHotelsQuery query = new FindHotelsQuery(location, minPrice, maxPrice);
 
@@ -65,7 +65,7 @@ class FindHotelsShould {
     Integer maxPrice = 100;
 
     ManyHotels manyHotels = new ManyHotels(List.of());
-    when(readModelSupplier.get(any(Criteria.class))).thenReturn(manyHotels);
+    when(readModelSupplier.get(any(HotelCriteria.class))).thenReturn(manyHotels);
 
     FindHotelsQuery query = new FindHotelsQuery(location, minPrice, maxPrice);
 

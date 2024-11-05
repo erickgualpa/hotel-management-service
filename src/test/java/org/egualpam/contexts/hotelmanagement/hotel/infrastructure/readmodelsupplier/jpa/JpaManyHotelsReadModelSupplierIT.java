@@ -16,7 +16,6 @@ import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +42,8 @@ class JpaManyHotelsReadModelSupplierIT extends AbstractIntegrationTest {
 
   @Test
   void returnHotelsSortedByAverageRating() {
-    final ReadModelSupplier<ManyHotels> testee = new JpaManyHotelsReadModelSupplier(entityManager);
+    final ReadModelSupplier<HotelCriteria, ManyHotels> testee =
+        new JpaManyHotelsReadModelSupplier(entityManager);
 
     UUID lowRatingHotel = randomUUID();
     UUID intermediateRatingHotel = randomUUID();
@@ -60,7 +60,7 @@ class JpaManyHotelsReadModelSupplierIT extends AbstractIntegrationTest {
     hotelTestRepository.insertHotelAverageRating(intermediateRatingHotel, 3.0);
     hotelTestRepository.insertHotelAverageRating(highRatingHotel, 5.0);
 
-    Criteria criteria = new HotelCriteria(null, null, null);
+    HotelCriteria criteria = new HotelCriteria(null, null, null);
 
     ManyHotels result = testee.get(criteria);
 

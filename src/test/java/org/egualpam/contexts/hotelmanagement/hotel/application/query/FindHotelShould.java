@@ -8,8 +8,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class FindHotelShould {
 
-  @Mock private ReadModelSupplier<OneHotel> readModelSupplier;
+  @Mock private ReadModelSupplier<UniqueHotelCriteria, OneHotel> readModelSupplier;
 
   private FindHotel testee;
 
@@ -41,7 +41,8 @@ class FindHotelShould {
 
     OneHotel.Hotel hotel =
         new OneHotel.Hotel(hotelId, name, description, location, price, imageURL, averageRating);
-    when(readModelSupplier.get(any(Criteria.class))).thenReturn(new OneHotel(Optional.of(hotel)));
+    when(readModelSupplier.get(any(UniqueHotelCriteria.class)))
+        .thenReturn(new OneHotel(Optional.of(hotel)));
 
     FindHotelQuery query = new FindHotelQuery(hotelId);
 
@@ -61,7 +62,8 @@ class FindHotelShould {
   @Test
   void findEmptyWhenNoHotelFound() {
     String hotelId = randomUUID().toString();
-    when(readModelSupplier.get(any(Criteria.class))).thenReturn(new OneHotel(Optional.empty()));
+    when(readModelSupplier.get(any(UniqueHotelCriteria.class)))
+        .thenReturn(new OneHotel(Optional.empty()));
     FindHotelQuery query = new FindHotelQuery(hotelId);
 
     OneHotel result = testee.execute(query);
