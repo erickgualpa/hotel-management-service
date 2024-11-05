@@ -3,12 +3,14 @@ package org.egualpam.contexts.hotelmanagement.hotel.application.query;
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
+import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +50,12 @@ class FindHotelShould {
     OneHotel.Hotel expected =
         new OneHotel.Hotel(hotelId, name, description, location, price, imageURL, averageRating);
     assertThat(result.hotel()).isPresent().get().isEqualTo(expected);
+  }
+
+  @Test
+  void throwDomainException_whenHotelIdIsMissing() {
+    FindHotelQuery criteria = new FindHotelQuery(null);
+    assertThrows(RequiredPropertyIsMissing.class, () -> testee.execute(criteria));
   }
 
   @Test

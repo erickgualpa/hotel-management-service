@@ -12,10 +12,9 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import jakarta.persistence.EntityManager;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
-import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,19 +47,12 @@ class JpaOneHotelReadModelSupplierIT extends AbstractIntegrationTest {
   @Test
   void returnViewWithEmptyOptional_whenHotelIdNotMatchesAnyHotel() {
     String hotelId = randomUUID().toString();
-    Criteria criteria = new HotelCriteria(hotelId);
+    Criteria criteria = new UniqueHotelCriteria(hotelId);
 
     OneHotel result = testee.get(criteria);
 
     assertNotNull(result);
     assertThat(result.hotel()).isEmpty();
-  }
-
-  @Test
-  void throwDomainException_whenHotelIdIsMissing() {
-    String hotelId = null;
-    Criteria criteria = new HotelCriteria(hotelId);
-    assertThrows(RequiredPropertyIsMissing.class, () -> testee.get(criteria));
   }
 
   @Test
@@ -85,7 +77,7 @@ class JpaOneHotelReadModelSupplierIT extends AbstractIntegrationTest {
                     .withHeader("Content-Type", "application/json")
                     .withBody(IMAGE_SERVICE_RESPONSE.formatted(imageURL))));
 
-    OneHotel result = testee.get(new HotelCriteria(hotelId.toString()));
+    OneHotel result = testee.get(new UniqueHotelCriteria(hotelId.toString()));
 
     assertThat(result.hotel()).isNotEmpty();
     assertThat(result.hotel().get().imageURL()).isEqualTo(imageURL);
@@ -108,7 +100,7 @@ class JpaOneHotelReadModelSupplierIT extends AbstractIntegrationTest {
         WireMock.get(urlEqualTo("/v1/images/hotels/" + hotelId))
             .willReturn(aResponse().withStatus(404)));
 
-    OneHotel result = testee.get(new HotelCriteria(hotelId.toString()));
+    OneHotel result = testee.get(new UniqueHotelCriteria(hotelId.toString()));
 
     assertThat(result.hotel()).isNotEmpty();
     assertNull(result.hotel().get().imageURL());

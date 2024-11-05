@@ -5,10 +5,9 @@ import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
-import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +29,8 @@ public class JpaOneHotelReadModelSupplier implements ReadModelSupplier<OneHotel>
 
   @Override
   public OneHotel get(Criteria criteria) {
-    HotelCriteria hotelCriteria = (HotelCriteria) criteria;
-    UniqueId hotelId = hotelCriteria.getHotelId().orElseThrow(RequiredPropertyIsMissing::new);
+    UniqueHotelCriteria hotelCriteria = (UniqueHotelCriteria) criteria;
+    UniqueId hotelId = hotelCriteria.hotelId();
 
     String sql =
         """
