@@ -3,7 +3,6 @@ package org.egualpam.contexts.hotelmanagement.review.infrastructure.repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
-import jakarta.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
@@ -50,7 +49,6 @@ public class JpaReviewRepository implements AggregateRepository<Review> {
   }
 
   @Override
-  @Transactional
   public void save(Review review) {
     PersistenceReview persistenceReview = new PersistenceReview();
     persistenceReview.setId(UUID.fromString(review.id().value()));

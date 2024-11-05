@@ -25,6 +25,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
 @EntityScan("org.egualpam.contexts.hotelmanagement.review.infrastructure.repository")
@@ -43,10 +44,16 @@ public class ReviewInfrastructureConfiguration {
 
   @Bean
   public SimpleCommandBusConfiguration reviewsSimpleCommandBusConfiguration(
-      CreateReview createReview, UpdateReview updateReview) {
+      TransactionTemplate transactionTemplate,
+      CreateReview createReview,
+      UpdateReview updateReview) {
     return new SimpleCommandBusConfiguration()
-        .withHandler(CreateReviewCommand.class, new CreateReviewCommandHandler(createReview))
-        .withHandler(UpdateReviewCommand.class, new UpdateReviewCommandHandler(updateReview));
+        .withHandler(
+            CreateReviewCommand.class,
+            new CreateReviewCommandHandler(transactionTemplate, createReview))
+        .withHandler(
+            UpdateReviewCommand.class,
+            new UpdateReviewCommandHandler(transactionTemplate, updateReview));
   }
 
   @Bean
