@@ -1,5 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers;
 
+import static java.util.Objects.nonNull;
+
 import java.util.UUID;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -52,5 +54,22 @@ public final class HotelTestRepository {
     queryParameters.addValue("averageValue", averageRating);
 
     namedParameterJdbcTemplate.update(query, queryParameters);
+  }
+
+  public boolean hotelExists(UUID hotelId) {
+    String query =
+            """
+                    SELECT COUNT(*)
+                    FROM hotels
+                    WHERE id = :hotelId
+                    """;
+
+    MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+    queryParameters.addValue("hotelId", hotelId);
+
+    Integer count =
+            namedParameterJdbcTemplate.queryForObject(query, queryParameters, Integer.class);
+
+    return nonNull(count) && count == 1;
   }
 }

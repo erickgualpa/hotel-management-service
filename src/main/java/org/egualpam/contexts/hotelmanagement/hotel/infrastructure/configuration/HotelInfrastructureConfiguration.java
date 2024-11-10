@@ -1,6 +1,8 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.configuration;
 
 import jakarta.persistence.EntityManager;
+import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotel;
+import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotels;
@@ -11,6 +13,7 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedInternalEventConsumer;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.CreateHotelCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaManyHotelsReadModelSupplier;
@@ -18,6 +21,7 @@ import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsuppl
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa.JpaHotelRepository;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.internaleventbus.spring.ReviewCreatedEvent;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +30,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -60,6 +65,15 @@ public class HotelInfrastructureConfiguration {
     return new SimpleQueryBusConfiguration()
         .withHandler(FindHotelQuery.class, new FindHotelQueryHandler(findHotel))
         .withHandler(FindHotelsQuery.class, new FindHotelsQueryHandler(findHotels));
+  }
+
+  @Bean
+  public SimpleCommandBusConfiguration hotelsSimpleCommandBusConfiguration(
+      TransactionTemplate transactionTemplate, CreateHotel createHotel) {
+    return new SimpleCommandBusConfiguration()
+        .withHandler(
+            CreateHotelCommand.class,
+            new CreateHotelCommandHandler(transactionTemplate, createHotel));
   }
 
   @Bean

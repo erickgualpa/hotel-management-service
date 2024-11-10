@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.PriceRangeValuesSwapped;
+import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
@@ -32,6 +33,7 @@ class HotelControllerShould {
 
   private final ObjectMapper objectMapper = new ObjectMapperConfiguration().objectMapper();
 
+  @MockBean private CommandBus commandBus;
   @MockBean private QueryBus queryBus;
 
   @Autowired private MockMvc mockMvc;

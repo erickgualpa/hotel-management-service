@@ -32,7 +32,11 @@ public final class RabbitMqEventBus implements EventBus {
     List<PublicEvent> publicEvents = events.stream().map(PublicEventFactory::from).toList();
     try (Channel channel = connection.createChannel()) {
       // TODO: Queues should be already configured
+      channel.queueDeclare("hotelmanagement.hotels", false, false, false, null);
       channel.queueDeclare("hotelmanagement.reviews", false, false, false, null);
+      // TODO: Workaround for having a dlq but should be updated too
+      channel.queueDeclare("hotelmanagement.dlq", false, false, false, null);
+
       publicEvents.forEach(e -> publishEvent(e, channel));
     } catch (IOException | TimeoutException e) {
       // TODO: Consider using a custom exception
@@ -43,7 +47,7 @@ public final class RabbitMqEventBus implements EventBus {
   private void publishEvent(PublicEvent publicEvent, Channel channel) {
     try {
       byte[] serializedEvent = objectMapper.writeValueAsBytes(publicEvent);
-      channel.basicPublish("", "hotelmanagement.reviews", null, serializedEvent);
+      channel.basicPublish("", getQueueNameFor(publicEvent), null, serializedEvent);
       logger.info("Event {} has been published", publicEvent.getType());
     } catch (JsonProcessingException ex) {
       // TODO: Consider using a custom exception
@@ -51,5 +55,15 @@ public final class RabbitMqEventBus implements EventBus {
     } catch (IOException ex) {
       throw new RuntimeException("Domain event could not be published", ex);
     }
+  }
+
+  // TODO: Simple mapping for events and queues. Update it
+  private String getQueueNameFor(PublicEvent publicEvent) {
+    return switch (publicEvent.getType()) {
+      case "hotelmanagement.hotels.created.v1.0" -> "hotelmanagement.hotels";
+      case "hotelmanagement.reviews.created.v1.0", "hotelmanagement.reviews.updated.v1.0" ->
+          "hotelmanagement.reviews";
+      default -> "hotelmanagement.dlq";
+    };
   }
 }

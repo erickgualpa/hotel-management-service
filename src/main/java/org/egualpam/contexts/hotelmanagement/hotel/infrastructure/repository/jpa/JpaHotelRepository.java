@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.PersistenceHotel;
-import org.egualpam.contexts.hotelmanagement.shared.domain.ActionNotYetImplemented;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 
@@ -35,7 +34,17 @@ public final class JpaHotelRepository implements AggregateRepository<Hotel> {
   }
 
   @Override
-  public void save(Hotel aggregate) {
-    throw new ActionNotYetImplemented();
+  public void save(Hotel hotel) {
+    PersistenceHotel persistenceHotel = new PersistenceHotel();
+    UUID hotelId = UUID.fromString(hotel.id().value());
+    persistenceHotel.setId(hotelId);
+    persistenceHotel.setName(hotel.name().value());
+    persistenceHotel.setDescription(hotel.description().value());
+    persistenceHotel.setLocation(hotel.location().value());
+    persistenceHotel.setPrice(hotel.price().value());
+    persistenceHotel.setImageURL(hotel.imageURL().value());
+
+    entityManager.merge(persistenceHotel);
+    entityManager.flush();
   }
 }

@@ -29,4 +29,31 @@ public final class Hotel extends AggregateRoot {
     this.price = new Price(price);
     this.imageURL = new ImageURL(imageURL);
   }
+
+  public static Hotel create(
+      String id, String name, String description, String location, Integer price, String imageURL) {
+    Hotel hotel = new Hotel(id, name, description, location, price, imageURL);
+    hotel.domainEvents().add(new HotelCreatedEvent(hotel.id()));
+    return hotel;
+  }
+
+  public HotelName name() {
+    return name;
+  }
+
+  public HotelDescription description() {
+    return description;
+  }
+
+  public Location location() {
+    return location;
+  }
+
+  public Price price() {
+    return price;
+  }
+
+  public ImageURL imageURL() {
+    return imageURL;
+  }
 }

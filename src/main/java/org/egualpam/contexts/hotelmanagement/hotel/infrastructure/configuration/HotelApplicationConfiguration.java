@@ -1,12 +1,16 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.configuration;
 
+import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
+import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,5 +27,10 @@ public class HotelApplicationConfiguration {
   public FindHotels findHotels(
       ReadModelSupplier<HotelCriteria, ManyHotels> manyHotelsReadModelSupplier) {
     return new FindHotels(manyHotelsReadModelSupplier);
+  }
+
+  @Bean
+  public CreateHotel createHotel(AggregateRepository<Hotel> hotelRepository, EventBus eventBus) {
+    return new CreateHotel(hotelRepository, eventBus);
   }
 }
