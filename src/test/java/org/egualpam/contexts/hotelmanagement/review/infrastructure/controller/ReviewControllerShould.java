@@ -31,7 +31,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ContextConfiguration(classes = HotelManagementServiceApplication.class)
-@WebMvcTest(ReviewController.class)
+@WebMvcTest(
+    controllers = {
+      PutReviewController.class,
+      PostReviewController.class,
+      SearchReviewsController.class
+    })
 class ReviewControllerShould {
 
   private final ObjectMapper objectMapper = new ObjectMapperConfiguration().objectMapper();
