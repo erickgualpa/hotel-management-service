@@ -13,27 +13,38 @@ import static org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils.nex
 
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class CreateCommentJourneyTest extends AbstractIntegrationTest {
 
-  @Autowired private HotelTestRepository hotelTestRepository;
-
   @Test
   void hotelAverageRatingShouldBeCreatedWhenReviewCreated() throws Exception {
-    // Get hotel with no reviews
     UUID hotelId = randomUUID();
 
-    hotelTestRepository.insertHotel(
-        hotelId,
-        randomAlphabetic(5),
-        randomAlphabetic(10),
-        randomAlphabetic(5),
-        nextInt(50, 1000),
-        "www." + randomAlphabetic(5) + ".com");
+    // Create hotel
+    String createHotelRequest =
+        """
+        {
+            "id": "%s",
+            "name": "%s",
+            "description": "%s",
+            "location": "%s",
+            "price": %d,
+            "imageURL": "%s"
+        }
+        """
+            .formatted(
+                hotelId,
+                randomAlphabetic(5),
+                randomAlphabetic(10),
+                randomAlphabetic(5),
+                nextInt(50, 1000),
+                "www." + randomAlphabetic(5) + ".com");
+    mockMvc
+        .perform(post("/v1/hotels").contentType("application/json").content(createHotelRequest))
+        .andExpect(status().isCreated());
 
+    // Verify hotel average rating is zero
     mockMvc
         .perform(get("/v1/hotels/{hotelId}", hotelId))
         .andExpect(status().isOk())
