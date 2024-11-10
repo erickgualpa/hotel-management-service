@@ -51,6 +51,7 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │               └── hotelmanagement
     │   │                   ├── hotel
     │   │                   │   ├── application
+    │   │                   │   │   ├── command
     │   │                   │   │   └── query
     │   │                   │   ├── domain
     │   │                   │   └── infrastructure
@@ -58,6 +59,8 @@ Check it and try to find the best available hotel in Mars! 👽
     │   │                   │       ├── consumer
     │   │                   │       ├── controller
     │   │                   │       ├── cqrs
+    │   │                   │       │   ├── command
+    │   │                   │       │   │   └── simple
     │   │                   │       │   └── query
     │   │                   │       │       └── simple
     │   │                   │       ├── readmodelsupplier
@@ -111,6 +114,7 @@ Check it and try to find the best available hotel in Mars! 👽
         │                   ├── e2e
         │                   ├── hotel
         │                   │   ├── application
+        │                   │   │   ├── command
         │                   │   │   └── query
         │                   │   └── infrastructure
         │                   │       ├── controller
