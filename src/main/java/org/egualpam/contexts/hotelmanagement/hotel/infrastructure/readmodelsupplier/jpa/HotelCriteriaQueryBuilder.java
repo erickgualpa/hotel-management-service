@@ -1,5 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa;
 
+import static java.util.Objects.nonNull;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -7,10 +9,9 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.PersistenceHotel;
 
-public final class HotelCriteriaQueryBuilder {
+final class HotelCriteriaQueryBuilder {
 
   private static final String ID = "id";
   private static final String NAME = "name";
@@ -24,7 +25,7 @@ public final class HotelCriteriaQueryBuilder {
   private final Root<PersistenceHotel> root;
   private final List<Predicate> filters = new ArrayList<>();
 
-  public HotelCriteriaQueryBuilder(EntityManager entityManager) {
+  HotelCriteriaQueryBuilder(EntityManager entityManager) {
     this.criteriaBuilder = entityManager.getCriteriaBuilder();
     this.criteriaQuery = criteriaBuilder.createQuery(PersistenceHotel.class);
     this.root = criteriaQuery.from(PersistenceHotel.class);
@@ -39,27 +40,28 @@ public final class HotelCriteriaQueryBuilder {
             root.get(IMAGE_URL)));
   }
 
-  public HotelCriteriaQueryBuilder withLocation(Optional<String> location) {
-    location.ifPresent(
-        targetLocation -> filters.add(criteriaBuilder.equal(root.get(LOCATION), targetLocation)));
+  HotelCriteriaQueryBuilder withLocation(String location) {
+    if (nonNull(location)) {
+      filters.add(criteriaBuilder.equal(root.get(LOCATION), location));
+    }
     return this;
   }
 
-  public HotelCriteriaQueryBuilder withMinPrice(Optional<Integer> minPrice) {
-    minPrice.ifPresent(
-        targetMinPrice ->
-            filters.add(criteriaBuilder.greaterThanOrEqualTo(root.get(PRICE), targetMinPrice)));
+  HotelCriteriaQueryBuilder withMinPrice(Integer minPrice) {
+    if (nonNull(minPrice)) {
+      filters.add(criteriaBuilder.greaterThanOrEqualTo(root.get(PRICE), minPrice));
+    }
     return this;
   }
 
-  public HotelCriteriaQueryBuilder withMaxPrice(Optional<Integer> maxPrice) {
-    maxPrice.ifPresent(
-        targetMaxPrice ->
-            filters.add(criteriaBuilder.lessThanOrEqualTo(root.get(PRICE), targetMaxPrice)));
+  HotelCriteriaQueryBuilder withMaxPrice(Integer maxPrice) {
+    if (nonNull(maxPrice)) {
+      filters.add(criteriaBuilder.lessThanOrEqualTo(root.get(PRICE), maxPrice));
+    }
     return this;
   }
 
-  public CriteriaQuery<PersistenceHotel> build() {
+  CriteriaQuery<PersistenceHotel> build() {
     return criteriaQuery.where(filters.toArray(new Predicate[0]));
   }
 }

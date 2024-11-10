@@ -26,11 +26,15 @@ public class JpaManyHotelsReadModelSupplier
 
   @Override
   public ManyHotels get(HotelCriteria criteria) {
+    String location = criteria.getLocation().map(Location::value).orElse(null);
+    Integer minPrice = criteria.getMinPrice().map(Price::value).orElse(null);
+    Integer maxPrice = criteria.getMaxPrice().map(Price::value).orElse(null);
+
     CriteriaQuery<PersistenceHotel> criteriaQuery =
         new HotelCriteriaQueryBuilder(entityManager)
-            .withLocation(criteria.getLocation().map(Location::value))
-            .withMinPrice(criteria.getMinPrice().map(Price::value))
-            .withMaxPrice(criteria.getMaxPrice().map(Price::value))
+            .withLocation(location)
+            .withMinPrice(minPrice)
+            .withMaxPrice(maxPrice)
             .build();
 
     List<ManyHotels.Hotel> hotels =
