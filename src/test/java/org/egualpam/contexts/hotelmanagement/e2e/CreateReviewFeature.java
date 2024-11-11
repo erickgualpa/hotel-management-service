@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -71,6 +72,11 @@ class CreateReviewFeature extends AbstractIntegrationTest {
               assertThat(publicEventResult)
                   .satisfies(
                       r -> {
+                        try {
+                          UUID.fromString(r.id());
+                        } catch (IllegalArgumentException e) {
+                          fail("Invalid public event id: [%s]".formatted(r.id()));
+                        }
                         assertThat(r.type()).isEqualTo("hotelmanagement.reviews.created.v1.0");
                         assertThat(r.aggregateId()).isEqualTo(reviewId.toString());
                         assertNotNull(r.occurredOn());

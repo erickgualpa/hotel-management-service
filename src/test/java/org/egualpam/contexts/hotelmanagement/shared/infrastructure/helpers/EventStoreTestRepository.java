@@ -28,6 +28,7 @@ public class EventStoreTestRepository {
         queryParameters,
         (rs, rowNum) ->
             new PublicEventResult(
+                eventId,
                 rs.getString("event_type"),
                 rs.getString("aggregate_id"),
                 rs.getTimestamp("occurred_on").toInstant()));

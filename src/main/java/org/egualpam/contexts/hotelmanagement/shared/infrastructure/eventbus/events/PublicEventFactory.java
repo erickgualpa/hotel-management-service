@@ -18,12 +18,12 @@ public final class PublicEventFactory {
               reviewCreated.occurredOn());
       case ReviewUpdated reviewUpdated ->
           new ReviewUpdatedPublicEvent(
-              reviewUpdated.id().toString(),
+              reviewUpdated.id().value(),
               reviewUpdated.aggregateId().value(),
               reviewUpdated.occurredOn());
       case HotelCreatedEvent hotelCreatedEvent ->
           new HotelCreatedPublicEvent(
-              hotelCreatedEvent.id().toString(),
+              hotelCreatedEvent.id().value(),
               hotelCreatedEvent.aggregateId().value(),
               hotelCreatedEvent.occurredOn());
       default -> throw new UnsupportedDomainEvent(domainEvent);
