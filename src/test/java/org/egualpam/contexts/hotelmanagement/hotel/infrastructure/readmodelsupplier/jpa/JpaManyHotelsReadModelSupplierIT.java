@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,45 +21,38 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Transactional
 class JpaManyHotelsReadModelSupplierIT extends AbstractIntegrationTest {
 
+  @Autowired private HotelTestRepository hotelTestRepository;
   @Autowired private EntityManager entityManager;
 
-  @Autowired private HotelTestRepository hotelTestRepository;
+  private ReadModelSupplier<HotelCriteria, ManyHotels> testee;
 
   @BeforeEach
   void setUp() {
-    // TODO: Remove this once sample hotels is no longer inserted in the database
-    String clearTables =
-        """
-                DELETE FROM reviews;
-                DELETE FROM hotels;
-                """;
-    entityManager.createNativeQuery(clearTables).executeUpdate();
+    testee = new JpaManyHotelsReadModelSupplier(entityManager);
   }
 
   @Test
   void returnHotelsSortedByAverageRating() {
-    final ReadModelSupplier<HotelCriteria, ManyHotels> testee =
-        new JpaManyHotelsReadModelSupplier(entityManager);
-
     UUID lowRatingHotel = randomUUID();
     UUID intermediateRatingHotel = randomUUID();
     UUID highRatingHotel = randomUUID();
+
+    String hotelLocation = randomAlphabetic(5);
 
     List<UUID> hotelIds =
         new ArrayList<>(Set.of(lowRatingHotel, intermediateRatingHotel, highRatingHotel));
 
     shuffle(hotelIds);
 
-    hotelIds.forEach(this::stubHotel);
+    hotelIds.forEach(hotelId -> stubHotel(hotelId, hotelLocation));
 
     hotelTestRepository.insertHotelAverageRating(lowRatingHotel, 1.0);
     hotelTestRepository.insertHotelAverageRating(intermediateRatingHotel, 3.0);
     hotelTestRepository.insertHotelAverageRating(highRatingHotel, 5.0);
 
-    HotelCriteria criteria = new HotelCriteria(null, null, null);
+    HotelCriteria criteria = new HotelCriteria(hotelLocation, null, null);
 
     ManyHotels result = testee.get(criteria);
 
@@ -73,12 +65,12 @@ class JpaManyHotelsReadModelSupplierIT extends AbstractIntegrationTest {
             lowRatingHotel.toString());
   }
 
-  private void stubHotel(UUID hotelId) {
+  private void stubHotel(UUID hotelId, String hotelLocation) {
     hotelTestRepository.insertHotel(
         hotelId,
         randomAlphabetic(5),
         randomAlphabetic(5),
-        randomAlphabetic(5),
+        hotelLocation,
         nextInt(100, 200),
         randomAlphabetic(5));
   }
