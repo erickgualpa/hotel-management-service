@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotelCommand;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public final class PostHotelController {
   @PostMapping
   public ResponseEntity<Void> postHotel(@RequestBody PostHotelRequest request) {
     Command createHotelCommand =
-        new CreateHotelCommand(
+        new SyncCreateHotelCommand(
             request.id(),
             request.name(),
             request.description(),

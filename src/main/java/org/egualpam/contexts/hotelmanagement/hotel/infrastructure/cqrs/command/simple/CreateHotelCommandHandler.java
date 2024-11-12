@@ -19,8 +19,14 @@ public class CreateHotelCommandHandler implements CommandHandler {
     transactionTemplate.executeWithoutResult(
         ts ->
             Optional.of(command)
-                .filter(CreateHotelCommand.class::isInstance)
-                .map(CreateHotelCommand.class::cast)
+                .filter(SyncCreateHotelCommand.class::isInstance)
+                .map(SyncCreateHotelCommand.class::cast)
+                .map(CreateHotelCommandHandler::toApplicationCommand)
                 .ifPresent(createHotel::execute));
+  }
+
+  private static CreateHotelCommand toApplicationCommand(SyncCreateHotelCommand cmd) {
+    return new CreateHotelCommand(
+        cmd.id(), cmd.name(), cmd.description(), cmd.location(), cmd.price(), cmd.imageURL());
   }
 }

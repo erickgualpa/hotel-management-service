@@ -2,7 +2,6 @@ package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.configuration
 
 import jakarta.persistence.EntityManager;
 import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotel;
-import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotels;
@@ -14,6 +13,7 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedInternalEventConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.CreateHotelCommandHandler;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaManyHotelsReadModelSupplier;
@@ -72,7 +72,7 @@ public class HotelInfrastructureConfiguration {
       TransactionTemplate transactionTemplate, CreateHotel createHotel) {
     return new SimpleCommandBusConfiguration()
         .withHandler(
-            CreateHotelCommand.class,
+            SyncCreateHotelCommand.class,
             new CreateHotelCommandHandler(transactionTemplate, createHotel));
   }
 
