@@ -3,9 +3,9 @@ package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.controller;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelsQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.PriceRangeValuesSwapped;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelsQuery;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
 import org.slf4j.Logger;
@@ -24,15 +24,7 @@ public final class QueryHotelController {
 
   @PostMapping(value = "/query")
   public ResponseEntity<QueryHotelResponse> queryHotels(@RequestBody QueryHotelRequest request) {
-    Query findHotelsQuery =
-        new FindHotelsQuery(
-            request.location(),
-            Optional.ofNullable(request.priceRange())
-                .map(QueryHotelRequest.PriceRange::begin)
-                .orElse(null),
-            Optional.ofNullable(request.priceRange())
-                .map(QueryHotelRequest.PriceRange::end)
-                .orElse(null));
+    Query findHotelsQuery = toQuery(request);
 
     final ManyHotels manyHotels;
     try {
@@ -44,7 +36,24 @@ public final class QueryHotelController {
           String.format("An error occurred while processing the request [%s]", request), e);
       return ResponseEntity.internalServerError().build();
     }
+
     return ResponseEntity.ok(mapIntoResponse(manyHotels.hotels()));
+  }
+
+  private Query toQuery(QueryHotelRequest request) {
+    String location = request.location();
+    Integer minPrice =
+        Optional.of(request)
+            .map(QueryHotelRequest::priceRange)
+            .map(QueryHotelRequest.PriceRange::begin)
+            .orElse(null);
+    Integer maxPrice =
+        Optional.of(request)
+            .map(QueryHotelRequest::priceRange)
+            .map(QueryHotelRequest.PriceRange::end)
+            .orElse(null);
+
+    return new SyncFindHotelsQuery(location, minPrice, maxPrice);
   }
 
   private QueryHotelResponse mapIntoResponse(List<ManyHotels.Hotel> hotels) {

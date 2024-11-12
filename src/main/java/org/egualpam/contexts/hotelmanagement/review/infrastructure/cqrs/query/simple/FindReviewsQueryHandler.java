@@ -7,12 +7,13 @@ import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModel;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 
 @RequiredArgsConstructor
-public class FindReviewsQueryHandler implements QueryHandler<FindReviewsQuery> {
+public class FindReviewsQueryHandler implements QueryHandler<SyncFindReviewsQuery> {
 
   private final FindReviews findReviews;
 
   @Override
-  public ReadModel handle(FindReviewsQuery query) {
-    return findReviews.execute(query);
+  public ReadModel handle(SyncFindReviewsQuery query) {
+    FindReviewsQuery findReviewsQuery = new FindReviewsQuery(query.hotelId());
+    return findReviews.execute(findReviewsQuery);
   }
 }

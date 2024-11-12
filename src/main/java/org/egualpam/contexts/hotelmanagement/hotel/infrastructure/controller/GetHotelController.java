@@ -1,8 +1,8 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelQuery;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
@@ -22,7 +22,7 @@ public final class GetHotelController {
 
   @GetMapping(value = "/{hotelId}")
   public ResponseEntity<GetHotelResponse> getHotel(@PathVariable String hotelId) {
-    Query findHotelQuery = new FindHotelQuery(hotelId);
+    Query findHotelQuery = new SyncFindHotelQuery(hotelId);
 
     final OneHotel oneHotel;
     try {

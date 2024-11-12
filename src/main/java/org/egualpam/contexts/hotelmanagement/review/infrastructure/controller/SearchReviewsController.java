@@ -2,8 +2,8 @@ package org.egualpam.contexts.hotelmanagement.review.infrastructure.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviewsQuery;
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
+import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.simple.SyncFindReviewsQuery;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public final class SearchReviewsController {
 
   @GetMapping
   public ResponseEntity<GetReviewsResponse> searchReviews(@RequestParam String hotelId) {
-    Query findReviewsQuery = new FindReviewsQuery(hotelId);
+    Query findReviewsQuery = new SyncFindReviewsQuery(hotelId);
 
     final ManyReviews manyReviews;
     try {

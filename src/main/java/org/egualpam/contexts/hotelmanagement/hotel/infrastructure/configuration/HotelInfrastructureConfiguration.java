@@ -3,9 +3,7 @@ package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.configuration
 import jakarta.persistence.EntityManager;
 import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotel;
-import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotels;
-import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelsQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
@@ -16,6 +14,8 @@ import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.s
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelQuery;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelsQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaManyHotelsReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaOneHotelReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa.JpaHotelRepository;
@@ -63,8 +63,8 @@ public class HotelInfrastructureConfiguration {
   public SimpleQueryBusConfiguration hotelsSimpleQueryBusConfiguration(
       FindHotel findHotel, FindHotels findHotels) {
     return new SimpleQueryBusConfiguration()
-        .withHandler(FindHotelQuery.class, new FindHotelQueryHandler(findHotel))
-        .withHandler(FindHotelsQuery.class, new FindHotelsQueryHandler(findHotels));
+        .withHandler(SyncFindHotelQuery.class, new FindHotelQueryHandler(findHotel))
+        .withHandler(SyncFindHotelsQuery.class, new FindHotelsQueryHandler(findHotels));
   }
 
   @Bean
