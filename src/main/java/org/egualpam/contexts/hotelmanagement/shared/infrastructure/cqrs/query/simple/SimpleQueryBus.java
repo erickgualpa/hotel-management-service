@@ -2,9 +2,9 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.s
 
 import java.util.Map;
 import java.util.Optional;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModel;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Query;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.QueryBus;
 
 public final class SimpleQueryBus implements QueryBus {
 

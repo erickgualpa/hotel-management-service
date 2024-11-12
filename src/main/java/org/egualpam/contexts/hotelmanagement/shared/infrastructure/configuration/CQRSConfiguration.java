@@ -4,10 +4,10 @@ import static java.util.stream.Collectors.toMap;
 
 import java.util.List;
 import java.util.Map;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.QueryBus;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.QueryBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
 import org.springframework.context.annotation.Bean;

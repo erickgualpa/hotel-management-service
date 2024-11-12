@@ -2,8 +2,8 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command
 
 import java.util.Map;
 import java.util.Optional;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 
 public final class SimpleCommandBus implements CommandBus {
 

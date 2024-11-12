@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.shared.application.command;
+package org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command;
 
 @FunctionalInterface
 public interface CommandBus {

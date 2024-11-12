@@ -2,7 +2,7 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.s
 
 import java.util.HashMap;
 import java.util.Map;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.Query;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Query;
 
 public final class SimpleQueryBusConfiguration {
 

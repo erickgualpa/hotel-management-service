@@ -3,8 +3,8 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Collections;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

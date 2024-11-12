@@ -2,8 +2,8 @@ package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommand;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

@@ -4,7 +4,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotelCommand;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.CommandHandler;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -13,6 +13,11 @@ public class CreateHotelCommandHandler implements CommandHandler {
 
   private final TransactionTemplate transactionTemplate;
   private final CreateHotel createHotel;
+
+  private static CreateHotelCommand toApplicationCommand(SyncCreateHotelCommand cmd) {
+    return new CreateHotelCommand(
+        cmd.id(), cmd.name(), cmd.description(), cmd.location(), cmd.price(), cmd.imageURL());
+  }
 
   @Override
   public void handle(Command command) {
@@ -23,10 +28,5 @@ public class CreateHotelCommandHandler implements CommandHandler {
                 .map(SyncCreateHotelCommand.class::cast)
                 .map(CreateHotelCommandHandler::toApplicationCommand)
                 .ifPresent(createHotel::execute));
-  }
-
-  private static CreateHotelCommand toApplicationCommand(SyncCreateHotelCommand cmd) {
-    return new CreateHotelCommand(
-        cmd.id(), cmd.name(), cmd.description(), cmd.location(), cmd.price(), cmd.imageURL());
   }
 }

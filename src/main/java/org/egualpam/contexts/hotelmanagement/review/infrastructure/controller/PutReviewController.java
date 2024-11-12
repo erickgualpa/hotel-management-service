@@ -2,9 +2,9 @@ package org.egualpam.contexts.hotelmanagement.review.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.SyncUpdateReviewCommand;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
