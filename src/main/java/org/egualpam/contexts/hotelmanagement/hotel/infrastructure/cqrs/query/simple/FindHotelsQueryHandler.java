@@ -1,20 +1,30 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotelsQuery;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModel;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 
 @RequiredArgsConstructor
-public class FindHotelsQueryHandler implements QueryHandler<SyncFindHotelsQuery> {
+public class FindHotelsQueryHandler implements QueryHandler {
 
   private final FindHotels findHotels;
 
   @Override
-  public ReadModel handle(SyncFindHotelsQuery query) {
+  public ReadModel handle(Query query) {
     FindHotelsQuery findHotelsQuery =
-        new FindHotelsQuery(query.location(), query.minPrice(), query.maxPrice());
+        Optional.of(query)
+            .filter(SyncFindHotelsQuery.class::isInstance)
+            .map(SyncFindHotelsQuery.class::cast)
+            .map(FindHotelsQueryHandler::toApplicationQuery)
+            .orElseThrow();
     return findHotels.execute(findHotelsQuery);
+  }
+
+  private static FindHotelsQuery toApplicationQuery(SyncFindHotelsQuery q) {
+    return new FindHotelsQuery(q.location(), q.minPrice(), q.maxPrice());
   }
 }

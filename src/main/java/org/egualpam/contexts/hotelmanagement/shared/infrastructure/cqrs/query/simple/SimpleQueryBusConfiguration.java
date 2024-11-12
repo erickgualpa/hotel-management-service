@@ -6,16 +6,15 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Qu
 
 public final class SimpleQueryBusConfiguration {
 
-  private final Map<Class<? extends Query>, QueryHandler<? extends Query>> handlers =
-      new HashMap<>();
+  private final Map<Class<? extends Query>, QueryHandler> handlers = new HashMap<>();
 
   public SimpleQueryBusConfiguration withHandler(
-      Class<? extends Query> type, QueryHandler<? extends Query> handler) {
+      Class<? extends Query> type, QueryHandler handler) {
     handlers.put(type, handler);
     return this;
   }
 
-  public Map<Class<? extends Query>, QueryHandler<? extends Query>> getHandlers() {
+  public Map<Class<? extends Query>, QueryHandler> getHandlers() {
     return handlers;
   }
 }
