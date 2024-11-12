@@ -63,15 +63,15 @@ public class HotelInfrastructureConfiguration {
   public SimpleQueryBusConfiguration hotelsSimpleQueryBusConfiguration(
       FindHotel findHotel, FindHotels findHotels) {
     return new SimpleQueryBusConfiguration()
-        .withHandler(SyncFindHotelQuery.class, new FindHotelQueryHandler(findHotel))
-        .withHandler(SyncFindHotelsQuery.class, new FindHotelsQueryHandler(findHotels));
+        .handling(SyncFindHotelQuery.class, new FindHotelQueryHandler(findHotel))
+        .handling(SyncFindHotelsQuery.class, new FindHotelsQueryHandler(findHotels));
   }
 
   @Bean
   public SimpleCommandBusConfiguration hotelsSimpleCommandBusConfiguration(
       TransactionTemplate transactionTemplate, CreateHotel createHotel) {
     return new SimpleCommandBusConfiguration()
-        .withHandler(
+        .handling(
             SyncCreateHotelCommand.class,
             new CreateHotelCommandHandler(transactionTemplate, createHotel));
   }

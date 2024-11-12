@@ -20,7 +20,7 @@ public class CQRSConfiguration {
   public CommandBus commandBus(List<SimpleCommandBusConfiguration> configurations) {
     return new SimpleCommandBus(
         configurations.stream()
-            .map(SimpleCommandBusConfiguration::getHandlers)
+            .map(SimpleCommandBusConfiguration::handlers)
             .flatMap(m -> m.entrySet().stream())
             .collect(toMap(Map.Entry::getKey, Map.Entry::getValue)));
   }
@@ -29,7 +29,7 @@ public class CQRSConfiguration {
   public QueryBus queryBus(List<SimpleQueryBusConfiguration> configurations) {
     return new SimpleQueryBus(
         configurations.stream()
-            .map(SimpleQueryBusConfiguration::getHandlers)
+            .map(SimpleQueryBusConfiguration::handlers)
             .flatMap(m -> m.entrySet().stream())
             .collect(toMap(Map.Entry::getKey, Map.Entry::getValue)));
   }

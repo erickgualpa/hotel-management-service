@@ -48,10 +48,10 @@ public class ReviewInfrastructureConfiguration {
       CreateReview createReview,
       UpdateReview updateReview) {
     return new SimpleCommandBusConfiguration()
-        .withHandler(
+        .handling(
             SyncCreateReviewCommand.class,
             new CreateReviewCommandHandler(transactionTemplate, createReview))
-        .withHandler(
+        .handling(
             SyncUpdateReviewCommand.class,
             new UpdateReviewCommandHandler(transactionTemplate, updateReview));
   }
@@ -59,7 +59,7 @@ public class ReviewInfrastructureConfiguration {
   @Bean
   public SimpleQueryBusConfiguration reviewsSimpleQueryBusConfiguration(FindReviews findReviews) {
     return new SimpleQueryBusConfiguration()
-        .withHandler(SyncFindReviewsQuery.class, new FindReviewsQueryHandler(findReviews));
+        .handling(SyncFindReviewsQuery.class, new FindReviewsQueryHandler(findReviews));
   }
 
   @Bean
