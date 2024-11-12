@@ -19,8 +19,14 @@ public class CreateReviewCommandHandler implements CommandHandler {
     transactionTemplate.executeWithoutResult(
         transactionStatus ->
             Optional.of(command)
-                .filter(CreateReviewCommand.class::isInstance)
-                .map(CreateReviewCommand.class::cast)
+                .filter(SyncCreateReviewCommand.class::isInstance)
+                .map(SyncCreateReviewCommand.class::cast)
+                .map(CreateReviewCommandHandler::toApplicationCommand)
                 .ifPresent(createReview::execute));
+  }
+
+  private static CreateReviewCommand toApplicationCommand(SyncCreateReviewCommand cmd) {
+    return new CreateReviewCommand(
+        cmd.reviewIdentifier(), cmd.hotelIdentifier(), cmd.rating(), cmd.comment());
   }
 }

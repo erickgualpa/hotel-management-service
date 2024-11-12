@@ -1,9 +1,9 @@
 package org.egualpam.contexts.hotelmanagement.review.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.contexts.hotelmanagement.review.application.command.CreateReviewCommand;
 import org.egualpam.contexts.hotelmanagement.review.domain.InvalidRating;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewAlreadyExists;
+import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.SyncCreateReviewCommand;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
@@ -31,7 +31,7 @@ public final class PostReviewController {
   public ResponseEntity<Void> createReview(
       @PathVariable String reviewId, @RequestBody CreateReviewRequest createReviewRequest) {
     Command createReviewCommand =
-        new CreateReviewCommand(
+        new SyncCreateReviewCommand(
             reviewId,
             createReviewRequest.hotelId(),
             createReviewRequest.rating(),
