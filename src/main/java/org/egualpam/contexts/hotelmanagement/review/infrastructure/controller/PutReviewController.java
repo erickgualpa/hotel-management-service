@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.review.infrastructure.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateReviewCommand;
+import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.SyncUpdateReviewCommand;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
@@ -26,7 +26,8 @@ public final class PutReviewController {
   @PutMapping(path = "/{reviewId}")
   public ResponseEntity<Void> updateReview(
       @PathVariable String reviewId, @RequestBody UpdateReviewRequest updateReviewRequest) {
-    Command updateReviewCommand = new UpdateReviewCommand(reviewId, updateReviewRequest.comment());
+    Command updateReviewCommand =
+        new SyncUpdateReviewCommand(reviewId, updateReviewRequest.comment());
 
     try {
       commandBus.publish(updateReviewCommand);

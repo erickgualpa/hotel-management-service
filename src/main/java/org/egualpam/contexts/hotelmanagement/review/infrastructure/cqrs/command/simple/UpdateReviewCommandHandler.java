@@ -19,8 +19,13 @@ public class UpdateReviewCommandHandler implements CommandHandler {
     transactionTemplate.executeWithoutResult(
         transactionStatus ->
             Optional.of(command)
-                .filter(UpdateReviewCommand.class::isInstance)
-                .map(UpdateReviewCommand.class::cast)
+                .filter(SyncUpdateReviewCommand.class::isInstance)
+                .map(SyncUpdateReviewCommand.class::cast)
+                .map(UpdateReviewCommandHandler::toApplicationCommand)
                 .ifPresent(updateReview::execute));
+  }
+
+  private static UpdateReviewCommand toApplicationCommand(SyncUpdateReviewCommand cmd) {
+    return new UpdateReviewCommand(cmd.reviewIdentifier(), cmd.comment());
   }
 }
