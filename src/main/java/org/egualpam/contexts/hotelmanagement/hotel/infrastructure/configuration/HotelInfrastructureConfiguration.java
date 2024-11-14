@@ -10,6 +10,8 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedInternalEventConsumer;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommand;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelQuery;
@@ -73,7 +75,10 @@ public class HotelInfrastructureConfiguration {
     return new SimpleCommandBusConfiguration()
         .handling(
             SyncCreateHotelCommand.class,
-            new SyncCreateHotelCommandHandler(transactionTemplate, createHotel));
+            new SyncCreateHotelCommandHandler(transactionTemplate, createHotel))
+        .handling(
+            AsyncCreateHotelCommand.class,
+            new AsyncCreateHotelCommandHandler(transactionTemplate, createHotel));
   }
 
   @Bean
