@@ -1,6 +1,8 @@
 package org.egualpam.contexts.hotelmanagement.hotel.application.command;
 
+import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 
@@ -21,6 +23,12 @@ public class CreateHotel {
     String hotelLocation = command.location();
     Integer hotelPrice = command.price();
     String hotelImageURL = command.imageURL();
+
+    Optional<Hotel> existing = repository.find(new AggregateId(hotelId));
+
+    if (existing.isPresent()) {
+      return;
+    }
 
     Hotel hotel =
         Hotel.create(

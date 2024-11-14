@@ -3,12 +3,18 @@ package org.egualpam.contexts.hotelmanagement.hotel.application.command;
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import java.util.List;
+import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCreatedEvent;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
@@ -74,5 +80,25 @@ class CreateHotelShould {
               assertThat(e.aggregateId().value()).isEqualTo(id);
               assertNotNull(e.occurredOn());
             });
+  }
+
+  @Test
+  void notCreateHotelWhenAlreadyExists() {
+    String id = randomUUID().toString();
+    String name = randomAlphabetic(5);
+    String description = randomAlphabetic(10);
+    String location = randomAlphabetic(5);
+    Integer price = 100;
+    String imageURL = "www." + randomAlphabetic(5) + ".com";
+
+    Hotel existing = new Hotel(id, name, description, location, price, imageURL);
+    when(repository.find(new AggregateId(id))).thenReturn(Optional.of(existing));
+
+    CreateHotelCommand command =
+        new CreateHotelCommand(id, name, description, location, price, imageURL);
+    testee.execute(command);
+
+    verify(repository, never()).save(any(Hotel.class));
+    verify(eventBus, never()).publish(anyList());
   }
 }
