@@ -11,8 +11,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.review.domain.Comment;
 import org.egualpam.contexts.hotelmanagement.review.domain.HotelId;
 import org.egualpam.contexts.hotelmanagement.review.domain.InvalidRating;
@@ -44,7 +44,7 @@ class CreateReviewShould {
 
   @Captor private ArgumentCaptor<InternalEvent> internalEventCaptor;
 
-  @Captor private ArgumentCaptor<List<DomainEvent>> domainEventsCaptor;
+  @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
   @Mock private AggregateRepository<Review> reviewRepository;
 

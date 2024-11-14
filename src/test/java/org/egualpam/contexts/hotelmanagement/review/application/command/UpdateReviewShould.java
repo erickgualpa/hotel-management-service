@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewNotFound;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewUpdated;
@@ -34,7 +34,7 @@ class UpdateReviewShould {
 
   @Captor private ArgumentCaptor<Review> reviewCaptor;
 
-  @Captor private ArgumentCaptor<List<DomainEvent>> domainEventsCaptor;
+  @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
   private UpdateReview testee;
 

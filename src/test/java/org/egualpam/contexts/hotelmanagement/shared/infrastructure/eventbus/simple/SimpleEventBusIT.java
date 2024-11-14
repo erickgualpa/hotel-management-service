@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCreated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
@@ -37,7 +37,7 @@ class SimpleEventBusIT extends AbstractIntegrationTest {
     String aggregateId = UUID.randomUUID().toString();
     DomainEvent domainEvent = new ReviewCreated(new AggregateId(aggregateId));
 
-    eventBus.publish(List.of(domainEvent));
+    eventBus.publish(Set.of(domainEvent));
 
     PublicEventResult result = eventStoreTestRepository.findEvent(domainEvent.id().value());
     assertThat(result)

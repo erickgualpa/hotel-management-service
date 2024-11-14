@@ -4,14 +4,14 @@ import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCreatedEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
@@ -33,7 +33,7 @@ class CreateHotelShould {
   @Mock private EventBus eventBus;
 
   @Captor private ArgumentCaptor<Hotel> hotelCaptor;
-  @Captor private ArgumentCaptor<List<DomainEvent>> domainEventsCaptor;
+  @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
   private CreateHotel testee;
 
@@ -69,7 +69,7 @@ class CreateHotelShould {
             });
 
     verify(eventBus).publish(domainEventsCaptor.capture());
-    List<DomainEvent> actualDomainEvents = domainEventsCaptor.getValue();
+    Set<DomainEvent> actualDomainEvents = domainEventsCaptor.getValue();
     assertThat(actualDomainEvents)
         .hasSize(1)
         .first()
@@ -99,6 +99,6 @@ class CreateHotelShould {
     testee.execute(command);
 
     verify(repository, never()).save(any(Hotel.class));
-    verify(eventBus, never()).publish(anyList());
+    verify(eventBus, never()).publish(anySet());
   }
 }

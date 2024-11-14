@@ -2,14 +2,14 @@ package org.egualpam.contexts.hotelmanagement.shared.domain;
 
 import static java.util.Objects.isNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public abstract class AggregateRoot {
 
   private final AggregateId id;
-  private final List<DomainEvent> domainEvents = new ArrayList<>();
+  private final Set<DomainEvent> domainEvents = new HashSet<>();
 
   protected AggregateRoot(String id) {
     if (isNull(id)) {
@@ -22,12 +22,12 @@ public abstract class AggregateRoot {
     return id;
   }
 
-  protected final List<DomainEvent> domainEvents() {
+  protected final Set<DomainEvent> domainEvents() {
     return domainEvents;
   }
 
-  public final List<DomainEvent> pullDomainEvents() {
-    List<DomainEvent> domainEventsCopy = new ArrayList<>(domainEvents);
+  public final Set<DomainEvent> pullDomainEvents() {
+    Set<DomainEvent> domainEventsCopy = new HashSet<>(domainEvents);
     domainEvents.clear();
     return domainEventsCopy;
   }

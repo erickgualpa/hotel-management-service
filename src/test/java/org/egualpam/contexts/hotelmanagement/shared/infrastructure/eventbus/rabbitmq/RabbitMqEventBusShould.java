@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Connection;
-import java.util.List;
+import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
@@ -34,7 +34,7 @@ class RabbitMqEventBusShould {
   void throwException_whenDomainEventIsUnsupported() {
     AggregateId aggregateId = new AggregateId(UniqueId.get().value());
     DomainEvent domainEvent = new DomainEvent(aggregateId) {};
-    List<DomainEvent> events = List.of(domainEvent);
+    Set<DomainEvent> events = Set.of(domainEvent);
     assertThrows(UnsupportedDomainEvent.class, () -> eventBus.publish(events));
   }
 }

@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.shared.domain;
 
-import java.util.List;
+import java.util.Set;
 
 public interface EventBus {
-  void publish(List<DomainEvent> events);
+  void publish(Set<DomainEvent> events);
 }

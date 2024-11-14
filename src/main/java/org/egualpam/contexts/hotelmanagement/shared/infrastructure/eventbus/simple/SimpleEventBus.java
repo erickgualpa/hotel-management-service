@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.simple;
 
 import jakarta.persistence.EntityManager;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
@@ -23,7 +23,7 @@ public class SimpleEventBus implements EventBus {
   }
 
   @Override
-  public void publish(List<DomainEvent> events) {
+  public void publish(Set<DomainEvent> events) {
     events.forEach(this::persistEvent);
   }
 
