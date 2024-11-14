@@ -110,6 +110,7 @@ docker compose down --rmi local
         │       └── egualpam
         │           └── contexts
         │               └── hotelmanagement
+        │                   ├── architecture
         │                   ├── e2e
         │                   ├── hotel
         │                   │   ├── application
