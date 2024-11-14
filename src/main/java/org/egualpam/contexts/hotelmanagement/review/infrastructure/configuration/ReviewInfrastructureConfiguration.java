@@ -7,12 +7,12 @@ import org.egualpam.contexts.hotelmanagement.review.application.query.FindReview
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
-import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.CreateReviewCommandHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.SyncCreateReviewCommand;
+import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.SyncCreateReviewCommandHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.SyncUpdateReviewCommand;
-import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.UpdateReviewCommandHandler;
-import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.simple.FindReviewsQueryHandler;
+import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.SyncUpdateReviewCommandHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.simple.SyncFindReviewsQuery;
+import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.simple.SyncFindReviewsQueryHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.readmodelsupplier.JpaManyReviewsReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.repository.JpaReviewRepository;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.InternalEventBus;
@@ -50,16 +50,16 @@ public class ReviewInfrastructureConfiguration {
     return new SimpleCommandBusConfiguration()
         .handling(
             SyncCreateReviewCommand.class,
-            new CreateReviewCommandHandler(transactionTemplate, createReview))
+            new SyncCreateReviewCommandHandler(transactionTemplate, createReview))
         .handling(
             SyncUpdateReviewCommand.class,
-            new UpdateReviewCommandHandler(transactionTemplate, updateReview));
+            new SyncUpdateReviewCommandHandler(transactionTemplate, updateReview));
   }
 
   @Bean
   public SimpleQueryBusConfiguration reviewsSimpleQueryBusConfiguration(FindReviews findReviews) {
     return new SimpleQueryBusConfiguration()
-        .handling(SyncFindReviewsQuery.class, new FindReviewsQueryHandler(findReviews));
+        .handling(SyncFindReviewsQuery.class, new SyncFindReviewsQueryHandler(findReviews));
   }
 
   @Bean

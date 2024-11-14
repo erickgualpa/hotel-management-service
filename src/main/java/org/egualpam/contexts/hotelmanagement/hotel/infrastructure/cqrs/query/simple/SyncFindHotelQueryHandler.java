@@ -9,7 +9,7 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Qu
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 
 @RequiredArgsConstructor
-public class FindHotelQueryHandler implements QueryHandler {
+public class SyncFindHotelQueryHandler implements QueryHandler {
 
   private final FindHotel findHotel;
 

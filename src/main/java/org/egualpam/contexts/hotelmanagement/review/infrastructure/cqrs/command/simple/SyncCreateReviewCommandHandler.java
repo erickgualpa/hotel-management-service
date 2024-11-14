@@ -9,7 +9,7 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.
 import org.springframework.transaction.support.TransactionTemplate;
 
 @RequiredArgsConstructor
-public class CreateReviewCommandHandler implements CommandHandler {
+public class SyncCreateReviewCommandHandler implements CommandHandler {
 
   private final TransactionTemplate transactionTemplate;
   private final CreateReview createReview;
@@ -26,7 +26,7 @@ public class CreateReviewCommandHandler implements CommandHandler {
             Optional.of(command)
                 .filter(SyncCreateReviewCommand.class::isInstance)
                 .map(SyncCreateReviewCommand.class::cast)
-                .map(CreateReviewCommandHandler::toApplicationCommand)
+                .map(SyncCreateReviewCommandHandler::toApplicationCommand)
                 .ifPresent(createReview::execute));
   }
 }

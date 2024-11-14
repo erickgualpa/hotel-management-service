@@ -9,7 +9,7 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Qu
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 
 @RequiredArgsConstructor
-public class FindHotelsQueryHandler implements QueryHandler {
+public class SyncFindHotelsQueryHandler implements QueryHandler {
 
   private final FindHotels findHotels;
 
@@ -19,7 +19,7 @@ public class FindHotelsQueryHandler implements QueryHandler {
         Optional.of(query)
             .filter(SyncFindHotelsQuery.class::isInstance)
             .map(SyncFindHotelsQuery.class::cast)
-            .map(FindHotelsQueryHandler::toApplicationQuery)
+            .map(SyncFindHotelsQueryHandler::toApplicationQuery)
             .orElseThrow();
     return findHotels.execute(findHotelsQuery);
   }

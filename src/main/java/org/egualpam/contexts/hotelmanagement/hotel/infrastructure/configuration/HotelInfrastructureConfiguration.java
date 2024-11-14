@@ -10,12 +10,12 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedInternalEventConsumer;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.CreateHotelCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommand;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelQueryHandler;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.FindHotelsQueryHandler;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelQuery;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelsQuery;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelsQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaManyHotelsReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaOneHotelReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa.JpaHotelRepository;
@@ -63,8 +63,8 @@ public class HotelInfrastructureConfiguration {
   public SimpleQueryBusConfiguration hotelsSimpleQueryBusConfiguration(
       FindHotel findHotel, FindHotels findHotels) {
     return new SimpleQueryBusConfiguration()
-        .handling(SyncFindHotelQuery.class, new FindHotelQueryHandler(findHotel))
-        .handling(SyncFindHotelsQuery.class, new FindHotelsQueryHandler(findHotels));
+        .handling(SyncFindHotelQuery.class, new SyncFindHotelQueryHandler(findHotel))
+        .handling(SyncFindHotelsQuery.class, new SyncFindHotelsQueryHandler(findHotels));
   }
 
   @Bean
@@ -73,7 +73,7 @@ public class HotelInfrastructureConfiguration {
     return new SimpleCommandBusConfiguration()
         .handling(
             SyncCreateHotelCommand.class,
-            new CreateHotelCommandHandler(transactionTemplate, createHotel));
+            new SyncCreateHotelCommandHandler(transactionTemplate, createHotel));
   }
 
   @Bean
