@@ -5,6 +5,7 @@ import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.shared.application.command.InternalEventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
 public final class CreateReview {
 
@@ -35,7 +36,8 @@ public final class CreateReview {
 
     reviewRepository.save(review);
 
-    ReviewCreated internalEvent = new ReviewCreated(review.id(), review.hotelId(), review.rating());
+    ReviewCreated internalEvent =
+        new ReviewCreated(UniqueId.get(), review.id(), clock, review.hotelId(), review.rating());
     internalEventBus.publish(internalEvent);
 
     eventBus.publish(review.pullDomainEvents());

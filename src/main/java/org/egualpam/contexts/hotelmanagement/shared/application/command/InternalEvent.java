@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.shared.application.command;
 
+import java.time.Clock;
 import java.time.Instant;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
@@ -10,10 +11,10 @@ public abstract class InternalEvent {
   private final AggregateId aggregateId;
   private final Instant occurredOn;
 
-  public InternalEvent(AggregateId aggregateId) {
-    this.id = UniqueId.get();
+  public InternalEvent(UniqueId id, AggregateId aggregateId, Clock clock) {
+    this.id = id;
     this.aggregateId = aggregateId;
-    this.occurredOn = Instant.now();
+    this.occurredOn = clock.instant();
   }
 
   public final UniqueId id() {

@@ -91,7 +91,7 @@ class CreateReviewShould {
             internalEvent -> {
               assertNotNull(internalEvent.id());
               assertThat(internalEvent.aggregateId().value()).isEqualTo(reviewId);
-              assertNotNull(internalEvent.occurredOn());
+              assertThat(internalEvent.occurredOn()).isEqualTo(NOW);
             });
 
     verify(eventBus).publish(domainEventsCaptor.capture());
