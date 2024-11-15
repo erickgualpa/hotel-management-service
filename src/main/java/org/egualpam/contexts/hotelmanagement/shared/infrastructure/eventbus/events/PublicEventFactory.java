@@ -1,6 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events;
 
-import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCreatedEvent;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCreated;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCreated;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewUpdated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
@@ -21,11 +21,11 @@ public final class PublicEventFactory {
               reviewUpdated.id().value(),
               reviewUpdated.aggregateId().value(),
               reviewUpdated.occurredOn());
-      case HotelCreatedEvent hotelCreatedEvent ->
+      case HotelCreated hotelCreated ->
           new HotelCreatedPublicEvent(
-              hotelCreatedEvent.id().value(),
-              hotelCreatedEvent.aggregateId().value(),
-              hotelCreatedEvent.occurredOn());
+              hotelCreated.id().value(),
+              hotelCreated.aggregateId().value(),
+              hotelCreated.occurredOn());
       default -> throw new UnsupportedDomainEvent(domainEvent);
     };
   }

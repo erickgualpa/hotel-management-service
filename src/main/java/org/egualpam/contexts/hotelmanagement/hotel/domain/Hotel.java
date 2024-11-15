@@ -41,8 +41,8 @@ public final class Hotel extends AggregateRoot {
       String imageURL,
       Clock clock) {
     Hotel hotel = new Hotel(id, name, description, location, price, imageURL);
-    HotelCreatedEvent hotelCreatedEvent = new HotelCreatedEvent(UniqueId.get(), hotel.id(), clock);
-    hotel.domainEvents().add(hotelCreatedEvent);
+    HotelCreated hotelCreated = new HotelCreated(UniqueId.get(), hotel.id(), clock);
+    hotel.domainEvents().add(hotelCreated);
     return hotel;
   }
 

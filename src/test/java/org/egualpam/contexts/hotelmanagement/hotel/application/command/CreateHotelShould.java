@@ -15,7 +15,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
-import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCreatedEvent;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCreated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
@@ -80,7 +80,7 @@ class CreateHotelShould {
     assertThat(actualDomainEvents)
         .hasSize(1)
         .first()
-        .isInstanceOf(HotelCreatedEvent.class)
+        .isInstanceOf(HotelCreated.class)
         .satisfies(
             e -> {
               assertNotNull(e.id());
