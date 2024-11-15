@@ -2,8 +2,10 @@ package org.egualpam.contexts.hotelmanagement.hotel.domain;
 
 import static java.util.Objects.isNull;
 
+import java.time.Clock;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
 public final class Hotel extends AggregateRoot {
 
@@ -31,9 +33,16 @@ public final class Hotel extends AggregateRoot {
   }
 
   public static Hotel create(
-      String id, String name, String description, String location, Integer price, String imageURL) {
+      String id,
+      String name,
+      String description,
+      String location,
+      Integer price,
+      String imageURL,
+      Clock clock) {
     Hotel hotel = new Hotel(id, name, description, location, price, imageURL);
-    hotel.domainEvents().add(new HotelCreatedEvent(hotel.id()));
+    HotelCreatedEvent hotelCreatedEvent = new HotelCreatedEvent(UniqueId.get(), hotel.id(), clock);
+    hotel.domainEvents().add(hotelCreatedEvent);
     return hotel;
   }
 

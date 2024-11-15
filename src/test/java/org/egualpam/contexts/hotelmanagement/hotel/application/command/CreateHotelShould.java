@@ -10,6 +10,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
@@ -29,17 +31,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CreateHotelShould {
 
+  @Mock private Clock clock;
   @Mock private AggregateRepository<Hotel> repository;
   @Mock private EventBus eventBus;
 
   @Captor private ArgumentCaptor<Hotel> hotelCaptor;
   @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
+  private static final Instant NOW = Instant.now();
+
   private CreateHotel testee;
 
   @BeforeEach
   void setUp() {
-    testee = new CreateHotel(repository, eventBus);
+    testee = new CreateHotel(clock, repository, eventBus);
   }
 
   @Test
@@ -50,6 +55,8 @@ class CreateHotelShould {
     String location = randomAlphabetic(5);
     Integer price = 100;
     String imageURL = "www." + randomAlphabetic(5) + ".com";
+
+    when(clock.instant()).thenReturn(NOW);
 
     CreateHotelCommand command =
         new CreateHotelCommand(id, name, description, location, price, imageURL);
@@ -78,7 +85,7 @@ class CreateHotelShould {
             e -> {
               assertNotNull(e.id());
               assertThat(e.aggregateId().value()).isEqualTo(id);
-              assertNotNull(e.occurredOn());
+              assertThat(e.occurredOn()).isEqualTo(NOW);
             });
   }
 

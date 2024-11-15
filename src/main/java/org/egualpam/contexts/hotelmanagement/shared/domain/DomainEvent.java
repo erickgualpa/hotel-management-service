@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.shared.domain;
 
+import java.time.Clock;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -13,6 +14,12 @@ public abstract class DomainEvent {
     this.id = UniqueId.get();
     this.aggregateId = aggregateId;
     this.occurredOn = Instant.now();
+  }
+
+  public DomainEvent(UniqueId id, AggregateId aggregateId, Clock clock) {
+    this.id = id;
+    this.aggregateId = aggregateId;
+    this.occurredOn = clock.instant();
   }
 
   public UniqueId id() {
