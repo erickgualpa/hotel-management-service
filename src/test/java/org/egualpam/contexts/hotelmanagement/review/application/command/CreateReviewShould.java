@@ -11,6 +11,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.review.domain.Comment;
@@ -40,23 +42,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CreateReviewShould {
 
+  private static final Instant NOW = Instant.now();
+
   @Captor private ArgumentCaptor<Review> reviewCaptor;
-
   @Captor private ArgumentCaptor<InternalEvent> internalEventCaptor;
-
   @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
+  @Mock private Clock clock;
   @Mock private AggregateRepository<Review> reviewRepository;
-
   @Mock private InternalEventBus internalEventBus;
-
   @Mock private EventBus eventBus;
 
   private CreateReview testee;
 
   @BeforeEach
   void setUp() {
-    testee = new CreateReview(reviewRepository, internalEventBus, eventBus);
+    testee = new CreateReview(clock, reviewRepository, internalEventBus, eventBus);
   }
 
   @Test
@@ -65,6 +66,8 @@ class CreateReviewShould {
     String hotelIdentifier = randomUUID().toString();
     Integer rating = nextInt(1, 5);
     String comment = randomAlphabetic(10);
+
+    when(clock.instant()).thenReturn(NOW);
 
     CreateReviewCommand command =
         new CreateReviewCommand(reviewId, hotelIdentifier, rating, comment);
@@ -85,10 +88,10 @@ class CreateReviewShould {
     verify(internalEventBus).publish(internalEventCaptor.capture());
     assertThat(internalEventCaptor.getValue())
         .satisfies(
-            actual -> {
-              assertNotNull(actual.id());
-              assertThat(actual.aggregateId().value()).isEqualTo(reviewId);
-              assertNotNull(actual.occurredOn());
+            internalEvent -> {
+              assertNotNull(internalEvent.id());
+              assertThat(internalEvent.aggregateId().value()).isEqualTo(reviewId);
+              assertNotNull(internalEvent.occurredOn());
             });
 
     verify(eventBus).publish(domainEventsCaptor.capture());
@@ -96,9 +99,9 @@ class CreateReviewShould {
         .hasSize(1)
         .first()
         .satisfies(
-            result -> {
-              assertThat(result.aggregateId()).isEqualTo(new AggregateId(reviewId));
-              assertThat(result.occurredOn()).isNotNull();
+            domainEvent -> {
+              assertThat(domainEvent.aggregateId()).isEqualTo(new AggregateId(reviewId));
+              assertThat(domainEvent.occurredOn()).isEqualTo(NOW);
             });
   }
 

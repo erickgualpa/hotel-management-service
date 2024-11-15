@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.review.infrastructure.configuration;
 
+import java.time.Clock;
 import org.egualpam.contexts.hotelmanagement.review.application.command.CreateReview;
 import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateReview;
 import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviews;
@@ -18,10 +19,11 @@ public class ReviewApplicationConfiguration {
 
   @Bean
   public CreateReview createReview(
+      Clock clock,
       AggregateRepository<Review> reviewRepository,
       InternalEventBus internalEventBus,
       EventBus eventBus) {
-    return new CreateReview(reviewRepository, internalEventBus, eventBus);
+    return new CreateReview(clock, reviewRepository, internalEventBus, eventBus);
   }
 
   @Bean
