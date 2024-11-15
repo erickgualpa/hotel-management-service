@@ -53,14 +53,14 @@ public final class Review extends AggregateRoot {
     return review;
   }
 
-  public void updateComment(String comment) {
+  public void updateComment(String comment, Clock clock) {
     Optional.ofNullable(comment)
         .map(Comment::new)
         .filter(c -> !c.equals(this.comment))
         .ifPresent(
             c -> {
               this.comment = c;
-              ReviewUpdated reviewUpdated = new ReviewUpdated(this.id());
+              ReviewUpdated reviewUpdated = new ReviewUpdated(UniqueId.get(), this.id(), clock);
               domainEvents().add(reviewUpdated);
             });
   }

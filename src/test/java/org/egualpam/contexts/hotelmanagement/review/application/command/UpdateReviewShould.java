@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
@@ -28,19 +30,20 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class UpdateReviewShould {
 
-  @Mock private AggregateRepository<Review> reviewRepository;
+  private static final Instant NOW = Instant.now();
 
+  @Mock private Clock clock;
+  @Mock private AggregateRepository<Review> reviewRepository;
   @Mock private EventBus eventBus;
 
   @Captor private ArgumentCaptor<Review> reviewCaptor;
-
   @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
   private UpdateReview testee;
 
   @BeforeEach
   void setUp() {
-    testee = new UpdateReview(reviewRepository, eventBus);
+    testee = new UpdateReview(clock, reviewRepository, eventBus);
   }
 
   @Test
@@ -51,10 +54,10 @@ class UpdateReviewShould {
     Review review =
         new Review(reviewId, randomUUID().toString(), nextInt(1, 5), randomAlphabetic(10));
 
+    when(clock.instant()).thenReturn(NOW);
     when(reviewRepository.find(new AggregateId(reviewId))).thenReturn(Optional.of(review));
 
     UpdateReviewCommand command = new UpdateReviewCommand(reviewId, comment);
-
     testee.execute(command);
 
     verify(reviewRepository).save(reviewCaptor.capture());
@@ -74,7 +77,7 @@ class UpdateReviewShould {
         .satisfies(
             result -> {
               assertThat(result.aggregateId()).isEqualTo(new AggregateId(reviewId));
-              assertThat(result.occurredOn()).isNotNull();
+              assertThat(result.occurredOn()).isEqualTo(NOW);
             });
   }
 

@@ -28,8 +28,8 @@ public class ReviewApplicationConfiguration {
 
   @Bean
   public UpdateReview updateReview(
-      AggregateRepository<Review> reviewRepository, EventBus eventBus) {
-    return new UpdateReview(reviewRepository, eventBus);
+      Clock clock, AggregateRepository<Review> reviewRepository, EventBus eventBus) {
+    return new UpdateReview(clock, reviewRepository, eventBus);
   }
 
   @Bean
