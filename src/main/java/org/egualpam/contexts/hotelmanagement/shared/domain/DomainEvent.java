@@ -10,12 +10,6 @@ public abstract class DomainEvent {
   private final AggregateId aggregateId;
   private final Instant occurredOn;
 
-  public DomainEvent(AggregateId aggregateId) {
-    this.id = UniqueId.get();
-    this.aggregateId = aggregateId;
-    this.occurredOn = Instant.now();
-  }
-
   public DomainEvent(UniqueId id, AggregateId aggregateId, Clock clock) {
     this.id = id;
     this.aggregateId = aggregateId;

@@ -1,9 +1,12 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.rabbitmq;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Connection;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
@@ -19,8 +22,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class RabbitMqEventBusShould {
 
-  @Mock private Connection connection;
+  private static final Instant NOW = Instant.now();
 
+  @Mock private Clock clock;
+  @Mock private Connection connection;
   @Mock private ObjectMapper objectMapper;
 
   private EventBus eventBus;
@@ -32,9 +37,12 @@ class RabbitMqEventBusShould {
 
   @Test
   void throwException_whenDomainEventIsUnsupported() {
+    when(clock.instant()).thenReturn(NOW);
+
     AggregateId aggregateId = new AggregateId(UniqueId.get().value());
-    DomainEvent domainEvent = new DomainEvent(aggregateId) {};
+    DomainEvent domainEvent = new DomainEvent(UniqueId.get(), aggregateId, clock) {};
     Set<DomainEvent> events = Set.of(domainEvent);
+
     assertThrows(UnsupportedDomainEvent.class, () -> eventBus.publish(events));
   }
 }
