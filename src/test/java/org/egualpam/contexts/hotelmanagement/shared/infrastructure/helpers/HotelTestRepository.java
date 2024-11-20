@@ -58,17 +58,17 @@ public final class HotelTestRepository {
 
   public boolean hotelExists(UUID hotelId) {
     String query =
-            """
-                    SELECT COUNT(*)
-                    FROM hotels
-                    WHERE id = :hotelId
-                    """;
+        """
+        SELECT COUNT(*)
+        FROM hotels
+        WHERE id = :hotelId
+        """;
 
     MapSqlParameterSource queryParameters = new MapSqlParameterSource();
     queryParameters.addValue("hotelId", hotelId);
 
     Integer count =
-            namedParameterJdbcTemplate.queryForObject(query, queryParameters, Integer.class);
+        namedParameterJdbcTemplate.queryForObject(query, queryParameters, Integer.class);
 
     return nonNull(count) && count == 1;
   }
