@@ -35,14 +35,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.2.0</version>
-            <exclusions>
-                <!-- TODO: Remove exclusion once vulnerability has been addressed -->
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>2.7.0</version>
         </dependency>
 
         <dependency>
