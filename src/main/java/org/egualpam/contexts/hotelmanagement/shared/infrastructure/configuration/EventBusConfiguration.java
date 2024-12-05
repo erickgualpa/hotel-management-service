@@ -1,6 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import jakarta.persistence.EntityManager;
@@ -43,13 +44,20 @@ public class EventBusConfiguration {
         rabbitMqProperties.getAmqpPort());
 
     final Connection connection;
+    final Channel channel;
     try {
       // TODO: Consider using a connection pool
       connection = factory.newConnection();
+
+      channel = connection.createChannel();
+      channel.queueDeclare("hotelmanagement.hotels", false, false, false, null);
+      channel.queueDeclare("hotelmanagement.reviews", false, false, false, null);
+      // TODO: Workaround for having a dlq but should be updated too
+      channel.queueDeclare("hotelmanagement.dlq", false, false, false, null);
     } catch (IOException | TimeoutException e) {
       throw new RuntimeException("Connection could not be established", e);
     }
 
-    return new RabbitMqEventBus(connection, objectMapper);
+    return new RabbitMqEventBus(channel, objectMapper);
   }
 }

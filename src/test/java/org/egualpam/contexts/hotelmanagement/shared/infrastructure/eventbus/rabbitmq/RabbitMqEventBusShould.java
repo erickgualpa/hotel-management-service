@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.Channel;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Set;
@@ -25,14 +25,14 @@ class RabbitMqEventBusShould {
   private static final Instant NOW = Instant.now();
 
   @Mock private Clock clock;
-  @Mock private Connection connection;
+  @Mock private Channel channel;
   @Mock private ObjectMapper objectMapper;
 
   private EventBus eventBus;
 
   @BeforeEach
   void setUp() {
-    eventBus = new RabbitMqEventBus(connection, objectMapper);
+    eventBus = new RabbitMqEventBus(channel, objectMapper);
   }
 
   @Test

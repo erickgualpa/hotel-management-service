@@ -3,11 +3,9 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.rab
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeoutException;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
@@ -20,35 +18,27 @@ public final class RabbitMqEventBus implements EventBus {
 
   private final Logger logger = LoggerFactory.getLogger(RabbitMqEventBus.class);
 
-  private final Connection connection;
+  private final Channel channel;
   private final ObjectMapper objectMapper;
 
-  public RabbitMqEventBus(Connection connection, ObjectMapper objectMapper) {
-    this.connection = connection;
+  public RabbitMqEventBus(Channel channel, ObjectMapper objectMapper) {
+    this.channel = channel;
     this.objectMapper = objectMapper;
   }
 
   @Override
   public void publish(Set<DomainEvent> events) {
     List<PublicEvent> publicEvents = events.stream().map(PublicEventFactory::from).toList();
-    try (Channel channel = connection.createChannel()) {
-      // TODO: Queues should be already configured
-      channel.queueDeclare("hotelmanagement.hotels", false, false, false, null);
-      channel.queueDeclare("hotelmanagement.reviews", false, false, false, null);
-      // TODO: Workaround for having a dlq but should be updated too
-      channel.queueDeclare("hotelmanagement.dlq", false, false, false, null);
-
-      publicEvents.forEach(e -> publishEvent(e, channel));
-    } catch (IOException | TimeoutException e) {
-      // TODO: Consider using a custom exception
-      throw new RuntimeException(e);
-    }
+    publicEvents.forEach(e -> publishEvent(e, channel));
   }
 
   private void publishEvent(PublicEvent publicEvent, Channel channel) {
     try {
       byte[] serializedEvent = objectMapper.writeValueAsBytes(publicEvent);
-      channel.basicPublish("", getQueueNameFor(publicEvent), null, serializedEvent);
+
+      String queueName = getQueueNameFor(publicEvent);
+      channel.basicPublish("", queueName, null, serializedEvent);
+
       logger.info("Event {} has been published", publicEvent.getType());
     } catch (JsonProcessingException ex) {
       // TODO: Consider using a custom exception
