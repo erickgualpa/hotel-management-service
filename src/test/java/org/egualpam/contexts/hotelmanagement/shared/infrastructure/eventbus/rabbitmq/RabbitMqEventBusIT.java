@@ -1,0 +1,69 @@
+package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.rabbitmq;
+
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.mockito.Mockito.when;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.Channel;
+import java.time.Clock;
+import java.time.Instant;
+import java.util.Set;
+import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCreated;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
+import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.PublicEventResult;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class RabbitMqEventBusIT extends AbstractIntegrationTest {
+
+  private static final Instant NOW = Instant.now();
+
+  @Mock private Clock clock;
+
+  @Autowired private ObjectMapper objectMapper;
+  @Autowired private Channel channel;
+  @Autowired private RabbitMqTestConsumer rabbitMqTestConsumer;
+
+  private EventBus testSubject;
+
+  @BeforeEach
+  void setUp() {
+    testSubject = new RabbitMqEventBus(channel, objectMapper);
+  }
+
+  @Test
+  void publishDomainEvents() {
+    when(clock.instant()).thenReturn(NOW);
+
+    UniqueId eventId = UniqueId.get();
+    AggregateId aggregateId = new AggregateId(UniqueId.get().value());
+    DomainEvent domainEvent = new ReviewCreated(eventId, aggregateId, clock);
+
+    testSubject.publish(Set.of(domainEvent));
+
+    await()
+        .atMost(10, SECONDS)
+        .untilAsserted(
+            () -> {
+              PublicEventResult publicEventResult =
+                  rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.review");
+              assertThat(publicEventResult)
+                  .satisfies(
+                      r -> {
+                        assertThat(r.id()).isEqualTo(eventId.value());
+                        assertThat(r.type()).isEqualTo("hotelmanagement.review.created.v1.0");
+                        assertThat(r.aggregateId()).isEqualTo(aggregateId.value());
+                        assertThat(r.occurredOn()).isEqualTo(NOW);
+                      });
+            });
+  }
+}
