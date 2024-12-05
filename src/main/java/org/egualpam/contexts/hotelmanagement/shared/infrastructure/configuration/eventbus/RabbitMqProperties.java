@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration;
+package org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.eventbus;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
