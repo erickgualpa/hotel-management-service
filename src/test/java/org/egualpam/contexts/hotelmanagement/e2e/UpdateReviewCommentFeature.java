@@ -71,7 +71,7 @@ class UpdateReviewCommentFeature extends AbstractIntegrationTest {
         .untilAsserted(
             () -> {
               PublicEventResult publicEventResult =
-                  rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.reviews");
+                  rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.review");
               assertThat(publicEventResult)
                   .satisfies(
                       r -> {
@@ -80,7 +80,7 @@ class UpdateReviewCommentFeature extends AbstractIntegrationTest {
                         } catch (IllegalArgumentException e) {
                           fail("Invalid public event id: [%s]".formatted(r.id()));
                         }
-                        assertThat(r.type()).isEqualTo("hotelmanagement.reviews.updated.v1.0");
+                        assertThat(r.type()).isEqualTo("hotelmanagement.review.updated.v1.0");
                         assertThat(r.aggregateId()).isEqualTo(reviewId.toString());
                         assertNotNull(r.occurredOn());
                       });

@@ -13,7 +13,7 @@ public final class HotelCreatedPublicEvent implements PublicEvent {
 
   public HotelCreatedPublicEvent(String id, String aggregateId, Instant occurredOn) {
     this.id = id;
-    this.type = "hotelmanagement.hotels.created.v1.0";
+    this.type = "hotelmanagement.hotel.created.v1.0";
     this.aggregateId = aggregateId;
     this.occurredOn = occurredOn;
   }

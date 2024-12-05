@@ -13,7 +13,7 @@ public final class ReviewUpdatedPublicEvent implements PublicEvent {
 
   public ReviewUpdatedPublicEvent(String id, String aggregateId, Instant occurredOn) {
     this.id = id;
-    this.type = "hotelmanagement.reviews.updated.v1.0";
+    this.type = "hotelmanagement.review.updated.v1.0";
     this.aggregateId = aggregateId;
     this.occurredOn = occurredOn;
   }

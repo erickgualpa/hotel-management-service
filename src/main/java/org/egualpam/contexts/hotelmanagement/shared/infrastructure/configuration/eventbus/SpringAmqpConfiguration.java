@@ -20,21 +20,21 @@ public class SpringAmqpConfiguration {
 
   @Bean("hotelQueue")
   public Queue hotelQueue() {
-    return new Queue("hotelmanagement.hotels", false);
+    return new Queue("hotelmanagement.hotel", false);
   }
 
   @Bean("hotelBinding")
   public Binding hotelBinding(@Qualifier("hotelQueue") Queue queue, TopicExchange topicExchange) {
-    return BindingBuilder.bind(queue).to(topicExchange).with("hotelmanagement.hotels.#");
+    return BindingBuilder.bind(queue).to(topicExchange).with("hotelmanagement.hotel.#");
   }
 
   @Bean("reviewQueue")
   public Queue reviewQueue() {
-    return new Queue("hotelmanagement.reviews", false);
+    return new Queue("hotelmanagement.review", false);
   }
 
   @Bean("reviewBinding")
   public Binding reviewBinding(@Qualifier("reviewQueue") Queue queue, TopicExchange topicExchange) {
-    return BindingBuilder.bind(queue).to(topicExchange).with("hotelmanagement.reviews.#");
+    return BindingBuilder.bind(queue).to(topicExchange).with("hotelmanagement.review.#");
   }
 }

@@ -51,9 +51,9 @@ public final class RabbitMqEventBus implements EventBus {
   // TODO: Simple mapping for events and queues. Update it
   private String getQueueNameFor(PublicEvent publicEvent) {
     return switch (publicEvent.getType()) {
-      case "hotelmanagement.hotels.created.v1.0" -> "hotelmanagement.hotels";
-      case "hotelmanagement.reviews.created.v1.0", "hotelmanagement.reviews.updated.v1.0" ->
-          "hotelmanagement.reviews";
+      case "hotelmanagement.hotel.created.v1.0" -> "hotelmanagement.hotel";
+      case "hotelmanagement.review.created.v1.0", "hotelmanagement.review.updated.v1.0" ->
+          "hotelmanagement.review";
       default -> "hotelmanagement.dlq";
     };
   }

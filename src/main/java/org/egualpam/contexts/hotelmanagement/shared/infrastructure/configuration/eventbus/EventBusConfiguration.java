@@ -51,8 +51,8 @@ public class EventBusConfiguration {
       connection = factory.newConnection();
 
       channel = connection.createChannel();
-      channel.queueDeclare("hotelmanagement.hotels", false, false, false, null);
-      channel.queueDeclare("hotelmanagement.reviews", false, false, false, null);
+      channel.queueDeclare("hotelmanagement.hotel", false, false, false, null);
+      channel.queueDeclare("hotelmanagement.review", false, false, false, null);
       // TODO: Workaround for having a dlq but should be updated too
       channel.queueDeclare("hotelmanagement.dlq", false, false, false, null);
     } catch (IOException | TimeoutException e) {
