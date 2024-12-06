@@ -46,7 +46,8 @@ class SimpleEventBusIT extends AbstractIntegrationTest {
     assertThat(result)
         .satisfies(
             r -> {
-              assertThat(r.type()).isEqualTo("hotelmanagement.review.created.v1.0");
+              assertThat(r.type()).isEqualTo("hotelmanagement.review.created");
+              assertThat(r.version()).isEqualTo("1.0");
               assertThat(r.aggregateId()).isEqualTo(aggregateId);
               assertNotNull(r.occurredOn());
             });

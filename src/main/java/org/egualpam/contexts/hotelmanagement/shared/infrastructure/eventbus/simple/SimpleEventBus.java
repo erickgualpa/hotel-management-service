@@ -12,9 +12,9 @@ public class SimpleEventBus implements EventBus {
 
   private static final String INSERT_INTO_EVENT_STORE =
       """
-                INSERT INTO event_store(id, aggregate_id, occurred_on, event_type)
-                VALUES (:id, :aggregateId, :occurredOn, :eventType)
-            """;
+      INSERT INTO event_store(id, aggregate_id, occurred_on, event_type, event_version)
+      VALUES (:id, :aggregateId, :occurredOn, :eventType, :eventVersion)
+      """;
 
   private final EntityManager entityManager;
 
@@ -35,6 +35,7 @@ public class SimpleEventBus implements EventBus {
         .setParameter("aggregateId", UUID.fromString(publicEvent.getAggregateId()))
         .setParameter("occurredOn", publicEvent.getOccurredOn())
         .setParameter("eventType", publicEvent.getType())
+        .setParameter("eventVersion", publicEvent.getVersion())
         .executeUpdate();
   }
 }

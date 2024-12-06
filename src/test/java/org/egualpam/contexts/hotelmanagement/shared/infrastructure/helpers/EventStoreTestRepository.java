@@ -15,10 +15,10 @@ public class EventStoreTestRepository {
   public PublicEventResult findEvent(String eventId) {
     String sql =
         """
-                SELECT event_type, aggregate_id, occurred_on
-                FROM event_store
-                WHERE id = :eventId
-                """;
+        SELECT event_type, event_version, aggregate_id, occurred_on
+        FROM event_store
+        WHERE id = :eventId
+        """;
 
     MapSqlParameterSource queryParameters = new MapSqlParameterSource();
     queryParameters.addValue("eventId", UUID.fromString(eventId));
@@ -30,6 +30,7 @@ public class EventStoreTestRepository {
             new PublicEventResult(
                 eventId,
                 rs.getString("event_type"),
+                rs.getString("event_version"),
                 rs.getString("aggregate_id"),
                 rs.getTimestamp("occurred_on").toInstant()));
   }

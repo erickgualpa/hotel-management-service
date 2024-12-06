@@ -7,6 +7,8 @@ public interface PublicEvent {
 
   String getType();
 
+  String getVersion();
+
   String getAggregateId();
 
   Instant getOccurredOn();

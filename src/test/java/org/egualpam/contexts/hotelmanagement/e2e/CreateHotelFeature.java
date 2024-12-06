@@ -76,7 +76,8 @@ class CreateHotelFeature extends AbstractIntegrationTest {
                         } catch (IllegalArgumentException e) {
                           fail("Invalid public event id: [%s]".formatted(r.id()));
                         }
-                        assertThat(r.type()).isEqualTo("hotelmanagement.hotel.created.v1.0");
+                        assertThat(r.type()).isEqualTo("hotelmanagement.hotel.created");
+                        assertThat(r.version()).isEqualTo("1.0");
                         assertThat(r.aggregateId()).isEqualTo(hotelId.toString());
                         assertNotNull(r.occurredOn());
                       });

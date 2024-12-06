@@ -60,7 +60,8 @@ public class RabbitMqEventBusIT extends AbstractIntegrationTest {
                   .satisfies(
                       r -> {
                         assertThat(r.id()).isEqualTo(eventId.value());
-                        assertThat(r.type()).isEqualTo("hotelmanagement.review.created.v1.0");
+                        assertThat(r.type()).isEqualTo("hotelmanagement.review.created");
+                        assertThat(r.version()).isEqualTo("1.0");
                         assertThat(r.aggregateId()).isEqualTo(aggregateId.value());
                         assertThat(r.occurredOn()).isEqualTo(NOW);
                       });
