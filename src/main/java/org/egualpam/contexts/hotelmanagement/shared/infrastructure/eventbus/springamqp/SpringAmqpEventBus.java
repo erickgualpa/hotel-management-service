@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UnpublishedDomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEventFactory;
 import org.slf4j.Logger;
@@ -35,8 +36,7 @@ public final class SpringAmqpEventBus implements EventBus {
     try {
       bytesFromEvent = objectMapper.writeValueAsBytes(event);
     } catch (JsonProcessingException e) {
-      // TODO: Consider using a custom exception
-      throw new RuntimeException("Domain event could not be sent", e);
+      throw new UnpublishedDomainEvent(event, e);
     }
     rabbitTemplate.convertAndSend(event.getType(), bytesFromEvent);
     logger.info("Event {} has been published", event.getType());
