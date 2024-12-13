@@ -2,7 +2,6 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.spr
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.List;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
@@ -27,17 +26,20 @@ public final class SpringAmqpEventBus implements EventBus {
 
   @Override
   public void publish(Set<DomainEvent> events) {
-    List<PublicEvent> publicEvents = events.stream().map(PublicEventFactory::from).toList();
-    publicEvents.forEach(this::publishEvent);
+    events.forEach(
+        event -> {
+          PublicEvent publicEvent = PublicEventFactory.from(event);
+          try {
+            publishEvent(publicEvent);
+          } catch (Exception e) {
+            throw new UnpublishedDomainEvent(event, e);
+          }
+        });
   }
 
-  private void publishEvent(PublicEvent event) {
+  private void publishEvent(PublicEvent event) throws JsonProcessingException {
     final byte[] bytesFromEvent;
-    try {
-      bytesFromEvent = objectMapper.writeValueAsBytes(event);
-    } catch (JsonProcessingException e) {
-      throw new UnpublishedDomainEvent(event, e);
-    }
+    bytesFromEvent = objectMapper.writeValueAsBytes(event);
     rabbitTemplate.convertAndSend(event.getType(), bytesFromEvent);
     logger.info("Event {} has been published", event.getType());
   }
