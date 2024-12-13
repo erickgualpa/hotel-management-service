@@ -1,11 +1,15 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.controller;
 
+import static java.lang.String.format;
+import static org.slf4j.LoggerFactory.getLogger;
+import static org.springframework.http.ResponseEntity.accepted;
+import static org.springframework.http.ResponseEntity.internalServerError;
+
 import lombok.RequiredArgsConstructor;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public final class PostHotelControllerV2 {
 
-  private static final Logger logger = LoggerFactory.getLogger(PostHotelControllerV2.class);
-
+  private final Logger logger = getLogger(this.getClass());
   private final CommandBus commandBus;
 
   @PostMapping
@@ -32,11 +35,10 @@ public final class PostHotelControllerV2 {
     try {
       commandBus.publish(createHotelCommand);
     } catch (RuntimeException e) {
-      logger.error(
-          String.format("An error occurred while processing the request [%s]", request), e);
-      return ResponseEntity.internalServerError().build();
+      logger.error(format("An error occurred while processing the request [%s]", request), e);
+      return internalServerError().build();
     }
 
-    return ResponseEntity.accepted().build();
+    return accepted().build();
   }
 }
