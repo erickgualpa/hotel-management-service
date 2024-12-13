@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.hotel.application.command;
 
-import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelNotExists;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
@@ -20,11 +20,8 @@ public class UpdateHotelRating {
     String hotelId = command.hotelId();
     Integer reviewRating = command.rating();
 
-    Hotel hotel =
-        Optional.of(hotelId)
-            .map(AggregateId::new)
-            .flatMap(repository::find)
-            .orElseThrow(); // TODO: Replace by custom exception
+    AggregateId aggregateId = new AggregateId(hotelId);
+    Hotel hotel = repository.find(aggregateId).orElseThrow(() -> new HotelNotExists(aggregateId));
 
     // TODO: Handle idempotency
     hotel.updateRating(reviewRating);

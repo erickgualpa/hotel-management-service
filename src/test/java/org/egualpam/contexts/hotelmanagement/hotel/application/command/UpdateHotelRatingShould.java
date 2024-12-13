@@ -1,12 +1,17 @@
 package org.egualpam.contexts.hotelmanagement.hotel.application.command;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anySet;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelNotExists;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelRating;
 import org.egualpam.contexts.hotelmanagement.review.domain.Rating;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
@@ -71,5 +76,23 @@ class UpdateHotelRatingShould {
     // TODO: Assert domain event has been published
     verify(eventBus).publish(domainEventsCaptor.capture());
     assertThat(domainEventsCaptor.getValue()).isEmpty();
+  }
+
+  @Test
+  void throwDomainException_whenHotelMatchingIdNotExists() {
+    AggregateId aggregateId = new AggregateId(UniqueId.get().value());
+    Rating rating = new Rating(3);
+
+    when(repository.find(aggregateId)).thenReturn(Optional.empty());
+
+    UpdateHotelRatingCommand command =
+        new UpdateHotelRatingCommand(aggregateId.value(), rating.value());
+
+    HotelNotExists exception = assertThrows(HotelNotExists.class, () -> testee.execute(command));
+    assertThat(exception)
+        .hasMessage("No hotel exists with id: [%s]".formatted(aggregateId.value()));
+
+    verify(repository, never()).save(any(Hotel.class));
+    verify(eventBus, never()).publish(anySet());
   }
 }
