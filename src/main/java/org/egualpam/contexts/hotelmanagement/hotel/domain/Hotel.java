@@ -15,6 +15,8 @@ public final class Hotel extends AggregateRoot {
   private final Price price;
   private final ImageURL imageURL;
 
+  private HotelRating rating = new HotelRating(0, 0.0);
+
   public Hotel(
       String id, String name, String description, String location, Integer price, String imageURL) {
     super(id);
@@ -46,6 +48,17 @@ public final class Hotel extends AggregateRoot {
     return hotel;
   }
 
+  public void updateRating(Integer reviewRating) {
+    final Integer reviewsRatingSum = this.rating.ratingSum();
+    final Integer reviewsCount = this.rating.reviewsCount();
+
+    final Integer updatedReviewsRatingSum = reviewsRatingSum + reviewRating;
+    final Integer updatedReviewsCount = reviewsCount + 1;
+    final Double updatedAverage = (double) (updatedReviewsRatingSum / updatedReviewsCount);
+
+    this.rating = new HotelRating(updatedReviewsCount, updatedAverage);
+  }
+
   public HotelName name() {
     return name;
   }
@@ -64,5 +77,9 @@ public final class Hotel extends AggregateRoot {
 
   public ImageURL imageURL() {
     return imageURL;
+  }
+
+  public HotelRating rating() {
+    return rating;
   }
 }

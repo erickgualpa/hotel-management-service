@@ -46,5 +46,28 @@ public final class JpaHotelRepository implements AggregateRepository<Hotel> {
 
     entityManager.merge(persistenceHotel);
     entityManager.flush();
+
+    updateHotelAverageRating(hotel);
+  }
+
+  private void updateHotelAverageRating(Hotel hotel) {
+    String query =
+        """
+        INSERT INTO hotel_average_rating(hotel_id, rating_sum, review_count, avg_value)
+        VALUES(:hotelId, :ratingSum, :reviewCount, :averageRating)
+        ON CONFLICT (hotel_id)
+        DO UPDATE SET
+          rating_sum=:ratingSum,
+          review_count=:reviewCount,
+          avg_value=:averageRating
+        """;
+
+    entityManager
+        .createNativeQuery(query)
+        .setParameter("hotelId", UUID.fromString(hotel.id().value()))
+        .setParameter("ratingSum", hotel.rating().ratingSum())
+        .setParameter("reviewCount", hotel.rating().reviewsCount())
+        .setParameter("averageRating", hotel.rating().average())
+        .executeUpdate();
   }
 }

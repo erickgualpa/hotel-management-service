@@ -2,6 +2,7 @@ package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.configuration
 
 import java.time.Clock;
 import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotel;
+import org.egualpam.contexts.hotelmanagement.hotel.application.command.UpdateHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
@@ -34,5 +35,11 @@ public class HotelApplicationConfiguration {
   public CreateHotel createHotel(
       Clock clock, AggregateRepository<Hotel> hotelRepository, EventBus eventBus) {
     return new CreateHotel(clock, hotelRepository, eventBus);
+  }
+
+  @Bean
+  public UpdateHotelRating updateHotelRating(
+      AggregateRepository<Hotel> hotelRepository, EventBus eventBus) {
+    return new UpdateHotelRating(hotelRepository, eventBus);
   }
 }
