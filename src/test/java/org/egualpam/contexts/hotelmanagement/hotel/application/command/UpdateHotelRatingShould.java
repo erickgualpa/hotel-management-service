@@ -13,7 +13,6 @@ import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelNotExists;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelRating;
-import org.egualpam.contexts.hotelmanagement.review.domain.Rating;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
@@ -46,8 +45,8 @@ class UpdateHotelRatingShould {
   @Test
   void updateHotelRating() {
     AggregateId aggregateId = new AggregateId(UniqueId.get().value());
-    Rating rating = new Rating(3);
-    Double expectedHotelRatingAverage = Double.parseDouble(rating.value().toString());
+    Integer rating = 3;
+    Double expectedHotelRatingAverage = Double.parseDouble(rating.toString());
     HotelRating expectedHotelRating = new HotelRating(1, expectedHotelRatingAverage);
 
     Hotel hotel =
@@ -64,8 +63,7 @@ class UpdateHotelRatingShould {
     assertThat(hotel.rating().reviewsCount()).isZero();
     assertThat(hotel.rating().average()).isZero();
 
-    UpdateHotelRatingCommand command =
-        new UpdateHotelRatingCommand(aggregateId.value(), rating.value());
+    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(aggregateId.value(), rating);
     testee.execute(command);
 
     verify(repository).save(hotelCaptor.capture());
@@ -81,12 +79,11 @@ class UpdateHotelRatingShould {
   @Test
   void throwDomainException_whenHotelMatchingIdNotExists() {
     AggregateId aggregateId = new AggregateId(UniqueId.get().value());
-    Rating rating = new Rating(3);
+    Integer rating = 3;
 
     when(repository.find(aggregateId)).thenReturn(Optional.empty());
 
-    UpdateHotelRatingCommand command =
-        new UpdateHotelRatingCommand(aggregateId.value(), rating.value());
+    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(aggregateId.value(), rating);
 
     HotelNotExists exception = assertThrows(HotelNotExists.class, () -> testee.execute(command));
     assertThat(exception)
