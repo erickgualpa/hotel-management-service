@@ -1,5 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.springamqp;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Set;
@@ -9,15 +11,13 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.UnpublishedDomainEven
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEventFactory;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 public final class SpringAmqpEventBus implements EventBus {
 
   private final ObjectMapper objectMapper;
   private final RabbitTemplate rabbitTemplate;
-
-  private final Logger logger = LoggerFactory.getLogger(SpringAmqpEventBus.class);
+  private final Logger logger = getLogger(this.getClass());
 
   public SpringAmqpEventBus(ObjectMapper objectMapper, RabbitTemplate rabbitTemplate) {
     this.objectMapper = objectMapper;
