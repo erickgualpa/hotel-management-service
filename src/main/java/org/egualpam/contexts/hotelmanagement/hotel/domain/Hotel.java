@@ -49,6 +49,10 @@ public final class Hotel extends AggregateRoot {
   }
 
   public void updateRating(Integer reviewRating) {
+    if (isNull(reviewRating)) {
+      throw new RequiredPropertyIsMissing();
+    }
+
     final Integer reviewsRatingSum = this.rating.ratingSum();
     final Integer reviewsCount = this.rating.reviewsCount();
 

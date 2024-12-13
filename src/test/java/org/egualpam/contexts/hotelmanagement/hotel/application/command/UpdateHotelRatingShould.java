@@ -17,6 +17,8 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -88,6 +90,37 @@ class UpdateHotelRatingShould {
     HotelNotExists exception = assertThrows(HotelNotExists.class, () -> testee.execute(command));
     assertThat(exception)
         .hasMessage("No hotel exists with id: [%s]".formatted(aggregateId.value()));
+
+    verify(repository, never()).save(any(Hotel.class));
+    verify(eventBus, never()).publish(anySet());
+  }
+
+  @Test
+  void throwDomainException_whenHotelIdIsMissing() {
+    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(null, 3);
+    assertThrows(InvalidUniqueId.class, () -> testee.execute(command));
+
+    verify(repository, never()).save(any(Hotel.class));
+    verify(eventBus, never()).publish(anySet());
+  }
+
+  @Test
+  void throwDomainException_whenReviewRatingIsMissing() {
+    AggregateId aggregateId = new AggregateId(UniqueId.get().value());
+
+    Hotel hotel =
+        new Hotel(
+            aggregateId.value(),
+            "hotel-name",
+            "hotel-description",
+            "hotel-location",
+            200,
+            "www.hotel-image-url.com");
+
+    when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
+
+    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(aggregateId.value(), null);
+    assertThrows(RequiredPropertyIsMissing.class, () -> testee.execute(command));
 
     verify(repository, never()).save(any(Hotel.class));
     verify(eventBus, never()).publish(anySet());
