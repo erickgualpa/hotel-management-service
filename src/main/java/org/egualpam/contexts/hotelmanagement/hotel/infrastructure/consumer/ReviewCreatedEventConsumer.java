@@ -9,12 +9,12 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.internalevent
 import org.slf4j.Logger;
 import org.springframework.context.ApplicationListener;
 
-public class ReviewCreatedInternalEventConsumer implements ApplicationListener<ReviewCreatedEvent> {
+public class ReviewCreatedEventConsumer implements ApplicationListener<ReviewCreatedEvent> {
 
   private final CommandBus commandBus;
   private final Logger logger = getLogger(this.getClass());
 
-  public ReviewCreatedInternalEventConsumer(CommandBus commandBus) {
+  public ReviewCreatedEventConsumer(CommandBus commandBus) {
     this.commandBus = commandBus;
   }
 
