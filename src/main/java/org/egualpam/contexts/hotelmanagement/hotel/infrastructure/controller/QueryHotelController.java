@@ -1,5 +1,11 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.controller;
 
+import static java.lang.String.format;
+import static org.slf4j.LoggerFactory.getLogger;
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.internalServerError;
+import static org.springframework.http.ResponseEntity.ok;
+
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +15,6 @@ import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.sim
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Query;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.QueryBus;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public final class QueryHotelController {
 
-  private static final Logger logger = LoggerFactory.getLogger(QueryHotelController.class);
-
+  private final Logger logger = getLogger(this.getClass());
   private final QueryBus queryBus;
 
   @PostMapping(value = "/query")
@@ -30,14 +34,13 @@ public final class QueryHotelController {
     try {
       manyHotels = (ManyHotels) queryBus.publish(findHotelsQuery);
     } catch (PriceRangeValuesSwapped e) {
-      return ResponseEntity.badRequest().build();
-    } catch (Exception e) {
-      logger.error(
-          String.format("An error occurred while processing the request [%s]", request), e);
-      return ResponseEntity.internalServerError().build();
+      return badRequest().build();
+    } catch (RuntimeException e) {
+      logger.error(format("An error occurred while processing the request [%s]", request), e);
+      return internalServerError().build();
     }
 
-    return ResponseEntity.ok(mapIntoResponse(manyHotels.hotels()));
+    return ok(mapIntoResponse(manyHotels.hotels()));
   }
 
   private Query toQuery(QueryHotelRequest request) {
