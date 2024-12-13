@@ -1,5 +1,13 @@
 package org.egualpam.contexts.hotelmanagement.review.infrastructure.controller;
 
+import static java.lang.String.format;
+import static org.slf4j.LoggerFactory.getLogger;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.internalServerError;
+import static org.springframework.http.ResponseEntity.status;
+
 import lombok.RequiredArgsConstructor;
 import org.egualpam.contexts.hotelmanagement.review.domain.InvalidRating;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewAlreadyExists;
@@ -9,8 +17,6 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMis
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,8 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public final class PostReviewController {
 
-  private static final Logger logger = LoggerFactory.getLogger(PostReviewController.class);
-
+  private final Logger logger = getLogger(this.getClass());
   private final CommandBus commandBus;
 
   @PostMapping(path = "/{reviewId}")
@@ -40,18 +45,18 @@ public final class PostReviewController {
     try {
       commandBus.publish(createReviewCommand);
     } catch (RequiredPropertyIsMissing | InvalidUniqueId | InvalidRating e) {
-      return ResponseEntity.badRequest().build();
+      return badRequest().build();
     } catch (ReviewAlreadyExists e) {
-      return ResponseEntity.status(HttpStatus.CONFLICT).build();
-    } catch (Exception e) {
+      return status(CONFLICT).build();
+    } catch (RuntimeException e) {
       logger.error(
-          String.format(
+          format(
               "An error occurred while processing the request [%s] given [reviewId=%s]",
               createReviewRequest, reviewId),
           e);
-      return ResponseEntity.internalServerError().build();
+      return internalServerError().build();
     }
 
-    return new ResponseEntity<>(HttpStatus.CREATED);
+    return status(CREATED).build();
   }
 }
