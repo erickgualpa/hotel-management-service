@@ -3,6 +3,9 @@ package org.egualpam.contexts.hotelmanagement.hotel.domain;
 import static java.util.Objects.isNull;
 
 import java.time.Clock;
+import java.util.Optional;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
@@ -41,7 +44,16 @@ public final class Hotel extends AggregateRoot {
       String location,
       Integer price,
       String imageURL,
+      AggregateRepository<Hotel> repository,
       Clock clock) {
+    Optional.of(id)
+        .map(AggregateId::new)
+        .flatMap(repository::find)
+        .ifPresent(
+            hotel -> {
+              throw new HotelAlreadyExists(hotel.id());
+            });
+
     Hotel hotel = new Hotel(id, name, description, location, price, imageURL);
     HotelCreated hotelCreated = new HotelCreated(UniqueId.get(), hotel.id(), clock);
     hotel.domainEvents().add(hotelCreated);
