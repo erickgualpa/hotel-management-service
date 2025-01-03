@@ -25,6 +25,7 @@ import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.sim
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaManyHotelsReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaOneHotelReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa.JpaHotelRepository;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.reviewisalreadyprocessed.JpaReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
@@ -96,8 +97,7 @@ public class HotelInfrastructureConfiguration {
   }
 
   @Bean
-  public ReviewIsAlreadyProcessed reviewIsAlreadyProcessed() {
-    // TODO: Add actual implementation
-    return reviewId -> false;
+  public ReviewIsAlreadyProcessed reviewIsAlreadyProcessed(EntityManager entityManager) {
+    return new JpaReviewIsAlreadyProcessed(entityManager);
   }
 }
