@@ -38,6 +38,7 @@ public final class JpaReviewIsAlreadyProcessed implements ReviewIsAlreadyProcess
                 .getSingleResult();
 
     if (result == 0) {
+      // TODO: Check if this can be done using domain events
       entityManager
           .createNativeQuery(insertReviewIdIntoTable)
           .setParameter("reviewId", reviewIdValue)
