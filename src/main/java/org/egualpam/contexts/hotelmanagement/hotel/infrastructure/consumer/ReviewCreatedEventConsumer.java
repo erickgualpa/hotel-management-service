@@ -21,8 +21,9 @@ public class ReviewCreatedEventConsumer implements ApplicationListener<ReviewCre
   @Override
   public void onApplicationEvent(ReviewCreatedEvent event) {
     String hotelId = event.hotelId();
+    String reviewId = event.reviewId();
     Integer rating = event.rating();
-    Command command = new SyncUpdateHotelRatingCommand(hotelId, rating);
+    Command command = new SyncUpdateHotelRatingCommand(hotelId, reviewId, rating);
     try {
       commandBus.publish(command);
     } catch (RuntimeException e) {

@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
+import org.egualpam.contexts.hotelmanagement.shared.domain.EntityId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
@@ -60,9 +61,15 @@ public final class Hotel extends AggregateRoot {
     return hotel;
   }
 
-  public void updateRating(Integer reviewRating) {
-    if (isNull(reviewRating)) {
+  public void updateRating(
+      String reviewId, Integer reviewRating, ReviewIsAlreadyProcessed reviewIsAlreadyProcessed) {
+    if (isNull(reviewId) || isNull(reviewRating)) {
       throw new RequiredPropertyIsMissing();
+    }
+
+    EntityId reviewEntityId = new EntityId(reviewId);
+    if (reviewIsAlreadyProcessed.with(reviewEntityId)) {
+      throw new ReviewAlreadyProcessed(reviewEntityId);
     }
 
     final Integer reviewsRatingSum = this.rating.ratingSum();

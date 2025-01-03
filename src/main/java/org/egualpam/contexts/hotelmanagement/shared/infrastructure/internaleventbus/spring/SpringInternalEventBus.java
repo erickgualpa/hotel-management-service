@@ -18,9 +18,10 @@ public class SpringInternalEventBus implements InternalEventBus {
   public void publish(InternalEvent event) {
     if (event instanceof ReviewCreated reviewCreated) {
       String hotelId = reviewCreated.hotelId().value();
+      String reviewId = reviewCreated.aggregateId().value();
       Integer rating = reviewCreated.rating().value();
 
-      ApplicationEvent applicationEvent = new ReviewCreatedEvent(this, hotelId, rating);
+      ApplicationEvent applicationEvent = new ReviewCreatedEvent(this, hotelId, reviewId, rating);
 
       eventPublisher.publishEvent(applicationEvent);
     }

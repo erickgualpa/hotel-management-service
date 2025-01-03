@@ -9,6 +9,7 @@ import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedEventConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommand;
@@ -92,5 +93,11 @@ public class HotelInfrastructureConfiguration {
   @Bean
   public ApplicationListener<ReviewCreatedEvent> reviewCreatedEventConsumer(CommandBus commandBus) {
     return new ReviewCreatedEventConsumer(commandBus);
+  }
+
+  @Bean
+  public ReviewIsAlreadyProcessed reviewIsAlreadyProcessed() {
+    // TODO: Add actual implementation
+    return reviewId -> false;
   }
 }
