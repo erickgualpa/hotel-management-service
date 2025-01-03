@@ -66,6 +66,7 @@ docker compose down --rmi local
     │   │                   │       │   └── jpa
     │   │                   │       ├── repository
     │   │                   │       │   └── jpa
+    │   │                   │       ├── reviewisalreadyprocessed
     │   │                   │       └── shared
     │   │                   │           └── jpa
     │   │                   ├── review
@@ -90,6 +91,7 @@ docker compose down --rmi local
     │   │                       ├── domain
     │   │                       └── infrastructure
     │   │                           ├── configuration
+    │   │                           │   └── eventbus
     │   │                           ├── cqrs
     │   │                           │   ├── command
     │   │                           │   │   └── simple
@@ -98,7 +100,8 @@ docker compose down --rmi local
     │   │                           ├── eventbus
     │   │                           │   ├── events
     │   │                           │   ├── rabbitmq
-    │   │                           │   └── simple
+    │   │                           │   ├── simple
+    │   │                           │   └── springamqp
     │   │                           └── internaleventbus
     │   │                               └── spring
     │   └── resources
@@ -120,8 +123,9 @@ docker compose down --rmi local
         │                   │       ├── controller
         │                   │       ├── readmodelsupplier
         │                   │       │   └── jpa
-        │                   │       └── repository
-        │                   │           └── jpa
+        │                   │       ├── repository
+        │                   │       │   └── jpa
+        │                   │       └── reviewisalreadyprocessed
         │                   ├── journey
         │                   ├── review
         │                   │   ├── application
@@ -141,7 +145,8 @@ docker compose down --rmi local
         │                           │       └── simple
         │                           ├── eventbus
         │                           │   ├── rabbitmq
-        │                           │   └── simple
+        │                           │   ├── simple
+        │                           │   └── springamqp
         │                           └── helpers
         └── resources
 ```
