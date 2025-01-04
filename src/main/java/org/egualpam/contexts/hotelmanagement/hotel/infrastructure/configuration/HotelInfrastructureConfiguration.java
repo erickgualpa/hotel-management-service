@@ -12,7 +12,7 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedEventConsumer;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.SpringReviewCreatedEventConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.SpringAmqpReviewDomainEventsConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommandHandler;
@@ -96,7 +96,7 @@ public class HotelInfrastructureConfiguration {
   @Bean
   public ApplicationListener<ReviewCreatedEvent> reviewCreatedEventConsumer(
       UpdateHotelRating updateHotelRating) {
-    return new ReviewCreatedEventConsumer(updateHotelRating);
+    return new SpringReviewCreatedEventConsumer(updateHotelRating);
   }
 
   @Bean

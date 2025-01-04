@@ -5,11 +5,11 @@ import org.egualpam.contexts.hotelmanagement.hotel.application.command.UpdateHot
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.internaleventbus.spring.ReviewCreatedEvent;
 import org.springframework.context.ApplicationListener;
 
-public class ReviewCreatedEventConsumer implements ApplicationListener<ReviewCreatedEvent> {
+public class SpringReviewCreatedEventConsumer implements ApplicationListener<ReviewCreatedEvent> {
 
   private final UpdateHotelRating updateHotelRating;
 
-  public ReviewCreatedEventConsumer(UpdateHotelRating updateHotelRating) {
+  public SpringReviewCreatedEventConsumer(UpdateHotelRating updateHotelRating) {
     this.updateHotelRating = updateHotelRating;
   }
 
