@@ -94,8 +94,9 @@ public class HotelInfrastructureConfiguration {
   }
 
   @Bean
-  public ApplicationListener<ReviewCreatedEvent> reviewCreatedEventConsumer(CommandBus commandBus) {
-    return new ReviewCreatedEventConsumer(commandBus);
+  public ApplicationListener<ReviewCreatedEvent> reviewCreatedEventConsumer(
+      UpdateHotelRating updateHotelRating) {
+    return new ReviewCreatedEventConsumer(updateHotelRating);
   }
 
   @Bean
