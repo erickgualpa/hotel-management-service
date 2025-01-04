@@ -4,7 +4,6 @@ import static java.util.UUID.randomUUID;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -21,8 +20,6 @@ import org.egualpam.contexts.hotelmanagement.review.domain.InvalidRating;
 import org.egualpam.contexts.hotelmanagement.review.domain.Rating;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewAlreadyExists;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.InternalEvent;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.InternalEventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
@@ -45,19 +42,17 @@ class CreateReviewShould {
   private static final Instant NOW = Instant.now();
 
   @Captor private ArgumentCaptor<Review> reviewCaptor;
-  @Captor private ArgumentCaptor<InternalEvent> internalEventCaptor;
   @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
   @Mock private Clock clock;
   @Mock private AggregateRepository<Review> reviewRepository;
-  @Mock private InternalEventBus internalEventBus;
   @Mock private EventBus eventBus;
 
   private CreateReview testee;
 
   @BeforeEach
   void setUp() {
-    testee = new CreateReview(clock, reviewRepository, internalEventBus, eventBus);
+    testee = new CreateReview(clock, reviewRepository, eventBus);
   }
 
   @Test
@@ -83,15 +78,6 @@ class CreateReviewShould {
               assertThat(result.rating()).isEqualTo(new Rating(rating));
               assertThat(result.comment()).isEqualTo(new Comment(comment));
               assertThat(result.pullDomainEvents()).isEmpty();
-            });
-
-    verify(internalEventBus).publish(internalEventCaptor.capture());
-    assertThat(internalEventCaptor.getValue())
-        .satisfies(
-            internalEvent -> {
-              assertNotNull(internalEvent.id());
-              assertThat(internalEvent.aggregateId().value()).isEqualTo(reviewId);
-              assertThat(internalEvent.occurredOn()).isEqualTo(NOW);
             });
 
     verify(eventBus).publish(domainEventsCaptor.capture());

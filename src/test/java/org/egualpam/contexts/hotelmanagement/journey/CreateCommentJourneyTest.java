@@ -84,6 +84,7 @@ public class CreateCommentJourneyTest extends AbstractIntegrationTest {
         .andExpect(status().isCreated());
 
     // Get hotel with average rating updated
+    Thread.sleep(1000);
     Double expected = (double) rating;
     mockMvc
         .perform(get("/v1/hotels/{hotelId}", hotelId))

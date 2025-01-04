@@ -23,7 +23,7 @@ public class ReviewApplicationConfiguration {
       AggregateRepository<Review> reviewRepository,
       InternalEventBus internalEventBus,
       EventBus eventBus) {
-    return new CreateReview(clock, reviewRepository, internalEventBus, eventBus);
+    return new CreateReview(clock, reviewRepository, eventBus);
   }
 
   @Bean
