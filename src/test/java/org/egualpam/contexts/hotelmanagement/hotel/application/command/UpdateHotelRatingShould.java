@@ -25,6 +25,7 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,6 +43,7 @@ class UpdateHotelRatingShould {
   @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
   @Mock private Clock clock;
+  @Mock private UniqueIdSupplier uniqueIdSupplier;
   @Mock private AggregateRepository<Hotel> repository;
   @Mock private ReviewIsAlreadyProcessed reviewIsAlreadyProcessed;
   @Mock private EventBus eventBus;
@@ -50,7 +52,9 @@ class UpdateHotelRatingShould {
 
   @BeforeEach
   void setUp() {
-    testee = new UpdateHotelRating(clock, repository, reviewIsAlreadyProcessed, eventBus);
+    testee =
+        new UpdateHotelRating(
+            clock, uniqueIdSupplier, repository, reviewIsAlreadyProcessed, eventBus);
   }
 
   @Test
@@ -58,6 +62,7 @@ class UpdateHotelRatingShould {
     AggregateId aggregateId = new AggregateId(UniqueId.get().value());
     EntityId reviewId = new EntityId(UniqueId.get().value());
     Integer rating = 3;
+    UniqueId domainEventId = UniqueId.get();
 
     Double expectedHotelRatingAverage = Double.parseDouble(rating.toString());
     HotelRating expectedHotelRating = new HotelRating(1, expectedHotelRatingAverage);
@@ -73,6 +78,7 @@ class UpdateHotelRatingShould {
 
     when(clock.instant()).thenReturn(NOW);
     when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
+    when(uniqueIdSupplier.get()).thenReturn(domainEventId);
 
     assertThat(hotel.rating().reviewsCount()).isZero();
     assertThat(hotel.rating().average()).isZero();
@@ -95,7 +101,7 @@ class UpdateHotelRatingShould {
         .satisfies(
             domainEvent -> {
               HotelRatingUpdated hotelRatingUpdated = (HotelRatingUpdated) domainEvent;
-              assertThat(hotelRatingUpdated.id()).isNotNull();
+              assertThat(hotelRatingUpdated.id()).isEqualTo(domainEventId);
               assertThat(hotelRatingUpdated.aggregateId()).isEqualTo(aggregateId);
               assertThat(hotelRatingUpdated.reviewId()).isEqualTo(reviewId);
               assertThat(hotelRatingUpdated.occurredOn()).isEqualTo(NOW);

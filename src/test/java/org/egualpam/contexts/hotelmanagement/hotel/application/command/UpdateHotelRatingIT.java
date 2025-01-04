@@ -17,6 +17,7 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EntityId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,7 @@ class UpdateHotelRatingIT extends AbstractIntegrationTest {
   @Autowired private TransactionTemplate transactionTemplate;
 
   @Autowired private Clock clock;
+  @Autowired private UniqueIdSupplier uniqueIdSupplier;
   @MockitoSpyBean private AggregateRepository<Hotel> repository;
   @Autowired private ReviewIsAlreadyProcessed reviewIsAlreadyProcessed;
   @Autowired private EventBus eventBus;
@@ -49,7 +51,9 @@ class UpdateHotelRatingIT extends AbstractIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    testee = new UpdateHotelRating(clock, repository, reviewIsAlreadyProcessed, eventBus);
+    testee =
+        new UpdateHotelRating(
+            clock, uniqueIdSupplier, repository, reviewIsAlreadyProcessed, eventBus);
   }
 
   @Test
