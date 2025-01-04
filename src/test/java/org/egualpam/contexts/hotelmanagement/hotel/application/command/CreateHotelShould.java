@@ -1,8 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.hotel.application.command;
 
-import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.never;
@@ -20,6 +18,8 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +32,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class CreateHotelShould {
 
   @Mock private Clock clock;
+  @Mock private UniqueIdSupplier uniqueIdSupplier;
   @Mock private AggregateRepository<Hotel> repository;
   @Mock private EventBus eventBus;
 
@@ -44,19 +45,21 @@ class CreateHotelShould {
 
   @BeforeEach
   void setUp() {
-    testee = new CreateHotel(clock, repository, eventBus);
+    testee = new CreateHotel(clock, uniqueIdSupplier, repository, eventBus);
   }
 
   @Test
   void createHotel() {
-    String id = randomUUID().toString();
+    String id = UniqueId.get().value();
     String name = randomAlphabetic(5);
     String description = randomAlphabetic(10);
     String location = randomAlphabetic(5);
     Integer price = 100;
     String imageURL = "www." + randomAlphabetic(5) + ".com";
+    UniqueId domainEventId = UniqueId.get();
 
     when(clock.instant()).thenReturn(NOW);
+    when(uniqueIdSupplier.get()).thenReturn(domainEventId);
 
     CreateHotelCommand command =
         new CreateHotelCommand(id, name, description, location, price, imageURL);
@@ -83,7 +86,7 @@ class CreateHotelShould {
         .isInstanceOf(HotelCreated.class)
         .satisfies(
             e -> {
-              assertNotNull(e.id());
+              assertThat(e.id()).isEqualTo(domainEventId);
               assertThat(e.aggregateId().value()).isEqualTo(id);
               assertThat(e.occurredOn()).isEqualTo(NOW);
             });
@@ -91,7 +94,7 @@ class CreateHotelShould {
 
   @Test
   void notCreateHotelWhenAlreadyExists() {
-    String id = randomUUID().toString();
+    String id = UniqueId.get().value();
     String name = randomAlphabetic(5);
     String description = randomAlphabetic(10);
     String location = randomAlphabetic(5);

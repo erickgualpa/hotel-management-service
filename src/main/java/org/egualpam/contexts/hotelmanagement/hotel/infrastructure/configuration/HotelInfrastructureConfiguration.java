@@ -12,8 +12,8 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.SpringReviewCreatedEventConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.SpringAmqpReviewDomainEventsConsumer;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.SpringReviewCreatedEventConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommand;
@@ -30,6 +30,8 @@ import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.reviewisalreadyprocessed.JpaReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
@@ -108,5 +110,10 @@ public class HotelInfrastructureConfiguration {
   public SpringAmqpReviewDomainEventsConsumer reviewCreatedPublicEventConsumer(
       ObjectMapper objectMapper, CommandBus commandBus) {
     return new SpringAmqpReviewDomainEventsConsumer(objectMapper, commandBus);
+  }
+
+  @Bean
+  public UniqueIdSupplier uniqueIdSupplier() {
+    return UniqueId::get;
   }
 }

@@ -14,6 +14,7 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,8 +35,11 @@ public class HotelApplicationConfiguration {
 
   @Bean
   public CreateHotel createHotel(
-      Clock clock, AggregateRepository<Hotel> hotelRepository, EventBus eventBus) {
-    return new CreateHotel(clock, hotelRepository, eventBus);
+      Clock clock,
+      UniqueIdSupplier uniqueIdSupplier,
+      AggregateRepository<Hotel> hotelRepository,
+      EventBus eventBus) {
+    return new CreateHotel(clock, uniqueIdSupplier, hotelRepository, eventBus);
   }
 
   @Bean

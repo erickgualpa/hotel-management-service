@@ -5,16 +5,22 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelAlreadyExists;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 
 public class CreateHotel {
 
   private final Clock clock;
-
+  private final UniqueIdSupplier uniqueIdSupplier;
   private final AggregateRepository<Hotel> repository;
   private final EventBus eventBus;
 
-  public CreateHotel(Clock clock, AggregateRepository<Hotel> repository, EventBus eventBus) {
+  public CreateHotel(
+      Clock clock,
+      UniqueIdSupplier uniqueIdSupplier,
+      AggregateRepository<Hotel> repository,
+      EventBus eventBus) {
     this.clock = clock;
+    this.uniqueIdSupplier = uniqueIdSupplier;
     this.repository = repository;
     this.eventBus = eventBus;
   }
@@ -37,6 +43,7 @@ public class CreateHotel {
               hotelLocation,
               hotelPrice,
               hotelImageURL,
+              uniqueIdSupplier,
               repository,
               clock);
     } catch (HotelAlreadyExists e) {
