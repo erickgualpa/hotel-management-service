@@ -7,17 +7,22 @@ import org.egualpam.contexts.hotelmanagement.review.domain.ReviewNotFound;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 
 public class UpdateReview {
 
   private final Clock clock;
-
+  private final UniqueIdSupplier uniqueIdSupplier;
   private final AggregateRepository<Review> reviewRepository;
   private final EventBus eventBus;
 
   public UpdateReview(
-      Clock clock, AggregateRepository<Review> reviewRepository, EventBus eventBus) {
+      Clock clock,
+      UniqueIdSupplier uniqueIdSupplier,
+      AggregateRepository<Review> reviewRepository,
+      EventBus eventBus) {
     this.clock = clock;
+    this.uniqueIdSupplier = uniqueIdSupplier;
     this.reviewRepository = reviewRepository;
     this.eventBus = eventBus;
   }
@@ -30,7 +35,7 @@ public class UpdateReview {
             .flatMap(reviewRepository::find)
             .orElseThrow(ReviewNotFound::new);
 
-    review.updateComment(command.comment(), clock);
+    review.updateComment(command.comment(), clock, uniqueIdSupplier);
     reviewRepository.save(review);
     eventBus.publish(review.pullDomainEvents());
   }

@@ -8,7 +8,6 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 
 public final class Review extends AggregateRoot {
@@ -57,14 +56,15 @@ public final class Review extends AggregateRoot {
     return review;
   }
 
-  public void updateComment(String comment, Clock clock) {
+  public void updateComment(String comment, Clock clock, UniqueIdSupplier uniqueIdSupplier) {
     Optional.ofNullable(comment)
         .map(Comment::new)
         .filter(c -> !c.equals(this.comment))
         .ifPresent(
             c -> {
               this.comment = c;
-              ReviewUpdated reviewUpdated = new ReviewUpdated(UniqueId.get(), this.id(), clock);
+              ReviewUpdated reviewUpdated =
+                  new ReviewUpdated(uniqueIdSupplier.get(), this.id(), clock);
               domainEvents().add(reviewUpdated);
             });
   }

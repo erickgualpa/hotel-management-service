@@ -19,6 +19,8 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,6 +35,7 @@ class UpdateReviewShould {
   private static final Instant NOW = Instant.now();
 
   @Mock private Clock clock;
+  @Mock private UniqueIdSupplier uniqueIdSupplier;
   @Mock private AggregateRepository<Review> reviewRepository;
   @Mock private EventBus eventBus;
 
@@ -43,19 +46,21 @@ class UpdateReviewShould {
 
   @BeforeEach
   void setUp() {
-    testee = new UpdateReview(clock, reviewRepository, eventBus);
+    testee = new UpdateReview(clock, uniqueIdSupplier, reviewRepository, eventBus);
   }
 
   @Test
   void updateReview() {
     String reviewId = randomUUID().toString();
     String comment = randomAlphabetic(10);
+    UniqueId domainEventId = UniqueId.get();
 
     Review review =
         new Review(reviewId, randomUUID().toString(), nextInt(1, 5), randomAlphabetic(10));
 
     when(clock.instant()).thenReturn(NOW);
     when(reviewRepository.find(new AggregateId(reviewId))).thenReturn(Optional.of(review));
+    when(uniqueIdSupplier.get()).thenReturn(domainEventId);
 
     UpdateReviewCommand command = new UpdateReviewCommand(reviewId, comment);
     testee.execute(command);
@@ -76,6 +81,7 @@ class UpdateReviewShould {
         .isInstanceOf(ReviewUpdated.class)
         .satisfies(
             result -> {
+              assertThat(result.id()).isEqualTo(domainEventId);
               assertThat(result.aggregateId()).isEqualTo(new AggregateId(reviewId));
               assertThat(result.occurredOn()).isEqualTo(NOW);
             });
