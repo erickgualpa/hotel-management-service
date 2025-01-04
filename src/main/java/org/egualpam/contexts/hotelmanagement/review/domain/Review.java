@@ -9,6 +9,7 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 
 public final class Review extends AggregateRoot {
 
@@ -33,7 +34,8 @@ public final class Review extends AggregateRoot {
       String hotelId,
       Integer rating,
       String comment,
-      Clock clock) {
+      Clock clock,
+      UniqueIdSupplier uniqueIdSupplier) {
     if (isNull(id)) {
       throw new RequiredPropertyIsMissing();
     }
@@ -49,7 +51,8 @@ public final class Review extends AggregateRoot {
     Review review = new Review(id, hotelId, rating, comment);
 
     ReviewCreated reviewCreated =
-        new ReviewCreated(UniqueId.get(), review.id(), review.hotelId, review.rating, clock);
+        new ReviewCreated(
+            uniqueIdSupplier.get(), review.id(), review.hotelId, review.rating, clock);
     review.domainEvents().add(reviewCreated);
     return review;
   }

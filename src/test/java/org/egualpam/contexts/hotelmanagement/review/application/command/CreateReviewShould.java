@@ -26,6 +26,8 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,6 +47,7 @@ class CreateReviewShould {
   @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
   @Mock private Clock clock;
+  @Mock private UniqueIdSupplier uniqueIdSupplier;
   @Mock private AggregateRepository<Review> reviewRepository;
   @Mock private EventBus eventBus;
 
@@ -52,7 +55,7 @@ class CreateReviewShould {
 
   @BeforeEach
   void setUp() {
-    testee = new CreateReview(clock, reviewRepository, eventBus);
+    testee = new CreateReview(clock, uniqueIdSupplier, reviewRepository, eventBus);
   }
 
   @Test
@@ -61,8 +64,10 @@ class CreateReviewShould {
     String hotelIdentifier = randomUUID().toString();
     Integer rating = nextInt(1, 5);
     String comment = randomAlphabetic(10);
+    UniqueId domainEventId = UniqueId.get();
 
     when(clock.instant()).thenReturn(NOW);
+    when(uniqueIdSupplier.get()).thenReturn(domainEventId);
 
     CreateReviewCommand command =
         new CreateReviewCommand(reviewId, hotelIdentifier, rating, comment);
@@ -86,6 +91,7 @@ class CreateReviewShould {
         .first()
         .satisfies(
             domainEvent -> {
+              assertThat(domainEvent.id()).isEqualTo(domainEventId);
               assertThat(domainEvent.aggregateId()).isEqualTo(new AggregateId(reviewId));
               assertThat(domainEvent.occurredOn()).isEqualTo(NOW);
             });

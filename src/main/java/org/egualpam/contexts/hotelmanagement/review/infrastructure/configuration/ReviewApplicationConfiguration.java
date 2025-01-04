@@ -7,10 +7,10 @@ import org.egualpam.contexts.hotelmanagement.review.application.query.FindReview
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.InternalEventBus;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,10 +20,10 @@ public class ReviewApplicationConfiguration {
   @Bean
   public CreateReview createReview(
       Clock clock,
+      UniqueIdSupplier uniqueIdSupplier,
       AggregateRepository<Review> reviewRepository,
-      InternalEventBus internalEventBus,
       EventBus eventBus) {
-    return new CreateReview(clock, reviewRepository, eventBus);
+    return new CreateReview(clock, uniqueIdSupplier, reviewRepository, eventBus);
   }
 
   @Bean
