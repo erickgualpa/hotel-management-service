@@ -13,18 +13,21 @@ import org.slf4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 
-public class ReviewCreatedEventSpringAmqpConsumer {
+public class SpringAmqpReviewDomainEventsConsumer {
 
   private final ObjectMapper objectMapper;
   private final Logger logger = getLogger(this.getClass());
   private final CommandBus commandBus;
 
-  public ReviewCreatedEventSpringAmqpConsumer(ObjectMapper objectMapper, CommandBus commandBus) {
+  public SpringAmqpReviewDomainEventsConsumer(ObjectMapper objectMapper, CommandBus commandBus) {
     this.objectMapper = objectMapper;
     this.commandBus = commandBus;
   }
 
-  @RabbitListener(queues = "hotelmanagement.review", ackMode = "MANUAL")
+  @RabbitListener(
+      id = "review-domain-events-consumer",
+      queues = "hotelmanagement.review",
+      ackMode = "MANUAL")
   public void consume(Message in, Channel channel) throws IOException {
     JsonNode event = objectMapper.readValue(in.getBody(), JsonNode.class);
     String eventType = event.get("type").asText();

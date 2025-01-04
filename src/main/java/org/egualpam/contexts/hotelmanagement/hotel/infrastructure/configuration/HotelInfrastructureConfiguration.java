@@ -13,7 +13,7 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedEventConsumer;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedEventSpringAmqpConsumer;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.SpringAmqpReviewDomainEventsConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommand;
@@ -104,8 +104,8 @@ public class HotelInfrastructureConfiguration {
   }
 
   @Bean
-  public ReviewCreatedEventSpringAmqpConsumer reviewCreatedPublicEventConsumer(
+  public SpringAmqpReviewDomainEventsConsumer reviewCreatedPublicEventConsumer(
       ObjectMapper objectMapper, CommandBus commandBus) {
-    return new ReviewCreatedEventSpringAmqpConsumer(objectMapper, commandBus);
+    return new SpringAmqpReviewDomainEventsConsumer(objectMapper, commandBus);
   }
 }
