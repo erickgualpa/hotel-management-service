@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.hotel.application.command;
 
+import java.time.Clock;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelNotExists;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewAlreadyProcessed;
@@ -10,14 +11,17 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 
 public class UpdateHotelRating {
 
+  private final Clock clock;
   private final AggregateRepository<Hotel> repository;
   private final ReviewIsAlreadyProcessed reviewIsAlreadyProcessed;
   private final EventBus eventBus;
 
   public UpdateHotelRating(
+      Clock clock,
       AggregateRepository<Hotel> repository,
       ReviewIsAlreadyProcessed reviewIsAlreadyProcessed,
       EventBus eventBus) {
+    this.clock = clock;
     this.repository = repository;
     this.reviewIsAlreadyProcessed = reviewIsAlreadyProcessed;
     this.eventBus = eventBus;
@@ -33,7 +37,7 @@ public class UpdateHotelRating {
         repository.find(aggregateId).orElseThrow(() -> new HotelNotExists(aggregateId));
 
     try {
-      hotel.updateRating(reviewId, reviewRating, reviewIsAlreadyProcessed);
+      hotel.updateRating(reviewId, reviewRating, reviewIsAlreadyProcessed, clock);
     } catch (ReviewAlreadyProcessed e) {
       return;
     }

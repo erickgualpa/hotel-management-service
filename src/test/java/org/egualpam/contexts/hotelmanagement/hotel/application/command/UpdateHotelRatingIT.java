@@ -9,6 +9,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.Clock;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewIsAlreadyProcessed;
@@ -39,6 +40,7 @@ class UpdateHotelRatingIT extends AbstractIntegrationTest {
 
   @Autowired private TransactionTemplate transactionTemplate;
 
+  @Autowired private Clock clock;
   @MockitoSpyBean private AggregateRepository<Hotel> repository;
   @Autowired private ReviewIsAlreadyProcessed reviewIsAlreadyProcessed;
   @Autowired private EventBus eventBus;
@@ -47,7 +49,7 @@ class UpdateHotelRatingIT extends AbstractIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    testee = new UpdateHotelRating(repository, reviewIsAlreadyProcessed, eventBus);
+    testee = new UpdateHotelRating(clock, repository, reviewIsAlreadyProcessed, eventBus);
   }
 
   @Test

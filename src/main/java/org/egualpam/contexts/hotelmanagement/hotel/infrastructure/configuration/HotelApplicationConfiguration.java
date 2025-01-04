@@ -40,9 +40,10 @@ public class HotelApplicationConfiguration {
 
   @Bean
   public UpdateHotelRating updateHotelRating(
+      Clock clock,
       AggregateRepository<Hotel> hotelRepository,
       ReviewIsAlreadyProcessed reviewIsAlreadyProcessed,
       EventBus eventBus) {
-    return new UpdateHotelRating(hotelRepository, reviewIsAlreadyProcessed, eventBus);
+    return new UpdateHotelRating(clock, hotelRepository, reviewIsAlreadyProcessed, eventBus);
   }
 }

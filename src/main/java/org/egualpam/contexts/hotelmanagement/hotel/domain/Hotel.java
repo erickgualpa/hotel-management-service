@@ -62,7 +62,10 @@ public final class Hotel extends AggregateRoot {
   }
 
   public void updateRating(
-      String reviewId, Integer reviewRating, ReviewIsAlreadyProcessed reviewIsAlreadyProcessed) {
+      String reviewId,
+      Integer reviewRating,
+      ReviewIsAlreadyProcessed reviewIsAlreadyProcessed,
+      Clock clock) {
     if (isNull(reviewId) || isNull(reviewRating)) {
       throw new RequiredPropertyIsMissing();
     }
@@ -80,6 +83,12 @@ public final class Hotel extends AggregateRoot {
     final Double updatedAverage = (double) (updatedReviewsRatingSum / updatedReviewsCount);
 
     this.rating = new HotelRating(updatedReviewsCount, updatedAverage);
+
+    final HotelRatingUpdated hotelRatingUpdated =
+        new HotelRatingUpdated(
+            // TODO: Replace static generation by interface/port
+            UniqueId.get(), this.id(), reviewEntityId, clock);
+    this.domainEvents().add(hotelRatingUpdated);
   }
 
   public HotelName name() {

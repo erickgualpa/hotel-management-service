@@ -8,11 +8,14 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelNotExists;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelRatingUpdated;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
@@ -30,13 +33,15 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-// TODO: Add test covering missing reviewId
 @ExtendWith(MockitoExtension.class)
 class UpdateHotelRatingShould {
+
+  private static final Instant NOW = Instant.now();
 
   @Captor private ArgumentCaptor<Hotel> hotelCaptor;
   @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
+  @Mock private Clock clock;
   @Mock private AggregateRepository<Hotel> repository;
   @Mock private ReviewIsAlreadyProcessed reviewIsAlreadyProcessed;
   @Mock private EventBus eventBus;
@@ -45,7 +50,7 @@ class UpdateHotelRatingShould {
 
   @BeforeEach
   void setUp() {
-    testee = new UpdateHotelRating(repository, reviewIsAlreadyProcessed, eventBus);
+    testee = new UpdateHotelRating(clock, repository, reviewIsAlreadyProcessed, eventBus);
   }
 
   @Test
@@ -66,6 +71,7 @@ class UpdateHotelRatingShould {
             200,
             "www.hotel-image-url.com");
 
+    when(clock.instant()).thenReturn(NOW);
     when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
 
     assertThat(hotel.rating().reviewsCount()).isZero();
@@ -80,9 +86,20 @@ class UpdateHotelRatingShould {
 
     assertThat(saved.rating()).isEqualTo(expectedHotelRating);
 
-    // TODO: Assert domain event has been published
     verify(eventBus).publish(domainEventsCaptor.capture());
-    assertThat(domainEventsCaptor.getValue()).isEmpty();
+    Set<DomainEvent> domainEvents = domainEventsCaptor.getValue();
+    assertThat(domainEvents)
+        .hasSize(1)
+        .first()
+        .isInstanceOf(HotelRatingUpdated.class)
+        .satisfies(
+            domainEvent -> {
+              HotelRatingUpdated hotelRatingUpdated = (HotelRatingUpdated) domainEvent;
+              assertThat(hotelRatingUpdated.id()).isNotNull();
+              assertThat(hotelRatingUpdated.aggregateId()).isEqualTo(aggregateId);
+              assertThat(hotelRatingUpdated.reviewId()).isEqualTo(reviewId);
+              assertThat(hotelRatingUpdated.occurredOn()).isEqualTo(NOW);
+            });
   }
 
   @Test
