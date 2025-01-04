@@ -48,7 +48,8 @@ public final class Review extends AggregateRoot {
 
     Review review = new Review(id, hotelId, rating, comment);
 
-    ReviewCreated reviewCreated = new ReviewCreated(UniqueId.get(), review.id(), clock);
+    ReviewCreated reviewCreated =
+        new ReviewCreated(UniqueId.get(), review.id(), review.hotelId, review.rating, clock);
     review.domainEvents().add(reviewCreated);
     return review;
   }

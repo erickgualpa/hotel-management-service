@@ -4,8 +4,12 @@ import jakarta.persistence.EntityManager;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EntityId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class JpaReviewIsAlreadyProcessed implements ReviewIsAlreadyProcessed {
+
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   private static final String findReviewByIdQuery =
       """
@@ -45,6 +49,12 @@ public final class JpaReviewIsAlreadyProcessed implements ReviewIsAlreadyProcess
           .executeUpdate();
     }
 
-    return result == 1;
+    boolean isReviewAlreadyProcessed = result == 1;
+
+    if (isReviewAlreadyProcessed) {
+      logger.warn("Review with id [%s] was already processed".formatted(reviewId.value()));
+    }
+
+    return isReviewAlreadyProcessed;
   }
 }

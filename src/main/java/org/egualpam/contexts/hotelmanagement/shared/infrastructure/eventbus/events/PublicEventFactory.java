@@ -16,7 +16,9 @@ public final class PublicEventFactory {
           new ReviewCreatedPublicEvent(
               reviewCreated.id().value(),
               reviewCreated.aggregateId().value(),
-              reviewCreated.occurredOn());
+              reviewCreated.occurredOn(),
+              reviewCreated.hotelId().value(),
+              reviewCreated.rating().value());
       case ReviewUpdated reviewUpdated ->
           new ReviewUpdatedPublicEvent(
               reviewUpdated.id().value(),

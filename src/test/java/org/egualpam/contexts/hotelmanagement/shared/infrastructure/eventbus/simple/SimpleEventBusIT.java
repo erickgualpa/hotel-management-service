@@ -7,7 +7,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.time.Clock;
 import java.util.Set;
-import java.util.UUID;
+import org.egualpam.contexts.hotelmanagement.review.domain.HotelId;
+import org.egualpam.contexts.hotelmanagement.review.domain.Rating;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCreated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
@@ -36,9 +37,11 @@ class SimpleEventBusIT extends AbstractIntegrationTest {
 
   @Test
   void publishDomainEvents() {
-    String aggregateId = UUID.randomUUID().toString();
+    String aggregateId = UniqueId.get().value();
+    HotelId hotelId = new HotelId(UniqueId.get().value());
+    Rating rating = new Rating(3);
     DomainEvent domainEvent =
-        new ReviewCreated(UniqueId.get(), new AggregateId(aggregateId), clock);
+        new ReviewCreated(UniqueId.get(), new AggregateId(aggregateId), hotelId, rating, clock);
 
     eventBus.publish(Set.of(domainEvent));
 

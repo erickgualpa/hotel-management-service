@@ -4,6 +4,6 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.EntityId;
 
 public class ReviewAlreadyProcessed extends RuntimeException {
   public ReviewAlreadyProcessed(EntityId reviewId) {
-    super("Review with id [%s] has been already processed".formatted(reviewId.value()));
+    super("Review with id [%s] was already processed".formatted(reviewId.value()));
   }
 }

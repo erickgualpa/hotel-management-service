@@ -105,7 +105,7 @@ public class HotelInfrastructureConfiguration {
 
   @Bean
   public ReviewCreatedEventSpringAmqpConsumer reviewCreatedPublicEventConsumer(
-      ObjectMapper objectMapper) {
-    return new ReviewCreatedEventSpringAmqpConsumer(objectMapper);
+      ObjectMapper objectMapper, CommandBus commandBus) {
+    return new ReviewCreatedEventSpringAmqpConsumer(objectMapper, commandBus);
   }
 }
