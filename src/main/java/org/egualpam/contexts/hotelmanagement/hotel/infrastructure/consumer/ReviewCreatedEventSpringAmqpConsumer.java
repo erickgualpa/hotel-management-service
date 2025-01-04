@@ -2,10 +2,10 @@ package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import java.io.IOException;
-import java.time.Instant;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -22,16 +22,14 @@ public class ReviewCreatedEventSpringAmqpConsumer {
 
   @RabbitListener(queues = "hotelmanagement.review", ackMode = "MANUAL")
   public void consume(Message in, Channel channel) throws IOException {
-    DomainEvent domainEvent = objectMapper.readValue(in.getBody(), DomainEvent.class);
+    JsonNode event = objectMapper.readValue(in.getBody(), JsonNode.class);
+    String eventType = event.get("type").toString();
 
-    if (!"hotelmanagement.review.created".equals(domainEvent.type())) {
+    if (!"hotelmanagement.review.created".equals(eventType)) {
       channel.basicNack(in.getMessageProperties().getDeliveryTag(), false, true);
     }
 
-    logger.info("Domain event consumed: [%s]".formatted(domainEvent));
+    logger.info("Domain event consumed: [%s]".formatted(event));
     channel.basicAck(in.getMessageProperties().getDeliveryTag(), true);
   }
-
-  record DomainEvent(
-      String id, String type, String version, String aggregateId, Instant occurredOn) {}
 }
