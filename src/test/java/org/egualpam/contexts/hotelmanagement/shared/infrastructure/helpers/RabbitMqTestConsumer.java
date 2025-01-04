@@ -42,7 +42,7 @@ public final class RabbitMqTestConsumer {
       throw new RuntimeException("Connection could not be closed", e);
     }
 
-    assertNotNull(response);
+    assertNotNull(response, "No event found in queue: [%s]".formatted(queueName));
     return objectMapper.readValue(response.getBody(), PublicEventResult.class);
   }
 }

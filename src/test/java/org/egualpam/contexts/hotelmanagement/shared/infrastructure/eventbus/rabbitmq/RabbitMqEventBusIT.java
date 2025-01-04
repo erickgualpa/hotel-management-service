@@ -10,7 +10,7 @@ import com.rabbitmq.client.Channel;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Set;
-import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCreated;
+import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCreated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
@@ -46,7 +46,7 @@ public class RabbitMqEventBusIT extends AbstractIntegrationTest {
 
     UniqueId eventId = UniqueId.get();
     AggregateId aggregateId = new AggregateId(UniqueId.get().value());
-    DomainEvent domainEvent = new ReviewCreated(eventId, aggregateId, clock);
+    DomainEvent domainEvent = new HotelCreated(eventId, aggregateId, clock);
 
     testSubject.publish(Set.of(domainEvent));
 
@@ -55,12 +55,12 @@ public class RabbitMqEventBusIT extends AbstractIntegrationTest {
         .untilAsserted(
             () -> {
               PublicEventResult publicEventResult =
-                  rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.review");
+                  rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.hotel");
               assertThat(publicEventResult)
                   .satisfies(
                       r -> {
                         assertThat(r.id()).isEqualTo(eventId.value());
-                        assertThat(r.type()).isEqualTo("hotelmanagement.review.created");
+                        assertThat(r.type()).isEqualTo("hotelmanagement.hotel.created");
                         assertThat(r.version()).isEqualTo("1.0");
                         assertThat(r.aggregateId()).isEqualTo(aggregateId.value());
                         assertThat(r.occurredOn()).isEqualTo(NOW);

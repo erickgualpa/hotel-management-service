@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.application.command.UpdateHotelRating;
@@ -12,6 +13,7 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedEventConsumer;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.ReviewCreatedEventSpringAmqpConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommand;
@@ -99,5 +101,11 @@ public class HotelInfrastructureConfiguration {
   @Bean
   public ReviewIsAlreadyProcessed reviewIsAlreadyProcessed(EntityManager entityManager) {
     return new JpaReviewIsAlreadyProcessed(entityManager);
+  }
+
+  @Bean
+  public ReviewCreatedEventSpringAmqpConsumer reviewCreatedPublicEventConsumer(
+      ObjectMapper objectMapper) {
+    return new ReviewCreatedEventSpringAmqpConsumer(objectMapper);
   }
 }
