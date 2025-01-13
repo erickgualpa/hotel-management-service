@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringAmqpConfiguration {
 
-  static final String DOMAIN_EVENTS_EXCHANGE = "domain-events";
+  static final String DOMAIN_EVENTS_EXCHANGE = "hotelmanagement.domain-events";
 
   @Bean
   public TopicExchange topicExchange() {
