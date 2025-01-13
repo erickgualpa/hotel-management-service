@@ -12,7 +12,6 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.SpringReviewCreatedEventConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.consumer.SyncUpdateHotelRatingConsumer;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommandHandler;
@@ -35,10 +34,8 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.internaleventbus.spring.ReviewCreatedEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -93,12 +90,6 @@ public class HotelInfrastructureConfiguration {
         .handling(
             SyncUpdateHotelRatingCommand.class,
             new SyncUpdateHotelRatingCommandHandler(transactionTemplate, updateHotelRating));
-  }
-
-  @Bean
-  public ApplicationListener<ReviewCreatedEvent> reviewCreatedEventConsumer(
-      UpdateHotelRating updateHotelRating) {
-    return new SpringReviewCreatedEventConsumer(updateHotelRating);
   }
 
   @Bean
