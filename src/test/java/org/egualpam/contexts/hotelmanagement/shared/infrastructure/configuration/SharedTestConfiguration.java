@@ -10,6 +10,11 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.Event
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -47,5 +52,16 @@ public class SharedTestConfiguration {
 
     Connection connection = factory.newConnection();
     return new RabbitMqTestConsumer(connection, objectMapper);
+  }
+
+  @Bean("hotelManagementTestQueue")
+  public Queue hotelManagementTestQueue() {
+    return new Queue("hotelmanagement.test", false);
+  }
+
+  @Bean("hotelManagementTestBinding")
+  public Binding hotelManagementTestBinding(
+      @Qualifier("hotelManagementTestQueue") Queue queue, TopicExchange topicExchange) {
+    return BindingBuilder.bind(queue).to(topicExchange).with("hotelmanagement.#");
   }
 }

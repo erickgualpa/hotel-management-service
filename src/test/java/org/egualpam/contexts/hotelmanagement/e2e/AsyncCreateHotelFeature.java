@@ -66,14 +66,13 @@ class AsyncCreateHotelFeature extends AbstractIntegrationTest {
         .untilAsserted(
             () -> {
               assertTrue(hotelTestRepository.hotelExists(hotelId));
-              // TODO: Check if this can be removed
-              // domainEventIsPublished(hotelId);
+              domainEventIsPublished(hotelId);
             });
   }
 
   private void domainEventIsPublished(UUID hotelId) throws IOException {
     PublicEventResult publicEventResult =
-        rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.hotel");
+        rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.test");
     assertThat(publicEventResult)
         .satisfies(
             r -> {
