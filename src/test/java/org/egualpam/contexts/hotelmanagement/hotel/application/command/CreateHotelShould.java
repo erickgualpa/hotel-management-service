@@ -10,6 +10,7 @@ import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUti
 
 import java.time.Clock;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
@@ -101,7 +102,16 @@ class CreateHotelShould {
     Integer price = 100;
     String imageURL = "www." + randomAlphabetic(5) + ".com";
 
-    Hotel existing = new Hotel(id, name, description, location, price, imageURL);
+    Hotel existing =
+        Hotel.load(
+            Map.of(
+                "id", id,
+                "name", name,
+                "description", description,
+                "location", location,
+                "price", price,
+                "imageURL", imageURL));
+
     when(repository.find(new AggregateId(id))).thenReturn(Optional.of(existing));
 
     CreateHotelCommand command =

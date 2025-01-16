@@ -1,6 +1,9 @@
 package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa;
 
+import static java.util.Map.entry;
+
 import jakarta.persistence.EntityManager;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
@@ -29,8 +32,14 @@ public final class JpaHotelRepository implements AggregateRepository<Hotel> {
     String location = persistenceHotel.getLocation();
     Integer price = persistenceHotel.getPrice();
     String imageURL = persistenceHotel.getImageURL();
-    return new Hotel(
-        persistenceHotel.getId().toString(), name, description, location, price, imageURL);
+    return Hotel.load(
+        Map.ofEntries(
+            entry("id", persistenceHotel.getId().toString()),
+            entry("name", name),
+            entry("description", description),
+            entry("location", location),
+            entry("price", price),
+            entry("imageURL", imageURL)));
   }
 
   @Override

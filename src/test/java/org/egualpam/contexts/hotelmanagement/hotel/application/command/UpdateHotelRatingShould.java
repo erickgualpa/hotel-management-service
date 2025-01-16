@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
@@ -68,13 +69,14 @@ class UpdateHotelRatingShould {
     HotelRating expectedHotelRating = new HotelRating(1, expectedHotelRatingAverage);
 
     Hotel hotel =
-        new Hotel(
-            aggregateId.value(),
-            "hotel-name",
-            "hotel-description",
-            "hotel-location",
-            200,
-            "www.hotel-image-url.com");
+        Hotel.load(
+            Map.of(
+                "id", aggregateId.value(),
+                "name", "hotel-name",
+                "description", "hotel-description",
+                "location", "hotel-location",
+                "price", 200,
+                "imageURL", "www.hotel-image-url.com"));
 
     when(clock.instant()).thenReturn(NOW);
     when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
@@ -115,13 +117,14 @@ class UpdateHotelRatingShould {
     Integer rating = 3;
 
     Hotel hotel =
-        new Hotel(
-            aggregateId.value(),
-            "hotel-name",
-            "hotel-description",
-            "hotel-location",
-            200,
-            "www.hotel-image-url.com");
+        Hotel.load(
+            Map.of(
+                "id", aggregateId.value(),
+                "name", "hotel-name",
+                "description", "hotel-description",
+                "location", "hotel-location",
+                "price", 200,
+                "imageURL", "www.hotel-image-url.com"));
 
     when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
     when(reviewIsAlreadyProcessed.with(reviewId)).thenReturn(true);
@@ -168,13 +171,14 @@ class UpdateHotelRatingShould {
     AggregateId aggregateId = new AggregateId(UniqueId.get().value());
 
     Hotel hotel =
-        new Hotel(
-            aggregateId.value(),
-            "hotel-name",
-            "hotel-description",
-            "hotel-location",
-            200,
-            "www.hotel-image-url.com");
+        Hotel.load(
+            Map.of(
+                "id", aggregateId.value(),
+                "name", "hotel-name",
+                "description", "hotel-description",
+                "location", "hotel-location",
+                "price", 200,
+                "imageURL", "www.hotel-image-url.com"));
 
     when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
 
@@ -190,13 +194,14 @@ class UpdateHotelRatingShould {
     AggregateId aggregateId = new AggregateId(UniqueId.get().value());
 
     Hotel hotel =
-        new Hotel(
-            aggregateId.value(),
-            "hotel-name",
-            "hotel-description",
-            "hotel-location",
-            200,
-            "www.hotel-image-url.com");
+        Hotel.load(
+            Map.of(
+                "id", aggregateId.value(),
+                "name", "hotel-name",
+                "description", "hotel-description",
+                "location", "hotel-location",
+                "price", 200,
+                "imageURL", "www.hotel-image-url.com"));
 
     when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
 
