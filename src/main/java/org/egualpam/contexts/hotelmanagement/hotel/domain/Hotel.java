@@ -91,9 +91,10 @@ public final class Hotel extends AggregateRoot {
     final Integer reviewsRatingSum = this.rating.ratingSum();
     final Integer reviewsCount = this.rating.reviewsCount();
 
-    final Integer updatedReviewsRatingSum = reviewsRatingSum + reviewRating;
-    final Integer updatedReviewsCount = reviewsCount + 1;
-    final Double updatedAverage = (double) (updatedReviewsRatingSum / updatedReviewsCount);
+    final int updatedReviewsRatingSum = reviewsRatingSum + reviewRating;
+    final int updatedReviewsCount = reviewsCount + 1;
+
+    final Double updatedAverage = (double) updatedReviewsRatingSum / updatedReviewsCount;
 
     this.rating = new HotelRating(updatedReviewsCount, updatedAverage);
 

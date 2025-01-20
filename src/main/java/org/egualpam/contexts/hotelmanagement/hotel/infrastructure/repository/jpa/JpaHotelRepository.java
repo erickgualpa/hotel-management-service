@@ -54,9 +54,9 @@ public final class JpaHotelRepository implements AggregateRepository<Hotel> {
     persistenceHotel.setImageURL(hotel.imageURL().value());
 
     entityManager.merge(persistenceHotel);
-    entityManager.flush();
-
     updateHotelAverageRating(hotel);
+
+    entityManager.flush();
   }
 
   private void updateHotelAverageRating(Hotel hotel) {
