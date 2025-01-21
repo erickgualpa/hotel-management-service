@@ -47,8 +47,7 @@ public final class SpringAmqpEventBus implements EventBus {
   }
 
   private void publishEvent(PublicEvent event) throws JsonProcessingException {
-    final byte[] bytesFromEvent;
-    bytesFromEvent = objectMapper.writeValueAsBytes(event);
+    final byte[] bytesFromEvent = objectMapper.writeValueAsBytes(event);
     rabbitTemplate.convertAndSend(event.getType(), bytesFromEvent);
   }
 }
