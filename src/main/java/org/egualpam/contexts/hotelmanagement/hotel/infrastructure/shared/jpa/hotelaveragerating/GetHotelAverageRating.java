@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.hotelaveragerating;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;

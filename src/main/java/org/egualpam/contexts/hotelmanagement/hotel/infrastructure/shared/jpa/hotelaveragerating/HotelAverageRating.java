@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.hotelaveragerating;
 
 import java.math.BigDecimal;
 

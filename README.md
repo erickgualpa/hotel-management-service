@@ -69,6 +69,7 @@ docker compose down --rmi local
     │   │                   │       ├── reviewisalreadyprocessed
     │   │                   │       └── shared
     │   │                   │           └── jpa
+    │   │                   │               └── hotelaveragerating
     │   │                   ├── review
     │   │                   │   ├── application
     │   │                   │   │   ├── command

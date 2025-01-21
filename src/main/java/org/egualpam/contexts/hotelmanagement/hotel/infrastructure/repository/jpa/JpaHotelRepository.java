@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.GetHotelAverageRating;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.HotelAverageRating;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.PersistenceHotel;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.hotelaveragerating.GetHotelAverageRating;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.hotelaveragerating.HotelAverageRating;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 
