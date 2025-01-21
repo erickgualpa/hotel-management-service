@@ -16,6 +16,8 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.EventStoreRepository;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.EventStoreTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.PublicEventResult;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,13 +33,15 @@ public class RabbitMqEventBusIT extends AbstractIntegrationTest {
 
   @Autowired private ObjectMapper objectMapper;
   @Autowired private Channel channel;
+  @Autowired private EventStoreRepository eventStoreRepository;
   @Autowired private RabbitMqTestConsumer rabbitMqTestConsumer;
+  @Autowired private EventStoreTestRepository eventStoreTestRepository;
 
   private EventBus testSubject;
 
   @BeforeEach
   void setUp() {
-    testSubject = new RabbitMqEventBus(channel, objectMapper);
+    testSubject = new RabbitMqEventBus(channel, objectMapper, eventStoreRepository);
   }
 
   @Test
@@ -54,9 +58,23 @@ public class RabbitMqEventBusIT extends AbstractIntegrationTest {
         .atMost(10, SECONDS)
         .untilAsserted(
             () -> {
-              PublicEventResult publicEventResult =
+              // Event is saved in event store
+              PublicEventResult eventStoreEvent =
+                  eventStoreTestRepository.findEvent(eventId.value());
+              assertThat(eventStoreEvent)
+                  .satisfies(
+                      r -> {
+                        assertThat(r.id()).isEqualTo(eventId.value());
+                        assertThat(r.type()).isEqualTo("hotelmanagement.hotel.created");
+                        assertThat(r.version()).isEqualTo("1.0");
+                        assertThat(r.aggregateId()).isEqualTo(aggregateId.value());
+                        assertThat(r.occurredOn()).isEqualTo(NOW);
+                      });
+
+              // Event is published in queue
+              PublicEventResult queueEvent =
                   rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.hotel");
-              assertThat(publicEventResult)
+              assertThat(queueEvent)
                   .satisfies(
                       r -> {
                         assertThat(r.id()).isEqualTo(eventId.value());

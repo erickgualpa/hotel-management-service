@@ -13,6 +13,7 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.UnsupportedDomainEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.EventStoreRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,12 +28,13 @@ class RabbitMqEventBusShould {
   @Mock private Clock clock;
   @Mock private Channel channel;
   @Mock private ObjectMapper objectMapper;
+  @Mock private EventStoreRepository eventStoreRepository;
 
   private EventBus eventBus;
 
   @BeforeEach
   void setUp() {
-    eventBus = new RabbitMqEventBus(channel, objectMapper);
+    eventBus = new RabbitMqEventBus(channel, objectMapper, eventStoreRepository);
   }
 
   @Test
