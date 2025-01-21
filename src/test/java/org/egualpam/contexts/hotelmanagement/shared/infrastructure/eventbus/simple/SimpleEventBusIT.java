@@ -3,7 +3,7 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.sim
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import jakarta.persistence.EntityManager;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import java.time.Clock;
 import java.util.Set;
@@ -20,19 +20,21 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.Publi
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Transactional
 class SimpleEventBusIT extends AbstractIntegrationTest {
 
   @Autowired private Clock clock;
-  @Autowired private EntityManager entityManager;
+  @Autowired private ObjectMapper objectMapper;
+  @Autowired private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
   @Autowired private EventStoreTestRepository eventStoreTestRepository;
 
   private EventBus eventBus;
 
   @BeforeEach
   void setUp() {
-    eventBus = new SimpleEventBus(entityManager);
+    eventBus = new SimpleEventBus(objectMapper, namedParameterJdbcTemplate);
   }
 
   @Test

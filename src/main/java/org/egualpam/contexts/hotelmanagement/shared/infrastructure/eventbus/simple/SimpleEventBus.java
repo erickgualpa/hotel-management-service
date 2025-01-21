@@ -1,25 +1,32 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.simple;
 
-import jakarta.persistence.EntityManager;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.Timestamp;
 import java.util.Set;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UnpublishedDomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEventFactory;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class SimpleEventBus implements EventBus {
 
   private static final String INSERT_INTO_EVENT_STORE =
       """
-      INSERT INTO event_store(id, aggregate_id, occurred_on, event_type, event_version)
-      VALUES (:id, :aggregateId, :occurredOn, :eventType, :eventVersion)
+      INSERT INTO event_store(id, aggregate_id, occurred_on, event_type, event_version, event_payload)
+      VALUES (:id, :aggregateId, :occurredOn, :eventType, :eventVersion, :eventPayload::jsonb)
       """;
 
-  private final EntityManager entityManager;
+  private final ObjectMapper objectMapper;
+  private final NamedParameterJdbcTemplate jdbcTemplate;
 
-  public SimpleEventBus(EntityManager entityManager) {
-    this.entityManager = entityManager;
+  public SimpleEventBus(ObjectMapper objectMapper, NamedParameterJdbcTemplate jdbcTemplate) {
+    this.objectMapper = objectMapper;
+    this.jdbcTemplate = jdbcTemplate;
   }
 
   @Override
@@ -29,13 +36,22 @@ public class SimpleEventBus implements EventBus {
 
   private void persistEvent(DomainEvent domainEvent) {
     PublicEvent publicEvent = PublicEventFactory.from(domainEvent);
-    entityManager
-        .createNativeQuery(INSERT_INTO_EVENT_STORE)
-        .setParameter("id", UUID.fromString(publicEvent.getId()))
-        .setParameter("aggregateId", UUID.fromString(publicEvent.getAggregateId()))
-        .setParameter("occurredOn", publicEvent.getOccurredOn())
-        .setParameter("eventType", publicEvent.getType())
-        .setParameter("eventVersion", publicEvent.getVersion())
-        .executeUpdate();
+
+    final String eventAsString;
+    try {
+      eventAsString = objectMapper.writeValueAsString(publicEvent);
+    } catch (JsonProcessingException e) {
+      throw new UnpublishedDomainEvent(domainEvent, e);
+    }
+
+    MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+    sqlParameterSource.addValue("id", UUID.fromString(publicEvent.getId()));
+    sqlParameterSource.addValue("aggregateId", UUID.fromString(publicEvent.getAggregateId()));
+    sqlParameterSource.addValue("occurredOn", Timestamp.from(publicEvent.getOccurredOn()));
+    sqlParameterSource.addValue("eventType", publicEvent.getType());
+    sqlParameterSource.addValue("eventVersion", publicEvent.getVersion());
+    sqlParameterSource.addValue("eventPayload", eventAsString);
+
+    jdbcTemplate.update(INSERT_INTO_EVENT_STORE, sqlParameterSource);
   }
 }

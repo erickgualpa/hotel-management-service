@@ -2,7 +2,6 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuratio
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
-import jakarta.persistence.EntityManager;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.rabbitmq.RabbitMqEventBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.simple.SimpleEventBus;
@@ -14,6 +13,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @Configuration
 @EnableConfigurationProperties(RabbitMqProperties.class)
@@ -22,8 +22,9 @@ public class EventBusConfiguration {
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Bean
-  public EventBus simpleEventBus(EntityManager entityManager) {
-    return new SimpleEventBus(entityManager);
+  public EventBus simpleEventBus(
+      ObjectMapper objectMapper, NamedParameterJdbcTemplate jdbcTemplate) {
+    return new SimpleEventBus(objectMapper, jdbcTemplate);
   }
 
   @Bean
