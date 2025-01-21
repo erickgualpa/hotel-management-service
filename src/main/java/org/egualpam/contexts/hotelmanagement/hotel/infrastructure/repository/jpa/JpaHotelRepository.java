@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.GetHotelAverageRating;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.HotelAverageRating;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.PersistenceHotel;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
@@ -14,32 +16,40 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 public final class JpaHotelRepository implements AggregateRepository<Hotel> {
 
   private final EntityManager entityManager;
+  private final GetHotelAverageRating getHotelAverageRating;
 
   public JpaHotelRepository(EntityManager entityManager) {
     this.entityManager = entityManager;
+    this.getHotelAverageRating = new GetHotelAverageRating(entityManager);
   }
 
   @Override
   public Optional<Hotel> find(AggregateId id) {
-    PersistenceHotel persistenceHotel =
-        entityManager.find(PersistenceHotel.class, UUID.fromString(id.value()));
+    UUID hotelId = UUID.fromString(id.value());
+    PersistenceHotel persistenceHotel = entityManager.find(PersistenceHotel.class, hotelId);
     return Optional.ofNullable(persistenceHotel).map(this::mapResultIntoHotel);
   }
 
   private Hotel mapResultIntoHotel(PersistenceHotel persistenceHotel) {
+    UUID hotelId = persistenceHotel.getId();
     String name = persistenceHotel.getName();
     String description = persistenceHotel.getDescription();
     String location = persistenceHotel.getLocation();
     Integer price = persistenceHotel.getPrice();
     String imageURL = persistenceHotel.getImageURL();
+
+    HotelAverageRating hotelAverageRating = getHotelAverageRating.using(hotelId);
+
     return Hotel.load(
         Map.ofEntries(
-            entry("id", persistenceHotel.getId().toString()),
+            entry("id", hotelId.toString()),
             entry("name", name),
             entry("description", description),
             entry("location", location),
             entry("price", price),
-            entry("imageURL", imageURL)));
+            entry("imageURL", imageURL),
+            entry("ratingReviewsCount", hotelAverageRating.reviewsCount()),
+            entry("ratingAverage", hotelAverageRating.value())));
   }
 
   @Override

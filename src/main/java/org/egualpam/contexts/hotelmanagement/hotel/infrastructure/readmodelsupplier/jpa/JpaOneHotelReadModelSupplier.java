@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.GetHotelAverageRating;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.HotelAverageRating;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.slf4j.Logger;

@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.hotel.application.command;
 
+import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -65,18 +66,68 @@ class UpdateHotelRatingShould {
     Integer rating = 3;
     UniqueId domainEventId = UniqueId.get();
 
+    Hotel hotel =
+        Hotel.load(
+            Map.ofEntries(
+                entry("id", aggregateId.value()),
+                entry("name", "hotel-name"),
+                entry("description", "hotel-description"),
+                entry("location", "hotel-location"),
+                entry("price", 200),
+                entry("imageURL", "www.hotel-image-url.com"),
+                entry("ratingReviewsCount", 1),
+                entry("ratingAverage", 2.0)));
+
+    when(clock.instant()).thenReturn(NOW);
+    when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
+    when(uniqueIdSupplier.get()).thenReturn(domainEventId);
+
+    UpdateHotelRatingCommand command =
+        new UpdateHotelRatingCommand(aggregateId.value(), reviewId.value(), rating);
+    testee.execute(command);
+
+    verify(repository).save(hotelCaptor.capture());
+    Hotel saved = hotelCaptor.getValue();
+
+    assertThat(saved.rating()).isEqualTo(new HotelRating(2, 2.5));
+
+    verify(eventBus).publish(domainEventsCaptor.capture());
+    Set<DomainEvent> domainEvents = domainEventsCaptor.getValue();
+    assertThat(domainEvents)
+        .hasSize(1)
+        .first()
+        .isInstanceOf(HotelRatingUpdated.class)
+        .satisfies(
+            domainEvent -> {
+              HotelRatingUpdated hotelRatingUpdated = (HotelRatingUpdated) domainEvent;
+              assertThat(hotelRatingUpdated.id()).isEqualTo(domainEventId);
+              assertThat(hotelRatingUpdated.aggregateId()).isEqualTo(aggregateId);
+              assertThat(hotelRatingUpdated.reviewId()).isEqualTo(reviewId);
+              assertThat(hotelRatingUpdated.occurredOn()).isEqualTo(NOW);
+            });
+  }
+
+  @Test
+  void updateHotelRating_whenHotelHasNoRating() {
+    AggregateId aggregateId = new AggregateId(UniqueId.get().value());
+    EntityId reviewId = new EntityId(UniqueId.get().value());
+    Integer rating = 3;
+    UniqueId domainEventId = UniqueId.get();
+
     Double expectedHotelRatingAverage = Double.parseDouble(rating.toString());
     HotelRating expectedHotelRating = new HotelRating(1, expectedHotelRatingAverage);
 
     Hotel hotel =
         Hotel.load(
-            Map.of(
-                "id", aggregateId.value(),
-                "name", "hotel-name",
-                "description", "hotel-description",
-                "location", "hotel-location",
-                "price", 200,
-                "imageURL", "www.hotel-image-url.com"));
+            Map.ofEntries(
+                entry("id", aggregateId.value()),
+                entry("name", "hotel-name"),
+                entry("description", "hotel-description"),
+                entry("location", "hotel-location"),
+                entry("price", 200),
+                entry("imageURL", "www.hotel-image-url.com"),
+                entry("ratingReviewsCount", 0),
+                entry("ratingAverage", 0.0)));
 
     when(clock.instant()).thenReturn(NOW);
     when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
@@ -118,13 +169,15 @@ class UpdateHotelRatingShould {
 
     Hotel hotel =
         Hotel.load(
-            Map.of(
-                "id", aggregateId.value(),
-                "name", "hotel-name",
-                "description", "hotel-description",
-                "location", "hotel-location",
-                "price", 200,
-                "imageURL", "www.hotel-image-url.com"));
+            Map.ofEntries(
+                entry("id", aggregateId.value()),
+                entry("name", "hotel-name"),
+                entry("description", "hotel-description"),
+                entry("location", "hotel-location"),
+                entry("price", 200),
+                entry("imageURL", "www.hotel-image-url.com"),
+                entry("ratingReviewsCount", 0),
+                entry("ratingAverage", 0.0)));
 
     when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
     when(reviewIsAlreadyProcessed.with(reviewId)).thenReturn(true);
@@ -172,13 +225,15 @@ class UpdateHotelRatingShould {
 
     Hotel hotel =
         Hotel.load(
-            Map.of(
-                "id", aggregateId.value(),
-                "name", "hotel-name",
-                "description", "hotel-description",
-                "location", "hotel-location",
-                "price", 200,
-                "imageURL", "www.hotel-image-url.com"));
+            Map.ofEntries(
+                entry("id", aggregateId.value()),
+                entry("name", "hotel-name"),
+                entry("description", "hotel-description"),
+                entry("location", "hotel-location"),
+                entry("price", 200),
+                entry("imageURL", "www.hotel-image-url.com"),
+                entry("ratingReviewsCount", 0),
+                entry("ratingAverage", 0.0)));
 
     when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
 
@@ -195,13 +250,15 @@ class UpdateHotelRatingShould {
 
     Hotel hotel =
         Hotel.load(
-            Map.of(
-                "id", aggregateId.value(),
-                "name", "hotel-name",
-                "description", "hotel-description",
-                "location", "hotel-location",
-                "price", 200,
-                "imageURL", "www.hotel-image-url.com"));
+            Map.ofEntries(
+                entry("id", aggregateId.value()),
+                entry("name", "hotel-name"),
+                entry("description", "hotel-description"),
+                entry("location", "hotel-location"),
+                entry("price", 200),
+                entry("imageURL", "www.hotel-image-url.com"),
+                entry("ratingReviewsCount", 0),
+                entry("ratingAverage", 0.0)));
 
     when(repository.find(aggregateId)).thenReturn(Optional.of(hotel));
 

@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.hotel.application.command;
 
+import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anySet;
@@ -104,13 +105,15 @@ class CreateHotelShould {
 
     Hotel existing =
         Hotel.load(
-            Map.of(
-                "id", id,
-                "name", name,
-                "description", description,
-                "location", location,
-                "price", price,
-                "imageURL", imageURL));
+            Map.ofEntries(
+                entry("id", id),
+                entry("name", name),
+                entry("description", description),
+                entry("location", location),
+                entry("price", price),
+                entry("imageURL", imageURL),
+                entry("ratingReviewsCount", 0),
+                entry("ratingAverage", 0.0)));
 
     when(repository.find(new AggregateId(id))).thenReturn(Optional.of(existing));
 

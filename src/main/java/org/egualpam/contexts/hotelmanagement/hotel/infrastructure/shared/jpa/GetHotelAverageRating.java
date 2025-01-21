@@ -1,39 +1,37 @@
-package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa;
+package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-class GetHotelAverageRating {
+public class GetHotelAverageRating {
 
   private static final String findAverageRatingByHotelId =
       """
-          SELECT avg_value
+          SELECT review_count, avg_value
           FROM hotel_average_rating
           WHERE hotel_id=:hotelId
           """;
 
   private final EntityManager entityManager;
 
-  GetHotelAverageRating(EntityManager entityManager) {
+  public GetHotelAverageRating(EntityManager entityManager) {
     this.entityManager = entityManager;
   }
 
-  HotelAverageRating using(UUID hotelId) {
-    BigDecimal hotelAverageRating;
+  public HotelAverageRating using(UUID hotelId) {
+    HotelAverageRating hotelAverageRating;
     try {
       hotelAverageRating =
-          (BigDecimal)
+          (HotelAverageRating)
               entityManager
-                  .createNativeQuery(findAverageRatingByHotelId)
+                  .createNativeQuery(findAverageRatingByHotelId, HotelAverageRating.class)
                   .setParameter("hotelId", hotelId)
                   .getSingleResult();
     } catch (NoResultException e) {
-      hotelAverageRating = BigDecimal.ZERO;
+      hotelAverageRating = new HotelAverageRating(0, BigDecimal.ZERO);
     }
-    return new HotelAverageRating(hotelAverageRating.doubleValue());
+    return hotelAverageRating;
   }
 }
-
-record HotelAverageRating(Double value) {}

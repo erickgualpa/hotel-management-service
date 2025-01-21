@@ -20,10 +20,17 @@ public final class Hotel extends AggregateRoot {
   private final Price price;
   private final ImageURL imageURL;
 
-  private HotelRating rating = new HotelRating(0, 0.0);
+  private HotelRating rating;
 
   private Hotel(
-      String id, String name, String description, String location, Integer price, String imageURL) {
+      String id,
+      String name,
+      String description,
+      String location,
+      Integer price,
+      String imageURL,
+      Integer ratingReviewsCount,
+      Double ratingAverage) {
     super(id);
     if (isNull(name)
         || isNull(description)
@@ -37,6 +44,7 @@ public final class Hotel extends AggregateRoot {
     this.location = new Location(location);
     this.price = new Price(price);
     this.imageURL = new ImageURL(imageURL);
+    this.rating = new HotelRating(ratingReviewsCount, ratingAverage);
   }
 
   public static Hotel load(Map<String, Object> properties) {
@@ -46,7 +54,9 @@ public final class Hotel extends AggregateRoot {
         (String) properties.get("description"),
         (String) properties.get("location"),
         (Integer) properties.get("price"),
-        (String) properties.get("imageURL"));
+        (String) properties.get("imageURL"),
+        (Integer) properties.get("ratingReviewsCount"),
+        (Double) properties.get("ratingAverage"));
   }
 
   public static Hotel create(
@@ -67,7 +77,7 @@ public final class Hotel extends AggregateRoot {
               throw new HotelAlreadyExists(hotel.id());
             });
 
-    Hotel hotel = new Hotel(id, name, description, location, price, imageURL);
+    Hotel hotel = new Hotel(id, name, description, location, price, imageURL, 0, 0.0);
     HotelCreated hotelCreated = new HotelCreated(uniqueIdSupplier.get(), hotel.id(), clock);
     hotel.domainEvents().add(hotelCreated);
     return hotel;

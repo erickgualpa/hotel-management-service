@@ -10,6 +10,8 @@ import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Location;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Price;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.GetHotelAverageRating;
+import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.HotelAverageRating;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.PersistenceHotel;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 
