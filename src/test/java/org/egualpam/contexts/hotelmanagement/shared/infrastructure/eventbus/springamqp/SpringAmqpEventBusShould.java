@@ -13,6 +13,7 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.ObjectMapperConfiguration;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.UnsupportedDomainEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.EventStoreRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,13 +29,14 @@ class SpringAmqpEventBusShould {
   private final ObjectMapper objectMapper = new ObjectMapperConfiguration().objectMapper();
 
   @Mock private Clock clock;
+  @Mock private EventStoreRepository eventStoreRepository;
   @Mock private RabbitTemplate rabbitTemplate;
 
   private EventBus testee;
 
   @BeforeEach
   void setUp() {
-    testee = new SpringAmqpEventBus(objectMapper, rabbitTemplate);
+    testee = new SpringAmqpEventBus(objectMapper, eventStoreRepository, rabbitTemplate);
   }
 
   @Test

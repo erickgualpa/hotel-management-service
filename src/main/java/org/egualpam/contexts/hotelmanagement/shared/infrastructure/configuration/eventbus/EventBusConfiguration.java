@@ -42,8 +42,11 @@ public class EventBusConfiguration {
 
   @Primary
   @Bean
-  public EventBus springAmqpEventBus(ObjectMapper objectMapper, RabbitTemplate rabbitTemplate) {
+  public EventBus springAmqpEventBus(
+      ObjectMapper objectMapper,
+      EventStoreRepository eventStoreRepository,
+      RabbitTemplate rabbitTemplate) {
     rabbitTemplate.setExchange(SpringAmqpConfiguration.DOMAIN_EVENTS_EXCHANGE);
-    return new SpringAmqpEventBus(objectMapper, rabbitTemplate);
+    return new SpringAmqpEventBus(objectMapper, eventStoreRepository, rabbitTemplate);
   }
 }

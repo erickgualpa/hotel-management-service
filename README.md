@@ -101,6 +101,7 @@ docker compose down --rmi local
     │   │                           ├── eventbus
     │   │                           │   ├── events
     │   │                           │   ├── rabbitmq
+    │   │                           │   ├── shared
     │   │                           │   ├── simple
     │   │                           │   └── springamqp
     │   │                           └── internaleventbus
