@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class SpringAmqpEventBusIT extends AbstractIntegrationTest {
 
-  private static final Instant NOW = Instant.now();
+  private static final Instant NOW = Instant.parse("2025-01-22T14:54:04.954430Z");
 
   @Mock private Clock clock;
 

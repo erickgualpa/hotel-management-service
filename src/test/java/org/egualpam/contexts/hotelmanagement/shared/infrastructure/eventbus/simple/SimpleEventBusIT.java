@@ -1,11 +1,11 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.simple;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import java.time.Clock;
+import java.time.Instant;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.review.domain.HotelId;
 import org.egualpam.contexts.hotelmanagement.review.domain.Rating;
@@ -19,13 +19,16 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.Event
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.PublicEventResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-@Transactional
 class SimpleEventBusIT extends AbstractIntegrationTest {
 
-  @Autowired private Clock clock;
+  private static final Instant NOW = Instant.parse("2025-01-22T14:54:04.954430Z");
+
+  @Mock private Clock clock;
+
   @Autowired private ObjectMapper objectMapper;
   @Autowired private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
   @Autowired private EventStoreTestRepository eventStoreTestRepository;
@@ -39,6 +42,8 @@ class SimpleEventBusIT extends AbstractIntegrationTest {
 
   @Test
   void publishDomainEvents() {
+    when(clock.instant()).thenReturn(NOW);
+
     String aggregateId = UniqueId.get().value();
     HotelId hotelId = new HotelId(UniqueId.get().value());
     Rating rating = new Rating(3);
@@ -54,7 +59,7 @@ class SimpleEventBusIT extends AbstractIntegrationTest {
               assertThat(r.type()).isEqualTo("hotelmanagement.review.created");
               assertThat(r.version()).isEqualTo("1.0");
               assertThat(r.aggregateId()).isEqualTo(aggregateId);
-              assertNotNull(r.occurredOn());
+              assertThat(r.occurredOn()).isEqualTo(NOW);
             });
   }
 }
