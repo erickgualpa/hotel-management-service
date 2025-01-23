@@ -100,7 +100,6 @@ docker compose down --rmi local
     │   │                           │       └── simple
     │   │                           ├── eventbus
     │   │                           │   ├── events
-    │   │                           │   ├── rabbitmq
     │   │                           │   ├── shared
     │   │                           │   ├── simple
     │   │                           │   └── springamqp
@@ -146,7 +145,6 @@ docker compose down --rmi local
         │                           │   └── query
         │                           │       └── simple
         │                           ├── eventbus
-        │                           │   ├── rabbitmq
         │                           │   ├── simple
         │                           │   └── springamqp
         │                           └── helpers
