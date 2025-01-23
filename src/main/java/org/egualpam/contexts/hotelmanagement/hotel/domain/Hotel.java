@@ -106,6 +106,9 @@ public final class Hotel extends AggregateRoot {
 
     final Double updatedAverage = (double) updatedReviewsRatingSum / updatedReviewsCount;
 
+    // TODO: Check if 'HotelRating' should be an aggregate that:
+    // - Is created/initialized after an hotel is created (listens to 'Hotel' domain event)
+    // - Is updated after a review is created (listens to 'Reviews' domain event)
     this.rating = new HotelRating(updatedReviewsCount, updatedAverage);
 
     final HotelRatingUpdated hotelRatingUpdated =
