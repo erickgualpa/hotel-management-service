@@ -2,6 +2,7 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuratio
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+// TODO: Check if this properties make sense only for integration tests
 @ConfigurationProperties(prefix = "message-broker.rabbitmq")
 public class RabbitMqProperties {
 

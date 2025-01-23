@@ -1,9 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.eventbus;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rabbitmq.client.Channel;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.rabbitmq.RabbitMqEventBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.EventStoreRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.simple.SimpleEventBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.springamqp.SpringAmqpEventBus;
@@ -32,12 +30,6 @@ public class EventBusConfiguration {
   public EventBus simpleEventBus(
       ObjectMapper objectMapper, NamedParameterJdbcTemplate jdbcTemplate) {
     return new SimpleEventBus(objectMapper, jdbcTemplate);
-  }
-
-  @Bean
-  public EventBus rabbitMqEventBus(
-      ObjectMapper objectMapper, Channel channel, EventStoreRepository eventStoreRepository) {
-    return new RabbitMqEventBus(channel, objectMapper, eventStoreRepository);
   }
 
   @Primary
