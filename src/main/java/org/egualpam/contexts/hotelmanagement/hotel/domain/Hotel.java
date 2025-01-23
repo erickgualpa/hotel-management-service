@@ -116,6 +116,7 @@ public final class Hotel extends AggregateRoot {
     this.domainEvents().add(hotelRatingUpdated);
   }
 
+  // TODO: Check how to get rid of getters used only for mapping
   public HotelName name() {
     return name;
   }
