@@ -6,6 +6,7 @@ import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.JsonSchemaFactory;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Set;
@@ -32,6 +33,7 @@ public class SpringAmqpEventBusIT extends AbstractIntegrationTest {
   @Mock private Clock clock;
 
   @Autowired private ObjectMapper objectMapper;
+  @Autowired private JsonSchemaFactory jsonSchemaFactory;
   @Autowired private EventStoreRepository eventStoreRepository;
   @Autowired private RabbitTemplate rabbitTemplate;
   @Autowired private RabbitMqTestConsumer rabbitMqTestConsumer;
@@ -41,7 +43,9 @@ public class SpringAmqpEventBusIT extends AbstractIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    testSubject = new SpringAmqpEventBus(objectMapper, eventStoreRepository, rabbitTemplate);
+    testSubject =
+        new SpringAmqpEventBus(
+            objectMapper, jsonSchemaFactory, eventStoreRepository, rabbitTemplate);
   }
 
   @Test

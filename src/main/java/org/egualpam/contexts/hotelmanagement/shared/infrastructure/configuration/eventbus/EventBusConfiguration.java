@@ -1,6 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.eventbus;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.JsonSchemaFactory;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.EventStoreRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.simple.SimpleEventBus;
@@ -36,9 +37,11 @@ public class EventBusConfiguration {
   @Bean
   public EventBus springAmqpEventBus(
       ObjectMapper objectMapper,
+      JsonSchemaFactory jsonSchemaFactory,
       EventStoreRepository eventStoreRepository,
       RabbitTemplate rabbitTemplate) {
     rabbitTemplate.setExchange(SpringAmqpConfiguration.DOMAIN_EVENTS_EXCHANGE);
-    return new SpringAmqpEventBus(objectMapper, eventStoreRepository, rabbitTemplate);
+    return new SpringAmqpEventBus(
+        objectMapper, jsonSchemaFactory, eventStoreRepository, rabbitTemplate);
   }
 }

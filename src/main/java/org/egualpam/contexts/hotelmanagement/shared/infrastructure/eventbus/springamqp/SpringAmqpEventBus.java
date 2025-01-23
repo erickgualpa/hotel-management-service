@@ -4,6 +4,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.JsonSchemaFactory;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
@@ -17,6 +18,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 public final class SpringAmqpEventBus implements EventBus {
 
   private final ObjectMapper objectMapper;
+  private final JsonSchemaFactory jsonSchemaFactory;
   private final EventStoreRepository eventStoreRepository;
   private final RabbitTemplate rabbitTemplate;
   private final Logger logger = getLogger(this.getClass());
@@ -26,6 +28,18 @@ public final class SpringAmqpEventBus implements EventBus {
       EventStoreRepository eventStoreRepository,
       RabbitTemplate rabbitTemplate) {
     this.objectMapper = objectMapper;
+    this.jsonSchemaFactory = null;
+    this.eventStoreRepository = eventStoreRepository;
+    this.rabbitTemplate = rabbitTemplate;
+  }
+
+  public SpringAmqpEventBus(
+      ObjectMapper objectMapper,
+      JsonSchemaFactory jsonSchemaFactory,
+      EventStoreRepository eventStoreRepository,
+      RabbitTemplate rabbitTemplate) {
+    this.objectMapper = objectMapper;
+    this.jsonSchemaFactory = jsonSchemaFactory;
     this.eventStoreRepository = eventStoreRepository;
     this.rabbitTemplate = rabbitTemplate;
   }
@@ -34,7 +48,8 @@ public final class SpringAmqpEventBus implements EventBus {
   public void publish(Set<DomainEvent> events) {
     events.forEach(
         event -> {
-          PublicEvent publicEvent = PublicEventFactory.from(event);
+          PublicEvent publicEvent =
+              PublicEventFactory.mapAndValidate(event, objectMapper, jsonSchemaFactory);
           try {
             eventStoreRepository.save(publicEvent);
             publishEvent(publicEvent);
