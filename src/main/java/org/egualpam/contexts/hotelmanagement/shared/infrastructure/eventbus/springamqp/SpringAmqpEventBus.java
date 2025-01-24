@@ -12,6 +12,7 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.UnpublishedDomainEven
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.EventStoreRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.PublicEventFactory;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.PublicEventValidator;
 import org.slf4j.Logger;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
@@ -19,6 +20,7 @@ public final class SpringAmqpEventBus implements EventBus {
 
   private final ObjectMapper objectMapper;
   private final JsonSchemaFactory jsonSchemaFactory;
+  private final PublicEventValidator publicEventValidator;
   private final EventStoreRepository eventStoreRepository;
   private final RabbitTemplate rabbitTemplate;
   private final Logger logger = getLogger(this.getClass());
@@ -30,6 +32,7 @@ public final class SpringAmqpEventBus implements EventBus {
       RabbitTemplate rabbitTemplate) {
     this.objectMapper = objectMapper;
     this.jsonSchemaFactory = jsonSchemaFactory;
+    this.publicEventValidator = new PublicEventValidator(objectMapper, jsonSchemaFactory);
     this.eventStoreRepository = eventStoreRepository;
     this.rabbitTemplate = rabbitTemplate;
   }
@@ -40,6 +43,7 @@ public final class SpringAmqpEventBus implements EventBus {
         event -> {
           PublicEvent publicEvent =
               PublicEventFactory.mapAndValidate(event, objectMapper, jsonSchemaFactory);
+          publicEventValidator.validate(publicEvent);
           try {
             eventStoreRepository.save(publicEvent);
             publishEvent(publicEvent);
