@@ -9,6 +9,7 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.UnpublishedDomainEven
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.EventStoreRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.PublicEventFactory;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.PublicEventValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -19,6 +20,7 @@ public class SimpleEventBus implements EventBus {
 
   private final ObjectMapper objectMapper;
   private final JsonSchemaFactory jsonSchemaFactory;
+  private final PublicEventValidator publicEventValidator;
   private final EventStoreRepository eventStoreRepository;
 
   public SimpleEventBus(
@@ -27,6 +29,7 @@ public class SimpleEventBus implements EventBus {
       NamedParameterJdbcTemplate jdbcTemplate) {
     this.objectMapper = objectMapper;
     this.jsonSchemaFactory = jsonSchemaFactory;
+    this.publicEventValidator = new PublicEventValidator(objectMapper, jsonSchemaFactory);
     this.eventStoreRepository = new EventStoreRepository(objectMapper, jdbcTemplate);
   }
 
@@ -38,6 +41,7 @@ public class SimpleEventBus implements EventBus {
   private void persistEvent(DomainEvent domainEvent) {
     PublicEvent publicEvent =
         PublicEventFactory.mapAndValidate(domainEvent, objectMapper, jsonSchemaFactory);
+    publicEventValidator.validate(publicEvent);
     try {
       eventStoreRepository.save(publicEvent);
       logger.info("Event {} has been published", publicEvent.getType());
