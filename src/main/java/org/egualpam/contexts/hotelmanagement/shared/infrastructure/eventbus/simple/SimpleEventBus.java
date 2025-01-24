@@ -39,8 +39,7 @@ public class SimpleEventBus implements EventBus {
   }
 
   private void persistEvent(DomainEvent domainEvent) {
-    PublicEvent publicEvent =
-        PublicEventFactory.mapAndValidate(domainEvent, objectMapper, jsonSchemaFactory);
+    PublicEvent publicEvent = PublicEventFactory.from(domainEvent);
     publicEventValidator.validate(publicEvent);
     try {
       eventStoreRepository.save(publicEvent);

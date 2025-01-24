@@ -1,7 +1,5 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.networknt.schema.JsonSchemaFactory;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCreated;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelRatingUpdated;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCreated;
@@ -18,8 +16,7 @@ public final class PublicEventFactory {
 
   private PublicEventFactory() {}
 
-  public static PublicEvent mapAndValidate(
-      DomainEvent domainEvent, ObjectMapper objectMapper, JsonSchemaFactory jsonSchemaFactory) {
+  public static PublicEvent from(DomainEvent domainEvent) {
     return switch (domainEvent) {
       case ReviewCreated reviewCreated ->
           new ReviewCreatedPublicEvent(

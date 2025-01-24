@@ -41,8 +41,7 @@ public final class SpringAmqpEventBus implements EventBus {
   public void publish(Set<DomainEvent> events) {
     events.forEach(
         event -> {
-          PublicEvent publicEvent =
-              PublicEventFactory.mapAndValidate(event, objectMapper, jsonSchemaFactory);
+          PublicEvent publicEvent = PublicEventFactory.from(event);
           publicEventValidator.validate(publicEvent);
           try {
             eventStoreRepository.save(publicEvent);
