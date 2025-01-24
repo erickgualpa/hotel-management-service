@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.JsonSchemaFactory;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Set;
@@ -26,14 +27,16 @@ class SimpleEventBusShould {
   private static final Instant NOW = Instant.now();
 
   @Mock private Clock clock;
+  @Mock private JsonSchemaFactory jsonSchemaFactory;
   @Mock private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
   private final ObjectMapper objectMapper = new ObjectMapperConfiguration().objectMapper();
 
   private EventBus eventBus;
 
   @BeforeEach
   void setUp() {
-    eventBus = new SimpleEventBus(objectMapper, namedParameterJdbcTemplate);
+    eventBus = new SimpleEventBus(objectMapper, jsonSchemaFactory, namedParameterJdbcTemplate);
   }
 
   @Test

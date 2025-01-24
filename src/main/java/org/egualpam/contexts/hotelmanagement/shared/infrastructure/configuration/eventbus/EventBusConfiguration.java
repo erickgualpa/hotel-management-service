@@ -29,8 +29,10 @@ public class EventBusConfiguration {
 
   @Bean
   public EventBus simpleEventBus(
-      ObjectMapper objectMapper, NamedParameterJdbcTemplate jdbcTemplate) {
-    return new SimpleEventBus(objectMapper, jdbcTemplate);
+      ObjectMapper objectMapper,
+      JsonSchemaFactory jsonSchemaFactory,
+      NamedParameterJdbcTemplate jdbcTemplate) {
+    return new SimpleEventBus(objectMapper, jsonSchemaFactory, jdbcTemplate);
   }
 
   @Primary

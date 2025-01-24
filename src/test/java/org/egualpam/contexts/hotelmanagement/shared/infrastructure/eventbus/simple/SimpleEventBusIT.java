@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.JsonSchemaFactory;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Set;
@@ -30,6 +31,7 @@ class SimpleEventBusIT extends AbstractIntegrationTest {
   @Mock private Clock clock;
 
   @Autowired private ObjectMapper objectMapper;
+  @Autowired private JsonSchemaFactory jsonSchemaFactory;
   @Autowired private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
   @Autowired private EventStoreTestRepository eventStoreTestRepository;
 
@@ -37,7 +39,7 @@ class SimpleEventBusIT extends AbstractIntegrationTest {
 
   @BeforeEach
   void setUp() {
-    eventBus = new SimpleEventBus(objectMapper, namedParameterJdbcTemplate);
+    eventBus = new SimpleEventBus(objectMapper, jsonSchemaFactory, namedParameterJdbcTemplate);
   }
 
   @Test
