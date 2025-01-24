@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events;
+package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared;
 
 import static java.util.Objects.requireNonNull;
 
@@ -17,6 +17,12 @@ import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelRatingUpdated;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCreated;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewUpdated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.HotelCreatedPublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.HotelRatingUpdatedPublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.ReviewCreatedPublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.ReviewUpdatedPublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.UnsupportedDomainEvent;
 
 public final class PublicEventFactory {
 
