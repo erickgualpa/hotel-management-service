@@ -25,16 +25,6 @@ public final class SpringAmqpEventBus implements EventBus {
 
   public SpringAmqpEventBus(
       ObjectMapper objectMapper,
-      EventStoreRepository eventStoreRepository,
-      RabbitTemplate rabbitTemplate) {
-    this.objectMapper = objectMapper;
-    this.jsonSchemaFactory = null;
-    this.eventStoreRepository = eventStoreRepository;
-    this.rabbitTemplate = rabbitTemplate;
-  }
-
-  public SpringAmqpEventBus(
-      ObjectMapper objectMapper,
       JsonSchemaFactory jsonSchemaFactory,
       EventStoreRepository eventStoreRepository,
       RabbitTemplate rabbitTemplate) {

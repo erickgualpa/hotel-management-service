@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.networknt.schema.JsonSchemaFactory;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Set;
@@ -28,6 +29,7 @@ class SpringAmqpEventBusShould {
 
   private final ObjectMapper objectMapper = new ObjectMapperConfiguration().objectMapper();
 
+  @Mock private JsonSchemaFactory jsonSchemaFactory;
   @Mock private Clock clock;
   @Mock private EventStoreRepository eventStoreRepository;
   @Mock private RabbitTemplate rabbitTemplate;
@@ -36,7 +38,9 @@ class SpringAmqpEventBusShould {
 
   @BeforeEach
   void setUp() {
-    testee = new SpringAmqpEventBus(objectMapper, eventStoreRepository, rabbitTemplate);
+    testee =
+        new SpringAmqpEventBus(
+            objectMapper, jsonSchemaFactory, eventStoreRepository, rabbitTemplate);
   }
 
   @Test
