@@ -99,15 +99,23 @@ docker compose down --rmi local
     │   │                           │   └── query
     │   │                           │       └── simple
     │   │                           ├── eventbus
-    │   │                           │   ├── events
     │   │                           │   ├── shared
+    │   │                           │   │   └── events
     │   │                           │   ├── simple
     │   │                           │   └── springamqp
     │   │                           └── internaleventbus
     │   │                               └── spring
     │   └── resources
-    │       └── db
-    │           └── migration
+    │       ├── db
+    │       │   └── migration
+    │       └── events
+    │           └── schema
+    │               ├── hotel
+    │               │   ├── created
+    │               │   └── rating-updated
+    │               └── review
+    │                   ├── created
+    │                   └── updated
     └── test
         ├── java
         │   └── org
