@@ -8,10 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.ValidationMessage;
-import java.io.File;
-import java.net.URL;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Map;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
@@ -57,11 +55,13 @@ public final class PublicEventValidator {
   }
 
   private JsonSchema loadSchema(String schemaAsResourcePath) {
-    URL schemaAsResource = DomainEvent.class.getClassLoader().getResource(schemaAsResourcePath);
-    try {
-      requireNonNull(schemaAsResource);
-      final File schemaAsFile = new File(schemaAsResource.toURI());
-      final String schemaAsString = Files.readString(schemaAsFile.toPath(), StandardCharsets.UTF_8);
+    try (InputStream schemaAsInputStream =
+        DomainEvent.class.getClassLoader().getResourceAsStream(schemaAsResourcePath)) {
+      requireNonNull(schemaAsInputStream);
+
+      String schemaAsString =
+          new String(schemaAsInputStream.readAllBytes(), StandardCharsets.UTF_8);
+
       return this.jsonSchemaFactory.getSchema(schemaAsString);
     } catch (Exception e) {
       throw new RuntimeException("Schema can not be loaded", e);
