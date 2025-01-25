@@ -2,7 +2,7 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.sha
 
 import com.networknt.schema.ValidationMessage;
 import java.util.Set;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.PublicEvent;
 
 public class InvalidPublicEvent extends RuntimeException {
   public InvalidPublicEvent(PublicEvent publicEvent, Set<ValidationMessage> validationResult) {

@@ -1,27 +1,21 @@
-package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events;
+package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.Instant;
 
 @JsonSerialize
-public final class ReviewCreatedPublicEvent implements PublicEvent {
+public final class ReviewUpdatedPublicEvent implements PublicEvent {
 
   private final String id;
   private final String type;
   private final String aggregateId;
   private final Instant occurredOn;
 
-  private final String hotelId;
-  private final Integer reviewRating;
-
-  public ReviewCreatedPublicEvent(
-      String id, String aggregateId, Instant occurredOn, String hotelId, Integer reviewRating) {
+  public ReviewUpdatedPublicEvent(String id, String aggregateId, Instant occurredOn) {
     this.id = id;
-    this.type = "hotelmanagement.review.created";
+    this.type = "hotelmanagement.review.updated";
     this.aggregateId = aggregateId;
     this.occurredOn = occurredOn;
-    this.hotelId = hotelId;
-    this.reviewRating = reviewRating;
   }
 
   @Override
@@ -47,13 +41,5 @@ public final class ReviewCreatedPublicEvent implements PublicEvent {
   @Override
   public Instant getOccurredOn() {
     return occurredOn;
-  }
-
-  public String getHotelId() {
-    return hotelId;
-  }
-
-  public Integer getReviewRating() {
-    return reviewRating;
   }
 }

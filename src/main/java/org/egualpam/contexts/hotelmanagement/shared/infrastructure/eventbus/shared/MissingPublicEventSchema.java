@@ -1,6 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared;
 
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.PublicEvent;
 
 public final class MissingPublicEventSchema extends RuntimeException {
   public MissingPublicEventSchema(PublicEvent publicEvent) {
