@@ -35,6 +35,8 @@ docker compose down --rmi local
 🔹 Use of this service is specified through [SpringDoc OpenAPI Swagger UI](http://localhost:8080/swagger-ui/index.html).
 <br>
 
+---
+
 ### 📣 This project has been structured following a Hexagonal Architecture
 
 🏨 Hotel module directory structure
