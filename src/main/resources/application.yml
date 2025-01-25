@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: hotel-management-service
+
+  datasource:
+    url: jdbc:postgresql://host.docker.internal:5432/postgres
+    username: test-user
+    password: test-password
+
+  rabbitmq:
+    host: ${message-broker.rabbitmq.host}
+    port: ${message-broker.rabbitmq.amqp-port}
+    username: ${message-broker.rabbitmq.admin-username}
+    password: ${message-broker.rabbitmq.admin-password}
+
+message-broker:
+  rabbitmq:
+    host: host.docker.internal
+    amqp-port: 5672
+    admin-username: test-rabbitmq-user
+    admin-password: test-rabbitmq-password
+
+clients:
+  image-service:
+    host: http://fake-image-service-host
