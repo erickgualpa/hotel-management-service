@@ -37,7 +37,7 @@ docker compose down --rmi local
 
 ### 📣 This project has been structured following a Hexagonal Architecture
 
-Hotel module directory structure
+🏨 Hotel module directory structure
 
 [//]: # (Directory tree below was generated using 'tree -d' command in the 'src/main/java/org/egualpam/contexts/hotelmanagement/hotel' directory)
 
@@ -66,7 +66,7 @@ Hotel module directory structure
             └── hotelaveragerating
 ```
 
-Tests directory structure
+🧪 Tests directory structure
 
 [//]: # (Directory tree below was generated using 'tree -d' command in the 'src/test/java/org/egualpam/contexts/hotelmanagement' directory)
 
@@ -106,5 +106,4 @@ Tests directory structure
         │   ├── simple
         │   └── springamqp
         └── helpers
-
 ```
