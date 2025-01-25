@@ -28,10 +28,10 @@ public final class PublicEventValidator {
 
   private final Map<Class<? extends PublicEvent>, String> jsonSchemas =
       Map.ofEntries(
-          entry(HotelCreatedPublicEvent.class, "events/hotel/created/1-0.json"),
-          entry(HotelRatingUpdatedPublicEvent.class, "events/hotel/rating-updated/1-0.json"),
-          entry(ReviewCreatedPublicEvent.class, "events/review/created/1-0.json"),
-          entry(ReviewUpdatedPublicEvent.class, "events/review/updated/1-0.json"));
+          entry(HotelCreatedPublicEvent.class, "events/schema/hotel/created/1-0.json"),
+          entry(HotelRatingUpdatedPublicEvent.class, "events/schema/hotel/rating-updated/1-0.json"),
+          entry(ReviewCreatedPublicEvent.class, "events/schema/review/created/1-0.json"),
+          entry(ReviewUpdatedPublicEvent.class, "events/schema/review/updated/1-0.json"));
 
   public PublicEventValidator(ObjectMapper objectMapper, JsonSchemaFactory jsonSchemaFactory) {
     this.objectMapper = objectMapper;
