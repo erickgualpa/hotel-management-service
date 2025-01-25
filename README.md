@@ -35,126 +35,76 @@ docker compose down --rmi local
 🔹 Use of this service is specified through [SpringDoc OpenAPI Swagger UI](http://localhost:8080/swagger-ui/index.html).
 <br>
 
-📣 This project has been structured following a Hexagonal Architecture
+### 📣 This project has been structured following a Hexagonal Architecture
 
-[//]: # (Directory tree below was generated using 'tree -d -I target' command)
+Hotel module directory structure
+
+[//]: # (Directory tree below was generated using 'tree -d' command in the 'src/main/java/org/egualpam/contexts/hotelmanagement/hotel' directory)
 
 ```
 .
-└── src
-    ├── main
-    │   ├── java
-    │   │   └── org
-    │   │       └── egualpam
-    │   │           └── contexts
-    │   │               └── hotelmanagement
-    │   │                   ├── hotel
-    │   │                   │   ├── application
-    │   │                   │   │   ├── command
-    │   │                   │   │   └── query
-    │   │                   │   ├── domain
-    │   │                   │   └── infrastructure
-    │   │                   │       ├── configuration
-    │   │                   │       ├── consumer
-    │   │                   │       ├── controller
-    │   │                   │       ├── cqrs
-    │   │                   │       │   ├── command
-    │   │                   │       │   │   └── simple
-    │   │                   │       │   └── query
-    │   │                   │       │       └── simple
-    │   │                   │       ├── readmodelsupplier
-    │   │                   │       │   └── jpa
-    │   │                   │       ├── repository
-    │   │                   │       │   └── jpa
-    │   │                   │       ├── reviewisalreadyprocessed
-    │   │                   │       └── shared
-    │   │                   │           └── jpa
-    │   │                   │               └── hotelaveragerating
-    │   │                   ├── review
-    │   │                   │   ├── application
-    │   │                   │   │   ├── command
-    │   │                   │   │   └── query
-    │   │                   │   ├── domain
-    │   │                   │   └── infrastructure
-    │   │                   │       ├── configuration
-    │   │                   │       ├── controller
-    │   │                   │       ├── cqrs
-    │   │                   │       │   ├── command
-    │   │                   │       │   │   └── simple
-    │   │                   │       │   └── query
-    │   │                   │       │       └── simple
-    │   │                   │       ├── readmodelsupplier
-    │   │                   │       └── repository
-    │   │                   └── shared
-    │   │                       ├── application
-    │   │                       │   ├── command
-    │   │                       │   └── query
-    │   │                       ├── domain
-    │   │                       └── infrastructure
-    │   │                           ├── configuration
-    │   │                           │   └── eventbus
-    │   │                           ├── cqrs
-    │   │                           │   ├── command
-    │   │                           │   │   └── simple
-    │   │                           │   └── query
-    │   │                           │       └── simple
-    │   │                           ├── eventbus
-    │   │                           │   ├── shared
-    │   │                           │   │   └── events
-    │   │                           │   ├── simple
-    │   │                           │   └── springamqp
-    │   │                           └── internaleventbus
-    │   │                               └── spring
-    │   └── resources
-    │       ├── db
-    │       │   └── migration
-    │       └── events
-    │           └── schema
-    │               ├── hotel
-    │               │   ├── created
-    │               │   └── rating-updated
-    │               └── review
-    │                   ├── created
-    │                   └── updated
-    └── test
-        ├── java
-        │   └── org
-        │       └── egualpam
-        │           └── contexts
-        │               └── hotelmanagement
-        │                   ├── architecture
-        │                   ├── e2e
-        │                   ├── hotel
-        │                   │   ├── application
-        │                   │   │   ├── command
-        │                   │   │   └── query
-        │                   │   └── infrastructure
-        │                   │       ├── controller
-        │                   │       ├── readmodelsupplier
-        │                   │       │   └── jpa
-        │                   │       ├── repository
-        │                   │       │   └── jpa
-        │                   │       └── reviewisalreadyprocessed
-        │                   ├── journey
-        │                   ├── review
-        │                   │   ├── application
-        │                   │   │   ├── command
-        │                   │   │   └── query
-        │                   │   └── infrastructure
-        │                   │       ├── controller
-        │                   │       ├── readmodelsupplier
-        │                   │       └── repository
-        │                   └── shared
-        │                       └── infrastructure
-        │                           ├── configuration
-        │                           ├── cqrs
-        │                           │   ├── command
-        │                           │   │   └── simple
-        │                           │   └── query
-        │                           │       └── simple
-        │                           ├── eventbus
-        │                           │   ├── simple
-        │                           │   └── springamqp
-        │                           └── helpers
-        └── resources
+├── application
+│   ├── command
+│   └── query
+├── domain
+└── infrastructure
+    ├── configuration
+    ├── consumer
+    ├── controller
+    ├── cqrs
+    │   ├── command
+    │   │   └── simple
+    │   └── query
+    │       └── simple
+    ├── readmodelsupplier
+    │   └── jpa
+    ├── repository
+    │   └── jpa
+    ├── reviewisalreadyprocessed
+    └── shared
+        └── jpa
+            └── hotelaveragerating
+```
+
+Tests directory structure
+
+[//]: # (Directory tree below was generated using 'tree -d' command in the 'src/test/java/org/egualpam/contexts/hotelmanagement' directory)
+
+```
+.
+├── architecture
+├── e2e
+├── hotel
+│   ├── application
+│   │   ├── command
+│   │   └── query
+│   └── infrastructure
+│       ├── controller
+│       ├── readmodelsupplier
+│       │   └── jpa
+│       ├── repository
+│       │   └── jpa
+│       └── reviewisalreadyprocessed
+├── journey
+├── review
+│   ├── application
+│   │   ├── command
+│   │   └── query
+│   └── infrastructure
+│       ├── controller
+│       ├── readmodelsupplier
+│       └── repository
+└── shared
+    └── infrastructure
+        ├── configuration
+        ├── cqrs
+        │   ├── command
+        │   │   └── simple
+        │   └── query
+        │       └── simple
+        ├── eventbus
+        │   ├── simple
+        │   └── springamqp
+        └── helpers
+
 ```
