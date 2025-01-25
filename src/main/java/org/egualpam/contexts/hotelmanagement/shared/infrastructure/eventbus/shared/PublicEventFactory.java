@@ -10,7 +10,6 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.even
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.ReviewCreatedPublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.ReviewUpdatedPublicEvent;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.UnsupportedDomainEvent;
 
 public final class PublicEventFactory {
 

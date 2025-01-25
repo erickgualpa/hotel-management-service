@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events;
+package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared;
 
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 
