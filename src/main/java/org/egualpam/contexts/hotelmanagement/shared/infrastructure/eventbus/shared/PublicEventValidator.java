@@ -43,8 +43,7 @@ public final class PublicEventValidator {
     String jsonSchemaPath = jsonSchemas.get(event.getClass());
 
     if (jsonSchemaPath == null) {
-      throw new RuntimeException(
-          "Event [%s] could not be validated".formatted(event.getClass().getSimpleName()));
+      throw new MissingPublicEventSchema(event);
     }
 
     JsonSchema jsonSchema = loadSchema(jsonSchemaPath);
@@ -53,10 +52,7 @@ public final class PublicEventValidator {
     Set<ValidationMessage> result = jsonSchema.validate(eventAsJsonNode);
 
     if (!result.isEmpty()) {
-      // TODO: Use custom exception
-      throw new RuntimeException(
-          "Event [%s] is not valid due to: [%s]"
-              .formatted(event.getClass().getSimpleName(), result.toString()));
+      throw new InvalidPublicEvent(event, result);
     }
   }
 
