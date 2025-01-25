@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared;
 
+import static java.util.Map.entry;
 import static java.util.Objects.requireNonNull;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,7 +16,10 @@ import java.util.Map;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.HotelCreatedPublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.HotelRatingUpdatedPublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.PublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.ReviewCreatedPublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.events.ReviewUpdatedPublicEvent;
 
 public final class PublicEventValidator {
 
@@ -23,7 +27,11 @@ public final class PublicEventValidator {
   private final JsonSchemaFactory jsonSchemaFactory;
 
   private final Map<Class<? extends PublicEvent>, String> jsonSchemas =
-      Map.of(HotelCreatedPublicEvent.class, "events/hotel/hotel-created/1-0.json");
+      Map.ofEntries(
+          entry(HotelCreatedPublicEvent.class, "events/hotel/hotel-created/1-0.json"),
+          entry(HotelRatingUpdatedPublicEvent.class, "events/hotel/rating-updated/1-0.json"),
+          entry(ReviewCreatedPublicEvent.class, "events/review/created/1-0.json"),
+          entry(ReviewUpdatedPublicEvent.class, "events/review/updated/1-0.json"));
 
   public PublicEventValidator(ObjectMapper objectMapper, JsonSchemaFactory jsonSchemaFactory) {
     this.objectMapper = objectMapper;
@@ -35,7 +43,8 @@ public final class PublicEventValidator {
     String jsonSchemaPath = jsonSchemas.get(event.getClass());
 
     if (jsonSchemaPath == null) {
-      return;
+      throw new RuntimeException(
+          "Event [%s] could not be validated".formatted(event.getClass().getSimpleName()));
     }
 
     JsonSchema jsonSchema = loadSchema(jsonSchemaPath);
@@ -46,7 +55,8 @@ public final class PublicEventValidator {
     if (!result.isEmpty()) {
       // TODO: Use custom exception
       throw new RuntimeException(
-          "Event [%s] is not valid due to: [%s]".formatted(event, result.toString()));
+          "Event [%s] is not valid due to: [%s]"
+              .formatted(event.getClass().getSimpleName(), result.toString()));
     }
   }
 

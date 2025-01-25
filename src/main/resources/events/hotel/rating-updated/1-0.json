@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HotelRatingUpdatedDomainEvent",
+  "description": "Domain event published after hotel rating update",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "Domain event unique identifier",
+      "type": "string"
+    },
+    "type": {
+      "description": "Domain event type",
+      "type": "string"
+    },
+    "version": {
+      "description": "Domain event version",
+      "type": "string"
+    },
+    "occurredOn": {
+      "description": "Domain event timestamp",
+      "type": "string"
+    },
+    "aggregateId": {
+      "description": "Domain event aggregate reference",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "version",
+    "occurredOn",
+    "aggregateId"
+  ]
+}

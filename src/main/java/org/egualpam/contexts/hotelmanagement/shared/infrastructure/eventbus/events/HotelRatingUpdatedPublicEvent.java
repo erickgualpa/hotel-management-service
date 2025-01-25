@@ -9,7 +9,6 @@ public final class HotelRatingUpdatedPublicEvent implements PublicEvent {
   private final String id;
   private final String type;
   private final String aggregateId;
-  private final String reviewId;
   private final Instant occurredOn;
 
   public HotelRatingUpdatedPublicEvent(
@@ -17,7 +16,6 @@ public final class HotelRatingUpdatedPublicEvent implements PublicEvent {
     this.id = id;
     this.type = "hotelmanagement.hotel.rating-updated";
     this.aggregateId = aggregateId;
-    this.reviewId = reviewId;
     this.occurredOn = occurredOn;
   }
 
