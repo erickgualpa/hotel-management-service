@@ -19,10 +19,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 public final class SpringAmqpEventBus implements EventBus {
 
   private final ObjectMapper objectMapper;
-  private final JsonSchemaFactory jsonSchemaFactory;
   private final PublicEventValidator publicEventValidator;
   private final EventStoreRepository eventStoreRepository;
   private final RabbitTemplate rabbitTemplate;
+
   private final Logger logger = getLogger(this.getClass());
 
   public SpringAmqpEventBus(
@@ -31,7 +31,6 @@ public final class SpringAmqpEventBus implements EventBus {
       EventStoreRepository eventStoreRepository,
       RabbitTemplate rabbitTemplate) {
     this.objectMapper = objectMapper;
-    this.jsonSchemaFactory = jsonSchemaFactory;
     this.publicEventValidator = new PublicEventValidator(objectMapper, jsonSchemaFactory);
     this.eventStoreRepository = eventStoreRepository;
     this.rabbitTemplate = rabbitTemplate;
