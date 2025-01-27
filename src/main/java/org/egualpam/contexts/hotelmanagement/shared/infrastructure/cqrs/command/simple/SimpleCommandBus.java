@@ -16,7 +16,7 @@ public final class SimpleCommandBus implements CommandBus {
   @Override
   public void publish(Command command) {
     Optional.ofNullable(handlers.get(command.getClass()))
-        .orElseThrow(CommandHandlerNotFound::new)
+        .orElseThrow(() -> new CommandHandlerNotFound(command))
         .handle(command);
   }
 }
