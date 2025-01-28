@@ -1,6 +1,43 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.application;
 
+import java.time.Clock;
+import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingAlreadyExists;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
+import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
+
 public class InitializeHotelRating {
 
-  public void execute(InitializeHotelRatingCommand command) {}
+  private final UniqueIdSupplier uniqueIdSupplier;
+  private final Clock clock;
+  private final AggregateRepository<HotelRating> repository;
+  private final EventBus eventBus;
+
+  public InitializeHotelRating(
+      UniqueIdSupplier uniqueIdSupplier,
+      Clock clock,
+      AggregateRepository<HotelRating> repository,
+      EventBus eventBus) {
+    this.uniqueIdSupplier = uniqueIdSupplier;
+    this.clock = clock;
+    this.repository = repository;
+    this.eventBus = eventBus;
+  }
+
+  public void execute(InitializeHotelRatingCommand command) {
+    String id = command.id();
+    String hotelId = command.hotelId();
+
+    final HotelRating hotelRating;
+
+    try {
+      hotelRating = HotelRating.initialize(repository, uniqueIdSupplier, clock, id, hotelId);
+    } catch (HotelRatingAlreadyExists ignored) {
+      return;
+    }
+
+    repository.save(hotelRating);
+    eventBus.publish(hotelRating.pullDomainEvents());
+  }
 }
