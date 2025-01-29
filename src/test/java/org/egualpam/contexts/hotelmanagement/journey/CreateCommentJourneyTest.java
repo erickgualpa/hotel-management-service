@@ -112,5 +112,27 @@ public class CreateCommentJourneyTest extends AbstractIntegrationTest {
                         assertNotNull(r.occurredOn());
                       });
             });
+
+    // TODO: Enable once logic completed
+    /*await()
+    .atMost(10, SECONDS)
+    .untilAsserted(
+        () -> {
+          PublicEventResult publicEventResult =
+              rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.test");
+          assertThat(publicEventResult)
+              .satisfies(
+                  r -> {
+                    try {
+                      UUID.fromString(r.id());
+                    } catch (IllegalArgumentException e) {
+                      fail("Invalid public event id: [%s]".formatted(r.id()));
+                    }
+                    assertThat(r.type()).isEqualTo("hotelmanagement.hotel-rating.updated");
+                    assertThat(r.version()).isEqualTo("1.0");
+                    assertThat(r.aggregateId()).isEqualTo(reviewId.toString());
+                    assertNotNull(r.occurredOn());
+                  });
+        });*/
   }
 }

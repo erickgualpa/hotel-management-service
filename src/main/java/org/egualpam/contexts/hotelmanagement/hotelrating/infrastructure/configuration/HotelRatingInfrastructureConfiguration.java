@@ -3,10 +3,14 @@ package org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.configu
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.InitializeHotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.UpdateHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.consumer.SyncInitializeHotelRatingConsumer;
+import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.consumer.SyncUpdateHotelRatingConsumer;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncInitializeHotelRatingCommand;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncInitializeHotelRatingCommandHandler;
+import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncUpdateHotelRatingCommand;
+import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncUpdateHotelRatingCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.repository.jpa.JpaHotelRatingRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
@@ -26,14 +30,24 @@ public class HotelRatingInfrastructureConfiguration {
     return new SyncInitializeHotelRatingConsumer(objectMapper, commandBus);
   }
 
+  @Bean("syncUpdateHotelRatingConsumerV2")
+  public SyncUpdateHotelRatingConsumer syncUpdateHotelRatingConsumer(
+      ObjectMapper objectMapper, CommandBus commandBus) {
+    return new SyncUpdateHotelRatingConsumer(objectMapper, commandBus);
+  }
+
   @Bean
   public SimpleCommandBusConfiguration hotelRatingSimpleCommandBusConfiguration(
-      TransactionTemplate transactionTemplate, InitializeHotelRating initializeHotelRating) {
+      TransactionTemplate transactionTemplate,
+      InitializeHotelRating initializeHotelRating,
+      UpdateHotelRating updateHotelRating) {
     return new SimpleCommandBusConfiguration()
         .handling(
             SyncInitializeHotelRatingCommand.class,
-            new SyncInitializeHotelRatingCommandHandler(
-                transactionTemplate, initializeHotelRating));
+            new SyncInitializeHotelRatingCommandHandler(transactionTemplate, initializeHotelRating))
+        .handling(
+            SyncUpdateHotelRatingCommand.class,
+            new SyncUpdateHotelRatingCommandHandler(transactionTemplate, updateHotelRating));
   }
 
   @Bean

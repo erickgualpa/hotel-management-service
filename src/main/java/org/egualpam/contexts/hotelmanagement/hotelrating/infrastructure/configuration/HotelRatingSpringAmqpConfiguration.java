@@ -21,4 +21,15 @@ public class HotelRatingSpringAmqpConfiguration {
       @Qualifier("initializeHotelRatingQueue") Queue queue, TopicExchange topicExchange) {
     return BindingBuilder.bind(queue).to(topicExchange).with("hotelmanagement.hotel.created");
   }
+
+  @Bean("updateHotelRatingQueueV2")
+  public Queue updateHotelRatingQueue() {
+    return new Queue("hotelmanagement.hotel-rating.update-hotel-rating", false);
+  }
+
+  @Bean("updateHotelRatingBindingV2")
+  public Binding updateHotelRatingBinding(
+      @Qualifier("updateHotelRatingQueueV2") Queue queue, TopicExchange topicExchange) {
+    return BindingBuilder.bind(queue).to(topicExchange).with("hotelmanagement.review.created");
+  }
 }
