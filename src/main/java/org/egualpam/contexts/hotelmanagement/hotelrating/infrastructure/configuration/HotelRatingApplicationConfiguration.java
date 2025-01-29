@@ -14,8 +14,10 @@ public class HotelRatingApplicationConfiguration {
 
   @Bean
   public InitializeHotelRating initializeHotelRating(
-      UniqueIdSupplier uniqueIdSupplier, Clock clock, AggregateRepository<HotelRating> repository) {
-    EventBus fakeEventBus = events -> {};
-    return new InitializeHotelRating(uniqueIdSupplier, clock, repository, fakeEventBus);
+      UniqueIdSupplier uniqueIdSupplier,
+      Clock clock,
+      AggregateRepository<HotelRating> repository,
+      EventBus eventBus) {
+    return new InitializeHotelRating(uniqueIdSupplier, clock, repository, eventBus);
   }
 }

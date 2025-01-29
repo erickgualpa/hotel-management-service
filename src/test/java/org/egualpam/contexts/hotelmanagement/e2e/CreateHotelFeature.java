@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelRatingTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.PublicEventResult;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
@@ -35,6 +36,7 @@ class CreateHotelFeature extends AbstractIntegrationTest {
             """;
 
   @Autowired private HotelTestRepository hotelTestRepository;
+  @Autowired private HotelRatingTestRepository hotelRatingTestRepository;
   @Autowired private RabbitMqTestConsumer rabbitMqTestConsumer;
 
   @Test
@@ -87,25 +89,28 @@ class CreateHotelFeature extends AbstractIntegrationTest {
     // TODO: Place this assertions together with the one above
     // TODO: or add something that improves the way event publishing is asserted
     // TODO: Assert hotel rating initialized event is published
-    /*await()
-    .atMost(10, SECONDS)
-    .untilAsserted(
-        () -> {
-          PublicEventResult publicEventResult =
-              rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.test");
-          assertThat(publicEventResult)
-              .satisfies(
-                  r -> {
-                    try {
-                      UUID.fromString(r.id());
-                    } catch (IllegalArgumentException e) {
-                      fail("Invalid public event id: [%s]".formatted(r.id()));
-                    }
-                    assertThat(r.type()).isEqualTo("hotelmanagement.hotel-rating.initialized");
-                    assertThat(r.version()).isEqualTo("1.0");
-                    assertThat(r.aggregateId()).isNotNull();
-                    assertNotNull(r.occurredOn());
-                  });
-        });*/
+    await()
+        .atMost(10, SECONDS)
+        .untilAsserted(
+            () -> {
+              assertTrue(hotelRatingTestRepository.hotelRatingIsInitialized(hotelId));
+
+              PublicEventResult publicEventResult =
+                  rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.test");
+
+              assertThat(publicEventResult)
+                  .satisfies(
+                      r -> {
+                        try {
+                          UUID.fromString(r.id());
+                        } catch (IllegalArgumentException e) {
+                          fail("Invalid public event id: [%s]".formatted(r.id()));
+                        }
+                        assertThat(r.type()).isEqualTo("hotelmanagement.hotel-rating.initialized");
+                        assertThat(r.version()).isEqualTo("1.0");
+                        assertThat(r.aggregateId()).isNotNull();
+                        assertNotNull(r.occurredOn());
+                      });
+            });
   }
 }

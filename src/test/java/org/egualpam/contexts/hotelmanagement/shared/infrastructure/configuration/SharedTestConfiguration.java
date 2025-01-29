@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.eventbus.RabbitMqProperties;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.EventStoreTestRepository;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelRatingTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
@@ -38,6 +39,12 @@ public class SharedTestConfiguration {
   public EventStoreTestRepository eventStoreTestRepository(
       NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
     return new EventStoreTestRepository(namedParameterJdbcTemplate);
+  }
+
+  @Bean
+  public HotelRatingTestRepository hotelRatingTestRepository(
+      NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    return new HotelRatingTestRepository(namedParameterJdbcTemplate);
   }
 
   @Bean
