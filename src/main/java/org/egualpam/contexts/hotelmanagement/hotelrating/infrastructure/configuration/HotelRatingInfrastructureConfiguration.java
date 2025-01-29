@@ -2,7 +2,7 @@ package org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.configu
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
-import org.egualpam.contexts.hotelmanagement.hotelrating.application.InitializeHotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.InitializeHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.UpdateHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.consumer.SyncInitializeHotelRatingConsumer;

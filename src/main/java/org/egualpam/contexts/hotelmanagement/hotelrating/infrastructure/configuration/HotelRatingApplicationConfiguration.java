@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.configuration;
 
 import java.time.Clock;
-import org.egualpam.contexts.hotelmanagement.hotelrating.application.InitializeHotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.InitializeHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.UpdateHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;

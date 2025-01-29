@@ -2,8 +2,8 @@ package org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.co
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.egualpam.contexts.hotelmanagement.hotelrating.application.InitializeHotelRating;
-import org.egualpam.contexts.hotelmanagement.hotelrating.application.InitializeHotelRatingCommand;
+import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.InitializeHotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.InitializeHotelRatingCommand;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.CommandHandler;

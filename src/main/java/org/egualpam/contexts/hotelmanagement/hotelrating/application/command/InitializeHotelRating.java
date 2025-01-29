@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotelrating.application;
+package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 
 import java.time.Clock;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;

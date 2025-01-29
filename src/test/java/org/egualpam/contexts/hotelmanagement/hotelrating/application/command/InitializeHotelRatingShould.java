@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.hotelrating.application;
+package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 
 import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
