@@ -4,7 +4,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.InitializeHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.InitializeHotelRatingCommand;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.CommandHandler;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -18,8 +17,7 @@ public class SyncInitializeHotelRatingCommandHandler implements CommandHandler {
   private static InitializeHotelRatingCommand toApplicationCommand(
       SyncInitializeHotelRatingCommand command) {
     // TODO: Verify if make sense to generate this id from here
-    String hotelRatingId = UniqueId.get().value();
-    return new InitializeHotelRatingCommand(hotelRatingId, command.hotelId());
+    return new InitializeHotelRatingCommand(command.id(), command.hotelId());
   }
 
   @Override
