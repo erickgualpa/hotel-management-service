@@ -1,12 +1,11 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.repository.jpa;
 
-import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import jakarta.persistence.EntityManager;
-import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
 import org.egualpam.contexts.hotelmanagement.shared.domain.ActionNotYetImplemented;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
@@ -42,14 +41,9 @@ class JpaHotelRatingRepositoryIT extends AbstractIntegrationTest {
     UniqueId id = UniqueId.get();
     UniqueId hotelId = UniqueId.get();
     AggregateId aggregateId = new AggregateId(id.value());
+    String reviewId = UniqueId.get().value();
 
-    Map<String, Object> properties =
-        Map.ofEntries(
-            entry("id", id.value()),
-            entry("hotelId", hotelId.value()),
-            entry("reviewsCount", 0),
-            entry("average", 0.0));
-    HotelRating existing = HotelRating.load(properties);
+    HotelRating existing = HotelRating.load(id.value(), hotelId.value(), Set.of(reviewId), 0.0);
 
     transactionTemplate.executeWithoutResult(ts -> testee.save(existing));
 

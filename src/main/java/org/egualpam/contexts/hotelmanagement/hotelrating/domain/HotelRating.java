@@ -1,10 +1,11 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.domain;
 
 import static java.util.Objects.isNull;
+import static java.util.stream.Collectors.toSet;
 
 import java.time.Clock;
-import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
@@ -15,26 +16,24 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 public class HotelRating extends AggregateRoot {
 
   private final UniqueId hotelId;
-  private ReviewsCount reviewsCount;
+  private final Set<UniqueId> reviews;
+
   private Average average;
 
-  private HotelRating(String id, String hotelId, Integer reviewsCount, Double average) {
+  private HotelRating(
+      String id, String hotelId, Set<String> reviews, Integer reviewsCount, Double average) {
     super(id);
     if (isNull(hotelId) || isNull(reviewsCount) || isNull(average)) {
       throw new RequiredPropertyIsMissing();
     }
 
     this.hotelId = new UniqueId(hotelId);
-    this.reviewsCount = new ReviewsCount(reviewsCount);
+    this.reviews = reviews.stream().map(UniqueId::new).collect(toSet());
     this.average = new Average(average);
   }
 
-  public static HotelRating load(Map<String, Object> properties) {
-    return new HotelRating(
-        (String) properties.get("id"),
-        (String) properties.get("hotelId"),
-        (Integer) properties.get("reviewsCount"),
-        (Double) properties.get("average"));
+  public static HotelRating load(String id, String hotelId, Set<String> reviews, Double average) {
+    return new HotelRating(id, hotelId, reviews, reviews.size(), average);
   }
 
   public static HotelRating initialize(
@@ -51,7 +50,7 @@ public class HotelRating extends AggregateRoot {
               throw new HotelRatingAlreadyExists(hotelRating.id());
             });
 
-    HotelRating hotelRating = new HotelRating(id, hotelId, 0, 0.0);
+    HotelRating hotelRating = new HotelRating(id, hotelId, Set.of(), 0, 0.0);
 
     HotelRatingInitialized hotelRatingInitialized =
         new HotelRatingInitialized(uniqueIdSupplier.get(), hotelRating.id(), clock);
@@ -61,12 +60,16 @@ public class HotelRating extends AggregateRoot {
     return hotelRating;
   }
 
-  // TODO: Make this idempotent
-  // TODO: Integrate into use case
   public void update(
       UniqueIdSupplier uniqueIdSupplier, Clock clock, String reviewId, Integer reviewRating) {
     if (isNull(reviewId) || isNull(reviewRating)) {
       throw new RequiredPropertyIsMissing();
+    }
+
+    UniqueId reviewUniqueId = new UniqueId(reviewId);
+
+    if (reviews.contains(reviewUniqueId)) {
+      throw new ReviewAlreadyProcessed(reviewUniqueId);
     }
 
     final Integer reviewsRatingSum = this.ratingSum();
@@ -77,7 +80,7 @@ public class HotelRating extends AggregateRoot {
 
     final Double updatedAverage = (double) updatedReviewsRatingSum / updatedReviewsCount;
 
-    this.reviewsCount = new ReviewsCount(updatedReviewsCount);
+    this.reviews.add(reviewUniqueId);
     this.average = new Average(updatedAverage);
 
     final HotelRatingUpdated hotelRatingUpdated =
@@ -90,8 +93,12 @@ public class HotelRating extends AggregateRoot {
     return this.hotelId.value();
   }
 
+  public Set<String> reviews() {
+    return this.reviews.stream().map(UniqueId::value).collect(toSet());
+  }
+
   public Integer reviewsCount() {
-    return this.reviewsCount.value();
+    return this.reviews.size();
   }
 
   public Double average() {
@@ -99,6 +106,6 @@ public class HotelRating extends AggregateRoot {
   }
 
   public Integer ratingSum() {
-    return this.average.calculateRatingSumFor(this.reviewsCount);
+    return this.average.calculateRatingSumFor(this.reviews.size());
   }
 }

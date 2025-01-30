@@ -1,6 +1,5 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 
-import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -8,7 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
@@ -52,13 +50,7 @@ class InitializeHotelRatingShould {
     UniqueId hotelId = UniqueId.get();
     UniqueId domainEventId = UniqueId.get();
 
-    Map<String, Object> properties =
-        Map.ofEntries(
-            entry("id", id.value()),
-            entry("hotelId", hotelId.value()),
-            entry("reviewsCount", 0),
-            entry("average", 0.0));
-    HotelRating expected = HotelRating.load(properties);
+    HotelRating expected = HotelRating.load(id.value(), hotelId.value(), Set.of(), 0.0);
 
     when(uniqueIdSupplier.get()).thenReturn(domainEventId);
     when(clock.instant()).thenReturn(NOW);
@@ -90,19 +82,13 @@ class InitializeHotelRatingShould {
   void notInitializeHotelRating_whenAlreadyExists() {
     UniqueId id = UniqueId.get();
     UniqueId hotelId = UniqueId.get();
-    InitializeHotelRatingCommand command =
-        new InitializeHotelRatingCommand(id.value(), hotelId.value());
 
-    Map<String, Object> properties =
-        Map.ofEntries(
-            entry("id", id.value()),
-            entry("hotelId", hotelId.value()),
-            entry("reviewsCount", 0),
-            entry("average", 0.0));
-    HotelRating existing = HotelRating.load(properties);
+    HotelRating existing = HotelRating.load(id.value(), hotelId.value(), Set.of(), 0.0);
 
     when(repository.find(new AggregateId(id.value()))).thenReturn(Optional.of(existing));
 
+    InitializeHotelRatingCommand command =
+        new InitializeHotelRatingCommand(id.value(), hotelId.value());
     testee.execute(command);
 
     verify(repository, never()).save(hotelRatingCaptor.capture());

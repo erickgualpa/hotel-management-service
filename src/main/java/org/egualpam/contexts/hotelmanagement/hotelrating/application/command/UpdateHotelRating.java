@@ -2,6 +2,7 @@ package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 
 import java.time.Clock;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.domain.ReviewAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
@@ -36,7 +37,11 @@ public class UpdateHotelRating {
             // TODO: Replace by custom exception
             .orElseThrow();
 
-    hotelRating.update(uniqueIdSupplier, clock, reviewId, reviewRating);
+    try {
+      hotelRating.update(uniqueIdSupplier, clock, reviewId, reviewRating);
+    } catch (ReviewAlreadyProcessed ignored) {
+      return;
+    }
 
     repository.save(hotelRating);
     eventBus.publish(hotelRating.pullDomainEvents());

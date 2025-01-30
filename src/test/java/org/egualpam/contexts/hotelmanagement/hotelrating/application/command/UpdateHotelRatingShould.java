@@ -1,13 +1,13 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 
-import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
@@ -50,17 +50,12 @@ class UpdateHotelRatingShould {
   void updateHotelRating() {
     String id = UniqueId.get().value();
     String hotelId = UniqueId.get().value();
+    String existingReviewId = UniqueId.get().value();
     String reviewId = UniqueId.get().value();
     Integer reviewRating = 2;
     UniqueId domainEventId = UniqueId.get();
 
-    Map<String, Object> properties =
-        Map.ofEntries(
-            entry("id", id),
-            entry("hotelId", hotelId),
-            entry("reviewsCount", 1),
-            entry("average", 3.0));
-    HotelRating existing = HotelRating.load(properties);
+    HotelRating existing = HotelRating.load(id, hotelId, Set.of(existingReviewId), 3.0);
 
     when(clock.instant()).thenReturn(NOW);
     when(uniqueIdSupplier.get()).thenReturn(domainEventId);
@@ -74,6 +69,7 @@ class UpdateHotelRatingShould {
     assertThat(saved)
         .satisfies(
             actual -> {
+              assertThat(actual.reviews()).containsExactlyInAnyOrder(existingReviewId, reviewId);
               assertThat(actual.reviewsCount()).isEqualTo(2);
               assertThat(actual.average()).isEqualTo(2.5);
             });
@@ -91,5 +87,23 @@ class UpdateHotelRatingShould {
               assertThat(actual.aggregateId().value()).isEqualTo(id);
               assertThat(actual.occurredOn()).isEqualTo(NOW);
             });
+  }
+
+  @Test
+  void notUpdateHotelRating_whenReviewIsAlreadyProcessed() {
+    String id = UniqueId.get().value();
+    String hotelId = UniqueId.get().value();
+    String reviewId = UniqueId.get().value();
+    Integer reviewRating = 3;
+
+    HotelRating existing = HotelRating.load(id, hotelId, Set.of(reviewId), 3.0);
+
+    when(repository.find(new AggregateId(id))).thenReturn(Optional.of(existing));
+
+    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(id, reviewId, reviewRating);
+    testee.execute(command);
+
+    verify(repository, never()).save(any());
+    verify(eventBus, never()).publish(any());
   }
 }
