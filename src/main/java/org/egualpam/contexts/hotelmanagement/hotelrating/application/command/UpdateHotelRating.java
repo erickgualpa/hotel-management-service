@@ -1,6 +1,8 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 
+import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 
@@ -14,5 +16,15 @@ public class UpdateHotelRating {
     this.eventBus = eventBus;
   }
 
-  public void execute(UpdateHotelRatingCommand command) {}
+  public void execute(UpdateHotelRatingCommand command) {
+    String id = command.id();
+    HotelRating hotelRating =
+        repository
+            .find(new AggregateId(id))
+            // TODO: Replace by custom exception
+            .orElseThrow();
+
+    repository.save(hotelRating);
+    eventBus.publish(hotelRating.pullDomainEvents());
+  }
 }

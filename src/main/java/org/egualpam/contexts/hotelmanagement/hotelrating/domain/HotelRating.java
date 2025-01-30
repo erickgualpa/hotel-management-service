@@ -18,15 +18,15 @@ public class HotelRating extends AggregateRoot {
   private final ReviewsCount reviewsCount;
   private final Average average;
 
-  private HotelRating(String id, String hotelId, Integer reviewsCount, Double ratingSum) {
+  private HotelRating(String id, String hotelId, Integer reviewsCount, Double average) {
     super(id);
-    if (isNull(hotelId) || isNull(reviewsCount) || isNull(ratingSum)) {
+    if (isNull(hotelId) || isNull(reviewsCount) || isNull(average)) {
       throw new RequiredPropertyIsMissing();
     }
 
     this.hotelId = new UniqueId(hotelId);
     this.reviewsCount = new ReviewsCount(reviewsCount);
-    this.average = new Average(ratingSum);
+    this.average = new Average(average);
   }
 
   public static HotelRating load(Map<String, Object> properties) {
