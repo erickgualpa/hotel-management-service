@@ -50,6 +50,7 @@ class UpdateHotelRatingShould {
   void updateHotelRating() {
     String id = UniqueId.get().value();
     String hotelId = UniqueId.get().value();
+    String reviewId = UniqueId.get().value();
     Integer reviewRating = 2;
     UniqueId domainEventId = UniqueId.get();
 
@@ -65,7 +66,7 @@ class UpdateHotelRatingShould {
     when(uniqueIdSupplier.get()).thenReturn(domainEventId);
     when(repository.find(new AggregateId(id))).thenReturn(Optional.of(existing));
 
-    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(id, reviewRating);
+    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(id, reviewId, reviewRating);
     testee.execute(command);
 
     verify(repository).save(hotelRatingCaptor.capture());

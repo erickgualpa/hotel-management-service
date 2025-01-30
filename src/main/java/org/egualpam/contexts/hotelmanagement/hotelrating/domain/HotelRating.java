@@ -63,8 +63,9 @@ public class HotelRating extends AggregateRoot {
 
   // TODO: Make this idempotent
   // TODO: Integrate into use case
-  public void update(UniqueIdSupplier uniqueIdSupplier, Clock clock, Integer reviewRating) {
-    if (isNull(reviewRating)) {
+  public void update(
+      UniqueIdSupplier uniqueIdSupplier, Clock clock, String reviewId, Integer reviewRating) {
+    if (isNull(reviewId) || isNull(reviewRating)) {
       throw new RequiredPropertyIsMissing();
     }
 

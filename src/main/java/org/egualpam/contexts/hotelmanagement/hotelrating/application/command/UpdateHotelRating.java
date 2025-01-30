@@ -27,6 +27,7 @@ public class UpdateHotelRating {
 
   public void execute(UpdateHotelRatingCommand command) {
     String id = command.id();
+    String reviewId = command.reviewId();
     Integer reviewRating = command.reviewRating();
 
     HotelRating hotelRating =
@@ -35,7 +36,7 @@ public class UpdateHotelRating {
             // TODO: Replace by custom exception
             .orElseThrow();
 
-    hotelRating.update(uniqueIdSupplier, clock, reviewRating);
+    hotelRating.update(uniqueIdSupplier, clock, reviewId, reviewRating);
 
     repository.save(hotelRating);
     eventBus.publish(hotelRating.pullDomainEvents());

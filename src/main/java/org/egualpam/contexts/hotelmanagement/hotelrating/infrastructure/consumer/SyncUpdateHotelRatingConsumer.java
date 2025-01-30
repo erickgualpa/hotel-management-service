@@ -46,10 +46,11 @@ public class SyncUpdateHotelRatingConsumer {
 
     String hotelId = reviewCreatedEvent.hotelId();
     String hotelRatingId = getHotelRatingId.fromHotel(hotelId);
+    String reviewId = reviewCreatedEvent.aggregateId();
     Integer reviewRating = reviewCreatedEvent.reviewRating();
 
     final Command syncUpdateHotelRatingCommand =
-        new SyncUpdateHotelRatingCommand(hotelRatingId, reviewRating);
+        new SyncUpdateHotelRatingCommand(hotelRatingId, reviewId, reviewRating);
     try {
       commandBus.publish(syncUpdateHotelRatingCommand);
     } catch (RuntimeException e) {
@@ -60,5 +61,5 @@ public class SyncUpdateHotelRatingConsumer {
     channel.basicAck(in.getMessageProperties().getDeliveryTag(), true);
   }
 
-  record ReviewCreatedEvent(String hotelId, Integer reviewRating) {}
+  record ReviewCreatedEvent(String aggregateId, String hotelId, Integer reviewRating) {}
 }

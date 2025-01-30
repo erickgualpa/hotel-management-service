@@ -16,7 +16,7 @@ public class SyncUpdateHotelRatingCommandHandler implements CommandHandler {
 
   private static UpdateHotelRatingCommand toApplicationCommand(
       SyncUpdateHotelRatingCommand command) {
-    return new UpdateHotelRatingCommand(command.id(), command.reviewRating());
+    return new UpdateHotelRatingCommand(command.id(), command.reviewId(), command.reviewRating());
   }
 
   @Override
