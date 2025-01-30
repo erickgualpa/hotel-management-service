@@ -1,3 +1,3 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 
-public record UpdateHotelRatingCommand() {}
+public record UpdateHotelRatingCommand(String id) {}

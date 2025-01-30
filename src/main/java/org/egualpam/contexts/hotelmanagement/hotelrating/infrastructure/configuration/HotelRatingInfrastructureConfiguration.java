@@ -18,6 +18,7 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
@@ -32,8 +33,8 @@ public class HotelRatingInfrastructureConfiguration {
 
   @Bean("syncUpdateHotelRatingConsumerV2")
   public SyncUpdateHotelRatingConsumer syncUpdateHotelRatingConsumer(
-      ObjectMapper objectMapper, CommandBus commandBus) {
-    return new SyncUpdateHotelRatingConsumer(objectMapper, commandBus);
+      ObjectMapper objectMapper, NamedParameterJdbcTemplate jdbcTemplate, CommandBus commandBus) {
+    return new SyncUpdateHotelRatingConsumer(objectMapper, jdbcTemplate, commandBus);
   }
 
   @Bean
