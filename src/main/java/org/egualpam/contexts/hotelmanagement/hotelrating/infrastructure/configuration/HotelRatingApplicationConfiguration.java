@@ -25,7 +25,7 @@ public class HotelRatingApplicationConfiguration {
   }
 
   @Bean("updateHotelRatingV2")
-  public UpdateHotelRating updateHotelRating() {
+  public UpdateHotelRating updateHotelRating(UniqueIdSupplier uniqueIdSupplier, Clock clock) {
     AggregateRepository<HotelRating> fakeRepository =
         new AggregateRepository<>() {
           @Override
@@ -39,6 +39,6 @@ public class HotelRatingApplicationConfiguration {
 
     EventBus fakeEventBus = events -> {};
 
-    return new UpdateHotelRating(fakeRepository, fakeEventBus);
+    return new UpdateHotelRating(uniqueIdSupplier, clock, fakeRepository, fakeEventBus);
   }
 }

@@ -15,8 +15,8 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 public class HotelRating extends AggregateRoot {
 
   private final UniqueId hotelId;
-  private final ReviewsCount reviewsCount;
-  private final Average average;
+  private ReviewsCount reviewsCount;
+  private Average average;
 
   private HotelRating(String id, String hotelId, Integer reviewsCount, Double average) {
     super(id);
@@ -59,6 +59,30 @@ public class HotelRating extends AggregateRoot {
     hotelRating.domainEvents().add(hotelRatingInitialized);
 
     return hotelRating;
+  }
+
+  // TODO: Make this idempotent
+  // TODO: Integrate into use case
+  public void update(UniqueIdSupplier uniqueIdSupplier, Clock clock, Integer reviewRating) {
+    if (isNull(reviewRating)) {
+      throw new RequiredPropertyIsMissing();
+    }
+
+    final Integer reviewsRatingSum = this.ratingSum();
+    final Integer reviewsCount = this.reviewsCount();
+
+    final int updatedReviewsRatingSum = reviewsRatingSum + reviewRating;
+    final int updatedReviewsCount = reviewsCount + 1;
+
+    final Double updatedAverage = (double) updatedReviewsRatingSum / updatedReviewsCount;
+
+    this.reviewsCount = new ReviewsCount(updatedReviewsCount);
+    this.average = new Average(updatedAverage);
+
+    final HotelRatingUpdated hotelRatingUpdated =
+        new HotelRatingUpdated(uniqueIdSupplier.get(), this.id(), clock);
+
+    this.domainEvents().add(hotelRatingUpdated);
   }
 
   public String hotelId() {
