@@ -41,6 +41,7 @@ class UpdateHotelRatingShould {
   void updateHotelRating() {
     String id = UniqueId.get().value();
     String hotelId = UniqueId.get().value();
+    Integer reviewRating = 3;
 
     Map<String, Object> properties =
         Map.ofEntries(
@@ -52,7 +53,7 @@ class UpdateHotelRatingShould {
 
     when(repository.find(new AggregateId(id))).thenReturn(Optional.of(existing));
 
-    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(id);
+    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(id, reviewRating);
     testee.execute(command);
 
     verify(repository).save(existing);

@@ -2,4 +2,4 @@ package org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.co
 
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
 
-public record SyncUpdateHotelRatingCommand(String id) implements Command {}
+public record SyncUpdateHotelRatingCommand(String id, Integer reviewRating) implements Command {}
