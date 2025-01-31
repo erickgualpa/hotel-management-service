@@ -15,6 +15,18 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public final class JpaHotelRatingRepository implements AggregateRepository<HotelRating> {
 
+  private static final String insertIntoHotelRating =
+      """
+      INSERT INTO hotel_rating(id, hotel_id, rating_sum, review_count, avg_value, reviews)
+      VALUES(:id, :hotelId, :ratingSum, :reviewCount, :averageRating, :reviewsJson::jsonb)
+      ON CONFLICT (id)
+      DO UPDATE SET
+        rating_sum=:ratingSum,
+        review_count=:reviewCount,
+        avg_value=:averageRating,
+        reviews=:reviewsJson::jsonb
+      """;
+
   private final ObjectMapper objectMapper;
   private final EntityManager entityManager;
   private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -51,18 +63,6 @@ public final class JpaHotelRatingRepository implements AggregateRepository<Hotel
 
   @Override
   public void save(HotelRating hotelRating) {
-    String query =
-        """
-        INSERT INTO hotel_rating(id, hotel_id, rating_sum, review_count, avg_value, reviews)
-        VALUES(:id, :hotelId, :ratingSum, :reviewCount, :averageRating, :reviewsJson::jsonb)
-        ON CONFLICT (id)
-        DO UPDATE SET
-          rating_sum=:ratingSum,
-          review_count=:reviewCount,
-          avg_value=:averageRating,
-          reviews=:reviewsJson::jsonb
-        """;
-
     PersistenceReviews persistenceReviews = new PersistenceReviews(hotelRating.reviews());
 
     final String reviewsAsString;
@@ -80,6 +80,6 @@ public final class JpaHotelRatingRepository implements AggregateRepository<Hotel
     sqlParameterSource.addValue("averageRating", hotelRating.average());
     sqlParameterSource.addValue("reviewsJson", reviewsAsString);
 
-    jdbcTemplate.update(query, sqlParameterSource);
+    jdbcTemplate.update(insertIntoHotelRating, sqlParameterSource);
   }
 }
