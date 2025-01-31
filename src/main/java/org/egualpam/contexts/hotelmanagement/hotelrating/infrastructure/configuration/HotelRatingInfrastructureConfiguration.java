@@ -52,7 +52,10 @@ public class HotelRatingInfrastructureConfiguration {
   }
 
   @Bean
-  public AggregateRepository<HotelRating> repository(EntityManager entityManager) {
-    return new JpaHotelRatingRepository(entityManager);
+  public AggregateRepository<HotelRating> repository(
+      ObjectMapper objectMapper,
+      EntityManager entityManager,
+      NamedParameterJdbcTemplate jdbcTemplate) {
+    return new JpaHotelRatingRepository(objectMapper, entityManager, jdbcTemplate);
   }
 }

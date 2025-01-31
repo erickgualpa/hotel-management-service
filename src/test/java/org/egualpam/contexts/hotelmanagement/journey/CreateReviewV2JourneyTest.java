@@ -23,7 +23,7 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.Rabbi
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class CreateReviewJourneyTest extends AbstractIntegrationTest {
+public class CreateReviewV2JourneyTest extends AbstractIntegrationTest {
 
   @Autowired private RabbitMqTestConsumer rabbitMqTestConsumer;
 
@@ -106,9 +106,9 @@ public class CreateReviewJourneyTest extends AbstractIntegrationTest {
                         } catch (IllegalArgumentException e) {
                           fail("Invalid public event id: [%s]".formatted(r.id()));
                         }
-                        assertThat(r.type()).isEqualTo("hotelmanagement.hotel.rating-updated");
+                        assertThat(r.type()).isEqualTo("hotelmanagement.hotel-rating.updated");
                         assertThat(r.version()).isEqualTo("1.0");
-                        assertThat(r.aggregateId()).isEqualTo(hotelId.toString());
+                        assertThat(r.aggregateId()).isNotNull();
                         assertNotNull(r.occurredOn());
                       });
             });

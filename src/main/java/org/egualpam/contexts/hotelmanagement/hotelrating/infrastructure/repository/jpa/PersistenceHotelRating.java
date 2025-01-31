@@ -1,6 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.repository.jpa;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import java.util.UUID;
@@ -22,7 +23,23 @@ class PersistenceHotelRating {
   @Column(name = "avg_value")
   private Double avgValue;
 
-  public UUID id() {
-    return id;
+  @Convert(converter = PersistenceReviewsConverter.class)
+  @Column(name = "reviews")
+  private PersistenceReviews persistenceReviews;
+
+  UUID id() {
+    return this.id;
+  }
+
+  UUID hotelId() {
+    return this.hotelId;
+  }
+
+  PersistenceReviews persistenceReviews() {
+    return this.persistenceReviews;
+  }
+
+  Double average() {
+    return this.avgValue;
   }
 }

@@ -5,5 +5,6 @@ CREATE TABLE hotel_rating
     rating_sum      INT NOT NULL DEFAULT 0,
     review_count    INT NOT NULL DEFAULT 0,
     avg_value       NUMERIC NOT NULL DEFAULT 0.0,
+    reviews         JSONB DEFAULT NULL,
     PRIMARY KEY (id)
 );

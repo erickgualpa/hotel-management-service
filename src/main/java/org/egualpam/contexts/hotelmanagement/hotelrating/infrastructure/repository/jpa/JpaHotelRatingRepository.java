@@ -2,20 +2,30 @@ package org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.reposit
 
 import static java.util.Objects.isNull;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
-import org.egualpam.contexts.hotelmanagement.shared.domain.ActionNotYetImplemented;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public final class JpaHotelRatingRepository implements AggregateRepository<HotelRating> {
 
+  private final ObjectMapper objectMapper;
   private final EntityManager entityManager;
+  private final NamedParameterJdbcTemplate jdbcTemplate;
 
-  public JpaHotelRatingRepository(EntityManager entityManager) {
+  public JpaHotelRatingRepository(
+      ObjectMapper objectMapper,
+      EntityManager entityManager,
+      NamedParameterJdbcTemplate jdbcTemplate) {
+    this.objectMapper = objectMapper;
     this.entityManager = entityManager;
+    this.jdbcTemplate = jdbcTemplate;
   }
 
   @Override
@@ -29,31 +39,47 @@ public final class JpaHotelRatingRepository implements AggregateRepository<Hotel
       return Optional.empty();
     }
 
-    throw new ActionNotYetImplemented();
+    HotelRating hotelRating =
+        HotelRating.load(
+            persistenceHotelRating.id().toString(),
+            persistenceHotelRating.hotelId().toString(),
+            persistenceHotelRating.persistenceReviews().reviews(),
+            persistenceHotelRating.average());
+
+    return Optional.of(hotelRating);
   }
 
   @Override
   public void save(HotelRating hotelRating) {
     String query =
         """
-        INSERT INTO hotel_rating(id, hotel_id, rating_sum, review_count, avg_value)
-        VALUES(:id, :hotelId, :ratingSum, :reviewCount, :averageRating)
+        INSERT INTO hotel_rating(id, hotel_id, rating_sum, review_count, avg_value, reviews)
+        VALUES(:id, :hotelId, :ratingSum, :reviewCount, :averageRating, :reviewsJson::jsonb)
         ON CONFLICT (id)
         DO UPDATE SET
           rating_sum=:ratingSum,
           review_count=:reviewCount,
-          avg_value=:averageRating
+          avg_value=:averageRating,
+          reviews=:reviewsJson::jsonb
         """;
 
-    entityManager
-        .createNativeQuery(query)
-        .setParameter("id", UUID.fromString(hotelRating.id().value()))
-        .setParameter("hotelId", UUID.fromString(hotelRating.hotelId()))
-        .setParameter("ratingSum", hotelRating.ratingSum())
-        .setParameter("reviewCount", hotelRating.reviewsCount())
-        .setParameter("averageRating", hotelRating.average())
-        .executeUpdate();
+    PersistenceReviews persistenceReviews = new PersistenceReviews(hotelRating.reviews());
 
-    entityManager.flush();
+    final String reviewsAsString;
+    try {
+      reviewsAsString = objectMapper.writeValueAsString(persistenceReviews);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException("Hotel rating could be saved", e);
+    }
+
+    MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+    sqlParameterSource.addValue("id", UUID.fromString(hotelRating.id().value()));
+    sqlParameterSource.addValue("hotelId", UUID.fromString(hotelRating.hotelId()));
+    sqlParameterSource.addValue("ratingSum", hotelRating.ratingSum());
+    sqlParameterSource.addValue("reviewCount", hotelRating.reviewsCount());
+    sqlParameterSource.addValue("averageRating", hotelRating.average());
+    sqlParameterSource.addValue("reviewsJson", reviewsAsString);
+
+    jdbcTemplate.update(query, sqlParameterSource);
   }
 }

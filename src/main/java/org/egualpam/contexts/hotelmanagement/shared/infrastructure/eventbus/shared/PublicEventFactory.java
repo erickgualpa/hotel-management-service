@@ -8,6 +8,7 @@ import org.egualpam.contexts.hotelmanagement.review.domain.ReviewUpdated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.HotelCreatedPublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.HotelRatingInitializedPublicEvent;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.HotelRatingUpdatePublicEventV2;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.HotelRatingUpdatedPublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.PublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.ReviewCreatedPublicEvent;
@@ -51,6 +52,13 @@ public final class PublicEventFactory {
               hotelRatingInitialized.id().value(),
               hotelRatingInitialized.aggregateId().value(),
               hotelRatingInitialized.occurredOn());
+
+      case org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingUpdated
+                  hotelRatingUpdated ->
+          new HotelRatingUpdatePublicEventV2(
+              hotelRatingUpdated.id().value(),
+              hotelRatingUpdated.aggregateId().value(),
+              hotelRatingUpdated.occurredOn());
 
       default -> throw new UnsupportedDomainEvent(domainEvent);
     };
