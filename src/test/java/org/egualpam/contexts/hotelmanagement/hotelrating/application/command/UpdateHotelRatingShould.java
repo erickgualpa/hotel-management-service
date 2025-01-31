@@ -1,6 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -11,6 +12,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingNotFound;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingUpdated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
@@ -105,5 +107,17 @@ class UpdateHotelRatingShould {
 
     verify(repository, never()).save(any());
     verify(eventBus, never()).publish(any());
+  }
+
+  @Test
+  void throwDomainException_whenHotelRatingIsNotFound() {
+    String id = UniqueId.get().value();
+    String reviewId = UniqueId.get().value();
+    Integer reviewRating = 2;
+
+    when(repository.find(new AggregateId(id))).thenReturn(Optional.empty());
+
+    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(id, reviewId, reviewRating);
+    assertThrows(HotelRatingNotFound.class, () -> testee.execute(command));
   }
 }

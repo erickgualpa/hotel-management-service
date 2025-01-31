@@ -2,6 +2,7 @@ package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 
 import java.time.Clock;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingNotFound;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.ReviewAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
@@ -31,11 +32,10 @@ public class UpdateHotelRating {
     String reviewId = command.reviewId();
     Integer reviewRating = command.reviewRating();
 
+    AggregateId hotelRatingId = new AggregateId(id);
+
     HotelRating hotelRating =
-        repository
-            .find(new AggregateId(id))
-            // TODO: Replace by custom exception
-            .orElseThrow();
+        repository.find(hotelRatingId).orElseThrow(() -> new HotelRatingNotFound(hotelRatingId));
 
     try {
       hotelRating.update(uniqueIdSupplier, clock, reviewId, reviewRating);
