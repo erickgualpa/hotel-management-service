@@ -25,8 +25,8 @@ public class SharedTestConfiguration {
 
   @Bean
   public HotelTestRepository hotelTestRepository(
-      NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-    return new HotelTestRepository(namedParameterJdbcTemplate);
+      ObjectMapper objectMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    return new HotelTestRepository(objectMapper, namedParameterJdbcTemplate);
   }
 
   @Bean

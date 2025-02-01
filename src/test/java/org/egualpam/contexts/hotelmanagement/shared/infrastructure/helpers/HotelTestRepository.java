@@ -2,15 +2,21 @@ package org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers;
 
 import static java.util.Objects.nonNull;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public final class HotelTestRepository {
 
+  private final ObjectMapper objectMapper;
   private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-  public HotelTestRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+  public HotelTestRepository(
+      ObjectMapper objectMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    this.objectMapper = objectMapper;
     this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
   }
 
@@ -42,16 +48,27 @@ public final class HotelTestRepository {
   public void insertHotelAverageRating(UUID hotelId, Double averageRating) {
     String query =
         """
-        INSERT INTO hotel_average_rating(hotel_id, rating_sum, review_count, avg_value)
-        VALUES
-            (:hotelId, :ratingSum, :reviewCount, :averageValue)
+        INSERT INTO hotel_rating(id, hotel_id, rating_sum, review_count, avg_value, reviews)
+        VALUES (:id, :hotelId, :ratingSum, :reviewCount, :averageValue, :reviewsJson::jsonb)
         """;
 
+    Set<String> reviews = Set.of(UUID.randomUUID().toString());
+    ReviewsTestDto reviewsTestDto = new ReviewsTestDto(reviews);
+
+    final String reviewsAsString;
+    try {
+      reviewsAsString = objectMapper.writeValueAsString(reviewsTestDto);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException("'reviews' could not be written as String", e);
+    }
+
     MapSqlParameterSource queryParameters = new MapSqlParameterSource();
+    queryParameters.addValue("id", UUID.randomUUID());
     queryParameters.addValue("hotelId", hotelId);
     queryParameters.addValue("ratingSum", averageRating);
     queryParameters.addValue("reviewCount", 1);
     queryParameters.addValue("averageValue", averageRating);
+    queryParameters.addValue("reviewsJson", reviewsAsString);
 
     namedParameterJdbcTemplate.update(query, queryParameters);
   }
@@ -72,4 +89,6 @@ public final class HotelTestRepository {
 
     return nonNull(count) && count == 1;
   }
+
+  private record ReviewsTestDto(Set<String> reviews) {}
 }

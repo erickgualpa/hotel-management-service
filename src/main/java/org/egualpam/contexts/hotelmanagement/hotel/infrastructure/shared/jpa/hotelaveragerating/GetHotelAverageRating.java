@@ -10,7 +10,7 @@ public class GetHotelAverageRating {
   private static final String findAverageRatingByHotelId =
       """
           SELECT review_count, avg_value
-          FROM hotel_average_rating
+          FROM hotel_rating
           WHERE hotel_id=:hotelId
           """;
 
