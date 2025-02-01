@@ -52,7 +52,7 @@ public final class Review extends AggregateRoot {
     ReviewCreated reviewCreated =
         new ReviewCreated(
             uniqueIdSupplier.get(), review.id(), review.hotelId, review.rating, clock);
-    review.domainEvents().add(reviewCreated);
+    review.addDomainEvent(reviewCreated);
     return review;
   }
 
@@ -65,7 +65,7 @@ public final class Review extends AggregateRoot {
               this.comment = c;
               ReviewUpdated reviewUpdated =
                   new ReviewUpdated(uniqueIdSupplier.get(), this.id(), clock);
-              domainEvents().add(reviewUpdated);
+              addDomainEvent(reviewUpdated);
             });
   }
 

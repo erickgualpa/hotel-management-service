@@ -79,7 +79,7 @@ public final class Hotel extends AggregateRoot {
 
     Hotel hotel = new Hotel(id, name, description, location, price, imageURL, 0, 0.0);
     HotelCreated hotelCreated = new HotelCreated(uniqueIdSupplier.get(), hotel.id(), clock);
-    hotel.domainEvents().add(hotelCreated);
+    hotel.addDomainEvent(hotelCreated);
     return hotel;
   }
 
@@ -112,7 +112,7 @@ public final class Hotel extends AggregateRoot {
 
     final HotelRatingUpdated hotelRatingUpdated =
         new HotelRatingUpdated(uniqueIdSupplier.get(), this.id(), reviewEntityId, clock);
-    this.domainEvents().add(hotelRatingUpdated);
+    addDomainEvent(hotelRatingUpdated);
   }
 
   // TODO: Check how to get rid of getters used only for mapping

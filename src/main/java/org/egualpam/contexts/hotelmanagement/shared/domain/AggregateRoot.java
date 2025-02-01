@@ -22,8 +22,8 @@ public abstract class AggregateRoot {
     return id;
   }
 
-  protected final Set<DomainEvent> domainEvents() {
-    return domainEvents;
+  protected void addDomainEvent(DomainEvent event) {
+    domainEvents.add(event);
   }
 
   public final Set<DomainEvent> pullDomainEvents() {

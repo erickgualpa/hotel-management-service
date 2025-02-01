@@ -55,7 +55,7 @@ public class HotelRating extends AggregateRoot {
     HotelRatingInitialized hotelRatingInitialized =
         new HotelRatingInitialized(uniqueIdSupplier.get(), hotelRating.id(), clock);
 
-    hotelRating.domainEvents().add(hotelRatingInitialized);
+    hotelRating.addDomainEvent(hotelRatingInitialized);
 
     return hotelRating;
   }
@@ -86,7 +86,7 @@ public class HotelRating extends AggregateRoot {
     final HotelRatingUpdated hotelRatingUpdated =
         new HotelRatingUpdated(uniqueIdSupplier.get(), this.id(), clock);
 
-    this.domainEvents().add(hotelRatingUpdated);
+    this.addDomainEvent(hotelRatingUpdated);
   }
 
   public String hotelId() {
