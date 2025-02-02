@@ -17,11 +17,10 @@ public final class JpaHotelRatingRepository implements AggregateRepository<Hotel
 
   private static final String insertIntoHotelRating =
       """
-      INSERT INTO hotel_rating(id, hotel_id, rating_sum, review_count, avg_value, reviews)
-      VALUES(:id, :hotelId, :ratingSum, :reviewCount, :averageRating, :reviewsJson::jsonb)
+      INSERT INTO hotel_rating(id, hotel_id, review_count, avg_value, reviews)
+      VALUES(:id, :hotelId, :reviewCount, :averageRating, :reviewsJson::jsonb)
       ON CONFLICT (id)
       DO UPDATE SET
-        rating_sum=:ratingSum,
         review_count=:reviewCount,
         avg_value=:averageRating,
         reviews=:reviewsJson::jsonb
@@ -75,7 +74,6 @@ public final class JpaHotelRatingRepository implements AggregateRepository<Hotel
     MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
     sqlParameterSource.addValue("id", UUID.fromString(hotelRating.id().value()));
     sqlParameterSource.addValue("hotelId", UUID.fromString(hotelRating.hotelId()));
-    sqlParameterSource.addValue("ratingSum", hotelRating.ratingSum());
     sqlParameterSource.addValue("averageRating", hotelRating.average());
     sqlParameterSource.addValue("reviewCount", hotelRating.reviews().size());
     sqlParameterSource.addValue("reviewsJson", reviewsAsString);

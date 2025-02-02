@@ -14,9 +14,6 @@ class PersistenceHotelRating {
   @Column(name = "hotel_id")
   private UUID hotelId;
 
-  @Column(name = "rating_sum")
-  private Integer ratingSum;
-
   @Column(name = "review_count")
   private Integer reviewCount;
 

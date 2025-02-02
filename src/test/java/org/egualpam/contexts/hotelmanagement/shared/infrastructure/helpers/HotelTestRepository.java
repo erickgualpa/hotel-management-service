@@ -48,8 +48,8 @@ public final class HotelTestRepository {
   public void insertHotelAverageRating(UUID hotelId, Double averageRating) {
     String query =
         """
-        INSERT INTO hotel_rating(id, hotel_id, rating_sum, review_count, avg_value, reviews)
-        VALUES (:id, :hotelId, :ratingSum, :reviewCount, :averageValue, :reviewsJson::jsonb)
+        INSERT INTO hotel_rating(id, hotel_id, review_count, avg_value, reviews)
+        VALUES (:id, :hotelId, :reviewCount, :averageValue, :reviewsJson::jsonb)
         """;
 
     Set<String> reviews = Set.of(UUID.randomUUID().toString());
