@@ -8,7 +8,6 @@ import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
-import org.egualpam.contexts.hotelmanagement.hotel.domain.ReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommandHandler;
@@ -21,7 +20,6 @@ import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.sim
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaManyHotelsReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsupplier.jpa.JpaOneHotelReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa.JpaHotelRepository;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.reviewisalreadyprocessed.JpaReviewIsAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
@@ -79,11 +77,6 @@ public class HotelInfrastructureConfiguration {
         .handling(
             AsyncCreateHotelCommand.class,
             new AsyncCreateHotelCommandHandler(transactionTemplate, createHotel));
-  }
-
-  @Bean
-  public ReviewIsAlreadyProcessed reviewIsAlreadyProcessed(EntityManager entityManager) {
-    return new JpaReviewIsAlreadyProcessed(entityManager);
   }
 
   @Bean
