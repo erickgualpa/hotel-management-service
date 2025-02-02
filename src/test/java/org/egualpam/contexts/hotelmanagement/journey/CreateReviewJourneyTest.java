@@ -23,7 +23,7 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.Rabbi
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class CreateReviewV2JourneyTest extends AbstractIntegrationTest {
+public class CreateReviewJourneyTest extends AbstractIntegrationTest {
 
   @Autowired private RabbitMqTestConsumer rabbitMqTestConsumer;
 
