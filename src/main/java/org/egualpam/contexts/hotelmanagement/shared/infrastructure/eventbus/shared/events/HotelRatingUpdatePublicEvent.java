@@ -4,14 +4,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.Instant;
 
 @JsonSerialize
-public final class HotelRatingUpdatePublicEventV2 implements PublicEvent {
+public final class HotelRatingUpdatePublicEvent implements PublicEvent {
 
   private final String id;
   private final String type;
   private final String aggregateId;
   private final Instant occurredOn;
 
-  public HotelRatingUpdatePublicEventV2(String id, String aggregateId, Instant occurredOn) {
+  public HotelRatingUpdatePublicEvent(String id, String aggregateId, Instant occurredOn) {
     this.id = id;
     this.type = "hotelmanagement.hotel-rating.updated";
     this.aggregateId = aggregateId;
