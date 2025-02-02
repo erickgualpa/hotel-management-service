@@ -16,7 +16,6 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.HotelCreatedPublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.HotelRatingInitializedPublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.HotelRatingUpdatePublicEventV2;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.HotelRatingUpdatedPublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.PublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.ReviewCreatedPublicEvent;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.eventbus.shared.events.ReviewUpdatedPublicEvent;
@@ -29,7 +28,6 @@ public final class PublicEventValidator {
   private final Map<Class<? extends PublicEvent>, String> jsonSchemas =
       Map.ofEntries(
           entry(HotelCreatedPublicEvent.class, "events/schema/hotel/created/1-0.json"),
-          entry(HotelRatingUpdatedPublicEvent.class, "events/schema/hotel/rating-updated/1-0.json"),
           entry(ReviewCreatedPublicEvent.class, "events/schema/review/created/1-0.json"),
           entry(ReviewUpdatedPublicEvent.class, "events/schema/review/updated/1-0.json"),
           entry(
