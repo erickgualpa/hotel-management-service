@@ -2,7 +2,6 @@ package org.egualpam.contexts.hotelmanagement.hotel.infrastructure.configuration
 
 import jakarta.persistence.EntityManager;
 import org.egualpam.contexts.hotelmanagement.hotel.application.command.CreateHotel;
-import org.egualpam.contexts.hotelmanagement.hotel.application.command.UpdateHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.FindHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
@@ -15,8 +14,6 @@ import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.s
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.AsyncCreateHotelCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommand;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncCreateHotelCommandHandler;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncUpdateHotelRatingCommand;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.command.simple.SyncUpdateHotelRatingCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelQuery;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelQueryHandler;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.cqrs.query.simple.SyncFindHotelsQuery;
@@ -74,19 +71,14 @@ public class HotelInfrastructureConfiguration {
 
   @Bean
   public SimpleCommandBusConfiguration hotelsSimpleCommandBusConfiguration(
-      TransactionTemplate transactionTemplate,
-      CreateHotel createHotel,
-      UpdateHotelRating updateHotelRating) {
+      TransactionTemplate transactionTemplate, CreateHotel createHotel) {
     return new SimpleCommandBusConfiguration()
         .handling(
             SyncCreateHotelCommand.class,
             new SyncCreateHotelCommandHandler(transactionTemplate, createHotel))
         .handling(
             AsyncCreateHotelCommand.class,
-            new AsyncCreateHotelCommandHandler(transactionTemplate, createHotel))
-        .handling(
-            SyncUpdateHotelRatingCommand.class,
-            new SyncUpdateHotelRatingCommandHandler(transactionTemplate, updateHotelRating));
+            new AsyncCreateHotelCommandHandler(transactionTemplate, createHotel));
   }
 
   @Bean
