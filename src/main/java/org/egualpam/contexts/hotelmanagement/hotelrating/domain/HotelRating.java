@@ -73,7 +73,7 @@ public class HotelRating extends AggregateRoot {
     }
 
     final Integer reviewsRatingSum = this.ratingSum();
-    final Integer reviewsCount = this.reviewsCount();
+    final int reviewsCount = this.reviews.size();
 
     final int updatedReviewsRatingSum = reviewsRatingSum + reviewRating;
     final int updatedReviewsCount = reviewsCount + 1;
@@ -95,10 +95,6 @@ public class HotelRating extends AggregateRoot {
 
   public Set<String> reviews() {
     return this.reviews.stream().map(UniqueId::value).collect(toSet());
-  }
-
-  public Integer reviewsCount() {
-    return this.reviews.size();
   }
 
   public Double average() {

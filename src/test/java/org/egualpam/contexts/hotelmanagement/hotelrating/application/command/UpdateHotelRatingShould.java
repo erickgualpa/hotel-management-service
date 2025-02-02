@@ -72,7 +72,6 @@ class UpdateHotelRatingShould {
         .satisfies(
             actual -> {
               assertThat(actual.reviews()).containsExactlyInAnyOrder(existingReviewId, reviewId);
-              assertThat(actual.reviewsCount()).isEqualTo(2);
               assertThat(actual.average()).isEqualTo(2.5);
             });
 

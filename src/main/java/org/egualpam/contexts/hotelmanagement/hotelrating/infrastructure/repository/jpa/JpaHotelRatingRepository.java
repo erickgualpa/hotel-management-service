@@ -76,8 +76,8 @@ public final class JpaHotelRatingRepository implements AggregateRepository<Hotel
     sqlParameterSource.addValue("id", UUID.fromString(hotelRating.id().value()));
     sqlParameterSource.addValue("hotelId", UUID.fromString(hotelRating.hotelId()));
     sqlParameterSource.addValue("ratingSum", hotelRating.ratingSum());
-    sqlParameterSource.addValue("reviewCount", hotelRating.reviewsCount());
     sqlParameterSource.addValue("averageRating", hotelRating.average());
+    sqlParameterSource.addValue("reviewCount", hotelRating.reviews().size());
     sqlParameterSource.addValue("reviewsJson", reviewsAsString);
 
     jdbcTemplate.update(insertIntoHotelRating, sqlParameterSource);
