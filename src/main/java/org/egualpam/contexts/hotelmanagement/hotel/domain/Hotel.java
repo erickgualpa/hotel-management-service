@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
-import org.egualpam.contexts.hotelmanagement.shared.domain.EntityId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 
@@ -20,17 +19,8 @@ public final class Hotel extends AggregateRoot {
   private final Price price;
   private final ImageURL imageURL;
 
-  private HotelRating rating;
-
   private Hotel(
-      String id,
-      String name,
-      String description,
-      String location,
-      Integer price,
-      String imageURL,
-      Integer ratingReviewsCount,
-      Double ratingAverage) {
+      String id, String name, String description, String location, Integer price, String imageURL) {
     super(id);
     if (isNull(name)
         || isNull(description)
@@ -44,7 +34,6 @@ public final class Hotel extends AggregateRoot {
     this.location = new Location(location);
     this.price = new Price(price);
     this.imageURL = new ImageURL(imageURL);
-    this.rating = new HotelRating(ratingReviewsCount, ratingAverage);
   }
 
   public static Hotel load(Map<String, Object> properties) {
@@ -54,9 +43,7 @@ public final class Hotel extends AggregateRoot {
         (String) properties.get("description"),
         (String) properties.get("location"),
         (Integer) properties.get("price"),
-        (String) properties.get("imageURL"),
-        (Integer) properties.get("ratingReviewsCount"),
-        (Double) properties.get("ratingAverage"));
+        (String) properties.get("imageURL"));
   }
 
   public static Hotel create(
@@ -77,42 +64,10 @@ public final class Hotel extends AggregateRoot {
               throw new HotelAlreadyExists(hotel.id());
             });
 
-    Hotel hotel = new Hotel(id, name, description, location, price, imageURL, 0, 0.0);
+    Hotel hotel = new Hotel(id, name, description, location, price, imageURL);
     HotelCreated hotelCreated = new HotelCreated(uniqueIdSupplier.get(), hotel.id(), clock);
     hotel.addDomainEvent(hotelCreated);
     return hotel;
-  }
-
-  // TODO: Remove if it proceeds
-  // (this was the previous approach, now is handled in a different aggregate)
-  public void updateRating(
-      String reviewId,
-      Integer reviewRating,
-      ReviewIsAlreadyProcessed reviewIsAlreadyProcessed,
-      Clock clock,
-      UniqueIdSupplier uniqueIdSupplier) {
-    if (isNull(reviewId) || isNull(reviewRating)) {
-      throw new RequiredPropertyIsMissing();
-    }
-
-    EntityId reviewEntityId = new EntityId(reviewId);
-    if (reviewIsAlreadyProcessed.with(reviewEntityId)) {
-      throw new ReviewAlreadyProcessed(reviewEntityId);
-    }
-
-    final Integer reviewsRatingSum = this.rating.ratingSum();
-    final Integer reviewsCount = this.rating.reviewsCount();
-
-    final int updatedReviewsRatingSum = reviewsRatingSum + reviewRating;
-    final int updatedReviewsCount = reviewsCount + 1;
-
-    final Double updatedAverage = (double) updatedReviewsRatingSum / updatedReviewsCount;
-
-    this.rating = new HotelRating(updatedReviewsCount, updatedAverage);
-
-    final HotelRatingUpdated hotelRatingUpdated =
-        new HotelRatingUpdated(uniqueIdSupplier.get(), this.id(), reviewEntityId, clock);
-    addDomainEvent(hotelRatingUpdated);
   }
 
   // TODO: Check how to get rid of getters used only for mapping
@@ -134,9 +89,5 @@ public final class Hotel extends AggregateRoot {
 
   public ImageURL imageURL() {
     return imageURL;
-  }
-
-  public HotelRating rating() {
-    return rating;
   }
 }

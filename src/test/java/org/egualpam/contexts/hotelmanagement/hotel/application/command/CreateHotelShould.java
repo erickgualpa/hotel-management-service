@@ -111,9 +111,7 @@ class CreateHotelShould {
                 entry("description", description),
                 entry("location", location),
                 entry("price", price),
-                entry("imageURL", imageURL),
-                entry("ratingReviewsCount", 0),
-                entry("ratingAverage", 0.0)));
+                entry("imageURL", imageURL)));
 
     when(repository.find(new AggregateId(id))).thenReturn(Optional.of(existing));
 

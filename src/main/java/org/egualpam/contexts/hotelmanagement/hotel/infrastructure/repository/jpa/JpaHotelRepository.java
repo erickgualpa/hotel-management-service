@@ -8,19 +8,15 @@ import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.PersistenceHotel;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.hotelaveragerating.GetHotelAverageRating;
-import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.hotelaveragerating.HotelAverageRating;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 
 public final class JpaHotelRepository implements AggregateRepository<Hotel> {
 
   private final EntityManager entityManager;
-  private final GetHotelAverageRating getHotelAverageRating;
 
   public JpaHotelRepository(EntityManager entityManager) {
     this.entityManager = entityManager;
-    this.getHotelAverageRating = new GetHotelAverageRating(entityManager);
   }
 
   @Override
@@ -38,8 +34,6 @@ public final class JpaHotelRepository implements AggregateRepository<Hotel> {
     Integer price = persistenceHotel.getPrice();
     String imageURL = persistenceHotel.getImageURL();
 
-    HotelAverageRating hotelAverageRating = getHotelAverageRating.using(hotelId);
-
     return Hotel.load(
         Map.ofEntries(
             entry("id", hotelId.toString()),
@@ -47,9 +41,7 @@ public final class JpaHotelRepository implements AggregateRepository<Hotel> {
             entry("description", description),
             entry("location", location),
             entry("price", price),
-            entry("imageURL", imageURL),
-            entry("ratingReviewsCount", hotelAverageRating.reviewsCount()),
-            entry("ratingAverage", hotelAverageRating.value())));
+            entry("imageURL", imageURL)));
   }
 
   @Override
@@ -64,29 +56,7 @@ public final class JpaHotelRepository implements AggregateRepository<Hotel> {
     persistenceHotel.setImageURL(hotel.imageURL().value());
 
     entityManager.merge(persistenceHotel);
-    updateHotelAverageRating(hotel);
 
     entityManager.flush();
-  }
-
-  private void updateHotelAverageRating(Hotel hotel) {
-    String query =
-        """
-        INSERT INTO hotel_average_rating(hotel_id, rating_sum, review_count, avg_value)
-        VALUES(:hotelId, :ratingSum, :reviewCount, :averageRating)
-        ON CONFLICT (hotel_id)
-        DO UPDATE SET
-          rating_sum=:ratingSum,
-          review_count=:reviewCount,
-          avg_value=:averageRating
-        """;
-
-    entityManager
-        .createNativeQuery(query)
-        .setParameter("hotelId", UUID.fromString(hotel.id().value()))
-        .setParameter("ratingSum", hotel.rating().ratingSum())
-        .setParameter("reviewCount", hotel.rating().reviewsCount())
-        .setParameter("averageRating", hotel.rating().average())
-        .executeUpdate();
   }
 }
