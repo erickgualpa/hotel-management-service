@@ -10,6 +10,7 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 
+// TODO: Remove all code related to this use case
 public class UpdateHotelRating {
 
   private final Clock clock;
