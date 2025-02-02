@@ -1,6 +1,5 @@
 package org.egualpam.contexts.hotelmanagement.hotel.application.command;
 
-import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anySet;
@@ -11,7 +10,6 @@ import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUti
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
@@ -103,15 +101,7 @@ class CreateHotelShould {
     Integer price = 100;
     String imageURL = "www." + randomAlphabetic(5) + ".com";
 
-    Hotel existing =
-        Hotel.load(
-            Map.ofEntries(
-                entry("id", id),
-                entry("name", name),
-                entry("description", description),
-                entry("location", location),
-                entry("price", price),
-                entry("imageURL", imageURL)));
+    Hotel existing = Hotel.load(id, name, description, location, price, imageURL);
 
     when(repository.find(new AggregateId(id))).thenReturn(Optional.of(existing));
 

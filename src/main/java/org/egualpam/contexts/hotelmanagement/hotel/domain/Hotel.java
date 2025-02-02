@@ -3,7 +3,6 @@ package org.egualpam.contexts.hotelmanagement.hotel.domain;
 import static java.util.Objects.isNull;
 
 import java.time.Clock;
-import java.util.Map;
 import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
@@ -36,14 +35,9 @@ public final class Hotel extends AggregateRoot {
     this.imageURL = new ImageURL(imageURL);
   }
 
-  public static Hotel load(Map<String, Object> properties) {
-    return new Hotel(
-        (String) properties.get("id"),
-        (String) properties.get("name"),
-        (String) properties.get("description"),
-        (String) properties.get("location"),
-        (Integer) properties.get("price"),
-        (String) properties.get("imageURL"));
+  public static Hotel load(
+      String id, String name, String description, String location, Integer price, String imageURL) {
+    return new Hotel(id, name, description, location, price, imageURL);
   }
 
   public static Hotel create(
