@@ -18,8 +18,6 @@ public class SimpleEventBus implements EventBus {
 
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  private final ObjectMapper objectMapper;
-  private final JsonSchemaFactory jsonSchemaFactory;
   private final PublicEventValidator publicEventValidator;
   private final EventStoreRepository eventStoreRepository;
 
@@ -27,8 +25,6 @@ public class SimpleEventBus implements EventBus {
       ObjectMapper objectMapper,
       JsonSchemaFactory jsonSchemaFactory,
       NamedParameterJdbcTemplate jdbcTemplate) {
-    this.objectMapper = objectMapper;
-    this.jsonSchemaFactory = jsonSchemaFactory;
     this.publicEventValidator = new PublicEventValidator(objectMapper, jsonSchemaFactory);
     this.eventStoreRepository = new EventStoreRepository(objectMapper, jdbcTemplate);
   }
