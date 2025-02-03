@@ -36,8 +36,9 @@ public class SyncInitializeHotelRatingConsumer {
   public void consume(Message in, Channel channel) throws IOException {
     JsonNode event = objectMapper.readValue(in.getBody(), JsonNode.class);
     String eventType = event.get("type").asText();
+    String eventVersion = event.get("version").asText();
 
-    if (!"hotelmanagement.hotel.created".equals(eventType)) {
+    if (!"hotelmanagement.hotel.created".equals(eventType) || !"1.0".equals(eventVersion)) {
       return;
     }
 
