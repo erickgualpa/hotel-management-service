@@ -13,6 +13,7 @@ import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.com
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncUpdateHotelRatingCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.repository.jpa.JpaHotelRatingRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -27,8 +28,8 @@ public class HotelRatingInfrastructureConfiguration {
 
   @Bean
   public SyncInitializeHotelRatingConsumer syncInitializeHotelRatingConsumer(
-      ObjectMapper objectMapper, CommandBus commandBus) {
-    return new SyncInitializeHotelRatingConsumer(objectMapper, commandBus);
+      ObjectMapper objectMapper, UniqueIdSupplier uniqueIdSupplier, CommandBus commandBus) {
+    return new SyncInitializeHotelRatingConsumer(objectMapper, uniqueIdSupplier, commandBus);
   }
 
   @Bean("syncUpdateHotelRatingConsumerV2")
