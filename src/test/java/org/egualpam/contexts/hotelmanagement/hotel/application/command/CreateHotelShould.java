@@ -71,7 +71,7 @@ class CreateHotelShould {
         .satisfies(
             h -> {
               assertThat(h.id().value()).isEqualTo(id);
-              assertThat(h.name().value()).isEqualTo(name);
+              assertThat(h.name()).isEqualTo(name);
               assertThat(h.description().value()).isEqualTo(description);
               assertThat(h.location().value()).isEqualTo(location);
               assertThat(h.price().value()).isEqualTo(price);

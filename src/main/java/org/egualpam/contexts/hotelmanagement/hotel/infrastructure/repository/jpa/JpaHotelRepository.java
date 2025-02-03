@@ -39,7 +39,7 @@ public final class JpaHotelRepository implements AggregateRepository<Hotel> {
     PersistenceHotel persistenceHotel = new PersistenceHotel();
     UUID hotelId = UUID.fromString(hotel.id().value());
     persistenceHotel.setId(hotelId);
-    persistenceHotel.setName(hotel.name().value());
+    persistenceHotel.setName(hotel.name());
     persistenceHotel.setDescription(hotel.description().value());
     persistenceHotel.setLocation(hotel.location().value());
     persistenceHotel.setPrice(hotel.price().value());

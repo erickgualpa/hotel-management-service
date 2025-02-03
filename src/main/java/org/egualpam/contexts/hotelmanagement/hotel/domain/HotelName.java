@@ -1,3 +1,3 @@
 package org.egualpam.contexts.hotelmanagement.hotel.domain;
 
-public record HotelName(String value) {}
+record HotelName(String value) {}

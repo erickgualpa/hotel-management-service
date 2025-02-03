@@ -64,9 +64,8 @@ public final class Hotel extends AggregateRoot {
     return hotel;
   }
 
-  // TODO: Check how to get rid of getters used only for mapping
-  public HotelName name() {
-    return name;
+  public String name() {
+    return name.value();
   }
 
   public HotelDescription description() {
