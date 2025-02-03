@@ -72,10 +72,10 @@ class CreateHotelShould {
             h -> {
               assertThat(h.id().value()).isEqualTo(id);
               assertThat(h.name()).isEqualTo(name);
-              assertThat(h.description().value()).isEqualTo(description);
-              assertThat(h.location().value()).isEqualTo(location);
-              assertThat(h.price().value()).isEqualTo(price);
-              assertThat(h.imageURL().value()).isEqualTo(imageURL);
+              assertThat(h.description()).isEqualTo(description);
+              assertThat(h.location()).isEqualTo(location);
+              assertThat(h.price()).isEqualTo(price);
+              assertThat(h.imageURL()).isEqualTo(imageURL);
             });
 
     verify(eventBus).publish(domainEventsCaptor.capture());

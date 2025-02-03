@@ -21,15 +21,15 @@ public final class HotelCriteria implements Criteria {
     this.maxPrice = nonNull(maxPrice) ? new Price(maxPrice) : null;
   }
 
-  public Optional<Location> getLocation() {
-    return Optional.ofNullable(location);
+  public Optional<String> getLocation() {
+    return Optional.ofNullable(location).map(Location::value);
   }
 
-  public Optional<Price> getMinPrice() {
-    return Optional.ofNullable(minPrice);
+  public Optional<Integer> getMinPrice() {
+    return Optional.ofNullable(minPrice).map(Price::value);
   }
 
-  public Optional<Price> getMaxPrice() {
-    return Optional.ofNullable(maxPrice);
+  public Optional<Integer> getMaxPrice() {
+    return Optional.ofNullable(maxPrice).map(Price::value);
   }
 }

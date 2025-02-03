@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCriteria;
-import org.egualpam.contexts.hotelmanagement.hotel.domain.Location;
-import org.egualpam.contexts.hotelmanagement.hotel.domain.Price;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.PersistenceHotel;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.hotelaveragerating.GetHotelAverageRating;
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.shared.jpa.hotelaveragerating.HotelAverageRating;
@@ -28,9 +26,9 @@ public class JpaManyHotelsReadModelSupplier
 
   @Override
   public ManyHotels get(HotelCriteria criteria) {
-    String location = criteria.getLocation().map(Location::value).orElse(null);
-    Integer minPrice = criteria.getMinPrice().map(Price::value).orElse(null);
-    Integer maxPrice = criteria.getMaxPrice().map(Price::value).orElse(null);
+    String location = criteria.getLocation().orElse(null);
+    Integer minPrice = criteria.getMinPrice().orElse(null);
+    Integer maxPrice = criteria.getMaxPrice().orElse(null);
 
     CriteriaQuery<PersistenceHotel> criteriaQuery =
         new HotelCriteriaQueryBuilder(entityManager)

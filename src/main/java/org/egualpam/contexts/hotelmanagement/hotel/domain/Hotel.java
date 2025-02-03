@@ -68,19 +68,19 @@ public final class Hotel extends AggregateRoot {
     return name.value();
   }
 
-  public HotelDescription description() {
-    return description;
+  public String description() {
+    return description.value();
   }
 
-  public Location location() {
-    return location;
+  public String location() {
+    return location.value();
   }
 
-  public Price price() {
-    return price;
+  public Integer price() {
+    return price.value();
   }
 
-  public ImageURL imageURL() {
-    return imageURL;
+  public String imageURL() {
+    return imageURL.value();
   }
 }
