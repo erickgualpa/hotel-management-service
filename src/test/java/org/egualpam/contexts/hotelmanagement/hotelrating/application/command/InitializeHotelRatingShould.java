@@ -60,8 +60,7 @@ class InitializeHotelRatingShould {
     when(clock.instant()).thenReturn(NOW);
     when(hotelRatingIdGenerator.generate(hotelId)).thenReturn(new AggregateId(id.value()));
 
-    InitializeHotelRatingCommand command =
-        new InitializeHotelRatingCommand(id.value(), hotelId.value());
+    InitializeHotelRatingCommand command = new InitializeHotelRatingCommand(hotelId.value());
 
     testee.execute(command);
 
@@ -93,8 +92,7 @@ class InitializeHotelRatingShould {
     when(hotelRatingIdGenerator.generate(hotelId)).thenReturn(new AggregateId(id.value()));
     when(repository.find(new AggregateId(id.value()))).thenReturn(Optional.of(existing));
 
-    InitializeHotelRatingCommand command =
-        new InitializeHotelRatingCommand(id.value(), hotelId.value());
+    InitializeHotelRatingCommand command = new InitializeHotelRatingCommand(hotelId.value());
     testee.execute(command);
 
     verify(repository, never()).save(hotelRatingCaptor.capture());

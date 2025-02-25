@@ -16,7 +16,7 @@ public class SyncInitializeHotelRatingCommandHandler implements CommandHandler {
 
   private static InitializeHotelRatingCommand toApplicationCommand(
       SyncInitializeHotelRatingCommand command) {
-    return new InitializeHotelRatingCommand(command.id(), command.hotelId());
+    return new InitializeHotelRatingCommand(command.hotelId());
   }
 
   @Override

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.InitializeHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.UpdateHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
@@ -18,7 +17,6 @@ import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.com
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.repository.jpa.JpaHotelRatingRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -33,8 +31,8 @@ public class HotelRatingInfrastructureConfiguration {
 
   @Bean
   public SyncInitializeHotelRatingConsumer syncInitializeHotelRatingConsumer(
-      ObjectMapper objectMapper, Supplier<UniqueId> uniqueIdSupplier, CommandBus commandBus) {
-    return new SyncInitializeHotelRatingConsumer(objectMapper, uniqueIdSupplier, commandBus);
+      ObjectMapper objectMapper, CommandBus commandBus) {
+    return new SyncInitializeHotelRatingConsumer(objectMapper, commandBus);
   }
 
   @Bean("syncUpdateHotelRatingConsumerV2")

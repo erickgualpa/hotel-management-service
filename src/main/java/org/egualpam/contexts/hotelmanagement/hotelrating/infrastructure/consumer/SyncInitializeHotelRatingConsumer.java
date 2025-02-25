@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import java.io.IOException;
-import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncInitializeHotelRatingCommand;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.slf4j.Logger;
@@ -20,13 +18,11 @@ public class SyncInitializeHotelRatingConsumer {
   private final Logger logger = getLogger(this.getClass());
 
   private final ObjectMapper objectMapper;
-  private final Supplier<UniqueId> uniqueIdSupplier;
   private final CommandBus commandBus;
 
   public SyncInitializeHotelRatingConsumer(
-      ObjectMapper objectMapper, Supplier<UniqueId> uniqueIdSupplier, CommandBus commandBus) {
+      ObjectMapper objectMapper, CommandBus commandBus) {
     this.objectMapper = objectMapper;
-    this.uniqueIdSupplier = uniqueIdSupplier;
     this.commandBus = commandBus;
   }
 
@@ -46,9 +42,8 @@ public class SyncInitializeHotelRatingConsumer {
     HotelCreatedEvent hotelCreatedEvent =
         objectMapper.readValue(in.getBody(), HotelCreatedEvent.class);
 
-    String id = uniqueIdSupplier.get().value();
     String hotelId = hotelCreatedEvent.aggregateId();
-    Command syncInitializeHotelRatingCommand = new SyncInitializeHotelRatingCommand(id, hotelId);
+    Command syncInitializeHotelRatingCommand = new SyncInitializeHotelRatingCommand(hotelId);
 
     try {
       commandBus.publish(syncInitializeHotelRatingCommand);
