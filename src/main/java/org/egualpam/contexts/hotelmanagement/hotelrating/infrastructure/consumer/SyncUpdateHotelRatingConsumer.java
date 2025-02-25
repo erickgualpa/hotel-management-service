@@ -12,7 +12,6 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.
 import org.slf4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class SyncUpdateHotelRatingConsumer {
 
@@ -20,12 +19,9 @@ public class SyncUpdateHotelRatingConsumer {
 
   private final ObjectMapper objectMapper;
   private final CommandBus commandBus;
-  private final GetHotelRatingId getHotelRatingId;
 
-  public SyncUpdateHotelRatingConsumer(
-      ObjectMapper objectMapper, NamedParameterJdbcTemplate jdbcTemplate, CommandBus commandBus) {
+  public SyncUpdateHotelRatingConsumer(ObjectMapper objectMapper, CommandBus commandBus) {
     this.objectMapper = objectMapper;
-    this.getHotelRatingId = new GetHotelRatingId(jdbcTemplate);
     this.commandBus = commandBus;
   }
 
@@ -46,7 +42,6 @@ public class SyncUpdateHotelRatingConsumer {
         objectMapper.readValue(in.getBody(), ReviewCreatedEvent.class);
 
     String hotelId = reviewCreatedEvent.hotelId();
-    String hotelRatingId = getHotelRatingId.fromHotel(hotelId);
     String reviewId = reviewCreatedEvent.aggregateId();
     Integer reviewRating = reviewCreatedEvent.reviewRating();
 

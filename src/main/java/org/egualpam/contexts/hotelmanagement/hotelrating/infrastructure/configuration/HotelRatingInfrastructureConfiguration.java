@@ -37,8 +37,8 @@ public class HotelRatingInfrastructureConfiguration {
 
   @Bean("syncUpdateHotelRatingConsumerV2")
   public SyncUpdateHotelRatingConsumer syncUpdateHotelRatingConsumer(
-      ObjectMapper objectMapper, NamedParameterJdbcTemplate jdbcTemplate, CommandBus commandBus) {
-    return new SyncUpdateHotelRatingConsumer(objectMapper, jdbcTemplate, commandBus);
+      ObjectMapper objectMapper, CommandBus commandBus) {
+    return new SyncUpdateHotelRatingConsumer(objectMapper, commandBus);
   }
 
   @Bean
