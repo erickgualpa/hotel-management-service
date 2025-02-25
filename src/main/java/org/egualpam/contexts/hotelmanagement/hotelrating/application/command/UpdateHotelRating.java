@@ -3,6 +3,7 @@ package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 import java.time.Clock;
 import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingIdGenerator;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingNotFound;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.ReviewAlreadyProcessed;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
@@ -14,26 +15,29 @@ public class UpdateHotelRating {
 
   private final Supplier<UniqueId> uniqueIdSupplier;
   private final Clock clock;
+  private final HotelRatingIdGenerator hotelRatingIdGenerator;
   private final AggregateRepository<HotelRating> repository;
   private final EventBus eventBus;
 
   public UpdateHotelRating(
       Supplier<UniqueId> uniqueIdSupplier,
       Clock clock,
+      HotelRatingIdGenerator hotelRatingIdGenerator,
       AggregateRepository<HotelRating> repository,
       EventBus eventBus) {
     this.uniqueIdSupplier = uniqueIdSupplier;
     this.clock = clock;
+    this.hotelRatingIdGenerator = hotelRatingIdGenerator;
     this.repository = repository;
     this.eventBus = eventBus;
   }
 
   public void execute(UpdateHotelRatingCommand command) {
-    String id = command.id();
+    String hotelId = command.hotelId();
     String reviewId = command.reviewId();
     Integer reviewRating = command.reviewRating();
 
-    AggregateId hotelRatingId = new AggregateId(id);
+    AggregateId hotelRatingId = hotelRatingIdGenerator.generate(new UniqueId(hotelId));
 
     HotelRating hotelRating =
         repository.find(hotelRatingId).orElseThrow(() -> new HotelRatingNotFound(hotelRatingId));

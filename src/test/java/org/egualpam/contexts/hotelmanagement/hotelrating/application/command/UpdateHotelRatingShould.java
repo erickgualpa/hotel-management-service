@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingIdGenerator;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingNotFound;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingUpdated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
@@ -38,6 +39,7 @@ class UpdateHotelRatingShould {
 
   @Mock private Supplier<UniqueId> uniqueIdSupplier;
   @Mock private Clock clock;
+  @Mock private HotelRatingIdGenerator hotelRatingIdGenerator;
   @Mock private AggregateRepository<HotelRating> repository;
   @Mock private EventBus eventBus;
 
@@ -45,7 +47,9 @@ class UpdateHotelRatingShould {
 
   @BeforeEach
   void setUp() {
-    testee = new UpdateHotelRating(uniqueIdSupplier, clock, repository, eventBus);
+    testee =
+        new UpdateHotelRating(
+            uniqueIdSupplier, clock, hotelRatingIdGenerator, repository, eventBus);
   }
 
   @Test
@@ -56,14 +60,17 @@ class UpdateHotelRatingShould {
     String reviewId = UniqueId.get().value();
     Integer reviewRating = 2;
     UniqueId domainEventId = UniqueId.get();
+    AggregateId aggregateId = new AggregateId(id);
 
     HotelRating existing = HotelRating.load(id, hotelId, Set.of(existingReviewId), 3.0);
 
     when(clock.instant()).thenReturn(NOW);
     when(uniqueIdSupplier.get()).thenReturn(domainEventId);
-    when(repository.find(new AggregateId(id))).thenReturn(Optional.of(existing));
+    when(hotelRatingIdGenerator.generate(new UniqueId(hotelId))).thenReturn(aggregateId);
+    when(repository.find(aggregateId)).thenReturn(Optional.of(existing));
 
-    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(id, reviewId, reviewRating);
+    UpdateHotelRatingCommand command =
+        new UpdateHotelRatingCommand(hotelId, reviewId, reviewRating);
     testee.execute(command);
 
     verify(repository).save(hotelRatingCaptor.capture());
@@ -96,12 +103,15 @@ class UpdateHotelRatingShould {
     String hotelId = UniqueId.get().value();
     String reviewId = UniqueId.get().value();
     Integer reviewRating = 3;
+    AggregateId aggregateId = new AggregateId(id);
 
     HotelRating existing = HotelRating.load(id, hotelId, Set.of(reviewId), 3.0);
 
-    when(repository.find(new AggregateId(id))).thenReturn(Optional.of(existing));
+    when(hotelRatingIdGenerator.generate(new UniqueId(hotelId))).thenReturn(aggregateId);
+    when(repository.find(aggregateId)).thenReturn(Optional.of(existing));
 
-    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(id, reviewId, reviewRating);
+    UpdateHotelRatingCommand command =
+        new UpdateHotelRatingCommand(hotelId, reviewId, reviewRating);
     testee.execute(command);
 
     verify(repository, never()).save(any());
@@ -110,13 +120,16 @@ class UpdateHotelRatingShould {
 
   @Test
   void throwDomainException_whenHotelRatingIsNotFound() {
-    String id = UniqueId.get().value();
+    AggregateId aggregateId = new AggregateId(UniqueId.get().value());
+    String hotelId = UniqueId.get().value();
     String reviewId = UniqueId.get().value();
     Integer reviewRating = 2;
 
-    when(repository.find(new AggregateId(id))).thenReturn(Optional.empty());
+    when(hotelRatingIdGenerator.generate(new UniqueId(hotelId))).thenReturn(aggregateId);
+    when(repository.find(aggregateId)).thenReturn(Optional.empty());
 
-    UpdateHotelRatingCommand command = new UpdateHotelRatingCommand(id, reviewId, reviewRating);
+    UpdateHotelRatingCommand command =
+        new UpdateHotelRatingCommand(hotelId, reviewId, reviewRating);
     assertThrows(HotelRatingNotFound.class, () -> testee.execute(command));
   }
 }

@@ -20,8 +20,7 @@ public class SyncInitializeHotelRatingConsumer {
   private final ObjectMapper objectMapper;
   private final CommandBus commandBus;
 
-  public SyncInitializeHotelRatingConsumer(
-      ObjectMapper objectMapper, CommandBus commandBus) {
+  public SyncInitializeHotelRatingConsumer(ObjectMapper objectMapper, CommandBus commandBus) {
     this.objectMapper = objectMapper;
     this.commandBus = commandBus;
   }

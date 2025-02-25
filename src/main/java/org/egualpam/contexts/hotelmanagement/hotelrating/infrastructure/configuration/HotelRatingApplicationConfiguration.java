@@ -30,8 +30,10 @@ public class HotelRatingApplicationConfiguration {
   public UpdateHotelRating updateHotelRating(
       Supplier<UniqueId> uniqueIdSupplier,
       Clock clock,
+      HotelRatingIdGenerator hotelRatingIdGenerator,
       AggregateRepository<HotelRating> repository,
       EventBus eventBus) {
-    return new UpdateHotelRating(uniqueIdSupplier, clock, repository, eventBus);
+    return new UpdateHotelRating(
+        uniqueIdSupplier, clock, hotelRatingIdGenerator, repository, eventBus);
   }
 }

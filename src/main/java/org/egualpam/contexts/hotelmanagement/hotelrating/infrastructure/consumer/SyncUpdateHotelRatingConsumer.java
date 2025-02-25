@@ -51,7 +51,7 @@ public class SyncUpdateHotelRatingConsumer {
     Integer reviewRating = reviewCreatedEvent.reviewRating();
 
     final Command syncUpdateHotelRatingCommand =
-        new SyncUpdateHotelRatingCommand(hotelRatingId, reviewId, reviewRating);
+        new SyncUpdateHotelRatingCommand(hotelId, reviewId, reviewRating);
     try {
       commandBus.publish(syncUpdateHotelRatingCommand);
     } catch (RuntimeException e) {
