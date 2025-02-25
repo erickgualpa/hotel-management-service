@@ -1,23 +1,24 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.application.command;
 
 import java.time.Clock;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingAlreadyExists;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingIdGenerator;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
 public class InitializeHotelRating {
 
-  private final UniqueIdSupplier uniqueIdSupplier;
+  private final Supplier<UniqueId> uniqueIdSupplier;
   private final Clock clock;
   private final AggregateRepository<HotelRating> repository;
   private final HotelRatingIdGenerator hotelRatingIdGenerator;
   private final EventBus eventBus;
 
   public InitializeHotelRating(
-      UniqueIdSupplier uniqueIdSupplier,
+      Supplier<UniqueId> uniqueIdSupplier,
       Clock clock,
       HotelRatingIdGenerator hotelRatingIdGenerator,
       AggregateRepository<HotelRating> repository,

@@ -9,6 +9,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingIdGenerator;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
@@ -16,7 +17,6 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +34,7 @@ class InitializeHotelRatingShould {
   @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
   @Mock private HotelRatingIdGenerator hotelRatingIdGenerator;
-  @Mock private UniqueIdSupplier uniqueIdSupplier;
+  @Mock private Supplier<UniqueId> uniqueIdSupplier;
   @Mock private Clock clock;
   @Mock private AggregateRepository<HotelRating> repository;
   @Mock private EventBus eventBus;

@@ -6,12 +6,12 @@ import static java.util.stream.Collectors.toSet;
 import java.time.Clock;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 
 public class HotelRating extends AggregateRoot {
 
@@ -39,7 +39,7 @@ public class HotelRating extends AggregateRoot {
   public static HotelRating initialize(
       HotelRatingIdGenerator hotelRatingIdGenerator,
       AggregateRepository<HotelRating> repository,
-      UniqueIdSupplier uniqueIdSupplier,
+      Supplier<UniqueId> uniqueIdSupplier,
       Clock clock,
       String hotelId) {
     AggregateId id = hotelRatingIdGenerator.generate(new UniqueId(hotelId));
@@ -62,7 +62,7 @@ public class HotelRating extends AggregateRoot {
   }
 
   public void update(
-      UniqueIdSupplier uniqueIdSupplier, Clock clock, String reviewId, Integer reviewRating) {
+      Supplier<UniqueId> uniqueIdSupplier, Clock clock, String reviewId, Integer reviewRating) {
     if (isNull(reviewId) || isNull(reviewRating)) {
       throw new RequiredPropertyIsMissing();
     }
