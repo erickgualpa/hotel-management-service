@@ -22,8 +22,6 @@ import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.readmodelsuppl
 import org.egualpam.contexts.hotelmanagement.hotel.infrastructure.repository.jpa.JpaHotelRepository;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,10 +75,5 @@ public class HotelInfrastructureConfiguration {
         .handling(
             AsyncCreateHotelCommand.class,
             new AsyncCreateHotelCommandHandler(transactionTemplate, createHotel));
-  }
-
-  @Bean
-  public UniqueIdSupplier uniqueIdSupplier() {
-    return UniqueId::get;
   }
 }
