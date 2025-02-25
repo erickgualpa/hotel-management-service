@@ -6,8 +6,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import java.io.IOException;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncInitializeHotelRatingCommand;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.slf4j.Logger;
@@ -19,11 +20,11 @@ public class SyncInitializeHotelRatingConsumer {
   private final Logger logger = getLogger(this.getClass());
 
   private final ObjectMapper objectMapper;
-  private final UniqueIdSupplier uniqueIdSupplier;
+  private final Supplier<UniqueId> uniqueIdSupplier;
   private final CommandBus commandBus;
 
   public SyncInitializeHotelRatingConsumer(
-      ObjectMapper objectMapper, UniqueIdSupplier uniqueIdSupplier, CommandBus commandBus) {
+      ObjectMapper objectMapper, Supplier<UniqueId> uniqueIdSupplier, CommandBus commandBus) {
     this.objectMapper = objectMapper;
     this.uniqueIdSupplier = uniqueIdSupplier;
     this.commandBus = commandBus;

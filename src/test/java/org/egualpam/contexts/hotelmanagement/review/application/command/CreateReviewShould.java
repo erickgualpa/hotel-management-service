@@ -14,6 +14,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.review.domain.Comment;
 import org.egualpam.contexts.hotelmanagement.review.domain.HotelId;
 import org.egualpam.contexts.hotelmanagement.review.domain.InvalidRating;
@@ -27,7 +28,6 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,7 +47,7 @@ class CreateReviewShould {
   @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
   @Mock private Clock clock;
-  @Mock private UniqueIdSupplier uniqueIdSupplier;
+  @Mock private Supplier<UniqueId> uniqueIdSupplier;
   @Mock private AggregateRepository<Review> reviewRepository;
   @Mock private EventBus eventBus;
 

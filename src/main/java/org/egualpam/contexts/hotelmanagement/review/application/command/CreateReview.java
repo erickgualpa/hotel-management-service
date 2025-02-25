@@ -1,21 +1,22 @@
 package org.egualpam.contexts.hotelmanagement.review.application.command;
 
 import java.time.Clock;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
 public final class CreateReview {
 
   private final Clock clock;
-  private final UniqueIdSupplier uniqueIdSupplier;
+  private final Supplier<UniqueId> uniqueIdSupplier;
   private final AggregateRepository<Review> reviewRepository;
   private final EventBus eventBus;
 
   public CreateReview(
       Clock clock,
-      UniqueIdSupplier uniqueIdSupplier,
+      Supplier<UniqueId> uniqueIdSupplier,
       AggregateRepository<Review> reviewRepository,
       EventBus eventBus) {
     this.clock = clock;

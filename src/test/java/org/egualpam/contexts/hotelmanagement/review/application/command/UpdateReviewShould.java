@@ -12,6 +12,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewNotFound;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewUpdated;
@@ -20,7 +21,6 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,7 @@ class UpdateReviewShould {
   private static final Instant NOW = Instant.now();
 
   @Mock private Clock clock;
-  @Mock private UniqueIdSupplier uniqueIdSupplier;
+  @Mock private Supplier<UniqueId> uniqueIdSupplier;
   @Mock private AggregateRepository<Review> reviewRepository;
   @Mock private EventBus eventBus;
 

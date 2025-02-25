@@ -12,6 +12,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelCreated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
@@ -19,7 +20,6 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,7 +32,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class CreateHotelShould {
 
   @Mock private Clock clock;
-  @Mock private UniqueIdSupplier uniqueIdSupplier;
+  @Mock private Supplier<UniqueId> uniqueIdSupplier;
   @Mock private AggregateRepository<Hotel> repository;
   @Mock private EventBus eventBus;
 

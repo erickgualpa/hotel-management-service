@@ -4,11 +4,12 @@ import static java.util.Objects.isNull;
 
 import java.time.Clock;
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
 public final class Hotel extends AggregateRoot {
 
@@ -47,7 +48,7 @@ public final class Hotel extends AggregateRoot {
       String location,
       Integer price,
       String imageURL,
-      UniqueIdSupplier uniqueIdSupplier,
+      Supplier<UniqueId> uniqueIdSupplier,
       AggregateRepository<Hotel> repository,
       Clock clock) {
     Optional.of(id)

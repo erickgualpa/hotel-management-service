@@ -1,22 +1,23 @@
 package org.egualpam.contexts.hotelmanagement.hotel.application.command;
 
 import java.time.Clock;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.Hotel;
 import org.egualpam.contexts.hotelmanagement.hotel.domain.HotelAlreadyExists;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
 public class CreateHotel {
 
   private final Clock clock;
-  private final UniqueIdSupplier uniqueIdSupplier;
+  private final Supplier<UniqueId> uniqueIdSupplier;
   private final AggregateRepository<Hotel> repository;
   private final EventBus eventBus;
 
   public CreateHotel(
       Clock clock,
-      UniqueIdSupplier uniqueIdSupplier,
+      Supplier<UniqueId> uniqueIdSupplier,
       AggregateRepository<Hotel> repository,
       EventBus eventBus) {
     this.clock = clock;

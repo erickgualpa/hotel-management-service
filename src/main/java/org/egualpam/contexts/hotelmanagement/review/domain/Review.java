@@ -4,11 +4,12 @@ import static java.util.Objects.isNull;
 
 import java.time.Clock;
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
 public final class Review extends AggregateRoot {
 
@@ -34,7 +35,7 @@ public final class Review extends AggregateRoot {
       Integer rating,
       String comment,
       Clock clock,
-      UniqueIdSupplier uniqueIdSupplier) {
+      Supplier<UniqueId> uniqueIdSupplier) {
     if (isNull(id)) {
       throw new RequiredPropertyIsMissing();
     }
@@ -56,7 +57,7 @@ public final class Review extends AggregateRoot {
     return review;
   }
 
-  public void updateComment(String comment, Clock clock, UniqueIdSupplier uniqueIdSupplier) {
+  public void updateComment(String comment, Clock clock, Supplier<UniqueId> uniqueIdSupplier) {
     Optional.ofNullable(comment)
         .map(Comment::new)
         .filter(c -> !c.equals(this.comment))
