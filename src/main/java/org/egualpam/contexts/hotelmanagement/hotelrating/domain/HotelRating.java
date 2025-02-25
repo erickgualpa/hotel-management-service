@@ -37,20 +37,21 @@ public class HotelRating extends AggregateRoot {
   }
 
   public static HotelRating initialize(
+      HotelRatingIdGenerator hotelRatingIdGenerator,
       AggregateRepository<HotelRating> repository,
       UniqueIdSupplier uniqueIdSupplier,
       Clock clock,
-      String id,
       String hotelId) {
+    AggregateId id = hotelRatingIdGenerator.generate(new UniqueId(hotelId));
+
     Optional.of(id)
-        .map(AggregateId::new)
         .flatMap(repository::find)
         .ifPresent(
             hotelRating -> {
               throw new HotelRatingAlreadyExists(hotelRating.id());
             });
 
-    HotelRating hotelRating = new HotelRating(id, hotelId, Set.of(), 0, 0.0);
+    HotelRating hotelRating = new HotelRating(id.value(), hotelId, Set.of(), 0, 0.0);
 
     HotelRatingInitialized hotelRatingInitialized =
         new HotelRatingInitialized(uniqueIdSupplier.get(), hotelRating.id(), clock);

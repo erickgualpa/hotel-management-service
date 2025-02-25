@@ -4,6 +4,7 @@ import java.time.Clock;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.InitializeHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.UpdateHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingIdGenerator;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
@@ -17,9 +18,11 @@ public class HotelRatingApplicationConfiguration {
   public InitializeHotelRating initializeHotelRating(
       UniqueIdSupplier uniqueIdSupplier,
       Clock clock,
+      HotelRatingIdGenerator hotelRatingIdGenerator,
       AggregateRepository<HotelRating> repository,
       EventBus eventBus) {
-    return new InitializeHotelRating(uniqueIdSupplier, clock, repository, eventBus);
+    return new InitializeHotelRating(
+        uniqueIdSupplier, clock, hotelRatingIdGenerator, repository, eventBus);
   }
 
   @Bean("updateHotelRatingV2")

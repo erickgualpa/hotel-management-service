@@ -2,9 +2,12 @@ package org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.configu
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.InitializeHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.UpdateHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingIdGenerator;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.consumer.SyncInitializeHotelRatingConsumer;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.consumer.SyncUpdateHotelRatingConsumer;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncInitializeHotelRatingCommand;
@@ -12,6 +15,7 @@ import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.com
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncUpdateHotelRatingCommand;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncUpdateHotelRatingCommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.repository.jpa.JpaHotelRatingRepository;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueIdSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
@@ -58,5 +62,14 @@ public class HotelRatingInfrastructureConfiguration {
       EntityManager entityManager,
       NamedParameterJdbcTemplate jdbcTemplate) {
     return new JpaHotelRatingRepository(objectMapper, entityManager, jdbcTemplate);
+  }
+
+  @Bean
+  public HotelRatingIdGenerator hotelRatingIdGenerator() {
+    return (hotelId -> {
+      byte[] hotelIdBytes = hotelId.value().getBytes(StandardCharsets.UTF_8);
+      UUID hotelRatingId = UUID.nameUUIDFromBytes(hotelIdBytes);
+      return new AggregateId(hotelRatingId.toString());
+    });
   }
 }

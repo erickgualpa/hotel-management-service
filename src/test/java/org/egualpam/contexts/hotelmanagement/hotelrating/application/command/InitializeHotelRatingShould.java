@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
+import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingIdGenerator;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
@@ -32,6 +33,7 @@ class InitializeHotelRatingShould {
   @Captor private ArgumentCaptor<HotelRating> hotelRatingCaptor;
   @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
 
+  @Mock private HotelRatingIdGenerator hotelRatingIdGenerator;
   @Mock private UniqueIdSupplier uniqueIdSupplier;
   @Mock private Clock clock;
   @Mock private AggregateRepository<HotelRating> repository;
@@ -41,7 +43,9 @@ class InitializeHotelRatingShould {
 
   @BeforeEach
   void setUp() {
-    testee = new InitializeHotelRating(uniqueIdSupplier, clock, repository, eventBus);
+    testee =
+        new InitializeHotelRating(
+            uniqueIdSupplier, clock, hotelRatingIdGenerator, repository, eventBus);
   }
 
   @Test
@@ -54,6 +58,7 @@ class InitializeHotelRatingShould {
 
     when(uniqueIdSupplier.get()).thenReturn(domainEventId);
     when(clock.instant()).thenReturn(NOW);
+    when(hotelRatingIdGenerator.generate(hotelId)).thenReturn(new AggregateId(id.value()));
 
     InitializeHotelRatingCommand command =
         new InitializeHotelRatingCommand(id.value(), hotelId.value());
@@ -85,6 +90,7 @@ class InitializeHotelRatingShould {
 
     HotelRating existing = HotelRating.load(id.value(), hotelId.value(), Set.of(), 0.0);
 
+    when(hotelRatingIdGenerator.generate(hotelId)).thenReturn(new AggregateId(id.value()));
     when(repository.find(new AggregateId(id.value()))).thenReturn(Optional.of(existing));
 
     InitializeHotelRatingCommand command =
