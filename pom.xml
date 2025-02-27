@@ -154,6 +154,44 @@
                     </excludes>
                 </configuration>
             </plugin>
+
+            <!-- Begin of 'pitest' plugin configuration -->
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>1.18.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-junit5-plugin</artifactId>
+                        <version>1.2.2</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <targetClasses>
+                        <param>org.egualpam.contexts.hotelmanagement.hotel.application.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.hotelrating.application.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.review.application.*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>org.egualpam.contexts.hotelmanagement.hotel.application.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.hotelrating.application.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.review.application.*</param>
+                    </targetTests>
+                    <mutationThreshold>99</mutationThreshold>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>mutation-testing</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>mutationCoverage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--  End of 'pitest' plugin configuration  -->
+
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
