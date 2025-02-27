@@ -170,20 +170,17 @@
                 </dependencies>
                 <configuration>
                     <targetClasses>
-                        <param>org.egualpam.contexts.hotelmanagement.hotel.domain.*</param>
-                        <param>org.egualpam.contexts.hotelmanagement.hotel.application.*</param>
-                        <param>org.egualpam.contexts.hotelmanagement.hotelrating.domain.*</param>
-                        <param>org.egualpam.contexts.hotelmanagement.hotelrating.application.*</param>
-                        <param>org.egualpam.contexts.hotelmanagement.review.domain.*</param>
-                        <param>org.egualpam.contexts.hotelmanagement.review.application.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.*.domain.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.*.application.*</param>
                     </targetClasses>
                     <excludedClasses>
+                        <param>org.egualpam.contexts.hotelmanagement.shared.*</param>
                         <param>org.egualpam.contexts.hotelmanagement.*.domain.*Criteria</param>
                     </excludedClasses>
                     <targetTests>
-                        <param>org.egualpam.contexts.hotelmanagement.hotel.application.*</param>
-                        <param>org.egualpam.contexts.hotelmanagement.hotelrating.application.*</param>
-                        <param>org.egualpam.contexts.hotelmanagement.review.application.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.*.application.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.*.application.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.*.application.*</param>
                     </targetTests>
                     <mutationThreshold>90</mutationThreshold>
                 </configuration>
