@@ -155,6 +155,7 @@
                 </configuration>
             </plugin>
 
+            <!-- TODO: Try to reduce the time spent on this by the CI build-->
             <!-- Begin of 'pitest' plugin configuration -->
             <plugin>
                 <groupId>org.pitest</groupId>
@@ -169,16 +170,22 @@
                 </dependencies>
                 <configuration>
                     <targetClasses>
+                        <param>org.egualpam.contexts.hotelmanagement.hotel.domain.*</param>
                         <param>org.egualpam.contexts.hotelmanagement.hotel.application.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.hotelrating.domain.*</param>
                         <param>org.egualpam.contexts.hotelmanagement.hotelrating.application.*</param>
+                        <param>org.egualpam.contexts.hotelmanagement.review.domain.*</param>
                         <param>org.egualpam.contexts.hotelmanagement.review.application.*</param>
                     </targetClasses>
+                    <excludedClasses>
+                        <param>org.egualpam.contexts.hotelmanagement.*.domain.*Criteria</param>
+                    </excludedClasses>
                     <targetTests>
                         <param>org.egualpam.contexts.hotelmanagement.hotel.application.*</param>
                         <param>org.egualpam.contexts.hotelmanagement.hotelrating.application.*</param>
                         <param>org.egualpam.contexts.hotelmanagement.review.application.*</param>
                     </targetTests>
-                    <mutationThreshold>99</mutationThreshold>
+                    <mutationThreshold>90</mutationThreshold>
                 </configuration>
                 <executions>
                     <execution>

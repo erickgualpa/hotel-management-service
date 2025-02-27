@@ -21,6 +21,7 @@ import org.egualpam.contexts.hotelmanagement.review.domain.InvalidRating;
 import org.egualpam.contexts.hotelmanagement.review.domain.Rating;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewAlreadyExists;
+import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCreated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
@@ -89,11 +90,15 @@ class CreateReviewShould {
     assertThat(domainEventsCaptor.getValue())
         .hasSize(1)
         .first()
+        .isInstanceOf(ReviewCreated.class)
         .satisfies(
-            domainEvent -> {
-              assertThat(domainEvent.id()).isEqualTo(domainEventId);
-              assertThat(domainEvent.aggregateId()).isEqualTo(new AggregateId(reviewId));
-              assertThat(domainEvent.occurredOn()).isEqualTo(NOW);
+            event -> {
+              ReviewCreated reviewCreated = (ReviewCreated) event;
+              assertThat(reviewCreated.id()).isEqualTo(domainEventId);
+              assertThat(reviewCreated.aggregateId()).isEqualTo(new AggregateId(reviewId));
+              assertThat(reviewCreated.occurredOn()).isEqualTo(NOW);
+              assertThat(reviewCreated.hotelId().value()).isEqualTo(hotelIdentifier);
+              assertThat(reviewCreated.rating().value()).isEqualTo(rating);
             });
   }
 

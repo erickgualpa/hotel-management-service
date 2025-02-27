@@ -1,6 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.hotel.domain;
 
-import java.util.Optional;
+import static java.util.Objects.isNull;
+
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
@@ -10,8 +11,10 @@ public final class UniqueHotelCriteria implements Criteria {
   private final UniqueId hotelId;
 
   public UniqueHotelCriteria(String hotelId) {
-    this.hotelId =
-        Optional.ofNullable(hotelId).map(UniqueId::new).orElseThrow(RequiredPropertyIsMissing::new);
+    if (isNull(hotelId)) {
+      throw new RequiredPropertyIsMissing();
+    }
+    this.hotelId = new UniqueId(hotelId);
   }
 
   public UniqueId hotelId() {

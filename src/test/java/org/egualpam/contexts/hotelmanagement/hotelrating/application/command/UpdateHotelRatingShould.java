@@ -57,12 +57,14 @@ class UpdateHotelRatingShould {
     String id = UniqueId.get().value();
     String hotelId = UniqueId.get().value();
     String existingReviewId = UniqueId.get().value();
+    String anotherExistingReview = UniqueId.get().value();
     String reviewId = UniqueId.get().value();
-    Integer reviewRating = 2;
+    Integer reviewRating = 4;
     UniqueId domainEventId = UniqueId.get();
     AggregateId aggregateId = new AggregateId(id);
 
-    HotelRating existing = HotelRating.load(id, hotelId, Set.of(existingReviewId), 3.0);
+    Set<String> existingReviews = Set.of(existingReviewId, anotherExistingReview);
+    HotelRating existing = HotelRating.load(id, hotelId, existingReviews, 4.0);
 
     when(clock.instant()).thenReturn(NOW);
     when(uniqueIdSupplier.get()).thenReturn(domainEventId);
@@ -78,8 +80,9 @@ class UpdateHotelRatingShould {
     assertThat(saved)
         .satisfies(
             actual -> {
-              assertThat(actual.reviews()).containsExactlyInAnyOrder(existingReviewId, reviewId);
-              assertThat(actual.average()).isEqualTo(2.5);
+              assertThat(actual.reviews())
+                  .containsExactlyInAnyOrder(existingReviewId, anotherExistingReview, reviewId);
+              assertThat(actual.average()).isEqualTo(4.0);
             });
 
     verify(eventBus).publish(domainEventsCaptor.capture());
