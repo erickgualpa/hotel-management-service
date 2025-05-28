@@ -66,8 +66,8 @@ public class HotelRatingInfrastructureConfiguration {
   @Bean
   public HotelRatingIdGenerator hotelRatingIdGenerator() {
     return (hotelId -> {
-      byte[] hotelIdBytes = hotelId.value().getBytes(StandardCharsets.UTF_8);
-      UUID hotelRatingId = UUID.nameUUIDFromBytes(hotelIdBytes);
+      var hotelIdBytes = hotelId.value().getBytes(StandardCharsets.UTF_8);
+      var hotelRatingId = UUID.nameUUIDFromBytes(hotelIdBytes);
       return new AggregateId(hotelRatingId.toString());
     });
   }

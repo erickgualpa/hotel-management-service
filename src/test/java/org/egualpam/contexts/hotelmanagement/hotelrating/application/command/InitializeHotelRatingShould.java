@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingIdGenerator;
-import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCreated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;

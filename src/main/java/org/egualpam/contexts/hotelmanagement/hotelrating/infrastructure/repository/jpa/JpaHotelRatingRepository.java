@@ -41,16 +41,15 @@ public final class JpaHotelRatingRepository implements AggregateRepository<Hotel
 
   @Override
   public Optional<HotelRating> find(AggregateId id) {
-    UUID hotelRatingId = UUID.fromString(id.value());
+    var hotelRatingId = UUID.fromString(id.value());
 
-    PersistenceHotelRating persistenceHotelRating =
-        entityManager.find(PersistenceHotelRating.class, hotelRatingId);
+    var persistenceHotelRating = entityManager.find(PersistenceHotelRating.class, hotelRatingId);
 
     if (isNull(persistenceHotelRating)) {
       return Optional.empty();
     }
 
-    HotelRating hotelRating =
+    var hotelRating =
         HotelRating.load(
             persistenceHotelRating.id().toString(),
             persistenceHotelRating.hotelId().toString(),
@@ -62,7 +61,7 @@ public final class JpaHotelRatingRepository implements AggregateRepository<Hotel
 
   @Override
   public void save(HotelRating hotelRating) {
-    PersistenceReviews persistenceReviews = new PersistenceReviews(hotelRating.reviews());
+    var persistenceReviews = new PersistenceReviews(hotelRating.reviews());
 
     final String reviewsAsString;
     try {
@@ -71,7 +70,7 @@ public final class JpaHotelRatingRepository implements AggregateRepository<Hotel
       throw new RuntimeException("Hotel rating could be saved", e);
     }
 
-    MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+    var sqlParameterSource = new MapSqlParameterSource();
     sqlParameterSource.addValue("id", UUID.fromString(hotelRating.id().value()));
     sqlParameterSource.addValue("hotelId", UUID.fromString(hotelRating.hotelId()));
     sqlParameterSource.addValue("averageRating", hotelRating.average());

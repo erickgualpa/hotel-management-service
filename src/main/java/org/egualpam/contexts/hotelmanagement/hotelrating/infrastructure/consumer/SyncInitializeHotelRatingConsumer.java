@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.Channel;
 import java.io.IOException;
 import org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.command.simple.SyncInitializeHotelRatingCommand;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.slf4j.Logger;
 import org.springframework.amqp.core.Message;
@@ -30,19 +29,18 @@ public class SyncInitializeHotelRatingConsumer {
       queues = "hotelmanagement.hotel-rating.initialize-hotel-rating",
       ackMode = "MANUAL")
   public void consume(Message in, Channel channel) throws IOException {
-    JsonNode event = objectMapper.readValue(in.getBody(), JsonNode.class);
-    String eventType = event.get("type").asText();
-    String eventVersion = event.get("version").asText();
+    var event = objectMapper.readValue(in.getBody(), JsonNode.class);
+    var eventType = event.get("type").asText();
+    var eventVersion = event.get("version").asText();
 
     if (!"hotelmanagement.hotel.created".equals(eventType) || !"1.0".equals(eventVersion)) {
       return;
     }
 
-    HotelCreatedEvent hotelCreatedEvent =
-        objectMapper.readValue(in.getBody(), HotelCreatedEvent.class);
+    var hotelCreatedEvent = objectMapper.readValue(in.getBody(), HotelCreatedEvent.class);
 
-    String hotelId = hotelCreatedEvent.aggregateId();
-    Command syncInitializeHotelRatingCommand = new SyncInitializeHotelRatingCommand(hotelId);
+    var hotelId = hotelCreatedEvent.aggregateId();
+    var syncInitializeHotelRatingCommand = new SyncInitializeHotelRatingCommand(hotelId);
 
     try {
       commandBus.publish(syncInitializeHotelRatingCommand);

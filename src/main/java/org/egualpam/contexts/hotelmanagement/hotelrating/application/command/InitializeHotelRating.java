@@ -31,7 +31,7 @@ public class InitializeHotelRating {
   }
 
   public void execute(InitializeHotelRatingCommand command) {
-    String hotelId = command.hotelId();
+    var hotelId = command.hotelId();
 
     final HotelRating hotelRating;
 

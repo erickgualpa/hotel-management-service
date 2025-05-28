@@ -7,7 +7,6 @@ import java.time.Clock;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
@@ -42,7 +41,7 @@ public class HotelRating extends AggregateRoot {
       Supplier<UniqueId> uniqueIdSupplier,
       Clock clock,
       String hotelId) {
-    AggregateId id = hotelRatingIdGenerator.generate(new UniqueId(hotelId));
+    var id = hotelRatingIdGenerator.generate(new UniqueId(hotelId));
 
     Optional.of(id)
         .flatMap(repository::find)
@@ -51,9 +50,9 @@ public class HotelRating extends AggregateRoot {
               throw new HotelRatingAlreadyExists(hotelRating.id());
             });
 
-    HotelRating hotelRating = new HotelRating(id.value(), hotelId, Set.of(), 0, 0.0);
+    var hotelRating = new HotelRating(id.value(), hotelId, Set.of(), 0, 0.0);
 
-    HotelRatingInitialized hotelRatingInitialized =
+    var hotelRatingInitialized =
         new HotelRatingInitialized(uniqueIdSupplier.get(), hotelRating.id(), clock);
 
     hotelRating.addDomainEvent(hotelRatingInitialized);
@@ -67,25 +66,24 @@ public class HotelRating extends AggregateRoot {
       throw new RequiredPropertyIsMissing();
     }
 
-    UniqueId reviewUniqueId = new UniqueId(reviewId);
+    var reviewUniqueId = new UniqueId(reviewId);
 
     if (reviews.contains(reviewUniqueId)) {
       throw new ReviewAlreadyProcessed(reviewUniqueId);
     }
 
-    final int reviewsCount = this.reviews.size();
-    final Integer reviewsRatingSum = this.average.calculateRatingSumFor(reviewsCount);
+    final var reviewsCount = this.reviews.size();
+    final var reviewsRatingSum = this.average.calculateRatingSumFor(reviewsCount);
 
     final int updatedReviewsRatingSum = reviewsRatingSum + reviewRating;
     final int updatedReviewsCount = reviewsCount + 1;
 
-    final Double updatedAverage = (double) updatedReviewsRatingSum / updatedReviewsCount;
+    final var updatedAverage = (double) updatedReviewsRatingSum / updatedReviewsCount;
 
     this.reviews.add(reviewUniqueId);
     this.average = new Average(updatedAverage);
 
-    final HotelRatingUpdated hotelRatingUpdated =
-        new HotelRatingUpdated(uniqueIdSupplier.get(), this.id(), clock);
+    final var hotelRatingUpdated = new HotelRatingUpdated(uniqueIdSupplier.get(), this.id(), clock);
 
     this.addDomainEvent(hotelRatingUpdated);
   }
