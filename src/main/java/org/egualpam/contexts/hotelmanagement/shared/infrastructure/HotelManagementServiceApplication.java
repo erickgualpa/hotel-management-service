@@ -11,7 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
       "org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.configuration",
       "org.egualpam.contexts.hotelmanagement.review.infrastructure.configuration",
       "org.egualpam.contexts.hotelmanagement.review.infrastructure.controller",
-      "org.egualpam.contexts.hotelmanagement.room.infrastructure.controller"
+      "org.egualpam.contexts.hotelmanagement.room.infrastructure.controller",
+      "org.egualpam.contexts.hotelmanagement.room.infrastructure.configuration"
     })
 public class HotelManagementServiceApplication {
   public static void main(String[] args) {
