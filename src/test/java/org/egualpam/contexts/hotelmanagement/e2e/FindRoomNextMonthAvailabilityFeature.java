@@ -11,7 +11,7 @@ import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 
-class FindHotelRoomAvailabilityFeature extends AbstractIntegrationTest {
+class FindRoomNextMonthAvailabilityFeature extends AbstractIntegrationTest {
 
   private static final String FIND_ROOM_AVAILABILITY_RESPONSE =
       """
@@ -26,11 +26,8 @@ class FindHotelRoomAvailabilityFeature extends AbstractIntegrationTest {
       }
       """;
 
-  // @Autowired private HotelTestRepository hotelTestRepository;
-
   @Test
-  void hotelRoomAvailabilityShouldBeReturned() throws Exception {
-    UUID hotelId = randomUUID();
+  void roomNextMonthAvailabilityShouldBeReturned() throws Exception {
     UUID roomId = randomUUID();
 
     mockMvc
