@@ -1,8 +1,10 @@
 package org.egualpam.contexts.hotelmanagement.e2e;
 
+import static java.lang.String.format;
 import static java.util.UUID.randomUUID;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.UUID;
@@ -16,11 +18,9 @@ class FindHotelRoomAvailabilityFeature extends AbstractIntegrationTest {
       {
         "results": [
           {
-            "date": {
-              "day": "%d",
-              "month": "%d",
-              "year": "%d"
-            }
+            "day": %d,
+            "month": %d,
+            "year": %d
           }
         ]
       }
@@ -35,7 +35,7 @@ class FindHotelRoomAvailabilityFeature extends AbstractIntegrationTest {
 
     mockMvc
         .perform(get("/v1/rooms/{roomId}/availability", roomId).accept(APPLICATION_JSON))
-        .andExpect(status().isOk()) /*
-        .andExpect(content().json(format(FIND_ROOM_AVAILABILITY_RESPONSE, 31, 7, 2025)))*/;
+        .andExpect(status().isOk())
+        .andExpect(content().json(format(FIND_ROOM_AVAILABILITY_RESPONSE, 1, 8, 2025)));
   }
 }
