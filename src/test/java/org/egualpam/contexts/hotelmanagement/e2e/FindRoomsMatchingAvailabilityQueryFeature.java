@@ -1,14 +1,19 @@
 package org.egualpam.contexts.hotelmanagement.e2e;
 
 import static java.lang.String.format;
+import static java.util.UUID.randomUUID;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RoomTestRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class FindRoomsMatchingAvailabilityQueryFeature extends AbstractIntegrationTest {
 
@@ -24,9 +29,18 @@ class FindRoomsMatchingAvailabilityQueryFeature extends AbstractIntegrationTest 
       """
           .trim();
 
+  @Autowired private HotelTestRepository hotelTestRepository;
+  @Autowired private RoomTestRepository roomTestRepository;
+
   @Test
   void findRoomsMatchingAvailabilityQuery() throws Exception {
-    UUID roomId = UUID.fromString("d6e8ae57-2563-4dfb-ab31-7b6996fd7908");
+    UUID hotelId = randomUUID();
+
+    UUID roomId = randomUUID();
+    String roomType = "S";
+
+    createHotel(hotelId);
+    roomTestRepository.insertRoom(roomId.toString(), roomType, hotelId.toString());
 
     mockMvc
         .perform(
@@ -36,5 +50,15 @@ class FindRoomsMatchingAvailabilityQueryFeature extends AbstractIntegrationTest 
                 .queryParam("availableTo", "2025-08-15"))
         .andExpect(status().isOk())
         .andExpect(content().json(format(FIND_ROOM_AVAILABILITY_RESPONSE, roomId)));
+  }
+
+  private void createHotel(UUID hotelId) {
+    String hotelName = randomAlphabetic(5);
+    String hotelDescription = randomAlphabetic(10);
+    String hotelLocation = randomAlphabetic(10);
+    Integer hotelPrice = 100;
+    String hotelImageURL = "www." + randomAlphabetic(5) + ".com";
+    hotelTestRepository.insertHotel(
+        hotelId, hotelName, hotelDescription, hotelLocation, hotelPrice, hotelImageURL);
   }
 }

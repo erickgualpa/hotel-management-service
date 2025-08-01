@@ -5,6 +5,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
+import org.egualpam.contexts.hotelmanagement.room.application.command.CreateRoom;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.eventbus.RabbitMqProperties;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.EventStoreTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelRatingTestRepository;
@@ -50,8 +51,8 @@ public class SharedTestConfiguration {
   }
 
   @Bean
-  public RoomTestRepository roomTestRepository(JdbcClient jdbcClient) {
-    return new RoomTestRepository(jdbcClient);
+  public RoomTestRepository roomTestRepository(JdbcClient jdbcClient, CreateRoom createRoom) {
+    return new RoomTestRepository(jdbcClient, createRoom);
   }
 
   @Bean

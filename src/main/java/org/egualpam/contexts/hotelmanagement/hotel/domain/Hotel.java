@@ -16,7 +16,7 @@ public final class Hotel extends AggregateRoot {
   private final HotelName name;
   private final HotelDescription description;
   private final Location location;
-  private final Price price;
+  private final Price price; // TODO: Extract price from hotel entity
   private final ImageURL imageURL;
 
   private Hotel(
