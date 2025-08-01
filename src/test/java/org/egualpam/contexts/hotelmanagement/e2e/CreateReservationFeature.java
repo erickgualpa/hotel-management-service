@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.e2e;
 
+import static java.lang.String.format;
 import static java.util.UUID.randomUUID;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -7,7 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.ReservationTestRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class CreateReservationFeature extends AbstractIntegrationTest {
 
@@ -15,23 +18,29 @@ class CreateReservationFeature extends AbstractIntegrationTest {
       """
       {
           "id": "%s",
-          "roomId": "%s"
+          "roomType": "%s",
+          "from": "%s",
+          "to": "%s"
       }
       """;
+
+  @Autowired private ReservationTestRepository reservationTestRepository;
 
   @Test
   void reservationShouldBeCreated() throws Exception {
     UUID reservationId = randomUUID();
-    UUID roomId = randomUUID();
+    String roomType = "M";
+    String from = "2026-08-01";
+    String to = "2026-08-02";
 
-    String request = String.format(CREATE_RESERVATION_REQUEST, reservationId, roomId);
+    String request = format(CREATE_RESERVATION_REQUEST, reservationId, roomType, from, to);
 
     mockMvc
         .perform(post("/v1/reservations").contentType(APPLICATION_JSON).content(request))
         .andExpect(status().isCreated());
 
-    // assertTrue(roomTestRepository.roomExists(roomId));
+    // assertTrue(reservationTestRepository.reservationExists(reservationId));
 
-    // TODO: Also check if an event for room creation is needed
+    // TODO: Also check if an event for reservation creation is needed
   }
 }

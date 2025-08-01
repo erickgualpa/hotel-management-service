@@ -11,6 +11,7 @@ import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.Event
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelRatingTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.ReservationTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.ReviewTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RoomTestRepository;
 import org.springframework.amqp.core.Binding;
@@ -53,6 +54,11 @@ public class SharedTestConfiguration {
   @Bean
   public RoomTestRepository roomTestRepository(JdbcClient jdbcClient, CreateRoom createRoom) {
     return new RoomTestRepository(jdbcClient, createRoom);
+  }
+
+  @Bean
+  public ReservationTestRepository reservationTestRepository(JdbcClient jdbcClient) {
+    return new ReservationTestRepository(jdbcClient);
   }
 
   @Bean
