@@ -21,7 +21,7 @@ public class SyncCreateReservationCommandHandler implements CommandHandler {
   public static CreateReservationCommand toApplicationCommand(
       SyncCreateReservationCommand command) {
     return new CreateReservationCommand(
-        command.id(), command.roomType(), command.from(), command.to());
+        command.id(), command.roomId(), command.from(), command.to());
   }
 
   @Override

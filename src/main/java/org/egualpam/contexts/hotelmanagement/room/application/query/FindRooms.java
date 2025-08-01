@@ -12,7 +12,8 @@ public class FindRooms {
   }
 
   public ManyRooms execute(FindRoomsQuery query) {
-    final var criteria = new RoomCriteria(query.availableFrom(), query.availableTo());
+    final var criteria =
+        RoomCriteria.byAvailabilityDateRange(query.availableFrom(), query.availableTo());
     return readModelSupplier.get(criteria);
   }
 }

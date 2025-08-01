@@ -30,7 +30,7 @@ public class PostReservationController {
     try {
       final var command =
           new SyncCreateReservationCommand(
-              request.id(), request.roomType(), request.from(), request.to());
+              request.id(), request.roomId(), request.from(), request.to());
       commandBus.publish(command);
       return status(CREATED).build();
     } catch (RuntimeException e) {
