@@ -2,4 +2,4 @@ package org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.query.sim
 
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Query;
 
-public record SyncFindRoomNextMonthAvailabilityQuery(String roomId) implements Query {}
+public record SyncFindRoomsQuery(String availableFrom, String availableTo) implements Query {}

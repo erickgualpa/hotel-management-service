@@ -1,8 +1,3 @@
 package org.egualpam.contexts.hotelmanagement.room.domain;
 
-enum RoomType {
-  S,
-  M,
-  L,
-  XL
-}
+public record DateRange(String from, String to) {}

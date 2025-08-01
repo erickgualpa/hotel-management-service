@@ -1,15 +1,15 @@
 package org.egualpam.contexts.hotelmanagement.room.infrastructure.configuration;
 
 import org.egualpam.contexts.hotelmanagement.room.application.command.CreateRoom;
-import org.egualpam.contexts.hotelmanagement.room.application.query.FindRoomNextMonthAvailability;
-import org.egualpam.contexts.hotelmanagement.room.application.query.ManyAvailableDays;
+import org.egualpam.contexts.hotelmanagement.room.application.query.FindRooms;
+import org.egualpam.contexts.hotelmanagement.room.application.query.ManyRooms;
 import org.egualpam.contexts.hotelmanagement.room.domain.Room;
 import org.egualpam.contexts.hotelmanagement.room.domain.RoomCriteria;
 import org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.command.simple.SyncCreateRoomCommand;
 import org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.command.simple.SyncCreateRoomCommandHandler;
-import org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.query.SyncFindRoomNextMonthAvailabilityHandler;
-import org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.query.simple.SyncFindRoomNextMonthAvailabilityQuery;
-import org.egualpam.contexts.hotelmanagement.room.infrastructure.readmodelsupplier.JdbcManyAvailableDaysReadModelSupplier;
+import org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.query.SyncFindRoomsHandler;
+import org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.query.simple.SyncFindRoomsQuery;
+import org.egualpam.contexts.hotelmanagement.room.infrastructure.readmodelsupplier.JdbcManyRoomsReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.room.infrastructure.repository.JdbcRoomRepository;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
@@ -29,9 +29,9 @@ public class RoomInfrastructureConfiguration {
   }
 
   @Bean
-  public ReadModelSupplier<RoomCriteria, ManyAvailableDays> manyAvailableDaysReadModelSupplier(
+  public ReadModelSupplier<RoomCriteria, ManyRooms> manyRoomsReadModelSupplier(
       JdbcClient jdbcClient) {
-    return new JdbcManyAvailableDaysReadModelSupplier(jdbcClient);
+    return new JdbcManyRoomsReadModelSupplier(jdbcClient);
   }
 
   @Bean
@@ -44,11 +44,8 @@ public class RoomInfrastructureConfiguration {
   }
 
   @Bean
-  public SimpleQueryBusConfiguration roomSimpleQueryBusConfiguration(
-      FindRoomNextMonthAvailability findRoomNextMonthAvailability) {
+  public SimpleQueryBusConfiguration roomSimpleQueryBusConfiguration(FindRooms findRooms) {
     return new SimpleQueryBusConfiguration()
-        .handling(
-            SyncFindRoomNextMonthAvailabilityQuery.class,
-            new SyncFindRoomNextMonthAvailabilityHandler(findRoomNextMonthAvailability));
+        .handling(SyncFindRoomsQuery.class, new SyncFindRoomsHandler(findRooms));
   }
 }

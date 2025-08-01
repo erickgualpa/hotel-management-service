@@ -1,8 +1,8 @@
 package org.egualpam.contexts.hotelmanagement.room.infrastructure.configuration;
 
 import org.egualpam.contexts.hotelmanagement.room.application.command.CreateRoom;
-import org.egualpam.contexts.hotelmanagement.room.application.query.FindRoomNextMonthAvailability;
-import org.egualpam.contexts.hotelmanagement.room.application.query.ManyAvailableDays;
+import org.egualpam.contexts.hotelmanagement.room.application.query.FindRooms;
+import org.egualpam.contexts.hotelmanagement.room.application.query.ManyRooms;
 import org.egualpam.contexts.hotelmanagement.room.domain.Room;
 import org.egualpam.contexts.hotelmanagement.room.domain.RoomCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
@@ -19,8 +19,8 @@ public class RoomApplicationConfiguration {
   }
 
   @Bean
-  public FindRoomNextMonthAvailability findRoomNextMonthAvailability(
-      ReadModelSupplier<RoomCriteria, ManyAvailableDays> readModelSupplier) {
-    return new FindRoomNextMonthAvailability(readModelSupplier);
+  public FindRooms findRoomNextMonthAvailability(
+      ReadModelSupplier<RoomCriteria, ManyRooms> readModelSupplier) {
+    return new FindRooms(readModelSupplier);
   }
 }
