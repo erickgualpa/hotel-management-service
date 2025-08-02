@@ -18,8 +18,30 @@ public class JdbcReservationRepository implements AggregateRepository<Reservatio
 
   @Override
   public Optional<Reservation> find(AggregateId id) {
-    throw new RuntimeException("Not yet implemented!");
+    final var sql =
+        """
+        SELECT id, room_id, reserved_from, reserved_to
+        FROM reservation
+        WHERE id=:reservationId
+        """;
+
+    final var existing =
+        jdbcClient
+            .sql(sql)
+            .param("reservationId", UUID.fromString(id.value()))
+            .query(PersistenceReservation.class)
+            .optional();
+
+    return existing.map(
+        e ->
+            Reservation.load(
+                e.id.toString(),
+                e.roomId.toString(),
+                e.reservedFrom.toString(),
+                e.reservedTo.toString()));
   }
+
+  private record PersistenceReservation(UUID id, UUID roomId, Date reservedFrom, Date reservedTo) {}
 
   @Override
   public void save(Reservation reservation) {

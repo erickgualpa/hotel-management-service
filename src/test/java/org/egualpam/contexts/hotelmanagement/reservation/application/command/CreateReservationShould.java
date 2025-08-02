@@ -1,10 +1,15 @@
 package org.egualpam.contexts.hotelmanagement.reservation.application.command;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.util.Optional;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.reservation.domain.Reservation;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DateRange;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,5 +54,23 @@ class CreateReservationShould {
               assertThat(saved.reservationDateRange())
                   .isEqualTo(new DateRange(reservedFrom, reservedTo));
             });
+  }
+
+  @Test
+  void notCreateReservationWhenAlreadyExists() {
+    String reservationId = UUID.randomUUID().toString();
+    String roomId = UUID.randomUUID().toString();
+    String reservedFrom = "2025-11-25";
+    String reservedTo = "2025-11-27";
+
+    Reservation existing = Reservation.load(reservationId, roomId, reservedFrom, reservedTo);
+    when(repository.find(new AggregateId(reservationId))).thenReturn(Optional.of(existing));
+
+    CreateReservationCommand command =
+        new CreateReservationCommand(reservationId, roomId, reservedFrom, reservedTo);
+
+    testee.execute(command);
+
+    verify(repository, never()).save(any(Reservation.class));
   }
 }

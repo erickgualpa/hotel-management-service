@@ -1,6 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.reservation.application.command;
 
 import org.egualpam.contexts.hotelmanagement.reservation.domain.Reservation;
+import org.egualpam.contexts.hotelmanagement.reservation.domain.ReservationAlreadyExists;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 
 public class CreateReservation {
@@ -12,12 +13,19 @@ public class CreateReservation {
   }
 
   public void execute(CreateReservationCommand command) {
-    Reservation reservation =
-        Reservation.create(
-            command.reservationId(),
-            command.roomId(),
-            command.reservedFrom(),
-            command.reservedTo());
+    final Reservation reservation;
+
+    try {
+      reservation =
+          Reservation.create(
+              repository,
+              command.reservationId(),
+              command.roomId(),
+              command.reservedFrom(),
+              command.reservedTo());
+    } catch (ReservationAlreadyExists e) {
+      return;
+    }
 
     repository.save(reservation);
   }
