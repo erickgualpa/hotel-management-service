@@ -1,17 +1,26 @@
 package org.egualpam.contexts.hotelmanagement.reservation.application.command;
 
+import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anySet;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.Set;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.reservation.domain.Reservation;
+import org.egualpam.contexts.hotelmanagement.reservation.domain.ReservationCreated;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DateRange;
+import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
+import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,21 +33,31 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class CreateReservationShould {
 
   @Captor private ArgumentCaptor<Reservation> reservationCaptor;
+  @Mock private Supplier<UniqueId> uniqueIdSupplier;
   @Mock private AggregateRepository<Reservation> repository;
+  @Captor private ArgumentCaptor<Set<DomainEvent>> domainEventsCaptor;
+  @Mock private EventBus eventBus;
+  @Mock private Clock clock;
 
   private CreateReservation testee;
 
   @BeforeEach
   void setUp() {
-    testee = new CreateReservation(repository);
+    testee = new CreateReservation(uniqueIdSupplier, repository, eventBus, clock);
   }
 
   @Test
   void createReservation() {
-    String reservationId = UUID.randomUUID().toString();
-    String roomId = UUID.randomUUID().toString();
+    String reservationId = randomUUID().toString();
+    String roomId = randomUUID().toString();
     String reservedFrom = "2025-11-25";
     String reservedTo = "2025-11-27";
+
+    String domainEventId = randomUUID().toString();
+    Instant occurredOn = Instant.now();
+
+    when(uniqueIdSupplier.get()).thenReturn(new UniqueId(domainEventId));
+    when(clock.instant()).thenReturn(occurredOn);
 
     CreateReservationCommand command =
         new CreateReservationCommand(reservationId, roomId, reservedFrom, reservedTo);
@@ -54,12 +73,29 @@ class CreateReservationShould {
               assertThat(saved.reservationDateRange())
                   .isEqualTo(new DateRange(reservedFrom, reservedTo));
             });
+
+    verify(eventBus).publish(domainEventsCaptor.capture());
+    assertThat(domainEventsCaptor.getValue())
+        .hasSize(1)
+        .first()
+        .isInstanceOf(ReservationCreated.class)
+        .satisfies(
+            domainEvent -> {
+              assertThat(domainEvent.id().value()).isEqualTo(domainEventId);
+              assertThat(domainEvent.aggregateId().value()).isEqualTo(reservationId);
+              assertThat(domainEvent.occurredOn()).isEqualTo(occurredOn);
+
+              ReservationCreated reservationCreated = (ReservationCreated) domainEvent;
+              assertThat(reservationCreated.roomId()).isEqualTo(roomId);
+              assertThat(reservationCreated.reservationDateRange())
+                  .isEqualTo(new DateRange(reservedFrom, reservedTo));
+            });
   }
 
   @Test
   void notCreateReservationWhenAlreadyExists() {
-    String reservationId = UUID.randomUUID().toString();
-    String roomId = UUID.randomUUID().toString();
+    String reservationId = randomUUID().toString();
+    String roomId = randomUUID().toString();
     String reservedFrom = "2025-11-25";
     String reservedTo = "2025-11-27";
 
@@ -72,5 +108,6 @@ class CreateReservationShould {
     testee.execute(command);
 
     verify(repository, never()).save(any(Reservation.class));
+    verify(eventBus, never()).publish(anySet());
   }
 }

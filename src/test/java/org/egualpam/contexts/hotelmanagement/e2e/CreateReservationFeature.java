@@ -2,15 +2,23 @@ package org.egualpam.contexts.hotelmanagement.e2e;
 
 import static java.lang.String.format;
 import static java.util.UUID.randomUUID;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
+import java.io.IOException;
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.PublicEventResult;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RabbitMqTestConsumer;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.ReservationTestRepository;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RoomTestRepository;
 import org.junit.jupiter.api.Test;
@@ -31,6 +39,7 @@ class CreateReservationFeature extends AbstractIntegrationTest {
   @Autowired private HotelTestRepository hotelTestRepository;
   @Autowired private RoomTestRepository roomTestRepository;
   @Autowired private ReservationTestRepository reservationTestRepository;
+  @Autowired private RabbitMqTestConsumer rabbitMqTestConsumer;
 
   @Test
   void reservationShouldBeCreated() throws Exception {
@@ -52,7 +61,25 @@ class CreateReservationFeature extends AbstractIntegrationTest {
 
     assertTrue(reservationTestRepository.reservationExists(reservationId));
 
-    // TODO: Also check if an event for reservation creation is needed
+    await().atMost(10, SECONDS).untilAsserted(() -> domainEventIsPublished(reservationId));
+  }
+
+  private void domainEventIsPublished(UUID reservationId) throws IOException {
+    PublicEventResult publicEventResult =
+        rabbitMqTestConsumer.consumeFromQueue("hotelmanagement.test");
+    assertThat(publicEventResult)
+        .satisfies(
+            r -> {
+              try {
+                UUID.fromString(r.id());
+              } catch (IllegalArgumentException e) {
+                fail("Invalid public event id: [%s]".formatted(r.id()));
+              }
+              assertThat(r.type()).isEqualTo("hotelmanagement.reservation.created");
+              assertThat(r.version()).isEqualTo("1.0");
+              assertThat(r.aggregateId()).isEqualTo(reservationId.toString());
+              assertNotNull(r.occurredOn());
+            });
   }
 
   private void createHotel(UUID hotelId) {

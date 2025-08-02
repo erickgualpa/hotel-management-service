@@ -2,11 +2,14 @@ package org.egualpam.contexts.hotelmanagement.reservation.domain;
 
 import static java.util.Objects.isNull;
 
+import java.time.Clock;
+import java.util.function.Supplier;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DateRange;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
 public class Reservation extends AggregateRoot {
 
@@ -29,17 +32,33 @@ public class Reservation extends AggregateRoot {
 
   public static Reservation create(
       AggregateRepository<Reservation> repository,
+      Supplier<UniqueId> uniqueIdSupplier,
+      Clock clock,
       String reservationId,
       String roomId,
       String reservedFrom,
       String reservedTo) {
-    final var existing = repository.find(new AggregateId(reservationId));
+    final var aggregateId = new AggregateId(reservationId);
+
+    final var existing = repository.find(aggregateId);
 
     if (existing.isPresent()) {
       throw new ReservationAlreadyExists();
     }
 
-    return new Reservation(reservationId, roomId, reservedFrom, reservedTo);
+    final var reservation = new Reservation(reservationId, roomId, reservedFrom, reservedTo);
+
+    final var reservationCreated =
+        new ReservationCreated(
+            uniqueIdSupplier.get(),
+            aggregateId,
+            clock,
+            reservation.roomId,
+            reservation.reservationDateRange);
+
+    reservation.addDomainEvent(reservationCreated);
+
+    return reservation;
   }
 
   public String roomId() {
