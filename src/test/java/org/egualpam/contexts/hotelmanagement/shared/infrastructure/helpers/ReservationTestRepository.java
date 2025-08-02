@@ -1,14 +1,18 @@
 package org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers;
 
 import java.util.UUID;
+import org.egualpam.contexts.hotelmanagement.reservation.application.command.CreateReservation;
+import org.egualpam.contexts.hotelmanagement.reservation.application.command.CreateReservationCommand;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 public class ReservationTestRepository {
 
   private final JdbcClient jdbcClient;
+  private final CreateReservation createReservation;
 
-  public ReservationTestRepository(JdbcClient jdbcClient) {
+  public ReservationTestRepository(JdbcClient jdbcClient, CreateReservation createReservation) {
     this.jdbcClient = jdbcClient;
+    this.createReservation = createReservation;
   }
 
   public boolean reservationExists(UUID reservationId) {
@@ -23,5 +27,19 @@ public class ReservationTestRepository {
         jdbcClient.sql(sql).param("reservationId", reservationId).query(Integer.class).single();
 
     return count == 1;
+  }
+
+  public void insertReservation(
+      String reservationId, String roomId, String reservedFrom, String reservedTo) {
+    createReservation.execute(
+        new CreateReservationCommand(reservationId, roomId, reservedFrom, reservedTo));
+  }
+
+  public void tearDown() {
+    String sql =
+        """
+        TRUNCATE TABLE reservation CASCADE;
+        """;
+    jdbcClient.sql(sql).update();
   }
 }

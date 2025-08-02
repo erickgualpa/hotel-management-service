@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.room.infrastructure.readmodelsupplier;
 
+import java.sql.Date;
 import org.egualpam.contexts.hotelmanagement.room.application.query.ManyRooms;
 import org.egualpam.contexts.hotelmanagement.room.domain.RoomCriteria;
 import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
@@ -24,8 +25,7 @@ public class JdbcManyRoomsReadModelSupplier implements ReadModelSupplier<RoomCri
         FROM room r
         """;
 
-    // TODO: Enable once tests fixed
-    /*if (criteria.getAvailableTo() != null && criteria.getAvailableTo() != null) {
+    if (criteria.getAvailableTo() != null && criteria.getAvailableTo() != null) {
       sql +=
           """
           WHERE r.id NOT IN (
@@ -37,7 +37,7 @@ public class JdbcManyRoomsReadModelSupplier implements ReadModelSupplier<RoomCri
 
       paramSource.addValue("availableFrom", Date.valueOf(criteria.getAvailableFrom()));
       paramSource.addValue("availableTo", Date.valueOf(criteria.getAvailableTo()));
-    }*/
+    }
 
     final var rooms =
         jdbcClient.sql(sql).paramSource(paramSource).query(String.class).list().stream()

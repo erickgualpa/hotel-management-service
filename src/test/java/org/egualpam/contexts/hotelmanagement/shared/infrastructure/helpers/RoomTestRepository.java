@@ -29,4 +29,12 @@ public class RoomTestRepository {
   public void insertRoom(String id, String type, String hotelId) {
     createRoom.execute(new CreateRoomCommand(id, type, hotelId));
   }
+
+  public void tearDown() {
+    String sql =
+        """
+        TRUNCATE TABLE room CASCADE;
+        """;
+    jdbcClient.sql(sql).update();
+  }
 }
