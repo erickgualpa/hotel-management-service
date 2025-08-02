@@ -2,7 +2,6 @@ package org.egualpam.contexts.hotelmanagement.room.domain;
 
 import static java.util.Objects.isNull;
 
-import java.util.Objects;
 import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
 import org.egualpam.contexts.hotelmanagement.shared.domain.DateRange;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
@@ -31,17 +30,5 @@ public class RoomCriteria implements Criteria {
 
   public String getAvailableTo() {
     return this.availabilityDateRange.to();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) return false;
-    RoomCriteria that = (RoomCriteria) o;
-    return Objects.equals(availabilityDateRange, that.availabilityDateRange);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hashCode(availabilityDateRange);
   }
 }
