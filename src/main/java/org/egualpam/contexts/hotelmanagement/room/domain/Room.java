@@ -5,6 +5,7 @@ import static java.util.Objects.isNull;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotelmanagement.shared.domain.RoomType;
 
 public class Room extends AggregateRoot {
 

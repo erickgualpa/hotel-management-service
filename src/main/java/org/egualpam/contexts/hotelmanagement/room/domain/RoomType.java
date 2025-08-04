@@ -1,8 +1,0 @@
-package org.egualpam.contexts.hotelmanagement.room.domain;
-
-enum RoomType {
-  S,
-  M,
-  L,
-  XL
-}
