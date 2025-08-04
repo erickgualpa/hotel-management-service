@@ -1,21 +1,25 @@
 package org.egualpam.contexts.hotelmanagement.roomprice.application.command;
 
-import static org.mockito.ArgumentMatchers.any;
+import static java.util.UUID.randomUUID;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
-import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPrice;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class UpdateRoomPriceShould {
 
+  @Captor private ArgumentCaptor<RoomPrice> roomPriceCaptor;
   @Mock private AggregateRepository<RoomPrice> repository;
+
   private UpdateRoomPrice testee;
 
   @BeforeEach
@@ -25,14 +29,25 @@ class UpdateRoomPriceShould {
 
   @Test
   void roomPriceShouldBeUpdated() {
-    String roomPriceId = UUID.randomUUID().toString();
-    String hotelId = UUID.randomUUID().toString();
+    String roomPriceId = randomUUID().toString();
+    String hotelId = randomUUID().toString();
     String roomType = "S";
+    String priceAmount = "100.00";
 
-    UpdateRoomPriceCommand command = new UpdateRoomPriceCommand(roomPriceId, hotelId, roomType);
+    UpdateRoomPriceCommand command =
+        new UpdateRoomPriceCommand(roomPriceId, hotelId, roomType, priceAmount);
 
     testee.execute(command);
 
-    verify(repository).save(any());
+    verify(repository).save(roomPriceCaptor.capture());
+    assertThat(roomPriceCaptor.getValue())
+        .satisfies(
+            saved -> {
+              assertThat(saved.id().value()).isEqualTo(roomPriceId);
+              assertThat(saved.hotelId()).isEqualTo(hotelId);
+              assertThat(saved.roomType()).isEqualTo(roomType);
+              assertThat(saved.price().amount()).isEqualTo("100.00");
+              assertThat(saved.price().currency()).isEqualTo("EUR");
+            });
   }
 }

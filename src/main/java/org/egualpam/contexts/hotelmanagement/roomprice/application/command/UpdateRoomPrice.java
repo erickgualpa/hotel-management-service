@@ -12,7 +12,9 @@ public class UpdateRoomPrice {
   }
 
   public void execute(UpdateRoomPriceCommand command) {
-    final var roomPrice = RoomPrice.create(command.roomPriceId());
+    final var roomPrice =
+        RoomPrice.create(
+            command.roomPriceId(), command.hotelId(), command.roomType(), command.priceAmount());
     repository.save(roomPrice);
   }
 }

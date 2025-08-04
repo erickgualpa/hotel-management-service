@@ -26,7 +26,8 @@ public class SyncUpdateRoomPriceCommandHandler implements CommandHandler {
         new UpdateRoomPriceCommand(
             syncUpdateRoomPriceCommand.roomPriceId(),
             syncUpdateRoomPriceCommand.hotelId(),
-            syncUpdateRoomPriceCommand.roomPriceId());
+            syncUpdateRoomPriceCommand.roomPriceId(),
+            syncUpdateRoomPriceCommand.priceAmount());
 
     transactionTemplate.executeWithoutResult(
         ignored -> updateRoomPrice.execute(applicationCommand));

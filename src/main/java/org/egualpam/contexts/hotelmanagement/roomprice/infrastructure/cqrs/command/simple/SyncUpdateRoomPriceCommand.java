@@ -2,5 +2,5 @@ package org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.cqrs.comm
 
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
 
-public record SyncUpdateRoomPriceCommand(String roomPriceId, String hotelId, String roomType)
-    implements Command {}
+public record SyncUpdateRoomPriceCommand(
+    String roomPriceId, String hotelId, String roomType, String priceAmount) implements Command {}

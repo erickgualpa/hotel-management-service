@@ -19,7 +19,10 @@ class UpdateRoomPriceFeature extends AbstractIntegrationTest {
       {
           "id": "%s",
           "hotelId": "%s",
-          "roomType": "%s"
+          "roomType": "%s",
+          "price": {
+            "amount": "%s"
+          }
       }
       """;
 
@@ -30,12 +33,14 @@ class UpdateRoomPriceFeature extends AbstractIntegrationTest {
     UUID roomPriceId = randomUUID();
     UUID hotelId = randomUUID();
     String roomType = "M";
+    String priceAmount = "100.00";
 
     mockMvc
         .perform(
             put("/v1/room-prices")
                 .contentType(APPLICATION_JSON)
-                .content(format(UPDATE_ROOM_PRICE_REQUEST, roomPriceId, hotelId, roomType)))
+                .content(
+                    format(UPDATE_ROOM_PRICE_REQUEST, roomPriceId, hotelId, roomType, priceAmount)))
         .andExpect(status().isNoContent());
 
     // TODO: Enable once repository is implemented
