@@ -68,7 +68,7 @@ class UpdateHotelRatingShould {
 
     when(clock.instant()).thenReturn(NOW);
     when(uniqueIdSupplier.get()).thenReturn(domainEventId);
-    when(hotelRatingIdGenerator.generate(new UniqueId(hotelId))).thenReturn(aggregateId);
+    when(hotelRatingIdGenerator.generate(new AggregateId(hotelId))).thenReturn(aggregateId);
     when(repository.find(aggregateId)).thenReturn(Optional.of(existing));
 
     UpdateHotelRatingCommand command =
@@ -110,7 +110,7 @@ class UpdateHotelRatingShould {
 
     HotelRating existing = HotelRating.load(id, hotelId, Set.of(reviewId), 3.0);
 
-    when(hotelRatingIdGenerator.generate(new UniqueId(hotelId))).thenReturn(aggregateId);
+    when(hotelRatingIdGenerator.generate(new AggregateId(hotelId))).thenReturn(aggregateId);
     when(repository.find(aggregateId)).thenReturn(Optional.of(existing));
 
     UpdateHotelRatingCommand command =
@@ -128,7 +128,7 @@ class UpdateHotelRatingShould {
     String reviewId = UniqueId.get().value();
     Integer reviewRating = 2;
 
-    when(hotelRatingIdGenerator.generate(new UniqueId(hotelId))).thenReturn(aggregateId);
+    when(hotelRatingIdGenerator.generate(new AggregateId(hotelId))).thenReturn(aggregateId);
     when(repository.find(aggregateId)).thenReturn(Optional.empty());
 
     UpdateHotelRatingCommand command =

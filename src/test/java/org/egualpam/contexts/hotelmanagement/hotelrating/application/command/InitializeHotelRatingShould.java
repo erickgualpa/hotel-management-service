@@ -58,7 +58,8 @@ class InitializeHotelRatingShould {
 
     when(uniqueIdSupplier.get()).thenReturn(domainEventId);
     when(clock.instant()).thenReturn(NOW);
-    when(hotelRatingIdGenerator.generate(hotelId)).thenReturn(new AggregateId(id.value()));
+    when(hotelRatingIdGenerator.generate(new AggregateId(hotelId.value())))
+        .thenReturn(new AggregateId(id.value()));
 
     InitializeHotelRatingCommand command = new InitializeHotelRatingCommand(hotelId.value());
 
@@ -89,7 +90,8 @@ class InitializeHotelRatingShould {
 
     HotelRating existing = HotelRating.load(id.value(), hotelId.value(), Set.of(), 0.0);
 
-    when(hotelRatingIdGenerator.generate(hotelId)).thenReturn(new AggregateId(id.value()));
+    when(hotelRatingIdGenerator.generate(new AggregateId(hotelId.value())))
+        .thenReturn(new AggregateId(id.value()));
     when(repository.find(new AggregateId(id.value()))).thenReturn(Optional.of(existing));
 
     InitializeHotelRatingCommand command = new InitializeHotelRatingCommand(hotelId.value());

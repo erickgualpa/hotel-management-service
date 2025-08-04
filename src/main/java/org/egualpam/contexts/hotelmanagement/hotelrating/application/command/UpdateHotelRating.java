@@ -6,6 +6,7 @@ import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingIdGenerator;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.HotelRatingNotFound;
 import org.egualpam.contexts.hotelmanagement.hotelrating.domain.ReviewAlreadyProcessed;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.EventBus;
 import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
@@ -36,7 +37,7 @@ public class UpdateHotelRating {
     var reviewId = command.reviewId();
     var reviewRating = command.reviewRating();
 
-    var hotelRatingId = hotelRatingIdGenerator.generate(new UniqueId(hotelId));
+    var hotelRatingId = hotelRatingIdGenerator.generate(new AggregateId(hotelId));
 
     var hotelRating =
         repository.find(hotelRatingId).orElseThrow(() -> new HotelRatingNotFound(hotelRatingId));

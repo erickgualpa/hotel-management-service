@@ -7,6 +7,7 @@ import java.time.Clock;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
@@ -14,8 +15,8 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
 
 public class HotelRating extends AggregateRoot {
 
-  private final UniqueId hotelId;
-  private final Set<UniqueId> reviews;
+  private final AggregateId hotelId;
+  private final Set<AggregateId> reviews;
 
   private Average average;
 
@@ -26,8 +27,8 @@ public class HotelRating extends AggregateRoot {
       throw new RequiredPropertyIsMissing();
     }
 
-    this.hotelId = new UniqueId(hotelId);
-    this.reviews = reviews.stream().map(UniqueId::new).collect(toSet());
+    this.hotelId = new AggregateId(hotelId);
+    this.reviews = reviews.stream().map(AggregateId::new).collect(toSet());
     this.average = new Average(average);
   }
 
@@ -41,7 +42,7 @@ public class HotelRating extends AggregateRoot {
       Supplier<UniqueId> uniqueIdSupplier,
       Clock clock,
       String hotelId) {
-    var id = hotelRatingIdGenerator.generate(new UniqueId(hotelId));
+    final var id = hotelRatingIdGenerator.generate(new AggregateId(hotelId));
 
     Optional.of(id)
         .flatMap(repository::find)
@@ -50,9 +51,9 @@ public class HotelRating extends AggregateRoot {
               throw new HotelRatingAlreadyExists(hotelRating.id());
             });
 
-    var hotelRating = new HotelRating(id.value(), hotelId, Set.of(), 0, 0.0);
+    final var hotelRating = new HotelRating(id.value(), hotelId, Set.of(), 0, 0.0);
 
-    var hotelRatingInitialized =
+    final var hotelRatingInitialized =
         new HotelRatingInitialized(uniqueIdSupplier.get(), hotelRating.id(), clock);
 
     hotelRating.addDomainEvent(hotelRatingInitialized);
@@ -66,7 +67,7 @@ public class HotelRating extends AggregateRoot {
       throw new RequiredPropertyIsMissing();
     }
 
-    var reviewUniqueId = new UniqueId(reviewId);
+    final var reviewUniqueId = new AggregateId(reviewId);
 
     if (reviews.contains(reviewUniqueId)) {
       throw new ReviewAlreadyProcessed(reviewUniqueId);
@@ -93,7 +94,7 @@ public class HotelRating extends AggregateRoot {
   }
 
   public Set<String> reviews() {
-    return this.reviews.stream().map(UniqueId::value).collect(toSet());
+    return this.reviews.stream().map(AggregateId::value).collect(toSet());
   }
 
   public Double average() {
