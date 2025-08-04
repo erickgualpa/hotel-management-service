@@ -1,8 +1,12 @@
 package org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.configuration;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.UUID.nameUUIDFromBytes;
+
 import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.roomprice.application.command.UpdateRoomPrice;
 import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPrice;
+import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPriceIdGenerator;
 import org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.cqrs.command.SyncUpdateRoomPriceCommandHandler;
 import org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.cqrs.command.simple.SyncUpdateRoomPriceCommand;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
@@ -14,6 +18,14 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
 public class RoomPriceInfrastructureConfiguration {
+
+  @Bean
+  public RoomPriceIdGenerator roomPriceIdGenerator() {
+    return ((hotelId, roomType) -> {
+      final var id = hotelId.value() + "_" + roomType.name();
+      return nameUUIDFromBytes(id.getBytes(UTF_8)).toString();
+    });
+  }
 
   @Bean
   public AggregateRepository<RoomPrice> roomPriceAggregateRepository() {

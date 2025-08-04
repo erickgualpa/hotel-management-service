@@ -17,7 +17,6 @@ class UpdateRoomPriceFeature extends AbstractIntegrationTest {
   private static final String UPDATE_ROOM_PRICE_REQUEST =
       """
       {
-          "id": "%s",
           "hotelId": "%s",
           "roomType": "%s",
           "price": {
@@ -30,7 +29,6 @@ class UpdateRoomPriceFeature extends AbstractIntegrationTest {
 
   @Test
   void roomPriceShouldBeUpdated() throws Exception {
-    UUID roomPriceId = randomUUID();
     UUID hotelId = randomUUID();
     String roomType = "M";
     String priceAmount = "100.00";
@@ -39,8 +37,7 @@ class UpdateRoomPriceFeature extends AbstractIntegrationTest {
         .perform(
             put("/v1/room-prices")
                 .contentType(APPLICATION_JSON)
-                .content(
-                    format(UPDATE_ROOM_PRICE_REQUEST, roomPriceId, hotelId, roomType, priceAmount)))
+                .content(format(UPDATE_ROOM_PRICE_REQUEST, hotelId, roomType, priceAmount)))
         .andExpect(status().isNoContent());
 
     // TODO: Enable once repository is implemented

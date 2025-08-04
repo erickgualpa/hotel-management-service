@@ -27,7 +27,7 @@ public class PutRoomPriceController {
   public ResponseEntity<Void> updateRoomPrice(@RequestBody UpdateRoomPriceRequest request) {
     final var command =
         new SyncUpdateRoomPriceCommand(
-            request.id(), request.hotelId(), request.roomType(), request.priceAmount());
+            request.hotelId(), request.roomType(), request.priceAmount());
     try {
       commandBus.publish(command);
     } catch (RuntimeException e) {

@@ -2,6 +2,7 @@ package org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.configura
 
 import org.egualpam.contexts.hotelmanagement.roomprice.application.command.UpdateRoomPrice;
 import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPrice;
+import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPriceIdGenerator;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,8 @@ import org.springframework.context.annotation.Configuration;
 public class RoomPriceApplicationConfiguration {
 
   @Bean
-  public UpdateRoomPrice updateRoomPrice(AggregateRepository<RoomPrice> repository) {
-    return new UpdateRoomPrice(repository);
+  public UpdateRoomPrice updateRoomPrice(
+      RoomPriceIdGenerator roomPriceIdGenerator, AggregateRepository<RoomPrice> repository) {
+    return new UpdateRoomPrice(roomPriceIdGenerator, repository);
   }
 }

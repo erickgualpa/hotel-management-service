@@ -1,10 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.roomprice.domain;
 
-import static java.util.Objects.isNull;
-
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RoomType;
 
 public class RoomPrice extends AggregateRoot {
@@ -13,18 +10,25 @@ public class RoomPrice extends AggregateRoot {
   private final RoomType roomType;
   private final Price price;
 
-  private RoomPrice(String id, String hotelId, String roomType, String amount) {
-    super(id);
-    if (isNull(hotelId) || isNull(roomType)) {
-      throw new RequiredPropertyIsMissing();
-    }
+  private RoomPrice(
+      RoomPriceIdGenerator roomPriceIdGenerator, String hotelId, String roomType, String amount) {
+    super(generateId(roomPriceIdGenerator, hotelId, roomType));
     this.hotelId = new AggregateId(hotelId);
     this.roomType = RoomType.valueOf(roomType);
     this.price = Price.of(amount);
   }
 
-  public static RoomPrice create(String id, String hotelId, String roomType, String priceAmount) {
-    return new RoomPrice(id, hotelId, roomType, priceAmount);
+  private static String generateId(
+      RoomPriceIdGenerator roomPriceIdGenerator, String hotelId, String roomType) {
+    return roomPriceIdGenerator.get(new AggregateId(hotelId), RoomType.valueOf(roomType));
+  }
+
+  public static RoomPrice create(
+      RoomPriceIdGenerator roomPriceIdGenerator,
+      String hotelId,
+      String roomType,
+      String priceAmount) {
+    return new RoomPrice(roomPriceIdGenerator, hotelId, roomType, priceAmount);
   }
 
   public String hotelId() {
