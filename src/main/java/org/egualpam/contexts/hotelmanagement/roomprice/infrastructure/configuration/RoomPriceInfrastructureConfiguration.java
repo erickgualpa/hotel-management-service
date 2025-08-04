@@ -29,10 +29,10 @@ public class RoomPriceInfrastructureConfiguration {
 
   @Bean
   public AggregateRepository<RoomPrice> roomPriceAggregateRepository() {
-    return new AggregateRepository<RoomPrice>() {
+    return new AggregateRepository<>() {
       @Override
       public Optional<RoomPrice> find(AggregateId id) {
-        throw new RuntimeException("Not yet implemented!");
+        return Optional.empty();
       }
 
       @Override

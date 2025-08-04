@@ -2,10 +2,13 @@ package org.egualpam.contexts.hotelmanagement.roomprice.application.command;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
 import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPrice;
+import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPriceAlreadyExists;
 import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPriceIdGenerator;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
@@ -33,13 +36,14 @@ class UpdateRoomPriceShould {
   }
 
   @Test
-  void roomPriceShouldBeUpdated() {
+  void createRoomPriceWhenNotExists() {
     String roomPriceId = randomUUID().toString();
     String hotelId = randomUUID().toString();
     String roomType = "S";
     String priceAmount = "100.00";
 
     when(roomPriceIdGenerator.get(new AggregateId(hotelId), RoomType.S)).thenReturn(roomPriceId);
+    when(repository.find(new AggregateId(roomPriceId))).thenReturn(Optional.empty());
 
     UpdateRoomPriceCommand command = new UpdateRoomPriceCommand(hotelId, roomType, priceAmount);
 
@@ -55,5 +59,22 @@ class UpdateRoomPriceShould {
               assertThat(saved.price().amount()).isEqualTo("100.00");
               assertThat(saved.price().currency()).isEqualTo("EUR");
             });
+  }
+
+  @Test
+  void throwDomainExceptionWhenRoomPriceAlreadyExists() {
+    String roomPriceId = randomUUID().toString();
+    String hotelId = randomUUID().toString();
+    String roomType = "S";
+    String priceAmount = "100.00";
+
+    RoomPrice existing = RoomPrice.load(roomPriceId, hotelId, roomType, priceAmount);
+
+    when(roomPriceIdGenerator.get(new AggregateId(hotelId), RoomType.S)).thenReturn(roomPriceId);
+    when(repository.find(new AggregateId(roomPriceId))).thenReturn(Optional.of(existing));
+
+    UpdateRoomPriceCommand command = new UpdateRoomPriceCommand(hotelId, roomType, priceAmount);
+
+    assertThrows(RoomPriceAlreadyExists.class, () -> testee.execute(command));
   }
 }

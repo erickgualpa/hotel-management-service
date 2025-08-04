@@ -1,5 +1,6 @@
 package org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.controller;
 
+import static org.springframework.http.ResponseEntity.internalServerError;
 import static org.springframework.http.ResponseEntity.noContent;
 
 import org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.cqrs.command.simple.SyncUpdateRoomPriceCommand;
@@ -30,9 +31,10 @@ public class PutRoomPriceController {
             request.hotelId(), request.roomType(), request.priceAmount());
     try {
       commandBus.publish(command);
+      return noContent().build();
     } catch (RuntimeException e) {
       logger.error("An error occurred while processing the request: [{}]", request, e);
+      return internalServerError().build();
     }
-    return noContent().build();
   }
 }
