@@ -6,5 +6,5 @@ import org.egualpam.contexts.hotelmanagement.shared.domain.RoomType;
 @FunctionalInterface
 public interface RoomPriceIdGenerator {
 
-  String get(AggregateId hotelId, RoomType roomType);
+  AggregateId get(AggregateId hotelId, RoomType roomType);
 }

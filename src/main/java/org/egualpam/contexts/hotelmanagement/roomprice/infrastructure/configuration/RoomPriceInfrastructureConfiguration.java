@@ -23,7 +23,8 @@ public class RoomPriceInfrastructureConfiguration {
   public RoomPriceIdGenerator roomPriceIdGenerator() {
     return ((hotelId, roomType) -> {
       final var id = hotelId.value() + "_" + roomType.name();
-      return nameUUIDFromBytes(id.getBytes(UTF_8)).toString();
+      final var value = nameUUIDFromBytes(id.getBytes(UTF_8)).toString();
+      return new AggregateId(value);
     });
   }
 

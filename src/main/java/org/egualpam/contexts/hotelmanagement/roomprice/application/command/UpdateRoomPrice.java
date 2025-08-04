@@ -2,9 +2,7 @@ package org.egualpam.contexts.hotelmanagement.roomprice.application.command;
 
 import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPrice;
 import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPriceIdGenerator;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RoomType;
 
 public class UpdateRoomPrice {
 
@@ -22,16 +20,12 @@ public class UpdateRoomPrice {
     final var roomType = command.roomType();
     final var priceAmount = command.priceAmount();
 
-    final var roomPriceId =
-        roomPriceIdGenerator.get(new AggregateId(hotelId), RoomType.valueOf(roomType));
+    final var roomPriceId = RoomPrice.generateId(roomPriceIdGenerator, hotelId, roomType);
 
     final var roomPrice =
         repository
-            .find(new AggregateId(roomPriceId))
-            .orElseGet(
-                () ->
-                    RoomPrice.create(
-                        roomPriceIdGenerator, repository, hotelId, roomType, priceAmount));
+            .find(roomPriceId)
+            .orElseGet(() -> RoomPrice.create(roomPriceId.value(), hotelId, roomType, priceAmount));
 
     roomPrice.updatePriceAmount(priceAmount);
 

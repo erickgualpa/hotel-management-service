@@ -40,7 +40,8 @@ class UpdateRoomPriceShould {
     String roomType = "S";
     String priceAmount = "100.00";
 
-    when(roomPriceIdGenerator.get(new AggregateId(hotelId), RoomType.S)).thenReturn(roomPriceId);
+    when(roomPriceIdGenerator.get(new AggregateId(hotelId), RoomType.S))
+        .thenReturn(new AggregateId(roomPriceId));
     when(repository.find(new AggregateId(roomPriceId))).thenReturn(Optional.empty());
 
     UpdateRoomPriceCommand command = new UpdateRoomPriceCommand(hotelId, roomType, priceAmount);
@@ -70,7 +71,8 @@ class UpdateRoomPriceShould {
 
     RoomPrice existing = RoomPrice.load(roomPriceId, hotelId, roomType, currentPriceAmount);
 
-    when(roomPriceIdGenerator.get(new AggregateId(hotelId), RoomType.S)).thenReturn(roomPriceId);
+    when(roomPriceIdGenerator.get(new AggregateId(hotelId), RoomType.S))
+        .thenReturn(new AggregateId(roomPriceId));
     when(repository.find(new AggregateId(roomPriceId))).thenReturn(Optional.of(existing));
 
     UpdateRoomPriceCommand command = new UpdateRoomPriceCommand(hotelId, roomType, newPriceAmount);

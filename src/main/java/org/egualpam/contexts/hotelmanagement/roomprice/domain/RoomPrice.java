@@ -3,7 +3,6 @@ package org.egualpam.contexts.hotelmanagement.roomprice.domain;
 import static java.util.Objects.isNull;
 
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.shared.domain.RoomType;
@@ -24,32 +23,26 @@ public class RoomPrice extends AggregateRoot {
     this.price = Price.of(amount);
   }
 
+  public static AggregateId generateId(
+      RoomPriceIdGenerator idGenerator, String hotelId, String roomType) {
+    if (isNull(hotelId) || isNull(roomType)) {
+      throw new RequiredPropertyIsMissing();
+    }
+
+    final var hotelAggregateId = new AggregateId(hotelId);
+    final var roomTypeValue = RoomType.valueOf(roomType);
+
+    return idGenerator.get(hotelAggregateId, roomTypeValue);
+  }
+
   public static RoomPrice load(
       String roomPriceId, String hotelId, String roomType, String priceAmount) {
     return new RoomPrice(roomPriceId, hotelId, roomType, priceAmount);
   }
 
   public static RoomPrice create(
-      RoomPriceIdGenerator roomPriceIdGenerator,
-      AggregateRepository<RoomPrice> repository,
-      String hotelId,
-      String roomType,
-      String priceAmount) {
-    final var roomPriceId = generateId(roomPriceIdGenerator, hotelId, roomType);
-
-    if (repository.find(new AggregateId(roomPriceId)).isPresent()) {
-      throw new RoomPriceAlreadyExists();
-    }
-
+      String roomPriceId, String hotelId, String roomType, String priceAmount) {
     return new RoomPrice(roomPriceId, hotelId, roomType, priceAmount);
-  }
-
-  private static String generateId(
-      RoomPriceIdGenerator roomPriceIdGenerator, String hotelId, String roomType) {
-    if (isNull(hotelId) || isNull(roomType)) {
-      throw new RequiredPropertyIsMissing();
-    }
-    return roomPriceIdGenerator.get(new AggregateId(hotelId), RoomType.valueOf(roomType));
   }
 
   public void updatePriceAmount(String newPriceAmount) {
