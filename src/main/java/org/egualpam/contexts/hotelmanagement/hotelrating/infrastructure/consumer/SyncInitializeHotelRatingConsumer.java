@@ -45,7 +45,7 @@ public class SyncInitializeHotelRatingConsumer {
     try {
       commandBus.publish(syncInitializeHotelRatingCommand);
     } catch (RuntimeException e) {
-      logger.error("An error occurred while processing the event [%s]".formatted(event), e);
+      logger.error("An error occurred while processing the event [{}]", event, e);
       // TODO: Check how to handle ACK when an exception occurs
     }
 
