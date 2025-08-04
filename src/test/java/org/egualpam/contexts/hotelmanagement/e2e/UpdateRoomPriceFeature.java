@@ -1,13 +1,14 @@
 package org.egualpam.contexts.hotelmanagement.e2e;
 
 import static java.lang.String.format;
+import static java.util.UUID.randomUUID;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.UUID;
 import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
+import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RoomPriceTestRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,12 +23,12 @@ class UpdateRoomPriceFeature extends AbstractIntegrationTest {
       }
       """;
 
-  @Autowired private HotelTestRepository hotelTestRepository;
+  @Autowired private RoomPriceTestRepository roomPriceTestRepository;
 
   @Test
   void roomPriceShouldBeUpdated() throws Exception {
-    UUID roomPriceId = UUID.randomUUID();
-    UUID hotelId = UUID.randomUUID();
+    UUID roomPriceId = randomUUID();
+    UUID hotelId = randomUUID();
     String roomType = "M";
 
     mockMvc
@@ -36,5 +37,8 @@ class UpdateRoomPriceFeature extends AbstractIntegrationTest {
                 .contentType(APPLICATION_JSON)
                 .content(format(UPDATE_ROOM_PRICE_REQUEST, roomPriceId, hotelId, roomType)))
         .andExpect(status().isNoContent());
+
+    // TODO: Enable once repository is implemented
+    // assertTrue(roomPriceTestRepository.roomPriceExists(roomPriceId.toString()));
   }
 }
