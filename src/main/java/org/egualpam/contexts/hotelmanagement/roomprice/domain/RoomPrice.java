@@ -12,7 +12,7 @@ public class RoomPrice extends AggregateRoot {
 
   private final AggregateId hotelId;
   private final RoomType roomType;
-  private final Price price;
+  private Price price;
 
   private RoomPrice(String id, String hotelId, String roomType, String amount) {
     super(id);
@@ -50,6 +50,13 @@ public class RoomPrice extends AggregateRoot {
       throw new RequiredPropertyIsMissing();
     }
     return roomPriceIdGenerator.get(new AggregateId(hotelId), RoomType.valueOf(roomType));
+  }
+
+  public void updatePriceAmount(String newPriceAmount) {
+    if (isNull(newPriceAmount)) {
+      throw new RequiredPropertyIsMissing();
+    }
+    this.price = this.price.updateAmount(newPriceAmount);
   }
 
   public String hotelId() {

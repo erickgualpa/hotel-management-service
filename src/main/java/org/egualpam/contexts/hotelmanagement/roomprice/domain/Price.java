@@ -2,6 +2,10 @@ package org.egualpam.contexts.hotelmanagement.roomprice.domain;
 
 public record Price(String amount, String currency) {
 
+  public Price updateAmount(String newAmount) {
+    return new Price(newAmount, this.currency);
+  }
+
   private enum AllowedCurrency {
     EUR;
   }
