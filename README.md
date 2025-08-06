@@ -75,27 +75,27 @@ docker compose down --rmi local
 ```
 .
 ├── architecture
-├── e2e
-├── hotel
-│   ├── application
-│   │   ├── command
-│   │   └── query
-│   └── infrastructure
-│       ├── controller
-│       ├── readmodelsupplier
-│       │   └── jpa
-│       ├── repository
-│       │   └── jpa
-│       └── reviewisalreadyprocessed
+├── customer
+│   ├── e2e
+│   ├── hotel
+│   │   ├── application
+│   │   │   └── query
+│   │   └── infrastructure
+│   │       ├── controller
+│   │       └── readmodelsupplier
+│   │           └── jpa
+│   ├── review
+│   │   ├── application
+│   │   │   ├── command
+│   │   │   └── query
+│   │   └── infrastructure
+│   │       ├── controller
+│   │       ├── readmodelsupplier
+│   │       └── repository
+│   └── room
+│       └── application
+│           └── query
 ├── journey
-├── review
-│   ├── application
-│   │   ├── command
-│   │   └── query
-│   └── infrastructure
-│       ├── controller
-│       ├── readmodelsupplier
-│       └── repository
 └── shared
     └── infrastructure
         ├── configuration
@@ -108,4 +108,5 @@ docker compose down --rmi local
         │   ├── simple
         │   └── springamqp
         └── helpers
+
 ```
