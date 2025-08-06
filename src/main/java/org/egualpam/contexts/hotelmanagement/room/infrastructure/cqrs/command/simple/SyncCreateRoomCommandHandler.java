@@ -1,10 +1,10 @@
 package org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.command.simple;
 
 import java.util.Optional;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.Command;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.simple.CommandHandler;
 import org.egualpam.contexts.hotelmanagement.room.application.command.CreateRoom;
 import org.egualpam.contexts.hotelmanagement.room.application.command.CreateRoomCommand;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.CommandHandler;
 import org.springframework.transaction.support.TransactionTemplate;
 
 public class SyncCreateRoomCommandHandler implements CommandHandler {

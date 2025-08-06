@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.room.application.query;
 
 import java.util.List;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModel;
+import org.egualpam.contexts.hotel.shared.application.query.ReadModel;
 
 public record ManyRooms(List<Room> rooms) implements ReadModel {
 

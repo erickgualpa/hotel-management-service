@@ -13,16 +13,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.egualpam.contexts.HotelManagementServiceApplication;
+import org.egualpam.contexts.hotel.shared.domain.InvalidUniqueId;
+import org.egualpam.contexts.hotel.shared.domain.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotel.shared.infrastructure.configuration.ObjectMapperConfiguration;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.Command;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.CommandBus;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.query.Query;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.query.QueryBus;
 import org.egualpam.contexts.hotelmanagement.review.domain.InvalidRating;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewAlreadyExists;
-import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.HotelManagementServiceApplication;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.configuration.ObjectMapperConfiguration;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Query;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.QueryBus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

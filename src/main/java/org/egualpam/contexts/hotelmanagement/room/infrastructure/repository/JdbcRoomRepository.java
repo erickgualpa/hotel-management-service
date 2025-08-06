@@ -2,9 +2,9 @@ package org.egualpam.contexts.hotelmanagement.room.infrastructure.repository;
 
 import java.util.Optional;
 import java.util.UUID;
+import org.egualpam.contexts.hotel.shared.domain.AggregateId;
+import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.room.domain.Room;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 public class JdbcRoomRepository implements AggregateRepository<Room> {

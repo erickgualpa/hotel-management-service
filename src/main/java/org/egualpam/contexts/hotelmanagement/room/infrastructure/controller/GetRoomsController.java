@@ -3,9 +3,9 @@ package org.egualpam.contexts.hotelmanagement.room.infrastructure.controller;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.ResponseEntity.internalServerError;
 
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.query.QueryBus;
 import org.egualpam.contexts.hotelmanagement.room.application.query.ManyRooms;
 import org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.query.simple.SyncFindRoomsQuery;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.QueryBus;
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

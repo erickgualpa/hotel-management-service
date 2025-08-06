@@ -2,10 +2,10 @@ package org.egualpam.contexts.hotelmanagement.hotelrating.infrastructure.cqrs.co
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.Command;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.simple.CommandHandler;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.UpdateHotelRating;
 import org.egualpam.contexts.hotelmanagement.hotelrating.application.command.UpdateHotelRatingCommand;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.CommandHandler;
 import org.springframework.transaction.support.TransactionTemplate;
 
 @RequiredArgsConstructor

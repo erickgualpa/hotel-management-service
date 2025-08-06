@@ -2,11 +2,11 @@ package org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.s
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.egualpam.contexts.hotel.shared.application.query.ReadModel;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.query.Query;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.query.simple.QueryHandler;
 import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviews;
 import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviewsQuery;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModel;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Query;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 
 @RequiredArgsConstructor
 public class SyncFindReviewsQueryHandler implements QueryHandler {

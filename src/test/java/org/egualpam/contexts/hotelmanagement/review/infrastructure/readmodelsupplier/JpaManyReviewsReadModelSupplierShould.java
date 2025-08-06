@@ -3,10 +3,10 @@ package org.egualpam.contexts.hotelmanagement.review.infrastructure.readmodelsup
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import jakarta.persistence.EntityManager;
+import org.egualpam.contexts.hotel.shared.application.query.ReadModelSupplier;
+import org.egualpam.contexts.hotel.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

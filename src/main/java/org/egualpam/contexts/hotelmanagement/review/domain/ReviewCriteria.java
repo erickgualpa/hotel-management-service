@@ -3,7 +3,7 @@ package org.egualpam.contexts.hotelmanagement.review.domain;
 import static java.util.Objects.nonNull;
 
 import java.util.Optional;
-import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
+import org.egualpam.contexts.hotel.shared.domain.Criteria;
 
 public final class ReviewCriteria implements Criteria {
 

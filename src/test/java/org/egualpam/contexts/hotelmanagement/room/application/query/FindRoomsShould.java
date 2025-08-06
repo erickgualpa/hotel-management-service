@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import org.egualpam.contexts.hotel.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.room.domain.RoomCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

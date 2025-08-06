@@ -5,8 +5,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.internalServerError;
 import static org.springframework.http.ResponseEntity.status;
 
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.reservation.infrastructure.cqrs.command.simple.SyncCreateReservationCommand;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

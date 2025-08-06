@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomUtils.nextInt;
 
 import java.util.UUID;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
+import org.egualpam.contexts.AbstractIntegrationTest;
 import org.junit.jupiter.api.Test;
 
 public class AsyncCreateHotelJourneyTest extends AbstractIntegrationTest {

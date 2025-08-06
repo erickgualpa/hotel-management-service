@@ -2,9 +2,9 @@ package org.egualpam.contexts.hotelmanagement.room.domain;
 
 import static java.util.Objects.isNull;
 
-import org.egualpam.contexts.hotelmanagement.shared.domain.Criteria;
-import org.egualpam.contexts.hotelmanagement.shared.domain.DateRange;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotel.shared.domain.Criteria;
+import org.egualpam.contexts.hotel.shared.domain.DateRange;
+import org.egualpam.contexts.hotel.shared.domain.RequiredPropertyIsMissing;
 
 public class RoomCriteria implements Criteria {
 

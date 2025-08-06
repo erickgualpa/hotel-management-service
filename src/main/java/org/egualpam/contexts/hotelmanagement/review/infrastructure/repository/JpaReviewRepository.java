@@ -5,9 +5,9 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import java.util.Optional;
 import java.util.UUID;
+import org.egualpam.contexts.hotel.shared.domain.AggregateId;
+import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.review.domain.Review;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 
 public class JpaReviewRepository implements AggregateRepository<Review> {
 

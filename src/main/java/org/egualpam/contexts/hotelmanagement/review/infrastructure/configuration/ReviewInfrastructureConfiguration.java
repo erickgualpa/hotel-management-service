@@ -1,6 +1,12 @@
 package org.egualpam.contexts.hotelmanagement.review.infrastructure.configuration;
 
 import jakarta.persistence.EntityManager;
+import org.egualpam.contexts.hotel.shared.application.command.InternalEventBus;
+import org.egualpam.contexts.hotel.shared.application.query.ReadModelSupplier;
+import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
+import org.egualpam.contexts.hotel.shared.infrastructure.internaleventbus.spring.SpringInternalEventBus;
 import org.egualpam.contexts.hotelmanagement.review.application.command.CreateReview;
 import org.egualpam.contexts.hotelmanagement.review.application.command.UpdateReview;
 import org.egualpam.contexts.hotelmanagement.review.application.query.FindReviews;
@@ -15,12 +21,6 @@ import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.si
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.simple.SyncFindReviewsQueryHandler;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.readmodelsupplier.JpaManyReviewsReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.repository.JpaReviewRepository;
-import org.egualpam.contexts.hotelmanagement.shared.application.command.InternalEventBus;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.SimpleQueryBusConfiguration;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.internaleventbus.spring.SpringInternalEventBus;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;

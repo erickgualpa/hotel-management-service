@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.room.application.query;
 
+import org.egualpam.contexts.hotel.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.room.domain.RoomCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 
 public class FindRooms {
 

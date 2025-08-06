@@ -9,13 +9,13 @@ import static org.springframework.http.ResponseEntity.internalServerError;
 import static org.springframework.http.ResponseEntity.status;
 
 import lombok.RequiredArgsConstructor;
+import org.egualpam.contexts.hotel.shared.domain.InvalidUniqueId;
+import org.egualpam.contexts.hotel.shared.domain.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.Command;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.CommandBus;
 import org.egualpam.contexts.hotelmanagement.review.domain.InvalidRating;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewAlreadyExists;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.command.simple.SyncCreateReviewCommand;
-import org.egualpam.contexts.hotelmanagement.shared.domain.InvalidUniqueId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.Command;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.command.CommandBus;
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

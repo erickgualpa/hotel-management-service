@@ -1,9 +1,9 @@
 package org.egualpam.contexts.hotelmanagement.hotelrating.domain;
 
 import java.time.Clock;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotel.shared.domain.AggregateId;
+import org.egualpam.contexts.hotel.shared.domain.DomainEvent;
+import org.egualpam.contexts.hotel.shared.domain.UniqueId;
 
 public class HotelRatingInitialized extends DomainEvent {
   public HotelRatingInitialized(UniqueId id, AggregateId aggregateId, Clock clock) {

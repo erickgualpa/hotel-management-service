@@ -4,11 +4,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import java.util.List;
 import java.util.UUID;
+import org.egualpam.contexts.hotel.shared.application.query.ReadModelSupplier;
+import org.egualpam.contexts.hotel.shared.domain.RequiredPropertyIsMissing;
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
 import org.egualpam.contexts.hotelmanagement.review.domain.HotelId;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
 
 public class JpaManyReviewsReadModelSupplier
     implements ReadModelSupplier<ReviewCriteria, ManyReviews> {

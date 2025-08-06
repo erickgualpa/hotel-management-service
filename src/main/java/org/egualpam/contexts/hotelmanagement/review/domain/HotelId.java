@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.review.domain;
 
 import java.util.Objects;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotel.shared.domain.UniqueId;
 
 // TODO: Check if makes more sense to use EntityId or specific ids
 public final class HotelId {

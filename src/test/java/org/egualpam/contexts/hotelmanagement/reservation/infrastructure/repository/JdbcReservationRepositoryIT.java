@@ -6,13 +6,13 @@ import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUti
 
 import java.util.Optional;
 import java.util.UUID;
+import org.egualpam.contexts.AbstractIntegrationTest;
+import org.egualpam.contexts.hotel.shared.domain.AggregateId;
+import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
+import org.egualpam.contexts.hotel.shared.domain.DateRange;
+import org.egualpam.contexts.hotel.shared.infrastructure.helpers.HotelTestRepository;
+import org.egualpam.contexts.hotel.shared.infrastructure.helpers.RoomTestRepository;
 import org.egualpam.contexts.hotelmanagement.reservation.domain.Reservation;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.contexts.hotelmanagement.shared.domain.DateRange;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.AbstractIntegrationTest;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.HotelTestRepository;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.helpers.RoomTestRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

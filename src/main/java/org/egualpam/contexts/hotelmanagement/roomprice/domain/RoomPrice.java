@@ -2,10 +2,10 @@ package org.egualpam.contexts.hotelmanagement.roomprice.domain;
 
 import static java.util.Objects.isNull;
 
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RoomType;
+import org.egualpam.contexts.hotel.shared.domain.AggregateId;
+import org.egualpam.contexts.hotel.shared.domain.AggregateRoot;
+import org.egualpam.contexts.hotel.shared.domain.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotel.shared.domain.RoomType;
 
 public class RoomPrice extends AggregateRoot {
 

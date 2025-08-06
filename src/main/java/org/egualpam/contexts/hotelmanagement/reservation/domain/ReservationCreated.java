@@ -1,10 +1,10 @@
 package org.egualpam.contexts.hotelmanagement.reservation.domain;
 
 import java.time.Clock;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.DateRange;
-import org.egualpam.contexts.hotelmanagement.shared.domain.DomainEvent;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotel.shared.domain.AggregateId;
+import org.egualpam.contexts.hotel.shared.domain.DateRange;
+import org.egualpam.contexts.hotel.shared.domain.DomainEvent;
+import org.egualpam.contexts.hotel.shared.domain.UniqueId;
 
 public class ReservationCreated extends DomainEvent {
 

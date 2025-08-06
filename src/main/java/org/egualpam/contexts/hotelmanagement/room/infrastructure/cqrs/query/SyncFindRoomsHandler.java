@@ -1,12 +1,12 @@
 package org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.query;
 
 import java.util.Optional;
+import org.egualpam.contexts.hotel.shared.application.query.ReadModel;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.query.Query;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.query.simple.QueryHandler;
 import org.egualpam.contexts.hotelmanagement.room.application.query.FindRooms;
 import org.egualpam.contexts.hotelmanagement.room.application.query.FindRoomsQuery;
 import org.egualpam.contexts.hotelmanagement.room.infrastructure.cqrs.query.simple.SyncFindRoomsQuery;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModel;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Query;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.simple.QueryHandler;
 
 public class SyncFindRoomsHandler implements QueryHandler {
 

@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.review.application.query;
 
+import org.egualpam.contexts.hotel.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 
 public class FindReviews {
 

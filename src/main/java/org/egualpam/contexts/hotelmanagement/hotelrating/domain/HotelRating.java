@@ -7,11 +7,11 @@ import java.time.Clock;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateId;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRoot;
-import org.egualpam.contexts.hotelmanagement.shared.domain.RequiredPropertyIsMissing;
-import org.egualpam.contexts.hotelmanagement.shared.domain.UniqueId;
+import org.egualpam.contexts.hotel.shared.domain.AggregateId;
+import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
+import org.egualpam.contexts.hotel.shared.domain.AggregateRoot;
+import org.egualpam.contexts.hotel.shared.domain.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotel.shared.domain.UniqueId;
 
 public class HotelRating extends AggregateRoot {
 

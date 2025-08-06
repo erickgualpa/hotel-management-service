@@ -1,9 +1,9 @@
 package org.egualpam.contexts.hotelmanagement.room.infrastructure.readmodelsupplier;
 
 import java.sql.Date;
+import org.egualpam.contexts.hotel.shared.application.query.ReadModelSupplier;
 import org.egualpam.contexts.hotelmanagement.room.application.query.ManyRooms;
 import org.egualpam.contexts.hotelmanagement.room.domain.RoomCriteria;
-import org.egualpam.contexts.hotelmanagement.shared.application.query.ReadModelSupplier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.JdbcClient;
 

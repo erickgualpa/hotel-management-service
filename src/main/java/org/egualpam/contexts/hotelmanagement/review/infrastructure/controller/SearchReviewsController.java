@@ -7,10 +7,10 @@ import static org.springframework.http.ResponseEntity.ok;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.query.Query;
+import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.query.QueryBus;
 import org.egualpam.contexts.hotelmanagement.review.application.query.ManyReviews;
 import org.egualpam.contexts.hotelmanagement.review.infrastructure.cqrs.query.simple.SyncFindReviewsQuery;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.Query;
-import org.egualpam.contexts.hotelmanagement.shared.infrastructure.cqrs.query.QueryBus;
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

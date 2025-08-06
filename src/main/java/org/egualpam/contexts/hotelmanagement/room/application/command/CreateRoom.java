@@ -1,7 +1,7 @@
 package org.egualpam.contexts.hotelmanagement.room.application.command;
 
+import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotelmanagement.room.domain.Room;
-import org.egualpam.contexts.hotelmanagement.shared.domain.AggregateRepository;
 
 public class CreateRoom {
 
