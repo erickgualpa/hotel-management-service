@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 import java.util.UUID;
-import org.egualpam.contexts.AbstractIntegrationTest;
+import org.egualpam.contexts.hotel.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.HotelTestRepository;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.ReservationTestRepository;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.RoomTestRepository;

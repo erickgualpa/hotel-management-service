@@ -8,7 +8,7 @@ import com.networknt.schema.JsonSchemaFactory;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Set;
-import org.egualpam.contexts.AbstractIntegrationTest;
+import org.egualpam.contexts.hotel.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotel.customer.review.domain.HotelId;
 import org.egualpam.contexts.hotel.customer.review.domain.Rating;
 import org.egualpam.contexts.hotel.customer.review.domain.ReviewCreated;

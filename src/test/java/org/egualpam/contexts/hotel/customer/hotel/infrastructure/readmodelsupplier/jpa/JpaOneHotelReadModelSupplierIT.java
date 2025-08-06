@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import jakarta.persistence.EntityManager;
 import java.util.UUID;
-import org.egualpam.contexts.AbstractIntegrationTest;
+import org.egualpam.contexts.hotel.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotel.customer.hotel.application.query.OneHotel;
 import org.egualpam.contexts.hotel.customer.hotel.domain.UniqueHotelCriteria;
 import org.egualpam.contexts.hotel.shared.application.query.ReadModelSupplier;

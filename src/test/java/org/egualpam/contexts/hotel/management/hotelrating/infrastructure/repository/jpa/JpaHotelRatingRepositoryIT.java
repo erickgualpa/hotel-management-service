@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.util.Optional;
 import java.util.Set;
-import org.egualpam.contexts.AbstractIntegrationTest;
+import org.egualpam.contexts.hotel.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotel.management.hotelrating.domain.HotelRating;
 import org.egualpam.contexts.hotel.shared.domain.AggregateId;
 import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;

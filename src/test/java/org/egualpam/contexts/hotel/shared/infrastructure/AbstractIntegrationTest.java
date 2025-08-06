@@ -1,4 +1,4 @@
-package org.egualpam.contexts;
+package org.egualpam.contexts.hotel.shared.infrastructure;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.egualpam.contexts.hotel.shared.infrastructure.configuration.SharedTestConfiguration;

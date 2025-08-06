@@ -6,7 +6,7 @@ import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUti
 
 import java.util.Optional;
 import java.util.UUID;
-import org.egualpam.contexts.AbstractIntegrationTest;
+import org.egualpam.contexts.hotel.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotel.management.reservation.domain.Reservation;
 import org.egualpam.contexts.hotel.shared.domain.AggregateId;
 import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;

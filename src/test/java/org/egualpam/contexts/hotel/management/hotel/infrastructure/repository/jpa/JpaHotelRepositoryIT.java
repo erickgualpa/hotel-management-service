@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.persistence.EntityManager;
 import java.util.Optional;
-import org.egualpam.contexts.AbstractIntegrationTest;
+import org.egualpam.contexts.hotel.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotel.management.hotel.domain.Hotel;
 import org.egualpam.contexts.hotel.shared.domain.AggregateId;
 import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;

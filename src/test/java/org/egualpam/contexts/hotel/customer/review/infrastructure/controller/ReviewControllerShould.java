@@ -13,11 +13,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.egualpam.contexts.HotelManagementServiceApplication;
 import org.egualpam.contexts.hotel.customer.review.domain.InvalidRating;
 import org.egualpam.contexts.hotel.customer.review.domain.ReviewAlreadyExists;
 import org.egualpam.contexts.hotel.shared.domain.InvalidUniqueId;
 import org.egualpam.contexts.hotel.shared.domain.RequiredPropertyIsMissing;
+import org.egualpam.contexts.hotel.shared.infrastructure.HotelManagementServiceApplication;
 import org.egualpam.contexts.hotel.shared.infrastructure.configuration.ObjectMapperConfiguration;
 import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.Command;
 import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.CommandBus;

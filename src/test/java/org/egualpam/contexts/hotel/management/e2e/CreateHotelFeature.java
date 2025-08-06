@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.UUID;
-import org.egualpam.contexts.AbstractIntegrationTest;
+import org.egualpam.contexts.hotel.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.HotelRatingTestRepository;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.HotelTestRepository;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.PublicEventResult;

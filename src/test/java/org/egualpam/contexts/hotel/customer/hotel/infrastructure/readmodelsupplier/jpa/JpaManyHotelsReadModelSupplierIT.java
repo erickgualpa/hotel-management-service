@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import org.egualpam.contexts.AbstractIntegrationTest;
+import org.egualpam.contexts.hotel.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotel.customer.hotel.application.query.ManyHotels;
 import org.egualpam.contexts.hotel.customer.hotel.domain.HotelCriteria;
 import org.egualpam.contexts.hotel.customer.hotel.infrastructure.readmodelsupplier.jpa.JpaManyHotelsReadModelSupplier;

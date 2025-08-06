@@ -15,7 +15,7 @@ import static org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUti
 
 import java.io.IOException;
 import java.util.UUID;
-import org.egualpam.contexts.AbstractIntegrationTest;
+import org.egualpam.contexts.hotel.shared.infrastructure.AbstractIntegrationTest;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.HotelTestRepository;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.PublicEventResult;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.RabbitMqTestConsumer;
