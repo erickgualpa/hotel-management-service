@@ -1,8 +1,8 @@
 package org.egualpam.contexts.hotel.shared.infrastructure.helpers;
 
 import java.util.UUID;
-import org.egualpam.contexts.hotelmanagement.room.application.command.CreateRoom;
-import org.egualpam.contexts.hotelmanagement.room.application.command.CreateRoomCommand;
+import org.egualpam.contexts.hotel.management.room.application.command.CreateRoom;
+import org.egualpam.contexts.hotel.management.room.application.command.CreateRoomCommand;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 public class RoomTestRepository {
