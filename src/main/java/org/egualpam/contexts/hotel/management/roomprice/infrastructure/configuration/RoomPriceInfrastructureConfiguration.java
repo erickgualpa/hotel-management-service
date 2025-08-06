@@ -1,17 +1,17 @@
-package org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.configuration;
+package org.egualpam.contexts.hotel.management.roomprice.infrastructure.configuration;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.UUID.nameUUIDFromBytes;
 
 import java.util.Optional;
+import org.egualpam.contexts.hotel.management.roomprice.application.command.UpdateRoomPrice;
+import org.egualpam.contexts.hotel.management.roomprice.domain.RoomPrice;
+import org.egualpam.contexts.hotel.management.roomprice.domain.RoomPriceIdGenerator;
+import org.egualpam.contexts.hotel.management.roomprice.infrastructure.cqrs.command.SyncUpdateRoomPriceCommandHandler;
+import org.egualpam.contexts.hotel.management.roomprice.infrastructure.cqrs.command.simple.SyncUpdateRoomPriceCommand;
 import org.egualpam.contexts.hotel.shared.domain.AggregateId;
 import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
-import org.egualpam.contexts.hotelmanagement.roomprice.application.command.UpdateRoomPrice;
-import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPrice;
-import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPriceIdGenerator;
-import org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.cqrs.command.SyncUpdateRoomPriceCommandHandler;
-import org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.cqrs.command.simple.SyncUpdateRoomPriceCommand;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.support.TransactionTemplate;

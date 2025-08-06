@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.cqrs.command.simple;
+package org.egualpam.contexts.hotel.management.roomprice.infrastructure.cqrs.command.simple;
 
 import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.Command;
 

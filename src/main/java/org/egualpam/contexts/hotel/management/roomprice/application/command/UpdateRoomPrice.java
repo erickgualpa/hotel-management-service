@@ -1,8 +1,8 @@
-package org.egualpam.contexts.hotelmanagement.roomprice.application.command;
+package org.egualpam.contexts.hotel.management.roomprice.application.command;
 
+import org.egualpam.contexts.hotel.management.roomprice.domain.RoomPrice;
+import org.egualpam.contexts.hotel.management.roomprice.domain.RoomPriceIdGenerator;
 import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
-import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPrice;
-import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPriceIdGenerator;
 
 public class UpdateRoomPrice {
 

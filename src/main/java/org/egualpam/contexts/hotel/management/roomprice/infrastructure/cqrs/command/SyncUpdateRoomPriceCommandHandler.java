@@ -1,10 +1,10 @@
-package org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.cqrs.command;
+package org.egualpam.contexts.hotel.management.roomprice.infrastructure.cqrs.command;
 
+import org.egualpam.contexts.hotel.management.roomprice.application.command.UpdateRoomPrice;
+import org.egualpam.contexts.hotel.management.roomprice.application.command.UpdateRoomPriceCommand;
+import org.egualpam.contexts.hotel.management.roomprice.infrastructure.cqrs.command.simple.SyncUpdateRoomPriceCommand;
 import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.Command;
 import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.simple.CommandHandler;
-import org.egualpam.contexts.hotelmanagement.roomprice.application.command.UpdateRoomPrice;
-import org.egualpam.contexts.hotelmanagement.roomprice.application.command.UpdateRoomPriceCommand;
-import org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.cqrs.command.simple.SyncUpdateRoomPriceCommand;
 import org.springframework.transaction.support.TransactionTemplate;
 
 public class SyncUpdateRoomPriceCommandHandler implements CommandHandler {

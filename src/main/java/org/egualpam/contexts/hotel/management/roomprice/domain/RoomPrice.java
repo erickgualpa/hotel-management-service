@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.roomprice.domain;
+package org.egualpam.contexts.hotel.management.roomprice.domain;
 
 import static java.util.Objects.isNull;
 

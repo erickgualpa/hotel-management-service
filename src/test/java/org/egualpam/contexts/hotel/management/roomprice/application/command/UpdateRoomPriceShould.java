@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.roomprice.application.command;
+package org.egualpam.contexts.hotel.management.roomprice.application.command;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -6,11 +6,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
+import org.egualpam.contexts.hotel.management.roomprice.domain.RoomPrice;
+import org.egualpam.contexts.hotel.management.roomprice.domain.RoomPriceIdGenerator;
 import org.egualpam.contexts.hotel.shared.domain.AggregateId;
 import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotel.shared.domain.RoomType;
-import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPrice;
-import org.egualpam.contexts.hotelmanagement.roomprice.domain.RoomPriceIdGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
