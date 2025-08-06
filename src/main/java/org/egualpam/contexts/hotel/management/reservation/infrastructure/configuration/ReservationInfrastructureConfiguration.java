@@ -1,12 +1,12 @@
-package org.egualpam.contexts.hotelmanagement.reservation.infrastructure.configuration;
+package org.egualpam.contexts.hotel.management.reservation.infrastructure.configuration;
 
+import org.egualpam.contexts.hotel.management.reservation.application.command.CreateReservation;
+import org.egualpam.contexts.hotel.management.reservation.domain.Reservation;
+import org.egualpam.contexts.hotel.management.reservation.infrastructure.cqrs.command.simple.SyncCreateReservationCommand;
+import org.egualpam.contexts.hotel.management.reservation.infrastructure.cqrs.command.simple.SyncCreateReservationCommandHandler;
+import org.egualpam.contexts.hotel.management.reservation.infrastructure.repository.JdbcReservationRepository;
 import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.simple.SimpleCommandBusConfiguration;
-import org.egualpam.contexts.hotelmanagement.reservation.application.command.CreateReservation;
-import org.egualpam.contexts.hotelmanagement.reservation.domain.Reservation;
-import org.egualpam.contexts.hotelmanagement.reservation.infrastructure.cqrs.command.simple.SyncCreateReservationCommand;
-import org.egualpam.contexts.hotelmanagement.reservation.infrastructure.cqrs.command.simple.SyncCreateReservationCommandHandler;
-import org.egualpam.contexts.hotelmanagement.reservation.infrastructure.repository.JdbcReservationRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.simple.JdbcClient;

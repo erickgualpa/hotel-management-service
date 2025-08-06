@@ -1,11 +1,11 @@
-package org.egualpam.contexts.hotelmanagement.reservation.infrastructure.repository;
+package org.egualpam.contexts.hotel.management.reservation.infrastructure.repository;
 
 import java.sql.Date;
 import java.util.Optional;
 import java.util.UUID;
+import org.egualpam.contexts.hotel.management.reservation.domain.Reservation;
 import org.egualpam.contexts.hotel.shared.domain.AggregateId;
 import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
-import org.egualpam.contexts.hotelmanagement.reservation.domain.Reservation;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 public class JdbcReservationRepository implements AggregateRepository<Reservation> {

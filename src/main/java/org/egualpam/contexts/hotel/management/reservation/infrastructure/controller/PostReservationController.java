@@ -1,12 +1,12 @@
-package org.egualpam.contexts.hotelmanagement.reservation.infrastructure.controller;
+package org.egualpam.contexts.hotel.management.reservation.infrastructure.controller;
 
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.internalServerError;
 import static org.springframework.http.ResponseEntity.status;
 
+import org.egualpam.contexts.hotel.management.reservation.infrastructure.cqrs.command.simple.SyncCreateReservationCommand;
 import org.egualpam.contexts.hotel.shared.infrastructure.cqrs.command.CommandBus;
-import org.egualpam.contexts.hotelmanagement.reservation.infrastructure.cqrs.command.simple.SyncCreateReservationCommand;
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

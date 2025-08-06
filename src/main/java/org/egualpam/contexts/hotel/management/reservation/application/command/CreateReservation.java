@@ -1,12 +1,12 @@
-package org.egualpam.contexts.hotelmanagement.reservation.application.command;
+package org.egualpam.contexts.hotel.management.reservation.application.command;
 
 import java.time.Clock;
 import java.util.function.Supplier;
+import org.egualpam.contexts.hotel.management.reservation.domain.Reservation;
+import org.egualpam.contexts.hotel.management.reservation.domain.ReservationAlreadyExists;
 import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotel.shared.domain.EventBus;
 import org.egualpam.contexts.hotel.shared.domain.UniqueId;
-import org.egualpam.contexts.hotelmanagement.reservation.domain.Reservation;
-import org.egualpam.contexts.hotelmanagement.reservation.domain.ReservationAlreadyExists;
 
 public class CreateReservation {
 

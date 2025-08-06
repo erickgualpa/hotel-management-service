@@ -1,8 +1,8 @@
 package org.egualpam.contexts.hotel.shared.infrastructure.helpers;
 
 import java.util.UUID;
-import org.egualpam.contexts.hotelmanagement.reservation.application.command.CreateReservation;
-import org.egualpam.contexts.hotelmanagement.reservation.application.command.CreateReservationCommand;
+import org.egualpam.contexts.hotel.management.reservation.application.command.CreateReservation;
+import org.egualpam.contexts.hotel.management.reservation.application.command.CreateReservationCommand;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
 public class ReservationTestRepository {

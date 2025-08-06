@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.reservation.domain;
+package org.egualpam.contexts.hotel.management.reservation.domain;
 
 import org.egualpam.contexts.hotel.shared.domain.Criteria;
 

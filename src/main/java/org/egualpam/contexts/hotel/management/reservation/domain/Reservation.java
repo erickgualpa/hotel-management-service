@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.reservation.domain;
+package org.egualpam.contexts.hotel.management.reservation.domain;
 
 import static java.util.Objects.isNull;
 

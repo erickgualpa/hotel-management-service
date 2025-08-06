@@ -24,8 +24,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
       "org.egualpam.contexts.hotel.customer.room.infrastructure.controller",
       "org.egualpam.contexts.hotel.customer.room.infrastructure.configuration",
       // Reservation
-      "org.egualpam.contexts.hotelmanagement.reservation.infrastructure.controller",
-      "org.egualpam.contexts.hotelmanagement.reservation.infrastructure.configuration",
+      "org.egualpam.contexts.hotel.management.reservation.infrastructure.controller",
+      "org.egualpam.contexts.hotel.management.reservation.infrastructure.configuration",
       // Room price
       "org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.controller",
       "org.egualpam.contexts.hotelmanagement.roomprice.infrastructure.configuration"

@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.reservation.application.command;
+package org.egualpam.contexts.hotel.management.reservation.application.command;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,14 +13,14 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+import org.egualpam.contexts.hotel.management.reservation.domain.Reservation;
+import org.egualpam.contexts.hotel.management.reservation.domain.ReservationCreated;
 import org.egualpam.contexts.hotel.shared.domain.AggregateId;
 import org.egualpam.contexts.hotel.shared.domain.AggregateRepository;
 import org.egualpam.contexts.hotel.shared.domain.DateRange;
 import org.egualpam.contexts.hotel.shared.domain.DomainEvent;
 import org.egualpam.contexts.hotel.shared.domain.EventBus;
 import org.egualpam.contexts.hotel.shared.domain.UniqueId;
-import org.egualpam.contexts.hotelmanagement.reservation.domain.Reservation;
-import org.egualpam.contexts.hotelmanagement.reservation.domain.ReservationCreated;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

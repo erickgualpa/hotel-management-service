@@ -5,6 +5,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
+import org.egualpam.contexts.hotel.management.reservation.application.command.CreateReservation;
 import org.egualpam.contexts.hotel.management.room.application.command.CreateRoom;
 import org.egualpam.contexts.hotel.shared.infrastructure.configuration.eventbus.RabbitMqProperties;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.EventStoreTestRepository;
@@ -15,7 +16,6 @@ import org.egualpam.contexts.hotel.shared.infrastructure.helpers.ReservationTest
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.ReviewTestRepository;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.RoomPriceTestRepository;
 import org.egualpam.contexts.hotel.shared.infrastructure.helpers.RoomTestRepository;
-import org.egualpam.contexts.hotelmanagement.reservation.application.command.CreateReservation;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
