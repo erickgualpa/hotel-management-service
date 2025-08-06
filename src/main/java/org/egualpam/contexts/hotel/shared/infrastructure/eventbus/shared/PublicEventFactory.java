@@ -1,5 +1,7 @@
 package org.egualpam.contexts.hotel.shared.infrastructure.eventbus.shared;
 
+import org.egualpam.contexts.hotel.customer.review.domain.ReviewCreated;
+import org.egualpam.contexts.hotel.customer.review.domain.ReviewUpdated;
 import org.egualpam.contexts.hotel.management.hotel.domain.HotelCreated;
 import org.egualpam.contexts.hotel.management.hotelrating.domain.HotelRatingInitialized;
 import org.egualpam.contexts.hotel.management.hotelrating.domain.HotelRatingUpdated;
@@ -12,8 +14,6 @@ import org.egualpam.contexts.hotel.shared.infrastructure.eventbus.shared.events.
 import org.egualpam.contexts.hotel.shared.infrastructure.eventbus.shared.events.ReviewCreatedPublicEvent;
 import org.egualpam.contexts.hotel.shared.infrastructure.eventbus.shared.events.ReviewUpdatedPublicEvent;
 import org.egualpam.contexts.hotelmanagement.reservation.domain.ReservationCreated;
-import org.egualpam.contexts.hotelmanagement.review.domain.ReviewCreated;
-import org.egualpam.contexts.hotelmanagement.review.domain.ReviewUpdated;
 
 public final class PublicEventFactory {
 
