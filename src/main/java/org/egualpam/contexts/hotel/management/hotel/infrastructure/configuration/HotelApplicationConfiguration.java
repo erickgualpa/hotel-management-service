@@ -10,7 +10,7 @@ import org.egualpam.contexts.hotel.shared.domain.UniqueId;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration("hotelManagementApplicationConfiguration")
+@Configuration("managementHotelApplicationConfiguration")
 public class HotelApplicationConfiguration {
 
   @Bean

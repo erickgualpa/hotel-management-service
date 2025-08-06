@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.support.TransactionTemplate;
 
-@Configuration("hotelManagementInfrastructureConfiguration")
+@Configuration("managementHotelInfrastructureConfiguration")
 @EntityScan("org.egualpam.contexts.hotel.management.hotel.infrastructure.shared.jpa")
 public class HotelInfrastructureConfiguration {
 
