@@ -1,4 +1,4 @@
-package org.egualpam.contexts.hotelmanagement.journey;
+package org.egualpam.contexts.hotel.journey;
 
 import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
